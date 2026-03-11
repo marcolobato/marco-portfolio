@@ -1,0 +1,18 @@
+---
+// ProjectCard.astro — A single project card used in the Work section.
+// Usage: <ProjectCard title="Project title goes here" />
+// Styles live in src/styles/global.css — section 8. Project Card
+
+const { title } = Astro.props;
+---
+
+<article class="card">
+  <!-- Image placeholder: a styled div standing in for a real image.
+       Replace this div with an <img> tag when you have the asset. -->
+  <div class="card-image" aria-label="Project image placeholder">
+    <span class="card-image-label">[ image ]</span>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">{title}</h3>
+  </div>
+</article>

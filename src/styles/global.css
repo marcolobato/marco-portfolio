@@ -179,3 +179,599 @@ hr {
   margin-inline: auto;
   padding-inline: var(--space-xl);
 }
+
+
+/* --- 7. Section Label -------------------------------------------------------
+   The small lemon pill used to introduce each major section.
+   display: inline-block makes it shrink to fit the text width (like a badge).
+   Used via <SectionLabel label="..." /> — see src/components/SectionLabel.astro
+   --------------------------------------------------------------------------- */
+.section-label {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  background-color: var(--color-lemon);
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: 2px;
+  margin-bottom: var(--space-md);
+  max-width: none;
+}
+
+
+/* --- 8. Project Card --------------------------------------------------------
+   Used in the Work section to display a single project.
+   flex: 1 on .card means all cards in a flex row share space equally.
+   aspect-ratio on the image area keeps proportions at any width.
+   Used via <ProjectCard title="..." /> — see src/components/ProjectCard.astro
+   --------------------------------------------------------------------------- */
+.card {
+  flex: 1; /* each card takes equal space regardless of content length */
+  display: flex;
+  flex-direction: column; /* image on top, text below */
+}
+
+/* Image placeholder — dashed border indicates where a real image will go */
+.card-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--color-white);
+  border: 2px dashed var(--color-slate);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+}
+
+.card-image-label {
+  font-size: var(--text-xs);
+  color: var(--color-slate);
+  letter-spacing: 0.08em;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-title {
+  /* h3 color and weight come from global.css — we override size for cards */
+  font-size: var(--text-xl);
+  line-height: var(--leading-normal);
+}
+
+
+/* --- 9. Navigation ----------------------------------------------------------
+   Top bar with name on the left and anchor links on the right.
+   On mobile (≤768px), links collapse into a hamburger menu.
+   The hamburger toggle is handled by a <script> in Nav.astro.
+   Used via <Nav /> — see src/components/Nav.astro
+   --------------------------------------------------------------------------- */
+
+/* Desktop nav */
+.nav {
+  display: flex;
+  justify-content: space-between; /* name left, links right */
+  align-items: center;
+  padding-block: var(--space-lg);
+  padding-inline: var(--space-xl);
+  max-width: 960px;
+  margin-inline: auto;
+}
+
+.nav-name {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  color: var(--color-navy);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.nav-links a {
+  font-size: var(--text-sm);
+  color: var(--color-charcoal);
+  transition: color 0.2s ease;
+}
+
+/* Hover and active page link both use royal-blue */
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: var(--color-royal-blue);
+}
+
+/* Hamburger button — hidden on desktop, visible on mobile */
+.nav-toggle {
+  display: none; /* media query below turns it on */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-navy);
+  padding: var(--space-xs);
+  line-height: 0; /* prevents extra space around the SVG icon */
+}
+
+/* The close (X) icon starts hidden — JS swaps it in when the menu opens */
+.nav-toggle .icon-close {
+  display: none;
+}
+
+/* Mobile nav — screens 768px wide and smaller */
+@media (max-width: 768px) {
+
+  /* Allow the nav items to wrap so the menu drops to a second row */
+  .nav {
+    flex-wrap: wrap;
+  }
+
+  /* Show the hamburger button on mobile */
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hide links by default; .nav-open (added by JS) reveals them */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    border-top: 1px solid var(--color-surface);
+    padding-block: var(--space-md);
+  }
+
+  /* When the menu is open, show the links as a vertical list */
+  .nav.nav-open .nav-links {
+    display: flex;
+  }
+
+  /* Swap icons when the menu is open */
+  .nav.nav-open .icon-menu {
+    display: none;
+  }
+  .nav.nav-open .icon-close {
+    display: block;
+  }
+
+  /* Larger tap targets and a subtle divider between each link */
+  .nav-links a {
+    padding-block: var(--space-sm);
+    font-size: var(--text-base);
+    border-bottom: 1px solid var(--color-surface);
+    display: block;
+  }
+
+  .nav-links li:last-child a {
+    border-bottom: none;
+  }
+}
+
+
+/* --- 10. Footer -------------------------------------------------------------
+   Navy panel at the bottom of every page.
+   No margin-top here — spacing is set at the page level so it can be
+   dropped onto any page without side effects.
+   Used via <Footer /> — see src/components/Footer.astro
+   --------------------------------------------------------------------------- */
+
+/* Desktop footer */
+.footer {
+  background-color: var(--color-navy);
+  padding-block: var(--space-2xl);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-lemon); /* lemon on navy — vivid accent on the darkest surface */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.footer-links a {
+  font-size: var(--text-sm);
+  color: var(--color-slate);
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--color-lemon);
+}
+
+/* Mobile footer — screens 768px wide and smaller */
+@media (max-width: 768px) {
+
+  /* Stack name above links and center everything */
+  .footer-inner {
+    flex-direction: column;
+    gap: var(--space-lg);
+    text-align: center;
+  }
+
+  /* Links also stack vertically */
+  .footer-links {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+  }
+}
+
+
+/* --- 11. Page layout — Index -----------------------------------------------
+   Layout-level styles specific to src/pages/index.astro.
+   These are not components — they control the spacing and structure of
+   each full-page section (Hero, Work, Now, Writing, Footer spacer).
+   --------------------------------------------------------------------------- */
+
+/* HERO */
+.hero {
+  padding-block: var(--space-4xl); /* lots of breathing room at the top */
+}
+
+.hero-name {
+  /* h1 size and color come from global.css — we only control spacing here */
+  margin-bottom: var(--space-sm);
+}
+
+.hero-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  color: var(--color-royal-blue); /* royal-blue reads clearly on white, adds energy */
+  margin-bottom: var(--space-xl);
+  max-width: none;
+}
+
+.hero-photo {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;            /* crops the image to fill the box without stretching */
+  object-position: center top;  /* anchors the crop to the face, not the body */
+  border-radius: 12px;          /* rounded rectangle — softer than hard corners */
+  margin-bottom: var(--space-xl);
+}
+
+.hero-intro {
+  font-size: var(--text-lg);
+  color: var(--color-charcoal);
+  max-width: 52ch;
+  line-height: var(--leading-loose);
+  margin-bottom: 0;
+}
+
+/* WORK SECTION */
+.work {
+  padding-block: var(--space-3xl);
+  background-color: var(--color-surface); /* subtle off-white panel separates work from hero */
+}
+
+.area-heading {
+  /* h2 size/color from global.css — we control bottom spacing only */
+  margin-bottom: var(--space-2xl);
+}
+
+/* Cards: side by side with equal width. gap adds space between them. */
+.cards {
+  display: flex;
+  gap: var(--space-xl);
+}
+
+/* NOW SECTION */
+.now {
+  padding-block: var(--space-3xl);
+  border-top: 1px solid var(--color-slate);
+}
+
+.now-text {
+  font-size: var(--text-2xl);
+  color: var(--color-charcoal);
+  max-width: 44ch;
+  line-height: var(--leading-normal);
+  margin-bottom: 0;
+}
+
+/* FOOTER SPACER
+   The Footer component itself has no margin-top — spacing is managed
+   here so the component can be placed on any page without side effects. */
+.footer-spacer {
+  margin-top: var(--space-3xl);
+}
+
+/* WRITING SECTION */
+.writing {
+  padding-block: var(--space-3xl);
+  border-top: 1px solid var(--color-slate);
+}
+
+.writing-heading {
+  margin-bottom: var(--space-sm);
+}
+
+.writing-desc {
+  max-width: 52ch;
+  margin-bottom: var(--space-2xl);
+}
+
+/* Three cards in a row — same flex approach as the work cards */
+.writing-cards {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+/* The whole card is a link — no underline, inherits text color */
+.writing-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-surface);
+  border-radius: 12px;
+  overflow: hidden; /* clips the image to the card's rounded corners */
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Subtle lift on hover — signals the card is clickable */
+.writing-card:hover {
+  box-shadow: 0 4px 24px rgba(8, 31, 93, 0.08); /* navy-tinted shadow at low opacity */
+  transform: translateY(-2px);
+}
+
+/* Image area — surface background until real cover images are added */
+.writing-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* wider crop than project cards — better for article covers */
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* prevents the image area from compressing */
+}
+
+.writing-card-image-label {
+  font-size: var(--text-xs);
+  color: var(--color-slate);
+  letter-spacing: 0.08em;
+}
+
+.writing-card-body {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+}
+
+.writing-card-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-navy);
+  line-height: var(--leading-normal);
+}
+
+.writing-card-desc {
+  font-size: var(--text-sm);
+  color: var(--color-charcoal);
+  line-height: var(--leading-normal);
+  margin-bottom: 0;
+  max-width: none;
+}
+
+
+/* --- 12. Page layout — Styleguide ------------------------------------------
+   Layout-level styles specific to src/pages/styleguide.astro.
+   The sg- prefix keeps these clearly separate from component class names.
+   --------------------------------------------------------------------------- */
+
+/* Page wrapper — same max-width as .container, but manages its own padding */
+.sg-main {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: var(--space-xl);
+  padding-bottom: var(--space-4xl);
+}
+
+/* Page header */
+.sg-header {
+  padding-block: var(--space-3xl);
+  border-bottom: 1px solid var(--color-slate);
+  margin-bottom: var(--space-3xl);
+}
+
+.sg-header-desc {
+  font-size: var(--text-lg);
+  color: var(--color-charcoal);
+  max-width: 52ch;
+  margin-bottom: 0;
+}
+
+/* Sections */
+.sg-section {
+  margin-bottom: var(--space-4xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-slate);
+}
+
+.sg-section-title {
+  /* h2 from global.css — override margin only */
+  margin-bottom: var(--space-sm);
+}
+
+.sg-section-desc {
+  max-width: 60ch;
+  margin-bottom: var(--space-2xl);
+  color: var(--color-charcoal);
+}
+
+.sg-subsection-title {
+  /* h3 from global.css — smaller, used as a label within a section */
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-charcoal);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+
+/* Color swatches */
+.sg-swatches {
+  display: flex;
+  flex-wrap: wrap; /* wraps to next line on narrow viewports */
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.sg-swatch {
+  width: 140px;
+}
+
+.sg-swatch-color {
+  width: 100%;
+  height: 80px;
+  border-radius: 4px;
+  margin-bottom: var(--space-xs);
+}
+
+.sg-swatch-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-navy);
+  margin-bottom: var(--space-2xs);
+}
+
+.sg-swatch-token {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-royal-blue);
+  font-family: monospace;
+  margin-bottom: var(--space-2xs);
+}
+
+.sg-swatch-use {
+  font-size: var(--text-xs);
+  color: var(--color-charcoal); /* charcoal instead of slate — readable at small size on white */
+  margin-bottom: 0;
+  max-width: none;
+}
+
+/* Typography scale rows */
+.sg-type-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sg-type-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-block: var(--space-lg);
+  border-bottom: 1px solid var(--color-surface);
+}
+
+.sg-type-meta {
+  font-size: var(--text-xs);
+  color: var(--color-charcoal); /* charcoal instead of slate — readable at small size on white */
+  font-family: monospace;
+  letter-spacing: 0.04em;
+}
+
+/* Prevent global.css heading margins from affecting type samples */
+.sg-type-sample-heading {
+  margin: 0;
+}
+
+.sg-type-sample {
+  margin: 0;
+  max-width: none;
+}
+
+/* Component previews */
+.sg-component {
+  margin-bottom: var(--space-3xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-surface);
+}
+
+.sg-component-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-navy);
+  margin-bottom: var(--space-xs);
+}
+
+.sg-component-desc {
+  max-width: 60ch;
+  color: var(--color-charcoal);
+  margin-bottom: var(--space-lg);
+}
+
+.sg-component-preview {
+  background-color: var(--color-surface);
+  border-radius: 4px;
+  padding: var(--space-2xl);
+  margin-bottom: var(--space-md);
+}
+
+/* Flush variant removes padding — used for full-width components like nav/footer */
+.sg-component-preview--flush {
+  padding: 0;
+  overflow: hidden; /* clips the border-radius on child elements */
+}
+
+/* Single-card preview — constrain width so it doesn't stretch */
+.sg-card-demo {
+  max-width: 320px;
+}
+
+/* Code snippets */
+.sg-code {
+  background-color: var(--color-navy);
+  color: var(--color-slate);
+  font-size: var(--text-xs);
+  line-height: var(--leading-loose);
+  padding: var(--space-lg);
+  border-radius: 4px;
+  overflow-x: auto; /* scroll horizontally if code is wider than the container */
+  white-space: pre;
+}
+
+.sg-code code {
+  font-family: monospace;
+}
+
+/* Inline code in prose — styled differently from code blocks */
+code {
+  font-family: monospace;
+  font-size: 0.9em;
+  background-color: var(--color-surface);
+  color: var(--color-royal-blue);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+/* Don't apply inline style inside code blocks */
+.sg-code code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}

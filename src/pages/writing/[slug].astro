@@ -6,6 +6,7 @@
 
 import { getCollection } from 'astro:content';
 import '../../styles/global.css';
+import Nav from '../../components/Nav.astro';
 
 // getStaticPaths runs once at build time and returns one entry per post.
 // Each entry becomes a separate page URL.
@@ -39,15 +40,7 @@ const { Content } = await post.render();
 
   <body>
 
-    <nav class="nav">
-      <a href="/" class="nav-name">Marco Lobato</a>
-      <ul class="nav-links">
-        <li><a href="/#work">Work</a></li>
-        <li><a href="/#writing">Writing</a></li>
-        <li><a href="/styleguide">Style Guide</a></li>
-        <li><a href="mailto:marcolobato.ux@gmail.com">Contact</a></li>
-      </ul>
-    </nav>
+    <Nav />
 
     <main class="post-main">
       <div class="post-container">
@@ -78,33 +71,7 @@ const { Content } = await post.render();
 
 
 <style>
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-block: var(--space-lg);
-    padding-inline: var(--space-xl);
-    max-width: 960px;
-    margin-inline: auto;
-  }
-  .nav-name {
-    font-family: var(--font-display);
-    font-weight: var(--weight-bold);
-    font-size: var(--text-sm);
-    color: var(--color-navy);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .nav-links {
-    display: flex;
-    gap: var(--space-lg);
-  }
-  .nav-links a {
-    font-size: var(--text-sm);
-    color: var(--color-charcoal);
-    transition: color 0.2s ease;
-  }
-  .nav-links a:hover { color: var(--color-royal-blue); }
+  /* Nav styles live in src/components/Nav.astro */
 
   .post-main {
     padding-block: var(--space-3xl);

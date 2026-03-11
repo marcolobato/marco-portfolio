@@ -4,6 +4,8 @@
 // Every color, type style, and component shown here is the real thing —
 // built with the same tokens and global styles used across the whole site.
 import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <html lang="en">
@@ -21,14 +23,7 @@ import '../styles/global.css';
 
   <body>
 
-    <!-- NAV — same structure as index.astro, reusing the same class names -->
-    <nav class="nav">
-      <a href="/" class="nav-name">Marco Lobato</a>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/styleguide" aria-current="page">Style Guide</a></li>
-      </ul>
-    </nav>
+    <Nav />
 
 
     <main class="sg-main">
@@ -224,28 +219,18 @@ import '../styles/global.css';
           <h3 class="sg-component-title">Navigation</h3>
           <p class="sg-component-desc">
             Top bar with name on the left and anchor links on the right.
-            Uses <code>justify-content: space-between</code> in flexbox.
-            The name is uppercase with tight letter-spacing — a logo-like
-            treatment without being an actual image.
+            On screens 768px and smaller, the links collapse into a hamburger
+            menu that toggles open and closed. Links use
+            <code>/#section</code> anchors so they work correctly from any page,
+            not just the homepage. <code>aria-current="page"</code> is applied
+            automatically to the active link.
           </p>
           <div class="sg-component-preview sg-component-preview--flush">
-            <nav class="nav" style="max-width: 100%; padding-inline: var(--space-xl);">
-              <span class="nav-name">Marco Lobato</span>
-              <ul class="nav-links">
-                <li><a href="#">Work</a></li>
-                <li><a href="#">Now</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </nav>
+            <Nav />
           </div>
-          <pre class="sg-code"><code>&lt;nav class="nav"&gt;
-  &lt;span class="nav-name"&gt;Marco Lobato&lt;/span&gt;
-  &lt;ul class="nav-links"&gt;
-    &lt;li&gt;&lt;a href="#work"&gt;Work&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="#now"&gt;Now&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="mailto:..."&gt;Contact&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;</code></pre>
+          <pre class="sg-code"><code>import Nav from '../components/Nav.astro';
+
+&lt;Nav /&gt;</code></pre>
         </div>
 
 
@@ -286,33 +271,24 @@ import '../styles/global.css';
           <h3 class="sg-component-title">Footer</h3>
           <p class="sg-component-desc">
             Navy panel at the bottom of the page — the strongest use of the
-            brand color. Lemon is used here as the name accent, which creates
-            a bookend with the section labels above. Same flex layout as the nav.
+            brand color. Lemon is used as the name accent, creating a bookend
+            with the lemon section labels above. On mobile, name and links
+            stack vertically and center-align. The component itself has no
+            <code>margin-top</code> — spacing is set at the page level so it
+            can be dropped onto any page without side effects.
           </p>
           <div class="sg-component-preview sg-component-preview--flush">
-            <footer class="footer" style="margin-top: 0;">
-              <div class="container footer-inner">
-                <span class="footer-name">Marco Lobato</span>
-                <ul class="footer-links">
-                  <li><a href="#">marcolobato.ux@gmail.com</a></li>
-                  <li><a href="#">LinkedIn</a></li>
-                </ul>
-              </div>
-            </footer>
+            <Footer />
           </div>
-          <pre class="sg-code"><code>&lt;footer class="footer"&gt;
-  &lt;div class="container footer-inner"&gt;
-    &lt;span class="footer-name"&gt;Marco Lobato&lt;/span&gt;
-    &lt;ul class="footer-links"&gt;
-      &lt;li&gt;&lt;a href="mailto:..."&gt;email&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href="..."&gt;LinkedIn&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-&lt;/footer&gt;</code></pre>
+          <pre class="sg-code"><code>import Footer from '../components/Footer.astro';
+
+&lt;Footer /&gt;</code></pre>
         </div>
 
       </section>
     </main>
+
+    <Footer />
 
   </body>
 </html>
@@ -324,44 +300,8 @@ import '../styles/global.css';
      Reuses class names from index.astro where components are shown live.
      ========================================================================== */
 
-  /* Container — same as index.astro */
-  .container {
-    max-width: 960px;
-    margin-inline: auto;
-    padding-inline: var(--space-xl);
-  }
-
-  /* Nav — same as index.astro */
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-block: var(--space-lg);
-    padding-inline: var(--space-xl);
-    max-width: 960px;
-    margin-inline: auto;
-  }
-  .nav-name {
-    font-family: var(--font-display);
-    font-weight: var(--weight-bold);
-    font-size: var(--text-sm);
-    color: var(--color-navy);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .nav-links {
-    display: flex;
-    gap: var(--space-lg);
-  }
-  .nav-links a {
-    font-size: var(--text-sm);
-    color: var(--color-charcoal);
-    transition: color 0.2s ease;
-  }
-  .nav-links a:hover,
-  .nav-links a[aria-current="page"] {
-    color: var(--color-royal-blue);
-  }
+  /* Nav, Footer, and .container styles live in their component files
+     or in global.css — no duplication needed here. */
 
   /* Section label pill — same as index.astro */
   .section-label {
@@ -405,36 +345,6 @@ import '../styles/global.css';
     font-size: var(--text-xl);
     line-height: var(--leading-normal);
   }
-
-  /* Footer — same as index.astro */
-  .footer {
-    background-color: var(--color-navy);
-    padding-block: var(--space-2xl);
-    margin-top: 0;
-  }
-  .footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .footer-name {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
-    color: var(--color-lemon);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .footer-links {
-    display: flex;
-    gap: var(--space-lg);
-  }
-  .footer-links a {
-    font-size: var(--text-sm);
-    color: var(--color-slate);
-    transition: color 0.2s ease;
-  }
-  .footer-links a:hover { color: var(--color-lemon); }
-
 
   /* ------------------------------------------------------------------
      STYLEGUIDE LAYOUT

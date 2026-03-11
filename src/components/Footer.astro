@@ -1,0 +1,87 @@
+---
+// Footer.astro — Shared footer component
+// Import this on any page: import Footer from '../components/Footer.astro';
+// Then use it as: <Footer />
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <span class="footer-name">Marco Lobato</span>
+    <ul class="footer-links">
+      <li>
+        <a href="mailto:marcolobato.ux@gmail.com">
+          marcolobato.ux@gmail.com
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://linkedin.com/in/marcolobato"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  /* ------------------------------------------------------------------
+     DESKTOP FOOTER
+     Navy panel with name left, links right.
+     margin-top is intentionally omitted — set it at the page level.
+  ------------------------------------------------------------------ */
+  .footer {
+    background-color: var(--color-navy);
+    padding-block: var(--space-2xl);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-name {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--color-lemon); /* lemon on navy — vivid accent on the darkest surface */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .footer-links a {
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    transition: color 0.2s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-lemon);
+  }
+
+  /* ------------------------------------------------------------------
+     MOBILE FOOTER — screens 768px wide and smaller
+  ------------------------------------------------------------------ */
+  @media (max-width: 768px) {
+    /* Stack name above links and center everything */
+    .footer-inner {
+      flex-direction: column;
+      gap: var(--space-lg);
+      text-align: center;
+    }
+
+    /* Links also stack vertically */
+    .footer-links {
+      flex-direction: column;
+      gap: var(--space-md);
+      align-items: center;
+    }
+  }
+</style>

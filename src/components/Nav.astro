@@ -1,0 +1,179 @@
+---
+// Nav.astro — Shared navigation component
+// Import this on any page: import Nav from '../components/Nav.astro';
+// Then use it as: <Nav />
+//
+// Links use /#section anchors so they work correctly from any page,
+// not just the homepage.
+//
+// aria-current="page" is added to the Style Guide link when on that page.
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="nav">
+  <!-- Name / home link — uppercase, logo-like treatment -->
+  <a href="/" class="nav-name">Marco Lobato</a>
+
+  <!-- Hamburger button — only visible on mobile screens.
+       aria-label tells screen readers what the button does.
+       aria-expanded starts as "false" and is toggled by JS below. -->
+  <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+    <!-- Menu icon (three lines) — shown when menu is closed -->
+    <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <!-- Close icon (X) — shown when menu is open -->
+    <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <ul class="nav-links">
+    <li><a href="/#work">Work</a></li>
+    <li><a href="/#now">Now</a></li>
+    <li><a href="/#writing">Writing</a></li>
+    <li>
+      <!-- aria-current="page" highlights the active link for the current page -->
+      <a
+        href="/styleguide"
+        aria-current={currentPath === '/styleguide' ? 'page' : undefined}
+      >Style Guide</a>
+    </li>
+    <li><a href="mailto:marcolobato.ux@gmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Toggle the mobile menu open/closed on hamburger click.
+     Closes automatically when any nav link is tapped. -->
+<script>
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.nav');
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('nav-open');
+    navToggle.setAttribute('aria-expanded', isOpen.toString());
+    navToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('nav-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Open navigation menu');
+    });
+  });
+</script>
+
+<style>
+  /* ------------------------------------------------------------------
+     DESKTOP NAV
+  ------------------------------------------------------------------ */
+  .nav {
+    display: flex;
+    justify-content: space-between; /* name left, links right */
+    align-items: center;
+    padding-block: var(--space-lg);
+    padding-inline: var(--space-xl);
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  .nav-name {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-sm);
+    color: var(--color-navy);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .nav-links a {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    transition: color 0.2s ease;
+  }
+
+  /* Hover and active page link both use royal-blue */
+  .nav-links a:hover,
+  .nav-links a[aria-current="page"] {
+    color: var(--color-royal-blue);
+  }
+
+  /* ------------------------------------------------------------------
+     HAMBURGER BUTTON
+     Hidden on desktop. Shown only on mobile via the media query below.
+  ------------------------------------------------------------------ */
+  .nav-toggle {
+    display: none; /* invisible on desktop — the media query turns it on */
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-navy);
+    padding: var(--space-xs);
+    line-height: 0; /* prevents extra space around the SVG icon */
+  }
+
+  /* The close (X) icon starts hidden — JS swaps it in when the menu opens */
+  .nav-toggle .icon-close {
+    display: none;
+  }
+
+  /* ------------------------------------------------------------------
+     MOBILE NAV — screens 768px wide and smaller
+  ------------------------------------------------------------------ */
+  @media (max-width: 768px) {
+
+    /* Allow the nav items to wrap so the menu drops to a second row */
+    .nav {
+      flex-wrap: wrap;
+    }
+
+    /* Show the hamburger button on mobile */
+    .nav-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Hide the links by default on mobile.
+       They appear when .nav-open is added to the <nav> element. */
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      border-top: 1px solid var(--color-surface);
+      padding-block: var(--space-md);
+    }
+
+    /* When the menu is open, show the links as a vertical list */
+    .nav.nav-open .nav-links {
+      display: flex;
+    }
+
+    /* Swap icons when the menu is open */
+    .nav.nav-open .icon-menu {
+      display: none;
+    }
+    .nav.nav-open .icon-close {
+      display: block;
+    }
+
+    /* Larger tap targets and a subtle divider between each link */
+    .nav-links a {
+      padding-block: var(--space-sm);
+      font-size: var(--text-base);
+      border-bottom: 1px solid var(--color-surface);
+      display: block;
+    }
+
+    .nav-links li:last-child a {
+      border-bottom: none;
+    }
+  }
+</style>

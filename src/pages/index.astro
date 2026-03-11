@@ -7,6 +7,8 @@
 // not via a <link> tag. Astro processes this import through its build pipeline.
 import '../styles/global.css';
 import { getCollection } from 'astro:content';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
 // Fetch all writing posts and sort them newest first.
 // post.data.date is the date field from each post's frontmatter.
@@ -41,18 +43,7 @@ const posts = (await getCollection('writing')).sort(
          Simple top bar: name on the left, anchor links on the right.
          Anchors (#work, #now) scroll to sections further down the page.
          ===================================================================== -->
-    <nav class="nav">
-      <span class="nav-name">Marco Lobato</span>
-      <ul class="nav-links">
-        <li><a href="#work">Work</a></li>
-        <li><a href="#now">Now</a></li>
-        <li><a href="#writing">Writing</a></li>
-        <li><a href="/styleguide">Style Guide</a></li>
-        <li>
-          <a href="mailto:marcolobato.ux@gmail.com">Contact</a>
-        </li>
-      </ul>
-    </nav>
+    <Nav />
 
 
     <!-- =====================================================================
@@ -189,27 +180,11 @@ const posts = (await getCollection('writing')).sort(
          FOOTER
          Email and LinkedIn. Both open outside the site.
          ===================================================================== -->
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span class="footer-name">Marco Lobato</span>
-        <ul class="footer-links">
-          <li>
-            <a href="mailto:marcolobato.ux@gmail.com">
-              marcolobato.ux@gmail.com
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://linkedin.com/in/marcolobato"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-          </li>
-        </ul>
-      </div>
-    </footer>
+    <!-- footer-spacer owns the top margin — the Footer component itself is margin-free
+         so it can be placed on any page without unwanted spacing. -->
+    <div class="footer-spacer">
+      <Footer />
+    </div>
 
   </body>
 </html>
@@ -222,54 +197,8 @@ const posts = (await getCollection('writing')).sort(
      All colors use tokens from tokens.css.
      ========================================================================== -->
 <style>
-  /* ------------------------------------------------------------------
-     Layout container
-     Centers content and sets a max readable width.
-     padding-inline = left + right padding combined.
-  ------------------------------------------------------------------ */
-  .container {
-    max-width: 960px;
-    margin-inline: auto; /* centers the block horizontally */
-    padding-inline: var(--space-xl);
-  }
-
-
-  /* ------------------------------------------------------------------
-     NAV
-  ------------------------------------------------------------------ */
-  .nav {
-    display: flex;
-    justify-content: space-between; /* name left, links right */
-    align-items: center;
-    padding-block: var(--space-lg);   /* vertical padding */
-    padding-inline: var(--space-xl);  /* horizontal padding */
-    max-width: 960px;
-    margin-inline: auto;
-  }
-
-  .nav-name {
-    font-family: var(--font-display);
-    font-weight: var(--weight-bold);
-    font-size: var(--text-sm);
-    color: var(--color-navy); /* navy on white — clear and grounded */
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: var(--space-lg);
-  }
-
-  .nav-links a {
-    font-size: var(--text-sm);
-    color: var(--color-charcoal);
-    transition: color 0.2s ease;
-  }
-
-  .nav-links a:hover {
-    color: var(--color-royal-blue); /* royal-blue hover — readable on white */
-  }
+  /* Nav and Footer styles live in their component files.
+     .container is defined in global.css. */
 
 
   /* ------------------------------------------------------------------
@@ -404,43 +333,12 @@ const posts = (await getCollection('writing')).sort(
 
 
   /* ------------------------------------------------------------------
-     FOOTER
+     FOOTER SPACER
+     The Footer component itself has no margin-top — spacing is managed
+     here so the component can be dropped onto any page without side effects.
   ------------------------------------------------------------------ */
-  /* Footer — navy panel like the bold color block in the reference site.
-     This is where navy earns its place: a strong closing statement. */
-  .footer {
-    background-color: var(--color-navy);
-    padding-block: var(--space-2xl);
+  .footer-spacer {
     margin-top: var(--space-3xl);
-  }
-
-  .footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-name {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
-    color: var(--color-lemon); /* lemon on navy — the most vivid accent on the page */
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .footer-links {
-    display: flex;
-    gap: var(--space-lg);
-  }
-
-  .footer-links a {
-    font-size: var(--text-sm);
-    color: var(--color-slate);
-    transition: color 0.2s ease;
-  }
-
-  .footer-links a:hover {
-    color: var(--color-lemon);
   }
 
 

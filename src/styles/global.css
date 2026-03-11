@@ -138,12 +138,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Headings — Fraunces Bold, tight leading, navy for authority on white */
+/* Headings — Fraunces Bold, tight leading.
+   Uses --color-heading (not --color-navy directly) so the color can flip
+   in dark mode without affecting footer/code backgrounds that also use navy. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
-  color: var(--color-navy);
+  color: var(--color-heading);
 }
 
 /* Individual heading sizes follow the type scale above */
@@ -253,8 +255,10 @@ hr {
 /* Desktop nav */
 .nav {
   display: flex;
-  justify-content: space-between; /* name left, links right */
   align-items: center;
+  /* gap adds consistent space between all flex children (links, toggle, hamburger).
+     margin-right: auto on .nav-name pushes everything else to the right. */
+  gap: var(--space-md);
   padding-block: var(--space-lg);
   padding-inline: var(--space-xl);
   max-width: 960px;
@@ -265,9 +269,11 @@ hr {
   font-family: var(--font-display);
   font-weight: var(--weight-bold);
   font-size: var(--text-sm);
-  color: var(--color-navy);
+  color: var(--color-heading);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  /* Push all other nav items (links, toggle, hamburger) to the right */
+  margin-right: auto;
 }
 
 .nav-links {
@@ -293,7 +299,7 @@ hr {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-navy);
+  color: var(--color-heading);
   padding: var(--space-xs);
   line-height: 0; /* prevents extra space around the SVG icon */
 }
@@ -563,7 +569,7 @@ hr {
 .writing-card-title {
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
-  color: var(--color-navy);
+  color: var(--color-heading);
   line-height: var(--leading-normal);
 }
 
@@ -654,7 +660,7 @@ hr {
 .sg-swatch-name {
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
-  color: var(--color-navy);
+  color: var(--color-heading);
   margin-bottom: var(--space-2xs);
 }
 
@@ -715,7 +721,7 @@ hr {
 .sg-component-title {
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
-  color: var(--color-navy);
+  color: var(--color-heading);
   margin-bottom: var(--space-xs);
 }
 
@@ -774,4 +780,56 @@ code {
   background: none;
   color: inherit;
   padding: 0;
+}
+
+
+/* --- 13. Theme Toggle -------------------------------------------------------
+   Sun/moon button that lives in the nav. Clicking it flips data-theme on
+   <html> between "light" and "dark". The correct icon is shown via CSS:
+   moon in light mode (hint: click to go dark), sun in dark mode (go light).
+   Used via <ThemeToggle /> — see src/components/ThemeToggle.astro
+   --------------------------------------------------------------------------- */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-heading); /* inherits the heading color so it adapts automatically */
+  padding: var(--space-xs);
+  line-height: 0; /* prevents extra vertical space around the SVG */
+  transition: color 0.2s ease;
+  flex-shrink: 0; /* don't let it compress in a flex row */
+}
+
+.theme-toggle:hover {
+  color: var(--color-royal-blue);
+}
+
+/* In light mode: show moon (clicking will switch TO dark) */
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+
+/* In dark mode: show sun (clicking will switch TO light) */
+[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+
+/* --- 14. Dark mode overrides ------------------------------------------------
+   A few rules that can't be fixed by token changes alone.
+   Most of the dark mode work is done by the token overrides in tokens.css —
+   these are the edge cases.
+   --------------------------------------------------------------------------- */
+
+/* Writing cards: the border uses --color-surface which becomes very close to
+   --color-white in dark mode. Use --color-slate instead for a visible edge. */
+[data-theme="dark"] .writing-card {
+  border-color: rgba(160, 175, 181, 0.2); /* slate at low opacity — subtle but present */
+}
+
+/* The hover shadow uses navy at low opacity, which disappears on a dark bg.
+   Switch to a soft off-white glow instead. */
+[data-theme="dark"] .writing-card:hover {
+  box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06); /* off-white tinted glow */
 }

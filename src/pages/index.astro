@@ -36,6 +36,21 @@ const posts = (await getCollection('writing')).sort(
     />
 
     <!-- global.css is imported in the frontmatter above, not here -->
+
+    <!-- Anti-flash theme script — MUST be in <head> before any content renders.
+         is:inline tells Astro to keep this exactly as written (don't bundle it).
+         It runs synchronously so the correct data-theme is set before the browser
+         paints anything — no flash of the wrong theme. -->
+    <script is:inline>
+      (function () {
+        // Check if the user has manually chosen a theme before
+        var saved = localStorage.getItem('theme');
+        // If not, check their OS setting
+        var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Apply the saved preference, or fall back to the system setting
+        document.documentElement.setAttribute('data-theme', saved || sys);
+      })();
+    </script>
   </head>
 
   <body>

@@ -8,6 +8,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 ---
 
 <html lang="en">
@@ -21,6 +22,16 @@ import ProjectCard from '../components/ProjectCard.astro';
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Anti-flash theme script — MUST be in <head> before any content renders.
+         is:inline tells Astro to keep this exactly as written (don't bundle it). -->
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', saved || sys);
+      })();
+    </script>
   </head>
 
   <body>
@@ -255,6 +266,27 @@ import ProjectCard from '../components/ProjectCard.astro';
           <pre class="sg-code"><code>import ProjectCard from '../components/ProjectCard.astro';
 
 &lt;ProjectCard title="Project title goes here" /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Theme Toggle -->
+        <div class="sg-component">
+          <h3 class="sg-component-title">Theme Toggle</h3>
+          <p class="sg-component-desc">
+            Sun/moon icon button that lives in the navigation. Clicking it
+            switches between light and dark mode and saves the choice to
+            <code>localStorage</code> so it persists on future visits.
+            On first load, the site reads the user's OS preference
+            (<code>prefers-color-scheme</code>) as the default — the toggle
+            lets them override it. The moon icon is shown in light mode
+            (click to go dark), the sun icon in dark mode (click to go light).
+          </p>
+          <div class="sg-component-preview">
+            <ThemeToggle />
+          </div>
+          <pre class="sg-code"><code>import ThemeToggle from '../components/ThemeToggle.astro';
+
+&lt;ThemeToggle /&gt;</code></pre>
         </div>
 
 

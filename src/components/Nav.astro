@@ -7,26 +7,13 @@
 // not just the homepage.
 //
 // aria-current="page" is added to the Style Guide link when on that page.
+import ThemeToggle from './ThemeToggle.astro';
 const currentPath = Astro.url.pathname;
 ---
 
 <nav class="nav">
   <!-- Name / home link — uppercase, logo-like treatment -->
   <a href="/" class="nav-name">Marco Lobato</a>
-
-  <!-- Hamburger button — only visible on mobile screens.
-       aria-label tells screen readers what the button does.
-       aria-expanded starts as "false" and is toggled by JS below. -->
-  <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
-    <!-- Menu icon (three lines) — shown when menu is closed -->
-    <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-    <!-- Close icon (X) — shown when menu is open -->
-    <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-  </button>
 
   <ul class="nav-links">
     <li><a href="/#work">Work</a></li>
@@ -41,6 +28,24 @@ const currentPath = Astro.url.pathname;
     </li>
     <li><a href="mailto:marcolobato.ux@gmail.com">Contact</a></li>
   </ul>
+
+  <!-- Theme toggle — always visible on both desktop and mobile -->
+  <ThemeToggle />
+
+  <!-- Hamburger button — only visible on mobile screens (768px and below).
+       aria-label tells screen readers what the button does.
+       aria-expanded starts as "false" and is toggled by JS below. -->
+  <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+    <!-- Menu icon (three lines) — shown when menu is closed -->
+    <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <!-- Close icon (X) — shown when menu is open -->
+    <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+
 </nav>
 
 <!-- Toggle the mobile menu open/closed on hamburger click.

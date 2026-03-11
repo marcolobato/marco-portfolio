@@ -1,0 +1,67 @@
+---
+// ThemeToggle.astro — Sun/moon button to switch between light and dark mode.
+// The button reads the current data-theme on <html> and flips it on click.
+//
+// Smart save logic:
+//   - If you pick a theme that DIFFERS from your OS setting → saved to localStorage
+//   - If you pick a theme that MATCHES your OS setting → localStorage cleared
+//     (so future OS changes take effect naturally, no stale override)
+//
+// Live OS listener:
+//   - If you change your OS theme while the page is open and have no manual
+//     override saved, the site updates immediately.
+//
+// Styles live in src/styles/global.css — section 13. Theme Toggle
+---
+
+<button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+
+  <!-- Sun icon — shown in dark mode. Click to go back to light. -->
+  <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+
+  <!-- Moon icon — shown in light mode. Click to switch to dark. -->
+  <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+</button>
+
+<script>
+  // Returns what the OS/browser is currently set to ('dark' or 'light')
+  function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  // Wire up the toggle button
+  const toggleBtn = document.querySelector('.theme-toggle');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+
+      // Apply the new theme immediately
+      document.documentElement.setAttribute('data-theme', next);
+
+      // Smart save: if the chosen theme matches the OS preference, remove the
+      // override — no stale value in localStorage means the OS will be followed
+      // again in the future. Only save when actively overriding the system.
+      if (next === getSystemTheme()) {
+        localStorage.removeItem('theme');
+      } else {
+        localStorage.setItem('theme', next);
+      }
+    });
+  }
+
+  // Live OS listener: if the system theme changes while the page is open,
+  // update immediately — but only if the user has no manual override saved.
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+  });
+</script>

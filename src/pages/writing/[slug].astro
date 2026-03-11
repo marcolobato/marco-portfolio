@@ -36,6 +36,16 @@ const { Content } = await post.render();
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Anti-flash theme script — MUST be in <head> before any content renders.
+         is:inline tells Astro to keep this exactly as written (don't bundle it). -->
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', saved || sys);
+      })();
+    </script>
   </head>
 
   <body>

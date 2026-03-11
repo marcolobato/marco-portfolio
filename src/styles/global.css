@@ -203,7 +203,83 @@ hr {
 }
 
 
-/* --- 8. Project Card --------------------------------------------------------
+/* --- 8. Buttons -------------------------------------------------------------
+   Two variants: primary (navy filled) and secondary (surface + outline).
+   Both use pill shapes (border-radius: 100px) and share a hover animation.
+   The .btn-arrow SVG icon starts rotated -45deg (pointing ↗ at rest) and
+   rotates back to 0deg on hover (pointing →) — a smooth 0.2s ease transition.
+   Disabled state reduces opacity and removes pointer events entirely.
+   Used via <Button label="..." href="..." variant="primary|secondary" />
+   See src/components/Button.astro
+   --------------------------------------------------------------------------- */
+
+/* Base styles — shared by both variants */
+.btn {
+  display: inline-flex;           /* Text and icon sit side-by-side on one line */
+  align-items: center;
+  gap: var(--space-xs);           /* Space between the label text and the arrow icon */
+  padding: var(--space-sm) var(--space-lg); /* Vertical then horizontal padding */
+  border-radius: 100px;           /* Large radius = pill shape (fully rounded ends) */
+  border: 1.5px solid transparent; /* All variants reserve border space; color set below */
+  font-family: var(--font-body);
+  font-size: var(--text-sm);      /* 14px — matches nav link size */
+  font-weight: var(--weight-medium);
+  line-height: 1;                 /* Prevents the text height from adding unwanted spacing */
+  text-decoration: none;          /* Removes the underline from <a> tag version */
+  cursor: pointer;
+  /* Smooth color transitions on background, border, and text when hovering */
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Primary variant — solid navy fill, white text */
+.btn--primary {
+  background-color: var(--color-navy);
+  border-color: var(--color-navy);
+  color: var(--color-white);
+}
+
+/* Primary hover — shifts to royal-blue (a lighter, more energetic blue) */
+.btn--primary:hover {
+  background-color: var(--color-royal-blue);
+  border-color: var(--color-royal-blue);
+}
+
+/* Secondary variant — subtle surface fill with a slate outline */
+.btn--secondary {
+  background-color: var(--color-surface);
+  border-color: var(--color-slate);
+  color: var(--color-charcoal);
+}
+
+/* Secondary hover — fill goes white, border darkens to charcoal */
+.btn--secondary:hover {
+  background-color: var(--color-white);
+  border-color: var(--color-charcoal);
+}
+
+/* Arrow icon — the SVG inside every button */
+.btn-arrow {
+  flex-shrink: 0;                 /* Prevents the icon from squishing in tight spaces */
+  /* At rest: rotated -45deg so the → arrow points ↗ (upper-right) */
+  transform: rotate(-45deg);
+  transition: transform 0.2s ease;
+}
+
+/* On hover: arrow returns to 0deg so it points → (right) */
+.btn:hover .btn-arrow {
+  transform: rotate(0deg);
+}
+
+/* Disabled state — visually faded, no pointer, no hover effects */
+.btn--disabled,
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;         /* Blocks clicks and prevents hover styles from firing */
+}
+
+
+/* --- 9. Project Card --------------------------------------------------------
    Used in the Work section to display a single project.
    flex: 1 on .card means all cards in a flex row share space equally.
    aspect-ratio on the image area keeps proportions at any width.
@@ -245,7 +321,7 @@ hr {
 }
 
 
-/* --- 9. Navigation ----------------------------------------------------------
+/* --- 10. Navigation ----------------------------------------------------------
    Top bar with name on the left and anchor links on the right.
    On mobile (≤768px), links collapse into a hamburger menu.
    The hamburger toggle is handled by a <script> in Nav.astro.
@@ -361,7 +437,7 @@ hr {
 }
 
 
-/* --- 10. Footer -------------------------------------------------------------
+/* --- 11. Footer -------------------------------------------------------------
    Navy panel at the bottom of every page.
    No margin-top here — spacing is set at the page level so it can be
    dropped onto any page without side effects.
@@ -422,7 +498,7 @@ hr {
 }
 
 
-/* --- 11. Page layout — Index -----------------------------------------------
+/* --- 12. Page layout — Index -----------------------------------------------
    Layout-level styles specific to src/pages/index.astro.
    These are not components — they control the spacing and structure of
    each full-page section (Hero, Work, Now, Writing, Footer spacer).
@@ -461,6 +537,14 @@ hr {
   max-width: 52ch;
   line-height: var(--leading-loose);
   margin-bottom: 0;
+}
+
+/* The row of buttons below the hero intro paragraph */
+.hero-actions {
+  display: flex;                  /* Buttons sit side-by-side horizontally */
+  flex-wrap: wrap;                /* On small screens, wrap to the next line gracefully */
+  gap: var(--space-sm);           /* Space between each button */
+  margin-top: var(--space-lg);    /* Visual breathing room below the paragraph */
 }
 
 /* WORK SECTION */
@@ -582,7 +666,7 @@ hr {
 }
 
 
-/* --- 12. Page layout — Styleguide ------------------------------------------
+/* --- 13. Page layout — Styleguide ------------------------------------------
    Layout-level styles specific to src/pages/styleguide.astro.
    The sg- prefix keeps these clearly separate from component class names.
    --------------------------------------------------------------------------- */
@@ -783,7 +867,7 @@ code {
 }
 
 
-/* --- 13. Theme Toggle -------------------------------------------------------
+/* --- 14. Theme Toggle -------------------------------------------------------
    Sun/moon button that lives in the nav. Clicking it flips data-theme on
    <html> between "light" and "dark". The correct icon is shown via CSS:
    moon in light mode (hint: click to go dark), sun in dark mode (go light).
@@ -816,7 +900,7 @@ code {
 [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
 
-/* --- 14. Dark mode overrides ------------------------------------------------
+/* --- 15. Dark mode overrides ------------------------------------------------
    A few rules that can't be fixed by token changes alone.
    Most of the dark mode work is done by the token overrides in tokens.css —
    these are the edge cases.
@@ -832,4 +916,21 @@ code {
    Switch to a soft off-white glow instead. */
 [data-theme="dark"] .writing-card:hover {
   box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06); /* off-white tinted glow */
+}
+
+/* Buttons: the primary variant uses --color-white for text, which flips to
+   near-black (#0B1229) in dark mode — invisible on the dark navy background.
+   Fix: swap the primary to a light blue fill (--color-royal-blue = #6B9EFF in
+   dark mode) with dark navy text. This keeps the brand feel while passing
+   WCAG AA contrast requirements. */
+[data-theme="dark"] .btn--primary {
+  background-color: var(--color-royal-blue); /* #6B9EFF in dark — a soft periwinkle */
+  border-color: var(--color-royal-blue);
+  color: var(--color-navy);                  /* #081F5D — dark, high contrast on light blue */
+}
+
+[data-theme="dark"] .btn--primary:hover {
+  background-color: var(--color-heading);    /* #E8EDFF in dark — near-white for strong hover */
+  border-color: var(--color-heading);
+  color: var(--color-navy);
 }

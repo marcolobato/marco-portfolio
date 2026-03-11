@@ -11,6 +11,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import Button from '../components/Button.astro';
 
 // Fetch all writing posts and sort them newest first.
 // post.data.date is the date field from each post's frontmatter.
@@ -91,6 +92,14 @@ const posts = (await getCollection('writing')).sort(
           calm, capable, and grounded — even when the tech behind them is
           anything but simple.
         </p>
+
+        <!-- Calls to action — rendered as <a> tags since both navigate somewhere.
+             LinkedIn opens an external profile page.
+             Resume triggers a file download from the /public folder. -->
+        <div class="hero-actions">
+          <Button label="LinkedIn" href="https://www.linkedin.com/in/marcolobato/" variant="primary" />
+          <Button label="Download Resume" href="/resume.pdf" variant="secondary" download={true} />
+        </div>
       </div>
     </section>
 

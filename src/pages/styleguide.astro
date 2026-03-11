@@ -9,6 +9,7 @@ import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import Button from '../components/Button.astro';
 ---
 
 <html lang="en">
@@ -208,6 +209,42 @@ import ThemeToggle from '../components/ThemeToggle.astro';
           portfolio. There is no separate "demo" version — what you see here
           is the real component.
         </p>
+
+
+        <!-- Component: Button -->
+        <div class="sg-component">
+          <h3 class="sg-component-title">Button</h3>
+          <p class="sg-component-desc">
+            Two variants: <strong>primary</strong> (navy fill) and
+            <strong>secondary</strong> (surface + outline). Both use a pill
+            shape and share the same hover behavior — the background shifts
+            and the arrow icon rotates from ↗ (rest) to → (hover) over a
+            smooth 0.2s ease transition. When an <code>href</code> prop is
+            passed, the component renders as an <code>&lt;a&gt;</code> tag
+            (correct for navigation). Without <code>href</code>, it renders
+            as a <code>&lt;button&gt;</code> (correct for actions). The
+            <code>download</code> prop triggers a file save instead of
+            navigating.
+          </p>
+          <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
+            <!-- Primary — the default, strong call-to-action -->
+            <Button label="Primary" href="#" variant="primary" />
+            <!-- Secondary — a softer alternative action -->
+            <Button label="Secondary" href="#" variant="secondary" />
+            <!-- Disabled — shown at 40% opacity, no hover, no pointer -->
+            <Button label="Disabled" href="#" variant="primary" disabled={true} />
+          </div>
+          <pre class="sg-code"><code>import Button from '../components/Button.astro';
+
+&lt;!-- Primary (default) --&gt;
+&lt;Button label="LinkedIn" href="https://linkedin.com/in/..." variant="primary" /&gt;
+
+&lt;!-- Secondary --&gt;
+&lt;Button label="Download Resume" href="/resume.pdf" variant="secondary" download=&#123;true&#125; /&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;Button label="Coming Soon" href="#" variant="primary" disabled=&#123;true&#125; /&gt;</code></pre>
+        </div>
 
 
         <!-- Component: Section Label -->

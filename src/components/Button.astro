@@ -1,0 +1,48 @@
+---
+// Button.astro — Reusable button / link component
+// Two visual variants: "primary" (navy filled) and "secondary" (surface outlined).
+// When an `href` prop is provided, this renders as an <a> tag (a link that navigates).
+// Without `href`, it renders as a <button> (an action element like a form submit).
+// This distinction matters for accessibility — screen readers announce them differently.
+
+// Destructure our props with default values:
+//   label    — the visible text inside the button
+//   href     — optional URL; if present, renders as <a>
+//   variant  — "primary" or "secondary" (defaults to "primary")
+//   download — adds the HTML `download` attribute, triggering a file save instead of navigation
+//   disabled — greys out the button and prevents interaction
+const { label, href, variant = 'primary', download = false, disabled = false } = Astro.props;
+---
+
+<!--
+  Conditional rendering: Astro's {condition ? A : B} syntax lets us output
+  different HTML based on whether `href` was passed in.
+
+  The SVG arrow inside each button is the same path — a simple → right arrow.
+  CSS rotates it -45deg at rest (pointing ↗) and 0deg on hover (pointing →).
+-->
+
+{href ? (
+  <a
+    href={disabled ? undefined : href}
+    class={`btn btn--${variant}${disabled ? ' btn--disabled' : ''}`}
+    download={download ? true : undefined}
+    aria-disabled={disabled ? 'true' : undefined}
+    tabindex={disabled ? -1 : undefined}
+  >
+    {label}
+    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2 8H14M9 3L14 8L9 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+) : (
+  <button
+    class={`btn btn--${variant}${disabled ? ' btn--disabled' : ''}`}
+    disabled={disabled ? true : undefined}
+  >
+    {label}
+    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M2 8H14M9 3L14 8L9 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+)}

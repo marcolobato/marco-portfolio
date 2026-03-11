@@ -1,0 +1,156 @@
+---
+// [slug].astro — Individual post page
+// The filename [slug] is a special Astro convention meaning "dynamic route".
+// Astro will generate one page per post, e.g. /writing/learning-in-public
+// getStaticPaths() tells Astro which slugs exist at build time.
+
+import { getCollection } from 'astro:content';
+import '../../styles/global.css';
+
+// getStaticPaths runs once at build time and returns one entry per post.
+// Each entry becomes a separate page URL.
+export async function getStaticPaths() {
+  const posts = await getCollection('writing');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props:  { post },
+  }));
+}
+
+// props.post is the individual post data passed from getStaticPaths above.
+const { post } = Astro.props;
+
+// render() converts the Markdown body into HTML.
+const { Content } = await post.render();
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{post.data.title} — Marco Lobato</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+
+    <nav class="nav">
+      <a href="/" class="nav-name">Marco Lobato</a>
+      <ul class="nav-links">
+        <li><a href="/#work">Work</a></li>
+        <li><a href="/#writing">Writing</a></li>
+        <li><a href="/styleguide">Style Guide</a></li>
+        <li><a href="mailto:marcolobato.ux@gmail.com">Contact</a></li>
+      </ul>
+    </nav>
+
+    <main class="post-main">
+      <div class="post-container">
+
+        <!-- Back link -->
+        <a href="/#writing" class="post-back">← Writing</a>
+
+        <!-- Post header -->
+        <header class="post-header">
+          <p class="post-date">
+            <!-- toLocaleDateString formats the date as "January 15, 2024" -->
+            {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </p>
+          <h1 class="post-title">{post.data.title}</h1>
+          <p class="post-description">{post.data.description}</p>
+        </header>
+
+        <!-- Post body — Content is the rendered Markdown from the .md file -->
+        <div class="post-body">
+          <Content />
+        </div>
+
+      </div>
+    </main>
+
+  </body>
+</html>
+
+
+<style>
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: var(--space-lg);
+    padding-inline: var(--space-xl);
+    max-width: 960px;
+    margin-inline: auto;
+  }
+  .nav-name {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-sm);
+    color: var(--color-navy);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+  .nav-links a {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--color-royal-blue); }
+
+  .post-main {
+    padding-block: var(--space-3xl);
+  }
+
+  .post-container {
+    max-width: 680px; /* narrower than the site container — ideal for long-form reading */
+    margin-inline: auto;
+    padding-inline: var(--space-xl);
+  }
+
+  .post-back {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--color-royal-blue);
+    margin-bottom: var(--space-2xl);
+    transition: color 0.2s ease;
+  }
+  .post-back:hover { color: var(--color-navy); }
+
+  .post-header {
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+    border-bottom: 1px solid var(--color-slate);
+  }
+
+  .post-date {
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    margin-bottom: var(--space-sm);
+    max-width: none;
+  }
+
+  .post-title {
+    /* h1 from global.css */
+    margin-bottom: var(--space-md);
+  }
+
+  .post-description {
+    font-size: var(--text-lg);
+    color: var(--color-charcoal);
+    margin-bottom: 0;
+  }
+
+  /* Post body — styles the rendered Markdown content */
+  .post-body h2 { margin-top: var(--space-2xl); margin-bottom: var(--space-md); }
+  .post-body h3 { margin-top: var(--space-xl);  margin-bottom: var(--space-sm); }
+  .post-body p  { line-height: var(--leading-loose); }
+</style>

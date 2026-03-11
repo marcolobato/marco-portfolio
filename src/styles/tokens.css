@@ -6,10 +6,14 @@
 
 :root {
   /* Brand colors */
-  --color-navy:       #081F5D; /* Deep dark blue — primary background or strong contrast */
-  --color-royal-blue: #1350C5; /* Vivid mid-blue — primary accent or interactive states */
-  --color-lemon:      #F1F11C; /* Bright yellow — high-visibility highlight or CTA */
+  --color-navy:       #081F5D; /* Deep dark blue — headings, footer bg, strong contrast */
+  --color-royal-blue: #1350C5; /* Vivid mid-blue — links, interactive states */
+  --color-lemon:      #F1F11C; /* Bright yellow — small accents, labels, geometric details */
   --color-citrine:    #CCD418; /* Muted yellow-green — secondary accent */
-  --color-slate:      #A0AFB5; /* Cool grey — secondary text or disabled states */
-  --color-charcoal:   #3C2F39; /* Dark warm grey-purple — body text or dark surfaces */
+  --color-slate:      #A0AFB5; /* Cool grey — secondary text, borders, dividers */
+  --color-charcoal:   #3C2F39; /* Dark warm grey-purple — body text */
+
+  /* Surface colors — for light-mode backgrounds */
+  --color-white:      #FFFFFF; /* Primary page background */
+  --color-surface:    #F4F5F7; /* Subtle off-white for alternate section backgrounds */
 }

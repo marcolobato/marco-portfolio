@@ -26,6 +26,14 @@
   padding: 0;
 }
 
+/* Smooth scrolling — applies to the whole page.
+   When an anchor link (like href="#work") is clicked, the browser
+   animates the scroll instead of jumping instantly.
+   The browser uses its own built-in easing curve, which feels natural. */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Remove list styling from ul and ol — we'll add it back only where needed */
 ul,
 ol {
@@ -121,21 +129,21 @@ body {
   font-weight: var(--weight-regular);
   line-height: var(--leading-normal);
 
-  /* Navy background, light text — warm, confident, high-contrast */
-  background-color: var(--color-navy);
-  color: var(--color-slate); /* Slate for body copy — softer than pure white */
+  /* White background, dark text — clean, light, high-contrast */
+  background-color: var(--color-white);
+  color: var(--color-charcoal);
 
   /* Smooth font rendering on Mac/retina screens */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Headings — Fraunces Bold, tight leading, lemon for energy against navy */
+/* Headings — Fraunces Bold, tight leading, navy for authority on white */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
-  color: var(--color-lemon);
+  color: var(--color-navy);
 }
 
 /* Individual heading sizes follow the type scale above */
@@ -146,16 +154,16 @@ h4 { font-size: var(--text-2xl); }
 h5 { font-size: var(--text-xl); }
 h6 { font-size: var(--text-lg); }
 
-/* Paragraphs — slate for secondary warmth, with comfortable spacing below */
+/* Paragraphs — charcoal for readable body text, comfortable spacing below */
 p {
-  color: var(--color-slate);
+  color: var(--color-charcoal);
   max-width: 65ch; /* ch = width of the "0" character — 65ch is the ideal line length for reading */
   margin-bottom: var(--space-md);
 }
 
-/* Horizontal rules — subtle dividers using royal-blue */
+/* Horizontal rules — subtle dividers using slate on a light background */
 hr {
   border: none;
-  border-top: 1px solid var(--color-royal-blue);
+  border-top: 1px solid var(--color-slate);
   margin-block: var(--space-xl); /* margin-block = top and bottom margin combined */
 }

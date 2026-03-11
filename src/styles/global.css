@@ -1,0 +1,161 @@
+/* =============================================================================
+   global.css — Marco Lobato Portfolio
+   Base reset, typography, and spacing.
+   No components live here — this is the foundation layer only.
+   All colors come from tokens.css. Never hardcode hex values here.
+   ============================================================================= */
+
+/* --- 1. Import tokens -------------------------------------------------------
+   This makes all --color-* variables available throughout this file.
+   --------------------------------------------------------------------------- */
+@import "./tokens.css";
+
+
+/* --- 2. CSS Reset -----------------------------------------------------------
+   Browsers apply their own default styles (margins, paddings, box-sizing).
+   This block removes those defaults so every element behaves predictably
+   across Chrome, Firefox, Safari, etc.
+   --------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  /* box-sizing: border-box means padding and border are included in the
+     element's total width/height — much easier to reason about layouts */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove list styling from ul and ol — we'll add it back only where needed */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Make images responsive by default — they'll never overflow their container */
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+/* Remove default button and input styles so we start fresh */
+button,
+input,
+textarea,
+select {
+  font: inherit; /* Buttons/inputs don't inherit the page font by default — this fixes that */
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* Remove underline from links — we'll add intentional styles per component */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* --- 3. Spacing scale -------------------------------------------------------
+   A consistent set of spacing values built on a base-4 scale (4px, 8px, 16px…).
+   Using variables here means if you change --space-md, every element using it
+   updates automatically — no hunting through the file.
+   --------------------------------------------------------------------------- */
+:root {
+  --space-2xs: 0.25rem;  /*  4px */
+  --space-xs:  0.5rem;   /*  8px */
+  --space-sm:  0.75rem;  /* 12px */
+  --space-md:  1rem;     /* 16px */
+  --space-lg:  1.5rem;   /* 24px */
+  --space-xl:  2rem;     /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4.5rem;   /* 72px */
+  --space-4xl: 6rem;     /* 96px */
+}
+
+
+/* --- 4. Typography scale ----------------------------------------------------
+   Fluid type sizes using rem units. 1rem = 16px by default in all browsers.
+   Fraunces is the brand display font (loaded via Google Fonts or your layout).
+   --------------------------------------------------------------------------- */
+:root {
+  /* Font families */
+  --font-display: 'Fraunces', Georgia, serif;  /* Headings and display text */
+  --font-body:    'Fraunces', Georgia, serif;  /* Body copy — same family, different weight */
+
+  /* Type scale */
+  --text-xs:   0.75rem;   /* 12px — fine print, captions */
+  --text-sm:   0.875rem;  /* 14px — secondary labels */
+  --text-base: 1rem;      /* 16px — body default */
+  --text-lg:   1.125rem;  /* 18px — large body / lead text */
+  --text-xl:   1.25rem;   /* 20px */
+  --text-2xl:  1.5rem;    /* 24px */
+  --text-3xl:  2rem;      /* 32px */
+  --text-4xl:  2.5rem;    /* 40px */
+  --text-5xl:  3.5rem;    /* 56px — hero headlines */
+  --text-6xl:  5rem;      /* 80px — extra large display */
+
+  /* Line heights */
+  --leading-tight:  1.15; /* Headlines — tighter feels more editorial */
+  --leading-normal: 1.5;  /* Body text — more air for comfortable reading */
+  --leading-loose:  1.75; /* Small text — more space improves legibility */
+
+  /* Font weights */
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-bold:    700;
+}
+
+
+/* --- 5. Base element styles -------------------------------------------------
+   These set the default look for the whole page.
+   Colors use your tokens — never hex values.
+   --------------------------------------------------------------------------- */
+
+/* The body is the root canvas for everything on the page */
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+
+  /* Navy background, light text — warm, confident, high-contrast */
+  background-color: var(--color-navy);
+  color: var(--color-slate); /* Slate for body copy — softer than pure white */
+
+  /* Smooth font rendering on Mac/retina screens */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings — Fraunces Bold, tight leading, lemon for energy against navy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  color: var(--color-lemon);
+}
+
+/* Individual heading sizes follow the type scale above */
+h1 { font-size: var(--text-5xl); }
+h2 { font-size: var(--text-4xl); }
+h3 { font-size: var(--text-3xl); }
+h4 { font-size: var(--text-2xl); }
+h5 { font-size: var(--text-xl); }
+h6 { font-size: var(--text-lg); }
+
+/* Paragraphs — slate for secondary warmth, with comfortable spacing below */
+p {
+  color: var(--color-slate);
+  max-width: 65ch; /* ch = width of the "0" character — 65ch is the ideal line length for reading */
+  margin-bottom: var(--space-md);
+}
+
+/* Horizontal rules — subtle dividers using royal-blue */
+hr {
+  border: none;
+  border-top: 1px solid var(--color-royal-blue);
+  margin-block: var(--space-xl); /* margin-block = top and bottom margin combined */
+}

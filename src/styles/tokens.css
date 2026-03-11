@@ -1,0 +1,15 @@
+/* =============================================================================
+   tokens.css — Marco Lobato brand color palette
+   Source of truth: CLAUDE.md › Color Tokens
+   Never hardcode hex values elsewhere — always reference these variables.
+   ============================================================================= */
+
+:root {
+  /* Brand colors */
+  --color-navy:       #081F5D; /* Deep dark blue — primary background or strong contrast */
+  --color-royal-blue: #1350C5; /* Vivid mid-blue — primary accent or interactive states */
+  --color-lemon:      #F1F11C; /* Bright yellow — high-visibility highlight or CTA */
+  --color-citrine:    #CCD418; /* Muted yellow-green — secondary accent */
+  --color-slate:      #A0AFB5; /* Cool grey — secondary text or disabled states */
+  --color-charcoal:   #3C2F39; /* Dark warm grey-purple — body text or dark surfaces */
+}

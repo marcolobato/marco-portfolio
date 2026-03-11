@@ -1,17 +1,399 @@
 ---
+// index.astro — Marco Lobato Portfolio
+// Single-page layout: Hero, Work, Now, Footer
+// All colors via tokens.css. Typography and reset from global.css.
 
+// In Astro, CSS files in src/ must be imported here in the frontmatter,
+// not via a <link> tag. Astro processes this import through its build pipeline.
+import '../styles/global.css';
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Marco Lobato — The Tech Weaver</title>
+
+    <!-- Fraunces from Google Fonts — loaded in two weights we use: 400 and 700 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- global.css is imported in the frontmatter above, not here -->
+  </head>
+
+  <body>
+
+    <!-- =====================================================================
+         NAV
+         Simple top bar: name on the left, anchor links on the right.
+         Anchors (#work, #now) scroll to sections further down the page.
+         ===================================================================== -->
+    <nav class="nav">
+      <span class="nav-name">Marco Lobato</span>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#now">Now</a></li>
+        <li>
+          <!-- External link — opens in a new tab. rel="noopener" is a
+               security best practice for external links. -->
+          <a href="mailto:marcolobato.ux@gmail.com">Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+
+    <!-- =====================================================================
+         HERO
+         Name as the biggest element on the page, then title, then intro.
+         ===================================================================== -->
+    <section class="hero">
+      <div class="container">
+        <!-- h1 inherits lemon color + bold weight + tight leading from global.css -->
+        <h1 class="hero-name">Marco Lobato</h1>
+
+        <!-- The title is visually distinct — smaller, citrine, medium weight -->
+        <p class="hero-title">The Tech Weaver</p>
+
+        <!-- Photo placeholder — replace this div with an <img> tag when ready.
+             Example: <img src="/images/marco.jpg" alt="Marco Lobato" class="hero-photo" /> -->
+        <div class="hero-photo-placeholder" aria-label="Photo placeholder">
+          <span class="card-image-label">[ photo ]</span>
+        </div>
+
+        <p class="hero-intro">
+          I'm a product designer who works at the intersection of emerging
+          technology and human experience. I design interfaces that feel
+          calm, capable, and grounded — even when the tech behind them is
+          anything but simple.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         WORK
+         One featured area with two project cards.
+         Image areas are placeholders — replace src and alt when ready.
+         ===================================================================== -->
+    <section class="work" id="work">
+      <div class="container">
+
+        <!-- Section label — small, uppercase, spaced lettering -->
+        <p class="section-label">Selected Work</p>
+
+        <!-- Area heading — groups the two cards under a shared theme -->
+        <h2 class="area-heading">
+          Designing distraction-free<br />multimodal interfaces
+        </h2>
+
+        <!-- Cards grid — two cards side by side on wider screens -->
+        <div class="cards">
+
+          <!-- Card 1 -->
+          <article class="card">
+            <!-- Image placeholder: a styled div standing in for a real image.
+                 Replace this div with an <img> tag when you have the asset. -->
+            <div class="card-image" aria-label="Project image placeholder">
+              <span class="card-image-label">[ image ]</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">
+                Making Android setup accessible from day one
+              </h3>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card">
+            <div class="card-image" aria-label="Project image placeholder">
+              <span class="card-image-label">[ image ]</span>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">
+                Keeping people in flow with smarter, more reliable voice
+                interactions
+              </h3>
+            </div>
+          </article>
+
+        </div><!-- /.cards -->
+      </div><!-- /.container -->
+    </section>
+
+
+    <!-- =====================================================================
+         NOW
+         A single honest paragraph about what I'm doing right now.
+         ===================================================================== -->
+    <section class="now" id="now">
+      <div class="container">
+        <p class="section-label">Now</p>
+        <p class="now-text">
+          Right now I'm tinkering with AI, building prototypes for experiences
+          and tools that take advantage of what's newly possible.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         FOOTER
+         Email and LinkedIn. Both open outside the site.
+         ===================================================================== -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span class="footer-name">Marco Lobato</span>
+        <ul class="footer-links">
+          <li>
+            <a href="mailto:marcolobato.ux@gmail.com">
+              marcolobato.ux@gmail.com
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://linkedin.com/in/marcolobato"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+          </li>
+        </ul>
+      </div>
+    </footer>
+
+  </body>
 </html>
+
+
+<!-- ==========================================================================
+     PAGE-LEVEL STYLES
+     These styles are specific to index.astro layout only.
+     They do NOT duplicate anything in global.css.
+     All colors use tokens from tokens.css.
+     ========================================================================== -->
+<style>
+  /* ------------------------------------------------------------------
+     Layout container
+     Centers content and sets a max readable width.
+     padding-inline = left + right padding combined.
+  ------------------------------------------------------------------ */
+  .container {
+    max-width: 960px;
+    margin-inline: auto; /* centers the block horizontally */
+    padding-inline: var(--space-xl);
+  }
+
+
+  /* ------------------------------------------------------------------
+     NAV
+  ------------------------------------------------------------------ */
+  .nav {
+    display: flex;
+    justify-content: space-between; /* name left, links right */
+    align-items: center;
+    padding-block: var(--space-lg);   /* vertical padding */
+    padding-inline: var(--space-xl);  /* horizontal padding */
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  .nav-name {
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    font-size: var(--text-sm);
+    color: var(--color-lemon);
+    letter-spacing: 0.05em; /* subtle tracking gives it a badge-like quality */
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .nav-links a {
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    transition: color 0.2s ease; /* smooth color shift on hover */
+  }
+
+  .nav-links a:hover {
+    color: var(--color-lemon);
+  }
+
+
+  /* ------------------------------------------------------------------
+     HERO
+  ------------------------------------------------------------------ */
+  .hero {
+    padding-block: var(--space-4xl); /* lots of breathing room at top */
+  }
+
+  .hero-name {
+    /* h1 size and color come from global.css — we only control spacing here */
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero-title {
+    /* Overrides the default <p> color from global.css for this specific element */
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);
+    color: var(--color-citrine); /* citrine gives it warmth without competing with lemon */
+    margin-bottom: var(--space-xl);
+    max-width: none; /* remove the 65ch limit — this is a short display string */
+  }
+
+  /* Photo placeholder in the hero — square crop, constrained width.
+     When you replace it with a real <img>, swap the class name to hero-photo
+     and the styles here will apply to it automatically. */
+  .hero-photo-placeholder {
+    width: 200px;
+    height: 200px;
+    background-color: var(--color-charcoal);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .hero-intro {
+    font-size: var(--text-lg);
+    color: var(--color-slate);
+    max-width: 52ch; /* slightly tighter than the 65ch default for a punchy intro feel */
+    line-height: var(--leading-loose);
+    margin-bottom: 0;
+  }
+
+
+  /* ------------------------------------------------------------------
+     SECTION LABEL
+     The small uppercase label above headings (e.g. "Selected Work", "Now")
+  ------------------------------------------------------------------ */
+  .section-label {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-royal-blue);
+    margin-bottom: var(--space-md);
+    max-width: none; /* labels are short — remove line-length cap */
+  }
+
+
+  /* ------------------------------------------------------------------
+     WORK SECTION
+  ------------------------------------------------------------------ */
+  .work {
+    padding-block: var(--space-3xl);
+    border-top: 1px solid var(--color-royal-blue); /* matches the <hr> style from global.css */
+  }
+
+  .area-heading {
+    /* h2 size/color from global.css — we control bottom spacing only */
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* Cards: side by side with equal width. gap adds space between them. */
+  .cards {
+    display: flex;
+    gap: var(--space-xl);
+  }
+
+  .card {
+    flex: 1; /* each card takes equal space regardless of content */
+    display: flex;
+    flex-direction: column; /* image on top, text below */
+  }
+
+  /* Image placeholder — a styled rectangle until real images are ready */
+  .card-image {
+    width: 100%;
+    aspect-ratio: 4 / 3; /* maintains a consistent shape regardless of container width */
+    background-color: var(--color-charcoal); /* charcoal reads as a dark surface, not as empty */
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-md);
+  }
+
+  .card-image-label {
+    font-size: var(--text-xs);
+    color: var(--color-slate);
+    opacity: 0.5;
+    letter-spacing: 0.08em;
+  }
+
+  .card-body {
+    flex: 1;
+  }
+
+  .card-title {
+    /* h3 color and weight from global.css — override size for cards */
+    font-size: var(--text-xl);
+    line-height: var(--leading-normal); /* slightly looser than heading default for multi-line */
+  }
+
+
+  /* ------------------------------------------------------------------
+     NOW SECTION
+  ------------------------------------------------------------------ */
+  .now {
+    padding-block: var(--space-3xl);
+    border-top: 1px solid var(--color-royal-blue);
+  }
+
+  .now-text {
+    font-size: var(--text-2xl);
+    color: var(--color-slate);
+    max-width: 44ch; /* shorter max-width keeps it feeling like a statement, not a paragraph */
+    line-height: var(--leading-normal);
+    margin-bottom: 0;
+  }
+
+
+  /* ------------------------------------------------------------------
+     FOOTER
+  ------------------------------------------------------------------ */
+  .footer {
+    padding-block: var(--space-2xl);
+    border-top: 1px solid var(--color-royal-blue);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-name {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--color-lemon);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .footer-links a {
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    transition: color 0.2s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-lemon);
+  }
+</style>

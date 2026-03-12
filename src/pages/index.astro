@@ -93,11 +93,10 @@ const posts = (await getCollection('writing')).sort(
           anything but simple.
         </p>
 
-        <!-- Calls to action — rendered as <a> tags since both navigate somewhere.
-             LinkedIn opens an external profile page.
-             Resume triggers a file download from the /public folder. -->
+        <!-- Calls to action — rendered as <a> tags since all three navigate somewhere. -->
         <div class="hero-actions">
           <Button label="LinkedIn" href="https://www.linkedin.com/in/marcolobato/" variant="primary" />
+          <Button label="Portfolio" href="https://lobato.framer.website/" variant="secondary" />
           <Button label="Download Resume" href="/resume.pdf" variant="secondary" download={true} />
         </div>
       </div>

@@ -641,6 +641,14 @@ hr {
   transform: translateY(-2px);
 }
 
+/* Real cover image — fills the 16:9 area, cropped to fit */
+.writing-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* crops to fill without stretching */
+  display: block;     /* removes the small gap browsers add below inline images */
+}
+
 /* Image area — surface background until real cover images are added */
 .writing-card-image {
   width: 100%;

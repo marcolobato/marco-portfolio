@@ -4,9 +4,13 @@
 // Astro validates each .md file against this schema at build time.
 
 import { z, defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
 
+// glob() is the Astro 5+ way to load a folder of Markdown files.
+// pattern: matches all .md files inside the writing folder.
+// base: the folder to scan, relative to the project root.
 const writing = defineCollection({
-  type: 'content', // "content" means these are Markdown files with a body
+  loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
 
   schema: z.object({
     title:       z.string(),            // shown on the card and the post page

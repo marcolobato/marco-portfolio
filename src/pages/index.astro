@@ -235,11 +235,12 @@ const posts = (await getCollection('writing')).sort(
 
         <div class="writing-cards">
           {posts.map(post => (
-            <!-- Each post.id becomes the URL, e.g. /writing/learning-in-public -->
             <a href={`/writing/${post.id}`} class="writing-card">
-              <!-- Image placeholder — replace with post.data.image when you have cover images -->
-              <div class="writing-card-image" aria-hidden="true">
-                <span class="writing-card-image-label">[ image ]</span>
+              <div class="writing-card-image">
+                {post.data.image
+                  ? <img src={post.data.image} alt={post.data.title} class="writing-card-img" />
+                  : <span class="writing-card-image-label">[ image ]</span>
+                }
               </div>
               <div class="writing-card-body">
                 <h3 class="writing-card-title">{post.data.title}</h3>

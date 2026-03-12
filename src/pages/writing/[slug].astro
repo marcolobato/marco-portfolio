@@ -4,7 +4,7 @@
 // Astro will generate one page per post, e.g. /writing/learning-in-public
 // getStaticPaths() tells Astro which slugs exist at build time.
 
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 import Nav from '../../components/Nav.astro';
 
@@ -13,7 +13,7 @@ import Nav from '../../components/Nav.astro';
 export async function getStaticPaths() {
   const posts = await getCollection('writing');
   return posts.map(post => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props:  { post },
   }));
 }
@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 
 // render() converts the Markdown body into HTML.
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
 <html lang="en">
@@ -62,7 +62,7 @@ const { Content } = await post.render();
         <header class="post-header">
           <p class="post-date">
             <!-- toLocaleDateString formats the date as "January 15, 2024" -->
-            {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            {post.data.date.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
           <h1 class="post-title">{post.data.title}</h1>
           <p class="post-description">{post.data.description}</p>

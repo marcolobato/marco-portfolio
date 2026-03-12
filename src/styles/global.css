@@ -9,7 +9,12 @@
    This makes all --color-* variables available throughout this file.
    --------------------------------------------------------------------------- */
 @import "./tokens.css";
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/figtree";
 
+@custom-variant dark (&:is(.dark *));
 
 /* --- 2. CSS Reset -----------------------------------------------------------
    Browsers apply their own default styles (margins, paddings, box-sizing).
@@ -65,7 +70,6 @@ a {
   color: inherit;
 }
 
-
 /* --- 3. Spacing scale -------------------------------------------------------
    A consistent set of spacing values built on a base-4 scale (4px, 8px, 16px…).
    Using variables here means if you change --space-md, every element using it
@@ -80,9 +84,8 @@ a {
   --space-xl:  2rem;     /* 32px */
   --space-2xl: 3rem;     /* 48px */
   --space-3xl: 4.5rem;   /* 72px */
-  --space-4xl: 6rem;     /* 96px */
+  --space-4xl: 6rem;     /* 96px */     --background: oklch(1 0 0);     --foreground: oklch(0.145 0 0);     --card: oklch(1 0 0);     --card-foreground: oklch(0.145 0 0);     --popover: oklch(1 0 0);     --popover-foreground: oklch(0.145 0 0);     --primary: oklch(0.205 0 0);     --primary-foreground: oklch(0.985 0 0);     --secondary: oklch(0.97 0 0);     --secondary-foreground: oklch(0.205 0 0);     --muted: oklch(0.97 0 0);     --muted-foreground: oklch(0.556 0 0);     --accent: oklch(0.97 0 0);     --accent-foreground: oklch(0.205 0 0);     --destructive: oklch(0.577 0.245 27.325);     --border: oklch(0.922 0 0);     --input: oklch(0.922 0 0);     --ring: oklch(0.708 0 0);     --chart-1: oklch(0.809 0.105 251.813);     --chart-2: oklch(0.623 0.214 259.815);     --chart-3: oklch(0.546 0.245 262.881);     --chart-4: oklch(0.488 0.243 264.376);     --chart-5: oklch(0.424 0.199 265.638);     --radius: 0.625rem;     --sidebar: oklch(0.985 0 0);     --sidebar-foreground: oklch(0.145 0 0);     --sidebar-primary: oklch(0.205 0 0);     --sidebar-primary-foreground: oklch(0.985 0 0);     --sidebar-accent: oklch(0.97 0 0);     --sidebar-accent-foreground: oklch(0.205 0 0);     --sidebar-border: oklch(0.922 0 0);     --sidebar-ring: oklch(0.708 0 0);
 }
-
 
 /* --- 4. Typography scale ----------------------------------------------------
    Fluid type sizes using rem units. 1rem = 16px by default in all browsers.
@@ -115,7 +118,6 @@ a {
   --weight-medium:  500;
   --weight-bold:    700;
 }
-
 
 /* --- 5. Base element styles -------------------------------------------------
    These set the default look for the whole page.
@@ -170,7 +172,6 @@ hr {
   margin-block: var(--space-xl); /* margin-block = top and bottom margin combined */
 }
 
-
 /* --- 6. Layout utility ------------------------------------------------------
    A centered content container used on every page to constrain and
    horizontally center content blocks to a comfortable reading width.
@@ -181,7 +182,6 @@ hr {
   margin-inline: auto;
   padding-inline: var(--space-xl);
 }
-
 
 /* --- 7. Section Label -------------------------------------------------------
    The small lemon pill used to introduce each major section.
@@ -201,7 +201,6 @@ hr {
   margin-bottom: var(--space-md);
   max-width: none;
 }
-
 
 /* --- 8. Buttons -------------------------------------------------------------
    Two variants: primary (navy filled) and secondary (surface + outline).
@@ -278,7 +277,6 @@ hr {
   pointer-events: none;         /* Blocks clicks and prevents hover styles from firing */
 }
 
-
 /* --- 9. Project Card --------------------------------------------------------
    Used in the Work section to display a single project.
    flex: 1 on .card means all cards in a flex row share space equally.
@@ -329,7 +327,6 @@ hr {
   font-weight: var(--weight-regular); /* 400 — regular weight, not bold */
   line-height: var(--leading-normal);
 }
-
 
 /* --- 10. Navigation ----------------------------------------------------------
    Top bar with name on the left and anchor links on the right.
@@ -446,7 +443,6 @@ hr {
   }
 }
 
-
 /* --- 11. Footer -------------------------------------------------------------
    Navy panel at the bottom of every page.
    No margin-top here — spacing is set at the page level so it can be
@@ -506,7 +502,6 @@ hr {
     align-items: center;
   }
 }
-
 
 /* --- 12. Page layout — Index -----------------------------------------------
    Layout-level styles specific to src/pages/index.astro.
@@ -689,7 +684,6 @@ hr {
   margin-bottom: 0;
   max-width: none;
 }
-
 
 /* --- 13. Page layout — Styleguide ------------------------------------------
    Layout-level styles specific to src/pages/styleguide.astro.
@@ -891,7 +885,6 @@ code {
   padding: 0;
 }
 
-
 /* --- 14. Theme Toggle -------------------------------------------------------
    Sun/moon button that lives in the nav. Clicking it flips data-theme on
    <html> between "light" and "dark". The correct icon is shown via CSS:
@@ -923,7 +916,6 @@ code {
 /* In dark mode: show sun (clicking will switch TO light) */
 [data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
 [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-
 
 /* --- 16. Carousel -----------------------------------------------------------
    A manually controlled image carousel with arrow navigation and pagination dots.
@@ -1102,7 +1094,6 @@ code {
   outline-offset: 2px;
 }
 
-
 /* --- 17. Page layout — Expertise section -----------------------------------
    Layout-level styles for the Expertise section on index.astro.
    --------------------------------------------------------------------------- */
@@ -1121,7 +1112,6 @@ code {
   max-width: 52ch;
   margin-bottom: var(--space-2xl);
 }
-
 
 /* --- 15. Dark mode overrides ------------------------------------------------
    A few rules that can't be fixed by token changes alone.
@@ -1168,7 +1158,6 @@ code {
 [data-theme="dark"] .carousel-btn:hover {
   background-color: rgba(160, 175, 181, 0.35); /* slightly more opaque on hover */
 }
-
 
 /* --- 18. Page layout — About section ---------------------------------------
    Two-column layout: text on the left, video on the right.
@@ -1233,5 +1222,93 @@ code {
   .about-body {
     /* Remove the character width cap on mobile — let text fill the full width */
     max-width: none;
+  }
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@theme inline {
+  --font-sans: 'Figtree Variable', sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
   }
 }

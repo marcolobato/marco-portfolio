@@ -291,6 +291,16 @@ hr {
   flex-direction: column; /* image on top, text below */
 }
 
+/* Real project image — fills the 4:3 area, rounded to match the site style */
+.card-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;     /* crops the image to fill without stretching */
+  border-radius: 12px;   /* matches writing cards and the about section photo */
+  display: block;        /* removes the small gap browsers add below inline images */
+  margin-bottom: var(--space-md);
+}
+
 /* Image placeholder — dashed border indicates where a real image will go */
 .card-image {
   width: 100%;
@@ -315,8 +325,8 @@ hr {
 }
 
 .card-title {
-  /* h3 color and weight come from global.css — we override size for cards */
-  font-size: var(--text-xl);
+  font-size: var(--text-base);       /* 16px — matches body paragraph text */
+  font-weight: var(--weight-regular); /* 400 — regular weight, not bold */
   line-height: var(--leading-normal);
 }
 
@@ -562,6 +572,13 @@ hr {
 .cards {
   display: flex;
   gap: var(--space-xl);
+}
+
+/* On mobile, stack cards vertically so each fills the screen width */
+@media (max-width: 768px) {
+  .cards {
+    flex-direction: column; /* changes the row into a column — one card per line */
+  }
 }
 
 /* NOW SECTION */

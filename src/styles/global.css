@@ -60,7 +60,7 @@ video {
    :not([data-slot="button"]) excludes shadcn buttons — they rely on
    Tailwind utility classes for background and border, which this reset
    would otherwise strip away. */
-button:not([data-slot="button"]),
+button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot),
 input,
 textarea,
 select {

@@ -13,6 +13,7 @@ import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
+import { Badge } from '../components/ui/badge';
 
 // Fetch all writing posts and sort them newest first.
 // post.data.date is the date field from each post's frontmatter.
@@ -211,7 +212,10 @@ const posts = (await getCollection('writing')).sort(
          ===================================================================== -->
     <section class="now" id="now">
       <div class="container">
-        <SectionLabel label="Now" />
+        <div style="display: flex; align-items: baseline; gap: var(--space-sm);">
+          <SectionLabel label="Now" />
+          <Badge>New</Badge>
+        </div>
         <p class="now-text">
           Right now I'm tinkering with AI, building prototypes for experiences
           and tools that take advantage of what's newly possible.

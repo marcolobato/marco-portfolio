@@ -12,6 +12,7 @@ import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
 import { Button as ShadcnButton } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 ---
 
 <html lang="en">
@@ -463,6 +464,29 @@ Ghost     → --muted           (hover-only background, invisible at rest)</code
 &lt;Button variant="outline"&gt;Outline&lt;/Button&gt;
 &lt;Button variant="secondary"&gt;Secondary&lt;/Button&gt;
 &lt;Button variant="ghost"&gt;Ghost&lt;/Button&gt;</code></pre>
+        </div>
+
+        <!-- Component: Badge — read from Figma via MCP -->
+        <div class="sg-component">
+          <h3 class="sg-component-title">Badge — imported via Figma MCP</h3>
+          <p class="sg-component-desc">
+            This component was read directly from a Figma file using the Figma MCP server.
+            The MCP detected that the Figma variables (<code>--primary</code>, <code>--border</code>, etc.)
+            match the semantic tokens already mapped in <code>global.css</code> — so no color changes
+            were needed. The badge automatically uses your brand colors.
+          </p>
+          <div class="sg-preview" style="display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap;">
+            <Badge>Default</Badge>
+            <Badge variant="secondary">Secondary</Badge>
+            <Badge variant="destructive">Destructive</Badge>
+            <Badge variant="outline">Outline</Badge>
+          </div>
+          <pre class="sg-code"><code>import &#123; Badge &#125; from '@/components/ui/badge';
+
+&lt;Badge&gt;Default&lt;/Badge&gt;
+&lt;Badge variant="secondary"&gt;Secondary&lt;/Badge&gt;
+&lt;Badge variant="destructive"&gt;Destructive&lt;/Badge&gt;
+&lt;Badge variant="outline"&gt;Outline&lt;/Badge&gt;</code></pre>
         </div>
 
       </section>

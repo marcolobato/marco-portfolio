@@ -640,7 +640,7 @@ hr {
 /* NOW SECTION */
 .now {
   padding-block: var(--space-3xl);
-  border-top: 1px solid var(--color-slate);
+  background-color: var(--color-surface);
 }
 
 .now-text {
@@ -661,7 +661,6 @@ hr {
 /* WRITING SECTION */
 .writing {
   padding-block: var(--space-3xl);
-  border-top: 1px solid var(--color-slate);
 }
 
 .writing-heading {
@@ -762,7 +761,6 @@ hr {
 /* Page header */
 .sg-header {
   padding-block: var(--space-3xl);
-  border-bottom: 1px solid var(--color-slate);
   margin-bottom: var(--space-3xl);
 }
 
@@ -777,7 +775,6 @@ hr {
 .sg-section {
   margin-bottom: var(--space-4xl);
   padding-top: var(--space-xl);
-  border-top: 1px solid var(--color-slate);
 }
 
 .sg-section-title {
@@ -1161,7 +1158,6 @@ code {
 
 .expertise {
   padding-block: var(--space-3xl);
-  border-top: 1px solid var(--color-slate);
 }
 
 .expertise-heading {
@@ -1228,7 +1224,6 @@ code {
 .about {
   /* Consistent vertical rhythm with other sections */
   padding-block: var(--space-3xl);
-  border-top: 1px solid var(--color-slate);
 }
 
 .about-inner {

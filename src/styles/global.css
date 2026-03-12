@@ -12,9 +12,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/figtree";
+@import "@fontsource-variable/geist";
 
-@custom-variant dark (&:is(.dark *));
+/* Tell shadcn to use [data-theme="dark"] instead of .dark class —
+   this matches the existing ThemeToggle behaviour in this project */
+@custom-variant dark (&:is([data-theme="dark"] *));
 
 /* --- 2. CSS Reset -----------------------------------------------------------
    Browsers apply their own default styles (margins, paddings, box-sizing).
@@ -27,8 +29,10 @@
   /* box-sizing: border-box means padding and border are included in the
      element's total width/height — much easier to reason about layouts */
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  /* margin and padding are reset inside @layer base (below) so that
+     Tailwind utility classes like px-6 can override them.
+     If we put margin/padding here (unlayered), they would beat Tailwind's
+     layered utilities — causing shadcn components to have no padding. */
 }
 
 /* Smooth scrolling — applies to the whole page.
@@ -52,8 +56,11 @@ video {
   display: block;
 }
 
-/* Remove default button and input styles so we start fresh */
-button,
+/* Remove default button and input styles so we start fresh.
+   :not([data-slot="button"]) excludes shadcn buttons — they rely on
+   Tailwind utility classes for background and border, which this reset
+   would otherwise strip away. */
+button:not([data-slot="button"]),
 input,
 textarea,
 select {
@@ -84,7 +91,55 @@ a {
   --space-xl:  2rem;     /* 32px */
   --space-2xl: 3rem;     /* 48px */
   --space-3xl: 4.5rem;   /* 72px */
-  --space-4xl: 6rem;     /* 96px */     --background: oklch(1 0 0);     --foreground: oklch(0.145 0 0);     --card: oklch(1 0 0);     --card-foreground: oklch(0.145 0 0);     --popover: oklch(1 0 0);     --popover-foreground: oklch(0.145 0 0);     --primary: oklch(0.205 0 0);     --primary-foreground: oklch(0.985 0 0);     --secondary: oklch(0.97 0 0);     --secondary-foreground: oklch(0.205 0 0);     --muted: oklch(0.97 0 0);     --muted-foreground: oklch(0.556 0 0);     --accent: oklch(0.97 0 0);     --accent-foreground: oklch(0.205 0 0);     --destructive: oklch(0.577 0.245 27.325);     --border: oklch(0.922 0 0);     --input: oklch(0.922 0 0);     --ring: oklch(0.708 0 0);     --chart-1: oklch(0.809 0.105 251.813);     --chart-2: oklch(0.623 0.214 259.815);     --chart-3: oklch(0.546 0.245 262.881);     --chart-4: oklch(0.488 0.243 264.376);     --chart-5: oklch(0.424 0.199 265.638);     --radius: 0.625rem;     --sidebar: oklch(0.985 0 0);     --sidebar-foreground: oklch(0.145 0 0);     --sidebar-primary: oklch(0.205 0 0);     --sidebar-primary-foreground: oklch(0.985 0 0);     --sidebar-accent: oklch(0.97 0 0);     --sidebar-accent-foreground: oklch(0.205 0 0);     --sidebar-border: oklch(0.922 0 0);     --sidebar-ring: oklch(0.708 0 0);
+  --space-4xl: 6rem;     /* 96px */
+}
+
+
+/* --- shadcn semantic tokens — mapped to Marco Lobato brand ----------------
+   shadcn components use these variable names internally (--primary, --border…).
+   We point them at our brand tokens so shadcn components automatically
+   use our design system colors. This is the "token mapping" layer —
+   the bridge between Figma variables → CSS tokens → shadcn components.
+   --------------------------------------------------------------------------- */
+:root {
+  /* Page surfaces */
+  --background:           var(--color-white);
+  --foreground:           var(--color-charcoal);
+
+  /* Cards and popovers */
+  --card:                 var(--color-white);
+  --card-foreground:      var(--color-charcoal);
+  --popover:              var(--color-white);
+  --popover-foreground:   var(--color-charcoal);
+
+  /* Primary action — navy fill, white text */
+  --primary:              var(--color-navy);
+  --primary-foreground:   var(--color-white);
+
+  /* Secondary — subtle surface, dark text */
+  --secondary:            var(--color-surface);
+  --secondary-foreground: var(--color-charcoal);
+
+  /* Muted — same as surface, slate text for de-emphasised labels */
+  --muted:                var(--color-surface);
+  --muted-foreground:     var(--color-slate);
+
+  /* Accent — lemon highlight, navy text */
+  --accent:               var(--color-lemon);
+  --accent-foreground:    var(--color-navy);
+
+  /* Destructive — error red. No brand equivalent, keep shadcn default */
+  --destructive:          oklch(0.577 0.245 27.325);
+
+  /* Borders, inputs, and focus rings */
+  --border:               var(--color-slate);
+  --input:                var(--color-slate);
+  --ring:                 var(--color-royal-blue);
+
+  /* Radius — base value for shadcn's scale system.
+     rounded-4xl (used by Button) = calc(1rem × 2.6) = 41.6px → pill shape.
+     100px was too large and made small buttons circular. */
+  --radius:               1rem;
 }
 
 /* --- 4. Typography scale ----------------------------------------------------
@@ -94,7 +149,7 @@ a {
 :root {
   /* Font families */
   --font-display: 'Fraunces', Georgia, serif;  /* Headings and display text */
-  --font-body:    'Fraunces', Georgia, serif;  /* Body copy — same family, different weight */
+  --font-body:    'Geist Variable', system-ui, sans-serif;  /* Body copy and UI text */
 
   /* Type scale */
   --text-xs:   0.75rem;   /* 12px — fine print, captions */
@@ -266,6 +321,12 @@ hr {
 
 /* On hover: arrow returns to 0deg so it points → (right) */
 .btn:hover .btn-arrow {
+  transform: rotate(0deg);
+}
+
+/* Same arrow animation for shadcn buttons — they use [data-slot="button"]
+   instead of .btn, so they need their own hover rule */
+[data-slot="button"]:hover .btn-arrow {
   transform: rotate(0deg);
 }
 
@@ -1225,7 +1286,7 @@ code {
   }
 }
 
-.dark {
+[data-theme="dark"] {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -1260,7 +1321,7 @@ code {
 }
 
 @theme inline {
-  --font-sans: 'Figtree Variable', sans-serif;
+  --font-sans: 'Geist Variable', system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -1302,6 +1363,13 @@ code {
 }
 
 @layer base {
+  /* Reset margin and padding here (in a layer) so Tailwind utilities
+     like px-6 and my- can override them. This is the correct place
+     for a reset when using Tailwind v4. */
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+  }
   * {
     @apply border-border outline-ring/50;
   }

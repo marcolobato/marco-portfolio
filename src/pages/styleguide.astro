@@ -11,6 +11,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
+import { Button as ShadcnButton } from '@/components/ui/button';
 ---
 
 <html lang="en">
@@ -370,6 +371,98 @@ import Carousel from '../components/Carousel.astro';
           <pre class="sg-code"><code>import Footer from '../components/Footer.astro';
 
 &lt;Footer /&gt;</code></pre>
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================================
+           SECTION: SHADCN COMPONENTS
+           This section documents the shadcn/ui component layer and how brand
+           tokens flow from Figma all the way to a production component.
+           =================================================================== -->
+      <section class="sg-section">
+        <h2 class="sg-section-title">shadcn Components</h2>
+        <p class="sg-section-desc">
+          shadcn/ui is an open-source component library used by teams at Vercel,
+          Linear, and Resend. Components are not installed as a dependency —
+          the source code lives in <code>src/components/ui/</code> so it can
+          be edited directly. Styling is driven entirely by CSS variables, which
+          means a single token change propagates to every component at once.
+        </p>
+
+        <h3 class="sg-subsection-title">The token pipeline</h3>
+        <p class="sg-section-desc">
+          Every color decision starts in Figma as a variable and ends up in a
+          live component through a four-layer chain. Nothing is hardcoded at
+          any step — a brand update touches one value and cascades everywhere.
+        </p>
+        <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
+         color/navy = #081F5D
+
+Step 2 — Brand token in tokens.css
+         --color-navy: #081F5D;
+
+Step 3 — Semantic mapping in global.css (the bridge layer)
+         --primary: var(--color-navy);    /* "primary" is shadcn's name for it */
+         --ring:    var(--color-royal-blue);
+
+Step 4 — shadcn component in button.tsx
+         bg-primary   → reads --color-primary → reads --primary → reads --color-navy
+         hover:bg-ring → shifts to royal-blue on hover</code></pre>
+
+        <h3 class="sg-subsection-title">What each variant controls</h3>
+        <p class="sg-section-desc">
+          Each shadcn variant maps to a different semantic token.
+          Changing the token value updates the variant everywhere it is used —
+          no per-component overrides needed.
+        </p>
+        <pre class="sg-code"><code>Default   → --primary         (navy fill, white text)
+Outline   → --border          (border stroke color, currently slate)
+Secondary → --secondary       (subtle surface background)
+Ghost     → --muted           (hover-only background, invisible at rest)</code></pre>
+
+
+        <!-- Component: shadcn Button — side-by-side comparison -->
+        <div class="sg-component">
+          <h3 class="sg-component-title">Button — custom vs. shadcn</h3>
+          <p class="sg-component-desc">
+            Left: <code>Button.astro</code> — hand-built with custom CSS classes,
+            no dependencies. Right: <code>components/ui/button.tsx</code> — the
+            shadcn version whose appearance comes entirely from the token mapping
+            above. Both render identically because they read from the same brand
+            tokens. The shadcn version adds four variants and scales to a full
+            component library without writing new CSS.
+          </p>
+
+          <div class="sg-component-preview" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
+
+            <!-- Left: custom Astro button -->
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm);">
+              <p style="font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-slate); margin: 0 0 var(--space-xs);">Custom — Button.astro</p>
+              <Button label="Primary" href="#" variant="primary" />
+              <Button label="Secondary" href="#" variant="secondary" />
+            </div>
+
+            <!-- Right: shadcn button -->
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm);">
+              <p style="font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-slate); margin: 0 0 var(--space-xs);">shadcn — Button.tsx</p>
+              <ShadcnButton>
+                Default
+                <svg class="btn-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </ShadcnButton>
+              <ShadcnButton variant="outline">Outline</ShadcnButton>
+              <ShadcnButton variant="secondary">Secondary</ShadcnButton>
+              <ShadcnButton variant="ghost">Ghost</ShadcnButton>
+            </div>
+
+          </div>
+          <pre class="sg-code"><code>import &#123; Button &#125; from '@/components/ui/button';
+
+&lt;Button&gt;Default&lt;/Button&gt;
+&lt;Button variant="outline"&gt;Outline&lt;/Button&gt;
+&lt;Button variant="secondary"&gt;Secondary&lt;/Button&gt;
+&lt;Button variant="ghost"&gt;Ghost&lt;/Button&gt;</code></pre>
         </div>
 
       </section>

@@ -10,6 +10,7 @@ import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
+import Carousel from '../components/Carousel.astro';
 ---
 
 <html lang="en">
@@ -324,6 +325,31 @@ import Button from '../components/Button.astro';
           <pre class="sg-code"><code>import ThemeToggle from '../components/ThemeToggle.astro';
 
 &lt;ThemeToggle /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Carousel -->
+        <div class="sg-component">
+          <h3 class="sg-component-title">Carousel</h3>
+          <p class="sg-component-desc">
+            A manually controlled image carousel showing 7 slides. Users navigate
+            with the <strong>previous/next arrow buttons</strong> or by clicking
+            any <strong>pagination dot</strong> to jump directly to a slide.
+            No auto-scroll — the user is always in control, which is the correct
+            approach for accessibility (WCAG 2.2 guideline 2.2.2).
+            The arrow buttons and dots adapt to both light and dark mode using
+            color tokens. Keyboard users can also navigate with the left/right
+            arrow keys when the carousel is focused.
+            Replace each <code>carousel-slide-image</code> placeholder div with
+            an <code>&lt;img&gt;</code> tag when real assets are ready.
+          </p>
+          <!-- Full-width preview — no padding so the carousel sits edge-to-edge -->
+          <div class="sg-component-preview">
+            <Carousel />
+          </div>
+          <pre class="sg-code"><code>import Carousel from '../components/Carousel.astro';
+
+&lt;Carousel /&gt;</code></pre>
         </div>
 
 

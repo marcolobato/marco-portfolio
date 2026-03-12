@@ -12,6 +12,7 @@ import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Button from '../components/Button.astro';
+import Carousel from '../components/Carousel.astro';
 
 // Fetch all writing posts and sort them newest first.
 // post.data.date is the date field from each post's frontmatter.
@@ -130,6 +131,33 @@ const posts = (await getCollection('writing')).sort(
 
         </div><!-- /.cards -->
       </div><!-- /.container -->
+    </section>
+
+
+    <!-- =====================================================================
+         EXPERTISE
+         A labeled section with a heading, short paragraph, and image carousel.
+         The carousel component handles all slide navigation logic.
+         ===================================================================== -->
+    <section class="expertise" id="expertise">
+      <div class="container">
+
+        <SectionLabel label="Expertise" />
+
+        <h2 class="expertise-heading">
+          Interaction and User-Centric Product Design
+        </h2>
+
+        <p class="expertise-desc">
+          From 0-to-1 product launches to interaction systems and accessibility,
+          I design experiences that are grounded in real human needs — and built
+          to hold up as the technology around them evolves.
+        </p>
+
+        <!-- Carousel — 7 slides, arrow + dot navigation, no auto-scroll -->
+        <Carousel />
+
+      </div>
     </section>
 
 

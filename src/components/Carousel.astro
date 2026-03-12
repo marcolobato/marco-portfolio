@@ -1,0 +1,172 @@
+---
+// ExpertiseCarousel.astro — A manually controlled image carousel.
+// Usage: <ExpertiseCarousel />
+// Styles live in src/styles/global.css — section 16. Carousel
+//
+// The carousel shows one slide at a time.
+// Navigation: previous/next arrow buttons, and clickable pagination dots.
+// No auto-scroll — the user is always in control (accessibility best practice).
+//
+// To replace a placeholder with a real image:
+//   Replace the <div class="carousel-slide-image"> block with an <img> tag.
+
+// The 7 slides. Each entry has:
+//   image    — path to the PNG in public/carousel/ (the / prefix means "from site root")
+//   title    — bold heading overlaid at the bottom of the image
+//   subtitle — smaller text below the title
+// To update text: edit the strings here.
+// To swap an image: change the image path to the new filename.
+const slides = [
+  { image: "/carousel/slide-1.png", title: "User-Centric 0 to 1 Product Design",  subtitle: "Google Pixel Magnifier" },
+  { image: "/carousel/slide-2.png", title: "Assistive Technology",                 subtitle: "Voice Access for Android" },
+  { image: "/carousel/slide-3.png", title: "AI-Powered Products",                  subtitle: "Lookout - Assistive Technology App by Google" },
+  { image: "/carousel/slide-4.png", title: "UX and Product Design",                subtitle: "My Volkswagen - Web, Mobile, and In-Vehicle Portal" },
+  { image: "/carousel/slide-5.png", title: "UX Prototyping - Digital Services",    subtitle: "Porsche Connect Store - Concept and Prototyping of Third-Party Integrations" },
+  { image: "/carousel/slide-6.png", title: "Multi-Modal Interaction Design",       subtitle: "Sound Journey App - A Unique Interactive Soundtrack for Every Trip" },
+  { image: "/carousel/slide-7.png", title: "Research and Development",             subtitle: "Volkswagen Virtual Cockpit and Conversational Navigation Concepts" },
+];
+---
+
+<!-- aria-roledescription tells screen readers this is a "carousel", not just a generic div -->
+<div class="carousel" aria-roledescription="carousel" aria-label="Expertise examples">
+
+  <!-- The viewport clips all slides except the active one.
+       overflow: hidden (in CSS) is what makes only one slide visible at a time. -->
+  <div class="carousel-viewport">
+
+    <!-- The track holds ALL slides side by side in a single horizontal row.
+         It moves left and right via CSS transform when the user navigates. -->
+    <div class="carousel-track">
+
+      {slides.map((slide, i) => (
+        <!-- role="group" + aria-roledescription="slide" helps screen readers
+             announce "Slide 1 of 7", "Slide 2 of 7", etc. -->
+        <div
+          class="carousel-slide"
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${i + 1} of ${slides.length}: ${slide.title}`}
+        >
+          <!-- The slide image. alt text describes the image for screen readers.
+               object-fit: cover (in CSS) fills the frame without distorting the image. -->
+          <img
+            src={slide.image}
+            alt={slide.title}
+            class="carousel-slide-image"
+          />
+
+          <!-- Caption — overlaid at the bottom of the slide on a dark gradient.
+               Lemon for the title (brand accent, always visible on dark backgrounds).
+               Slate for the subtitle (neutral, readable on dark backgrounds). -->
+          <div class="carousel-slide-caption">
+            <h3 class="carousel-slide-title">{slide.title}</h3>
+            <p class="carousel-slide-subtitle">{slide.subtitle}</p>
+          </div>
+        </div>
+      ))}
+
+    </div><!-- /.carousel-track -->
+  </div><!-- /.carousel-viewport -->
+
+
+  <!-- Controls row: arrows on the left, dots centered -->
+  <div class="carousel-controls">
+
+    <!-- Arrow buttons — previous and next -->
+    <div class="carousel-arrows">
+
+      <!-- aria-label gives the button a meaningful name for screen readers,
+           since the button contains only an icon with no visible text. -->
+      <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">
+        <!-- Left chevron icon — currentColor inherits from the button's CSS color -->
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+          <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <button class="carousel-btn carousel-btn--next" aria-label="Next slide">
+        <!-- Right chevron icon -->
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+          <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+    </div><!-- /.carousel-arrows -->
+
+    <!-- Pagination dots — one per slide.
+         role="tablist" + role="tab" is a common ARIA pattern for tab-like navigation.
+         aria-selected tells screen readers which slide is currently active. -->
+    <div class="carousel-dots" role="tablist" aria-label="Go to slide">
+
+      {slides.map((slide, i) => (
+        <button
+          class={`carousel-dot${i === 0 ? ' carousel-dot--active' : ''}`}
+          role="tab"
+          aria-label={`Slide ${i + 1}: ${slide.title}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          data-index={String(i)}
+        ></button>
+      ))}
+
+    </div><!-- /.carousel-dots -->
+  </div><!-- /.carousel-controls -->
+
+</div><!-- /.carousel -->
+
+
+<script>
+  // Carousel interaction logic.
+  //
+  // We use querySelectorAll so this works even if there are multiple
+  // carousels on the same page — each one is initialized independently.
+
+  document.querySelectorAll('.carousel').forEach((carousel) => {
+
+    // Grab the elements we need to control within THIS carousel
+    const track    = carousel.querySelector('.carousel-track') as HTMLElement;
+    const prevBtn  = carousel.querySelector('.carousel-btn--prev') as HTMLButtonElement;
+    const nextBtn  = carousel.querySelector('.carousel-btn--next') as HTMLButtonElement;
+    const dots     = carousel.querySelectorAll('.carousel-dot') as NodeListOf<HTMLButtonElement>;
+
+    // Track which slide is currently visible (0-based index)
+    let currentIndex = 0;
+    const total = dots.length;
+
+    // goToSlide — moves the carousel to a specific slide index.
+    // index wraps around: going past the last slide loops back to the first,
+    // and going before the first loops to the last.
+    function goToSlide(index: number) {
+      // The modulo (%) wraps the index so it stays within 0 to (total - 1).
+      // Adding total before % handles negative numbers (e.g. going before slide 0).
+      currentIndex = ((index % total) + total) % total;
+
+      // Shift the track left by (currentIndex * 100%) to show the correct slide.
+      // For example: slide 0 → translateX(0%), slide 1 → translateX(-100%), etc.
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      // Update each dot: active dot gets the --active class and aria-selected="true"
+      dots.forEach((dot, i) => {
+        const isActive = i === currentIndex;
+        dot.classList.toggle('carousel-dot--active', isActive);
+        dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    // Wire up the arrow buttons
+    prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+    // Wire up each pagination dot — clicking it jumps directly to that slide
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => goToSlide(i));
+    });
+
+    // Keyboard support: left/right arrow keys navigate when the carousel is focused
+    carousel.addEventListener('keydown', (e: Event) => {
+      const keyEvent = e as KeyboardEvent;
+      if (keyEvent.key === 'ArrowLeft')  { goToSlide(currentIndex - 1); keyEvent.preventDefault(); }
+      if (keyEvent.key === 'ArrowRight') { goToSlide(currentIndex + 1); keyEvent.preventDefault(); }
+    });
+
+  });
+</script>

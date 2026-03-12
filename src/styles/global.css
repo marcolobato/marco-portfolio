@@ -900,6 +900,204 @@ code {
 [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
 
+/* --- 16. Carousel -----------------------------------------------------------
+   A manually controlled image carousel with arrow navigation and pagination dots.
+   Used via <ExpertiseCarousel /> — see src/components/ExpertiseCarousel.astro
+   No auto-scroll — user navigates manually for accessibility.
+   --------------------------------------------------------------------------- */
+
+/* Outer wrapper — takes up the full container width */
+.carousel {
+  width: 100%;
+}
+
+/* Viewport — this is the "window" the user looks through.
+   overflow: hidden hides all slides except the visible one.
+   Without this, all 7 slides would be visible side by side. */
+.carousel-viewport {
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: var(--space-lg);
+}
+
+/* Track — a single horizontal row that holds ALL slides.
+   display: flex makes them line up side by side.
+   The track slides left/right via transform to reveal a different slide.
+   transition makes the movement animated rather than an instant jump. */
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+/* Individual slide — exactly as wide as the viewport (100%).
+   flex: 0 0 100% means: don't grow, don't shrink, start at 100% wide.
+   position: relative lets the caption be absolutely positioned inside it. */
+.carousel-slide {
+  flex: 0 0 100%;
+  position: relative;
+}
+
+/* Image area — sized to match the 1080×720 source images (3:2 ratio).
+   object-fit: cover means the image fills the box without stretching —
+   the CSS equivalent of Figma's "Fill" crop mode.
+   Since all images are already 3:2, no cropping will occur at all. */
+.carousel-slide-image {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;       /* fills box without distorting — safe even if ratio ever varies */
+  object-position: center; /* crop anchor: center of the image */
+  border-radius: 8px;
+  display: block;          /* removes the small gap browsers add below inline images */
+}
+
+/* Placeholder div only — these styles apply while the image area is still a <div>.
+   They center the "[ image ]" label text inside it.
+   These rules have no effect once you swap the div for an <img> tag. */
+.carousel-slide-image:not(img) {
+  background-color: var(--color-surface);
+  border: 2px dashed var(--color-slate);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-slide-placeholder-label {
+  font-size: var(--text-xs);
+  color: var(--color-slate);
+  letter-spacing: 0.08em;
+}
+
+/* Caption — absolutely positioned over the bottom of the slide.
+   The gradient fades from dark navy at the bottom to transparent at the top,
+   creating a readable backdrop for the text without hiding the whole image. */
+.carousel-slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-xl);
+  /* gradient uses the navy brand color as rgba for the transparent-to-opaque effect */
+  background: linear-gradient(to top, rgba(8, 31, 93, 0.85) 0%, transparent 100%);
+  border-radius: 0 0 8px 8px;
+}
+
+/* Title in the caption — uses lemon because:
+   1. It never flips between light/dark mode (always #F1F11C)
+   2. It stands out clearly on the dark navy gradient
+   3. It matches the lemon section labels — a consistent brand signal */
+.carousel-slide-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-lemon);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-2xs);
+}
+
+/* Subtitle — slate is a medium grey that's always readable on a dark navy background,
+   in both light and dark mode (it doesn't change between themes). */
+.carousel-slide-subtitle {
+  font-size: var(--text-base);
+  color: var(--color-slate);
+  margin-bottom: 0;
+  max-width: none;
+}
+
+/* Controls row — arrows on the left, dots fill the remaining space and center */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+/* Arrow button pair — keeps both buttons together on the left */
+.carousel-arrows {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0; /* never compress — always show full buttons */
+}
+
+/* Individual arrow button — circular, 44×44px (minimum accessible tap target).
+   In light mode: charcoal background with near-white icon.
+   See dark mode override in section 15. */
+.carousel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-charcoal); /* dark in light mode */
+  color: var(--color-surface);             /* near-white icon in light mode */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.carousel-btn:hover {
+  background-color: var(--color-navy);
+  transform: scale(1.05);
+}
+
+/* Keyboard focus ring — visible outline so keyboard users know what's focused */
+.carousel-btn:focus-visible {
+  outline: 2px solid var(--color-royal-blue);
+  outline-offset: 2px;
+}
+
+/* Dots container — takes up remaining horizontal space and centers dots within it */
+.carousel-dots {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+/* Individual pagination dot */
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-slate); /* inactive: medium grey */
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Active dot — uses --color-heading because:
+   light mode: #081F5D (navy) — dark, visible on light background
+   dark mode:  #E8EDFF (near-white) — light, visible on dark background
+   It automatically flips to the right color for each theme. */
+.carousel-dot--active {
+  background-color: var(--color-heading);
+  transform: scale(1.35); /* slightly larger to visually distinguish the active dot */
+}
+
+.carousel-dot:focus-visible {
+  outline: 2px solid var(--color-royal-blue);
+  outline-offset: 2px;
+}
+
+
+/* --- 17. Page layout — Expertise section -----------------------------------
+   Layout-level styles for the Expertise section on index.astro.
+   --------------------------------------------------------------------------- */
+
+.expertise {
+  padding-block: var(--space-3xl);
+  border-top: 1px solid var(--color-slate);
+}
+
+.expertise-heading {
+  /* h2 size and color come from global.css — only control spacing here */
+  margin-bottom: var(--space-sm);
+}
+
+.expertise-desc {
+  max-width: 52ch;
+  margin-bottom: var(--space-2xl);
+}
+
+
 /* --- 15. Dark mode overrides ------------------------------------------------
    A few rules that can't be fixed by token changes alone.
    Most of the dark mode work is done by the token overrides in tokens.css —
@@ -933,4 +1131,15 @@ code {
   background-color: var(--color-heading);    /* #E8EDFF in dark — near-white for strong hover */
   border-color: var(--color-heading);
   color: var(--color-navy);
+}
+
+/* Carousel buttons: in dark mode, the charcoal background flips to a light grey
+   which would make the dark icon invisible. Override to a subtle glass-like button. */
+[data-theme="dark"] .carousel-btn {
+  background-color: rgba(160, 175, 181, 0.2); /* slate at 20% opacity — subtle, not loud */
+  color: var(--color-heading);                 /* #E8EDFF in dark — near-white for the icon */
+}
+
+[data-theme="dark"] .carousel-btn:hover {
+  background-color: rgba(160, 175, 181, 0.35); /* slightly more opaque on hover */
 }

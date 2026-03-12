@@ -105,6 +105,50 @@ const posts = (await getCollection('writing')).sort(
 
 
     <!-- =====================================================================
+         ABOUT
+         Two-column layout: intro text on the left, video on the right.
+         The video uses native <video controls> — works on all devices including
+         mobile, where hover-to-play is not possible.
+         preload="metadata" means the browser loads only the first frame and
+         duration info — it does NOT download the whole file until the user presses
+         play. This keeps the page fast.
+         ===================================================================== -->
+    <section class="about" id="about">
+      <div class="container">
+
+        <SectionLabel label="About" />
+
+        <div class="about-inner">
+
+          <!-- Text column — role title + descriptive paragraph -->
+          <div class="about-text">
+            <!-- "The Tech Weaver" — the role/subtitle, styled in royal blue -->
+            <p class="about-role">The Tech Weaver</p>
+
+            <p class="about-body">
+              I help teams weave technology into their products where it truly
+              matters. Through thoughtful iteration and prototyping, I guide teams
+              in shaping intuitive tools that feel tailor-made. When we get user
+              insights right, we can shape experiences that feel natural, the kind
+              you can't wait to share with a friend.
+            </p>
+          </div>
+
+          <!-- Video column — native video player with browser controls -->
+          <!-- controls: shows play/pause, volume, scrubber — no JS needed  -->
+          <!-- preload="metadata": loads only duration + first frame on page load -->
+          <video class="about-video" controls preload="metadata">
+            <source src="/tsocial_lobatoux.mp4" type="video/mp4" />
+            <!-- Fallback text shown only if the browser can't play the video at all -->
+            Your browser does not support the video tag.
+          </video>
+
+        </div><!-- /.about-inner -->
+      </div><!-- /.container -->
+    </section>
+
+
+    <!-- =====================================================================
          WORK
          One featured area with two project cards.
          Image areas are placeholders — replace src and alt when ready.
@@ -191,8 +235,8 @@ const posts = (await getCollection('writing')).sort(
 
         <div class="writing-cards">
           {posts.map(post => (
-            <!-- Each post.slug becomes the URL, e.g. /writing/learning-in-public -->
-            <a href={`/writing/${post.slug}`} class="writing-card">
+            <!-- Each post.id becomes the URL, e.g. /writing/learning-in-public -->
+            <a href={`/writing/${post.id}`} class="writing-card">
               <!-- Image placeholder — replace with post.data.image when you have cover images -->
               <div class="writing-card-image" aria-hidden="true">
                 <span class="writing-card-image-label">[ image ]</span>

@@ -1143,3 +1143,70 @@ code {
 [data-theme="dark"] .carousel-btn:hover {
   background-color: rgba(160, 175, 181, 0.35); /* slightly more opaque on hover */
 }
+
+
+/* --- 18. Page layout — About section ---------------------------------------
+   Two-column layout: text on the left, video on the right.
+   On mobile (≤ 768px) they stack vertically, text first, video below.
+   --------------------------------------------------------------------------- */
+
+.about {
+  /* Consistent vertical rhythm with other sections */
+  padding-block: var(--space-3xl);
+  border-top: 1px solid var(--color-slate);
+}
+
+.about-inner {
+  /* CSS Grid: two equal columns side by side on desktop */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start; /* align tops of both columns, not centers */
+}
+
+/* Text column ---------------------------------------------------------------- */
+
+.about-role {
+  /* The "The Tech Weaver" subtitle — smaller than h2, styled like a label/role */
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  color: var(--color-royal-blue);
+  margin-bottom: var(--space-md);
+}
+
+.about-body {
+  /* Readable line length — same cap as body text across the site */
+  max-width: 52ch;
+  line-height: var(--leading-relaxed);
+}
+
+/* Video column --------------------------------------------------------------- */
+
+.about-video {
+  /* Fill the entire grid column — video stretches to match the column width */
+  width: 100%;
+
+  /* Soft rounded corners to match the card style in the rest of the site */
+  border-radius: 8px;
+
+  /* Royal blue border — gives the video a frame and adds brand color */
+  border: 3px solid var(--color-royal-blue);
+
+  /* block removes the tiny gap browsers add below inline video elements */
+  display: block;
+}
+
+/* Mobile responsive ---------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .about-inner {
+    /* Switch from 2 columns to 1 column — text stacks above video */
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .about-body {
+    /* Remove the character width cap on mobile — let text fill the full width */
+    max-width: none;
+  }
+}

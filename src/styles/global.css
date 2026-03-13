@@ -57,10 +57,12 @@ video {
 }
 
 /* Remove default button and input styles so we start fresh.
-   :not([data-slot="button"]) excludes shadcn buttons — they rely on
-   Tailwind utility classes for background and border, which this reset
-   would otherwise strip away. */
-button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot),
+   Each :not() exclusion prevents the reset's high specificity from overriding
+   styles those components set on their own hover/active states:
+   - [data-slot="button"] → shadcn buttons (use Tailwind classes)
+   - .carousel-btn / .carousel-dot → carousel controls
+   - .theme-toggle → has its own hover background (pill effect) */
+button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle),
 input,
 textarea,
 select {
@@ -322,6 +324,13 @@ hr {
 /* On hover: arrow returns to 0deg so it points → (right) */
 .btn:hover .btn-arrow {
   transform: rotate(0deg);
+}
+
+/* shadcn buttons don't include cursor-pointer in their Tailwind base classes.
+   We add it here globally so all [data-slot="button"] elements show the hand cursor.
+   The :not([disabled]) part makes sure disabled buttons still show not-allowed. */
+[data-slot="button"]:not([disabled]) {
+  cursor: pointer;
 }
 
 /* Same arrow animation for shadcn buttons — they use [data-slot="button"]
@@ -954,26 +963,33 @@ code {
   align-items: center;
   justify-content: center;
   background: none;
-  border: none;
+  border: 1px solid transparent; /* placeholder so the border doesn't shift layout on hover */
   cursor: pointer;
-  color: var(--color-heading); /* inherits the heading color so it adapts automatically */
+  color: var(--color-heading);
   padding: var(--space-xs);
-  line-height: 0; /* prevents extra vertical space around the SVG */
-  transition: color 0.2s ease;
-  flex-shrink: 0; /* don't let it compress in a flex row */
+  line-height: 0;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
-  color: var(--color-royal-blue);
+  border-color: var(--color-slate); /* outline appears on hover, icon color stays */
 }
 
 /* In light mode: show moon (clicking will switch TO dark) */
 .theme-toggle .icon-sun  { display: none; }
 .theme-toggle .icon-moon { display: block; }
 
-/* In dark mode: show sun (clicking will switch TO light) */
-[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+/* In dark mode: show sun (clicking will switch TO light).
+   Sun uses --color-lemon so it stands out against the dark background. */
+[data-theme="dark"] .theme-toggle .icon-sun  { display: block; color: var(--color-lemon); }
 [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+/* Dark mode hover: use lemon outline to match the sun icon color. */
+[data-theme="dark"] .theme-toggle:hover {
+  border-color: var(--color-lemon);
+}
 
 /* --- 16. Carousel -----------------------------------------------------------
    A manually controlled image carousel with arrow navigation and pagination dots.

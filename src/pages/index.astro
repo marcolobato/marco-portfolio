@@ -14,6 +14,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
 import { Badge } from '../components/ui/badge';
+import AvatarScratcher from '../components/AvatarScratcher.astro';
 
 // Fetch all writing posts and sort them newest first.
 // post.data.date is the date field from each post's frontmatter.
@@ -75,15 +76,9 @@ const posts = (await getCollection('writing')).sort(
         <!-- h1 inherits lemon color + bold weight + tight leading from global.css -->
         <h1 class="hero-name">Marco Lobato</h1>
 
-        <!-- alt="" marks the image as decorative for screen readers.
-             This is correct here because the name "Marco Lobato" is already
-             in the heading above — repeating it as alt text would be redundant. -->
-        <img
-          src="/marco.jpg"
-          alt=""
-          role="presentation"
-          class="hero-photo"
-        />
+        <!-- AvatarScratcher replaces the static hero photo.
+             Click + drag to scratch away the top image and reveal a second expression. -->
+        <AvatarScratcher />
 
         <p class="hero-intro">
           I'm a product designer who works at the intersection of emerging

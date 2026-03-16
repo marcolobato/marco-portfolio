@@ -1,0 +1,260 @@
+---
+// AvatarScratcher.astro
+// A canvas-based scratch-to-reveal interaction for the hero photo.
+//
+// HOW IT WORKS:
+// - The bottom layer is avatar-scratch-2.png (the revealed expression), always visible.
+// - The top layer is a <canvas> with avatar-scratch-1.png drawn onto it.
+// - When you click + drag, the canvas pixels are "erased" using the
+//   `destination-out` compositing mode, revealing the image below.
+// - Touch events mirror mouse events so it works on mobile too.
+---
+
+<!--
+  STRUCTURE OVERVIEW:
+  .scratcher-wrapper        — clips both layers to rounded corners
+    <img>                   — bottom layer: always visible, revealed as you scratch
+    <canvas>                — top layer: gets erased on click + drag
+    .scratcher-hint         — "scratch me" text, fades out on first interaction
+  .scratcher-controls       — brush size slider + reset button below the image
+-->
+
+<div class="scratcher-wrapper hero-photo">
+
+  <!-- Bottom layer: the image that gets revealed. Always sitting underneath. -->
+  <img
+    src="/avatar-scratcher/avatar-scratch-2.png"
+    alt="Marco Lobato, alternate expression"
+    class="scratcher-base"
+  />
+
+  <!-- Top layer: drawn on canvas so we can erase parts of it selectively. -->
+  <canvas class="scratcher-canvas" id="scratchCanvas"></canvas>
+
+  <!-- Hint overlay: nudges the user to interact. Fades out after first scratch. -->
+  <div class="scratcher-hint" id="scratchHint">scratch me</div>
+
+</div>
+
+<!-- Controls: sits below the image, minimal and clean -->
+<div class="scratcher-controls">
+
+  <!-- Brush size: controls the radius of the eraser circle -->
+  <label class="scratcher-label">
+    Brush
+    <input type="range" id="brushSize" min="15" max="80" value="40" />
+  </label>
+
+  <!-- Reset: redraws the top image, restoring the scratch surface -->
+  <button class="scratcher-reset" id="resetCanvas">↺ Reset</button>
+
+</div>
+
+
+<style>
+  /* --- Wrapper ----------------------------------------------------------- */
+  /* position: relative creates the coordinate space for the absolutely
+     positioned children (canvas and base image).
+     overflow: hidden clips both layers to the rounded corners — this is
+     how we get a rounded canvas without complex clipping paths. */
+  .scratcher-wrapper {
+    position: relative;
+    /* width, height, border-radius, margin-bottom come from .hero-photo in global.css */
+    /* Custom coin cursor.
+       CSS cursor: url() accepts an SVG data URI but cannot read CSS custom properties
+       (var(--color-lemon) etc.), so the hex values are hardcoded here as an exception.
+       #F1F11C = --color-lemon, #CCD418 = --color-citrine (both from tokens.css).
+       The two numbers after the URL are the hotspot: 16 16 = center of the 32x32 icon.
+       The fallback `crosshair` is used if the browser can't load the custom cursor. */
+    /* Isometric 3D coin cursor.
+       Built from three layers: top face (bright gold ellipse), side band (mid gold),
+       and bottom arc (dark gold). A highlight ellipse adds the glint.
+       The whole coin is rotated -15deg to give the tilted, mid-air feel.
+       Hex values are hardcoded — CSS variables can't be read inside SVG data URIs. */
+    cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><g transform="rotate(-15 16 16)"><path d="M 2,15 A 14,6 0 0,0 30,15 L 30,22 A 14,6 0 0,1 2,22 Z" fill="%23C48010"/><ellipse cx="16" cy="22" rx="14" ry="6" fill="%23956008"/><ellipse cx="16" cy="15" rx="14" ry="6" fill="%23F5C030"/><ellipse cx="11" cy="12.5" rx="5" ry="2" fill="%23FFE460" opacity="0.65"/><ellipse cx="16" cy="15" rx="9" ry="3.5" fill="none" stroke="%23C88010" stroke-width="1"/></g></svg>') 16 16, crosshair;
+  }
+
+  /* --- Bottom image layer ----------------------------------------------- */
+  /* Fills the wrapper completely. object-fit: cover + object-position: center top
+     mirrors the same cropping logic as the original hero photo. */
+  .scratcher-base {
+    position: absolute;
+    inset: 0;           /* shorthand for top:0 right:0 bottom:0 left:0 */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  /* --- Canvas layer ----------------------------------------------------- */
+  /* Sits directly on top of the base image.
+     pointer-events: none is NOT set here — we need mouse events on the canvas. */
+  .scratcher-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* --- Hint text -------------------------------------------------------- */
+  /* Sits above everything, centered at the bottom of the image.
+     pointer-events: none so it doesn't block mouse events on the canvas. */
+  .scratcher-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 12px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: white;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  /* --- Controls --------------------------------------------------------- */
+  .scratcher-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    /* Pull the controls slightly closer to the image above them */
+    margin-top: calc(-1 * var(--space-md));
+    margin-bottom: var(--space-xl);
+  }
+
+  .scratcher-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+  }
+
+  .scratcher-label input[type="range"] {
+    width: 80px;
+    accent-color: var(--color-royal-blue); /* colors the track and thumb */
+    cursor: pointer;
+  }
+
+  .scratcher-reset {
+    background: none;
+    border: 1px solid var(--color-slate);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: var(--text-sm);
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--color-charcoal);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .scratcher-reset:hover {
+    border-color: var(--color-navy);
+    color: var(--color-navy);
+  }
+</style>
+
+
+<script>
+  // -------------------------------------------------------------------------
+  // AvatarScratcher — canvas scratch logic
+  // -------------------------------------------------------------------------
+
+  const canvas  = document.getElementById('scratchCanvas') as HTMLCanvasElement;
+  const ctx     = canvas.getContext('2d')!;
+  const hint    = document.getElementById('scratchHint')!;
+  const brushInput = document.getElementById('brushSize') as HTMLInputElement;
+  const resetBtn   = document.getElementById('resetCanvas')!;
+
+  // The canvas internal size must match the CSS display size.
+  // 200x200 matches the .hero-photo dimensions in global.css.
+  const SIZE = 200;
+  canvas.width  = SIZE;
+  canvas.height = SIZE;
+
+  // --- Load and draw the top image onto the canvas -----------------------
+  // We keep a reference to topImage so we can redraw it when resetting.
+  const topImage = new Image();
+  topImage.src = '/avatar-scratcher/avatar-scratch-1.png';
+  topImage.onload = () => {
+    ctx.drawImage(topImage, 0, 0, SIZE, SIZE);
+  };
+
+  // --- State -------------------------------------------------------------
+  let isDrawing   = false; // true only while the mouse/finger is pressed down
+  let hasScratched = false; // used to fade out the hint on first interaction
+
+  // --- Helpers -----------------------------------------------------------
+
+  // getBrushRadius: reads the slider and returns the brush radius in pixels.
+  function getBrushRadius(): number {
+    return parseInt(brushInput.value, 10) / 2;
+  }
+
+  // getPos: extracts canvas-relative x/y from either a mouse or touch event.
+  // We subtract the canvas's bounding rect to convert from page coords to canvas coords.
+  function getPos(e: MouseEvent | TouchEvent): { x: number; y: number } {
+    const rect = canvas.getBoundingClientRect();
+    // Scale factor: needed if CSS size differs from canvas internal size.
+    // Here both are 200px so scaleX/scaleY = 1, but good practice to include.
+    const scaleX = SIZE / rect.width;
+    const scaleY = SIZE / rect.height;
+
+    if (e instanceof TouchEvent && e.touches.length > 0) {
+      return {
+        x: (e.touches[0].clientX - rect.left) * scaleX,
+        y: (e.touches[0].clientY - rect.top)  * scaleY,
+      };
+    }
+    const me = e as MouseEvent;
+    return {
+      x: (me.clientX - rect.left) * scaleX,
+      y: (me.clientY - rect.top)  * scaleY,
+    };
+  }
+
+  // scratch: erases a circle at the pointer position.
+  // `destination-out` means "draw a transparent hole" — anything drawn
+  // in this mode removes pixels from the canvas rather than adding them.
+  function scratch(e: MouseEvent | TouchEvent) {
+    if (!isDrawing) return;
+    const { x, y } = getPos(e);
+
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, getBrushRadius(), 0, Math.PI * 2);
+    ctx.fill();
+
+    // Fade the hint out the first time the user scratches
+    if (!hasScratched) {
+      hasScratched = true;
+      hint.style.opacity = '0';
+    }
+  }
+
+  // --- Mouse events ------------------------------------------------------
+  canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+  canvas.addEventListener('mousemove', scratch);
+  canvas.addEventListener('mouseup',   () => { isDrawing = false; });
+  canvas.addEventListener('mouseleave',() => { isDrawing = false; });
+
+  // --- Touch events (mobile) ---------------------------------------------
+  // preventDefault() stops the page from scrolling while scratching.
+  canvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true;  scratch(e); }, { passive: false });
+  canvas.addEventListener('touchmove',  (e) => { e.preventDefault(); scratch(e); },                   { passive: false });
+  canvas.addEventListener('touchend',   ()  => { isDrawing = false; });
+
+  // --- Reset button ------------------------------------------------------
+  // Clears the canvas, resets compositing mode to normal, and redraws the top image.
+  resetBtn.addEventListener('click', () => {
+    ctx.globalCompositeOperation = 'source-over'; // back to normal drawing mode
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    ctx.drawImage(topImage, 0, 0, SIZE, SIZE);
+    hint.style.opacity = '1';
+    hasScratched = false;
+  });
+</script>

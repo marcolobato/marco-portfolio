@@ -596,7 +596,8 @@ hr {
 
 /* HERO */
 .hero {
-  padding-block: var(--space-4xl); /* lots of breathing room at the top */
+  padding-block-start: var(--space-xl);  /* 32px — tighter to the nav */
+  padding-block-end: var(--space-3xl);   /* 72px — still breathes before the next section */
 }
 
 .hero-name {
@@ -605,10 +606,10 @@ hr {
 }
 
 .hero-title {
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl);      /* 20px — creates a clearer size jump below the 56px h1 */
   font-weight: var(--weight-medium);
-  color: var(--color-royal-blue); /* royal-blue reads clearly on white, adds energy */
-  margin-bottom: var(--space-xl);
+  color: var(--color-royal-blue);
+  margin-bottom: var(--space-md); /* 16px — keeps intro visually connected to the subtitle */
   max-width: none;
 }
 
@@ -634,7 +635,26 @@ hr {
   display: flex;                  /* Buttons sit side-by-side horizontally */
   flex-wrap: wrap;                /* On small screens, wrap to the next line gracefully */
   gap: var(--space-sm);           /* Space between each button */
-  margin-top: var(--space-lg);    /* Visual breathing room below the paragraph */
+  margin-top: var(--space-xl);    /* 32px — deliberate pause before the CTAs */
+}
+
+/* Mobile hero — center photo, name, and subtitle — but NOT paragraphs */
+@media (max-width: 768px) {
+  .hero-photo {
+    /* auto left+right margins center a block element that has a fixed width (200px) */
+    margin-inline: auto;
+  }
+
+  /* Center the display text elements only — not .hero-intro (paragraph stays left) */
+  .hero-name,
+  .hero-title {
+    text-align: center;
+  }
+
+  /* Center the button row so it matches the centered heading above it */
+  .hero-actions {
+    justify-content: center;
+  }
 }
 
 /* WORK SECTION */

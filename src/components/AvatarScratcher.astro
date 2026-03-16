@@ -200,10 +200,28 @@ import Button from './Button.astro';
   .scratcher-controls {
     display: flex;
     align-items: center;
+    /* flex-wrap: wrap lets items break to a second line if the row is too wide.
+       This is the key fix for mobile — the reset button wraps below the stepper
+       instead of overflowing off the right edge of the screen. */
+    flex-wrap: wrap;
     gap: var(--space-sm);
     /* Pull the controls slightly closer to the image above them */
     margin-top: calc(-1 * var(--space-md));
     margin-bottom: var(--space-xl);
+  }
+
+  /* On mobile, shrink the slider and center the controls row */
+  @media (max-width: 768px) {
+    .scratcher-stepper input[type="range"] {
+      width: 56px;
+    }
+
+    .scratcher-controls {
+      /* justify-content: center pushes all flex children toward the middle,
+         so the label + stepper + reset button are visually centered
+         below the centered avatar photo */
+      justify-content: center;
+    }
   }
 
   /* Label is now a plain inline text node — no flex needed */

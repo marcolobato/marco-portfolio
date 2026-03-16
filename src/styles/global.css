@@ -722,6 +722,13 @@ hr {
   gap: var(--space-lg);
 }
 
+/* On mobile: stack cards into a single column, full width */
+@media (max-width: 768px) {
+  .writing-cards {
+    flex-direction: column;
+  }
+}
+
 /* The whole card is a link — no underline, inherits text color */
 .writing-card {
   flex: 1;

@@ -40,19 +40,25 @@ const { label, href, variant = 'primary', download = false, disabled = false, ic
     .cls-... (scoped) = guaranteed to win over global CSS for THIS component's elements.
   */
 
-  /* Light mode hover — border and text shift to navy */
+  /* Light mode hover — background tints navy, border and text shift to navy.
+     rgba(8, 31, 93, ...) = --color-navy (#081F5D) as an rgba value.
+     We use rgba here (not the token) because CSS can't do var(--color-navy) at 5% opacity
+     directly — the same pattern already used for the dark mode glass tints below.
+     !important on border-color and color: Tailwind/shadcn's @layer base injects a
+     border-color rule that wins even over Astro's scoped attribute selector. */
   .btn--secondary:hover {
-    border-color: var(--color-navy);
-    color: var(--color-navy);
+    background-color: rgba(8, 31, 93, 0.05) !important; /* navy at 5% — subtle tint */
+    border-color: var(--color-navy) !important;
+    color: var(--color-navy) !important;
   }
 
   /* Dark mode hover — border and text lighten to near-white.
      :global() tells Astro: don't scope [data-theme="dark"] (it lives on <html>),
      but DO scope .btn--secondary:hover (it lives on the button element). */
   :global([data-theme="dark"]) .btn--secondary:hover {
-    background-color: rgba(160, 175, 181, 0.2);
-    border-color: var(--color-heading);
-    color: var(--color-heading);
+    background-color: rgba(160, 175, 181, 0.2) !important;
+    border-color: var(--color-heading) !important;
+    color: var(--color-heading) !important;
   }
 </style>
 

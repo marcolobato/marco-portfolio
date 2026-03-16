@@ -32,22 +32,87 @@ import Button from './Button.astro';
   <!-- Top layer: drawn on canvas so we can erase parts of it selectively. -->
   <canvas class="scratcher-canvas" id="scratchCanvas"></canvas>
 
-  <!-- Hint overlay: nudges the user to interact. Fades out after first scratch. -->
-  <div class="scratcher-hint" id="scratchHint">scratch me</div>
+  <!-- Hint overlay: curved coin inscription along the bottom arc.
+       SVG <textPath> curves "scratch the surface" along the inside bottom of the circle —
+       exactly like text stamped around the rim of a coin.
+       The JS fade (hint.style.opacity = '0') works identically — SVG respects opacity. -->
+  <svg
+    class="scratcher-hint"
+    id="scratchHint"
+    viewBox="0 0 200 200"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-label="scratch the surface"
+  >
+    <defs>
+      <!--
+        bottomArc: a ∪-shaped dip at the bottom of the image — like the text
+        stamped on the inside bottom rim of a coin.
+
+        HOW IT WORKS:
+        We use the image's own circle — center (100, 100), radius 90 (10px inset
+        from the image edge). This makes the text curvature match the image border.
+
+        Circle center: (100, 100).  Radius: 90px.
+        Start:  (38, 165)  — lower-left, on the image circle.
+        End:    (162, 165) — lower-right, on the image circle.
+        Lowest: (100, 190) — center of the arc, 25px below the endpoints.
+        large-arc-flag=0: take the SHORT ~87° arc directly through the bottom.
+        sweep-flag=0: empirically confirmed to produce the ∪ (downward) arc.
+          sweep=1 produces the ∩ (upward) arc for this configuration.
+        At the lowest point the path direction is rightward →
+          letter tops point upward toward the image center → readable ✓
+        Arc length ≈ 137px — enough for "scratch the surface" at 11px ✓
+      -->
+      <path id="bottomArc" d="M 38 165 A 90 90 0 0 0 162 165" />
+    </defs>
+
+    <text>
+      <!--
+        startOffset="50%" + text-anchor="middle" = text centered on the arc.
+        The browser measures the arc length (~172px) and places the midpoint of the
+        text string at the 50% position, giving perfect visual centering.
+      -->
+      <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">
+        scratch the surface
+      </textPath>
+    </text>
+  </svg>
 
 </div>
 
 <!-- Controls: sits below the image, minimal and clean -->
 <div class="scratcher-controls">
 
-  <!-- Brush size: controls the radius of the eraser circle -->
-  <label class="scratcher-label">
-    Brush
-    <input type="range" id="brushSize" min="15" max="80" value="20" />
-  </label>
+  <!-- "Coin size" label — plain text, no longer a <label> wrapping the input
+       since the input now lives inside .scratcher-stepper instead. -->
+  <span class="scratcher-label">Scratch size</span>
 
-  <!-- Reset: redraws the top image, restoring the scratch surface.
-       Uses Button.astro with icon-left variant — no href so it renders as <button>. -->
+  <!-- Stepper group: minus button + range slider + plus button.
+       Keeping these three together in their own flex row makes it clear
+       they all control the same thing. -->
+  <div class="scratcher-stepper">
+
+    <!-- Decrease: subtracts 10 from the slider value (min 0) -->
+    <span id="brushDecrease">
+      <Button
+        variant="secondary"
+        icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>'
+      />
+    </span>
+
+    <input type="range" id="brushSize" min="0" max="100" value="50" />
+
+    <!-- Increase: adds 10 to the slider value (max 100) -->
+    <span id="brushIncrease">
+      <Button
+        variant="secondary"
+        icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>'
+      />
+    </span>
+
+  </div>
+
+  <!-- Reset: redraws the top image, restoring the scratch surface. -->
   <span id="resetCanvas">
     <Button
       label="Reset"
@@ -106,22 +171,29 @@ import Button from './Button.astro';
     display: block;
   }
 
-  /* --- Hint text -------------------------------------------------------- */
-  /* Sits above everything, centered at the bottom of the image.
-     pointer-events: none so it doesn't block mouse events on the canvas. */
+  /* --- Hint SVG (curved coin inscription) -------------------------------- */
+  /* Fills the wrapper exactly like the canvas and base image.
+     pointer-events: none so it doesn't block mouse/touch events on the canvas.
+     The JS fade still works — SVG elements respect the CSS opacity property. */
   .scratcher-hint {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 12px;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    color: white;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     transition: opacity 0.5s ease;
+    overflow: visible; /* prevents SVG from clipping text near the edges */
+  }
+
+  /* SVG text inherits nothing from the page — styles must be set explicitly.
+     fill = text color (SVG uses fill, not color).
+     filter: drop-shadow() = SVG equivalent of CSS text-shadow. */
+  .scratcher-hint text {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    fill: white;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
   }
 
   /* --- Controls --------------------------------------------------------- */
@@ -134,17 +206,24 @@ import Button from './Button.astro';
     margin-bottom: var(--space-xl);
   }
 
+  /* Label is now a plain inline text node — no flex needed */
   .scratcher-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
     font-size: var(--text-sm);
     color: var(--color-charcoal);
+    white-space: nowrap; /* keeps "Coin size" on one line */
   }
 
-  .scratcher-label input[type="range"] {
+  /* Stepper group: minus + slider + plus sit inline, tightly grouped */
+  .scratcher-stepper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  /* The slider itself, nested inside .scratcher-stepper */
+  .scratcher-stepper input[type="range"] {
     width: 80px;
-    accent-color: var(--color-royal-blue); /* colors the track and thumb */
+    accent-color: var(--color-royal-blue); /* colors the track fill and thumb */
     cursor: pointer;
   }
 
@@ -160,8 +239,10 @@ import Button from './Button.astro';
   const canvas  = document.getElementById('scratchCanvas') as HTMLCanvasElement;
   const ctx     = canvas.getContext('2d')!;
   const hint    = document.getElementById('scratchHint')!;
-  const brushInput = document.getElementById('brushSize') as HTMLInputElement;
-  const resetBtn   = document.getElementById('resetCanvas')!;
+  const brushInput    = document.getElementById('brushSize') as HTMLInputElement;
+  const resetBtn      = document.getElementById('resetCanvas')!;
+  const decreaseBtn   = document.getElementById('brushDecrease')!;
+  const increaseBtn   = document.getElementById('brushIncrease')!;
 
   // The canvas internal size must match the CSS display size.
   // 200x200 matches the .hero-photo dimensions in global.css.
@@ -183,9 +264,27 @@ import Button from './Button.astro';
 
   // --- Helpers -----------------------------------------------------------
 
-  // getBrushRadius: reads the slider and returns the brush radius in pixels.
+  // getBrushRadius: reads the slider (0–100) and returns the brush radius in pixels.
+  //
+  // The slider is a 0–100 scale where 50 = "center" = your ideal coin size (diameter 20).
+  // We use a two-piece linear map so the range feels natural:
+  //   0   → diameter  5  (tiny coin, precise scratching)
+  //   50  → diameter 20  (default — centered thumb)
+  //   100 → diameter 80  (large coin, fast coverage)
+  //
+  // Why two pieces? A single line through 0→5 and 100→80 would put the midpoint
+  // at diameter ~42.5, not 20. Two segments let us anchor exactly at 50→20.
   function getBrushRadius(): number {
-    return parseInt(brushInput.value, 10) / 2;
+    const v = parseInt(brushInput.value, 10); // 0–100
+    let diameter: number;
+    if (v <= 50) {
+      // First half: 0 → 5, 50 → 20  (gentle ramp for fine control)
+      diameter = 5 + (v / 50) * 15;
+    } else {
+      // Second half: 50 → 20, 100 → 80  (steeper ramp for large sizes)
+      diameter = 20 + ((v - 50) / 50) * 60;
+    }
+    return diameter / 2; // canvas arc() uses radius, not diameter
   }
 
   // getPos: extracts canvas-relative x/y from either a mouse or touch event.
@@ -240,6 +339,17 @@ import Button from './Button.astro';
   canvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true;  scratch(e); }, { passive: false });
   canvas.addEventListener('touchmove',  (e) => { e.preventDefault(); scratch(e); },                   { passive: false });
   canvas.addEventListener('touchend',   ()  => { isDrawing = false; });
+
+  // --- Stepper buttons (− and +) -----------------------------------------
+  // Each click nudges the slider by a fixed step of 10 (on the 0–100 scale).
+  // Math.max/min clamps the result so we never go below 0 or above 100.
+  const STEP = 10;
+  decreaseBtn.addEventListener('click', () => {
+    brushInput.value = String(Math.max(0,   parseInt(brushInput.value, 10) - STEP));
+  });
+  increaseBtn.addEventListener('click', () => {
+    brushInput.value = String(Math.min(100, parseInt(brushInput.value, 10) + STEP));
+  });
 
   // --- Reset button ------------------------------------------------------
   // Clears the canvas, resets compositing mode to normal, and redraws the top image.

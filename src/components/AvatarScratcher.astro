@@ -210,20 +210,6 @@ import Button from './Button.astro';
     margin-bottom: var(--space-xl);
   }
 
-  /* On mobile, shrink the slider and center the controls row */
-  @media (max-width: 768px) {
-    .scratcher-stepper input[type="range"] {
-      width: 56px;
-    }
-
-    .scratcher-controls {
-      /* justify-content: center pushes all flex children toward the middle,
-         so the label + stepper + reset button are visually centered
-         below the centered avatar photo */
-      justify-content: center;
-    }
-  }
-
   /* Label is now a plain inline text node — no flex needed */
   .scratcher-label {
     font-size: var(--text-sm);
@@ -243,6 +229,21 @@ import Button from './Button.astro';
     width: 80px;
     accent-color: var(--color-royal-blue); /* colors the track fill and thumb */
     cursor: pointer;
+  }
+
+  /* On mobile: hide the label and stepper, keep only the reset button.
+     This media query is intentionally last — it must come after the rules that set
+     display: flex on .scratcher-label and .scratcher-stepper, otherwise those
+     rules would override the display: none here (CSS reads top to bottom). */
+  @media (max-width: 768px) {
+    .scratcher-label,
+    .scratcher-stepper {
+      display: none;
+    }
+
+    .scratcher-controls {
+      justify-content: center;
+    }
   }
 
 
@@ -267,6 +268,14 @@ import Button from './Button.astro';
   const SIZE = 200;
   canvas.width  = SIZE;
   canvas.height = SIZE;
+
+  // --- Set default brush size based on screen width ----------------------
+  // On mobile (≤768px) we hide the stepper controls and default to a large
+  // brush so users can reveal the image easily with just a few swipes.
+  // window.matchMedia mirrors a CSS @media query — true if the condition matches.
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    brushInput.value = '75'; // ~50px diameter — fast, satisfying on touch
+  }
 
   // --- Load and draw the top image onto the canvas -----------------------
   // We keep a reference to topImage so we can redraw it when resetting.

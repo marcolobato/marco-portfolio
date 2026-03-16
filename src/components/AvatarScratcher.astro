@@ -132,7 +132,16 @@ import Button from './Button.astro';
      how we get a rounded canvas without complex clipping paths. */
   .scratcher-wrapper {
     position: relative;
-    /* width, height, border-radius, margin-bottom come from .hero-photo in global.css */
+    /* Explicit dimensions ensure the wrapper is always a square — these are set here
+       (not just via .hero-photo in global.css) because Astro's scoped styles have
+       higher specificity and need to own the layout to guarantee the crop works. */
+    width: 200px;
+    height: 200px;
+    /* overflow: hidden clips the absolutely positioned canvas and base image to
+       the border-radius shape. Without this, children ignore the rounded corners
+       and the square crop doesn't apply. */
+    overflow: hidden;
+    /* border-radius and margin-bottom still come from .hero-photo in global.css */
     /* Custom coin cursor.
        CSS cursor: url() accepts an SVG data URI but cannot read CSS custom properties
        (var(--color-lemon) etc.), so the hex values are hardcoded here as an exception.
@@ -263,11 +272,18 @@ import Button from './Button.astro';
   const decreaseBtn   = document.getElementById('brushDecrease')!;
   const increaseBtn   = document.getElementById('brushIncrease')!;
 
-  // The canvas internal size must match the CSS display size.
-  // 200x200 matches the .hero-photo dimensions in global.css.
+  // SIZE = the CSS display size in pixels (must match .hero-photo in global.css).
   const SIZE = 200;
-  canvas.width  = SIZE;
-  canvas.height = SIZE;
+
+  // devicePixelRatio is 2 on retina/HiDPI screens, 1 on standard screens.
+  // The canvas internal resolution must be SIZE × dpr to look crisp on retina —
+  // otherwise the browser stretches 200 pixels over 400 physical pixels → blurry.
+  // We then scale the drawing context by dpr so all our drawing coordinates
+  // remain in CSS pixels (0 to 200), not physical pixels (0 to 400).
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width  = SIZE * dpr;
+  canvas.height = SIZE * dpr;
+  ctx.scale(dpr, dpr);
 
   // --- Set default brush size based on screen width ----------------------
   // On mobile (≤768px) we hide the stepper controls and default to a large
@@ -277,12 +293,31 @@ import Button from './Button.astro';
     brushInput.value = '75'; // ~50px diameter — fast, satisfying on touch
   }
 
+  // --- Cover-crop helper --------------------------------------------------
+  // The images are 1080×720 (landscape rectangles). The canvas is 200×200 (square).
+  // ctx.drawImage(img, 0, 0, SIZE, SIZE) would squash the image — it doesn't know
+  // about aspect ratios. This function replicates CSS `object-fit: cover`:
+  //   1. Scale the image up until it fills the canvas in both dimensions.
+  //   2. Center the result, cropping the overflow equally on both sides.
+  function drawCover(img: HTMLImageElement) {
+    // Scale factor: how much to grow the image so it covers the square canvas.
+    // We pick whichever dimension needs the bigger scale — the other will overflow.
+    const scale = Math.max(SIZE / img.width, SIZE / img.height);
+    const scaledW = img.width  * scale; // e.g. 1080 * 0.278 = 300px
+    const scaledH = img.height * scale; // e.g.  720 * 0.278 = 200px
+    // Offset: centers the scaled image inside the canvas.
+    // Negative when the scaled dimension exceeds SIZE (the overflowing side).
+    const offsetX = (SIZE - scaledW) / 2; // e.g. (200 - 300) / 2 = -50px
+    const offsetY = (SIZE - scaledH) / 2; // e.g. (200 - 200) / 2 =   0px
+    ctx.drawImage(img, offsetX, offsetY, scaledW, scaledH);
+  }
+
   // --- Load and draw the top image onto the canvas -----------------------
   // We keep a reference to topImage so we can redraw it when resetting.
   const topImage = new Image();
   topImage.src = '/avatar-scratcher/avatar-scratch-1.png';
   topImage.onload = () => {
-    ctx.drawImage(topImage, 0, 0, SIZE, SIZE);
+    drawCover(topImage);
   };
 
   // --- State -------------------------------------------------------------
@@ -383,7 +418,7 @@ import Button from './Button.astro';
   resetBtn.addEventListener('click', () => {
     ctx.globalCompositeOperation = 'source-over'; // back to normal drawing mode
     ctx.clearRect(0, 0, SIZE, SIZE);
-    ctx.drawImage(topImage, 0, 0, SIZE, SIZE);
+    drawCover(topImage);
     hint.style.opacity = '1';
     hasScratched = false;
   });

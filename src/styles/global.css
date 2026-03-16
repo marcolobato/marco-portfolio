@@ -616,9 +616,9 @@ hr {
 .hero-photo {
   width: 200px;
   height: 200px;
-  object-fit: cover;            /* crops the image to fill the box without stretching */
-  object-position: center top;  /* anchors the crop to the face, not the body */
-  border-radius: 12px;          /* rounded rectangle — softer than hard corners */
+  object-fit: cover;             /* crops the image to fill the box without stretching */
+  object-position: center center; /* subject is centered in the image, crop from center */
+  border-radius: 50%;            /* circle — works because width and height are equal (200px) */
   margin-bottom: var(--space-xl);
 }
 

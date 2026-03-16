@@ -227,7 +227,9 @@ import { Badge } from '@/components/ui/badge';
             (correct for navigation). Without <code>href</code>, it renders
             as a <code>&lt;button&gt;</code> (correct for actions). The
             <code>download</code> prop triggers a file save instead of
-            navigating.
+            navigating. The optional <code>icon</code> prop accepts an SVG
+            string — when provided, the icon renders on the <strong>left</strong>
+            of the label and the right-side arrow is hidden.
           </p>
           <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
             <!-- Primary — the default, strong call-to-action -->
@@ -236,6 +238,12 @@ import { Badge } from '@/components/ui/badge';
             <Button label="Secondary" href="#" variant="secondary" />
             <!-- Disabled — shown at 40% opacity, no hover, no pointer -->
             <Button label="Disabled" href="#" variant="primary" disabled={true} />
+            <!-- Icon left — pass any SVG string; arrow is replaced by the icon on the left -->
+            <Button
+              label="Reset"
+              variant="secondary"
+              icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
+            />
           </div>
           <pre class="sg-code"><code>import Button from '../components/Button.astro';
 
@@ -246,7 +254,10 @@ import { Badge } from '@/components/ui/badge';
 &lt;Button label="Download Resume" href="/resume.pdf" variant="secondary" download=&#123;true&#125; /&gt;
 
 &lt;!-- Disabled --&gt;
-&lt;Button label="Coming Soon" href="#" variant="primary" disabled=&#123;true&#125; /&gt;</code></pre>
+&lt;Button label="Coming Soon" href="#" variant="primary" disabled=&#123;true&#125; /&gt;
+
+&lt;!-- Icon left (no href = renders as &lt;button&gt;, not &lt;a&gt;) --&gt;
+&lt;Button label="Reset" variant="secondary" icon='&lt;svg ...&gt;...&lt;/svg&gt;' /&gt;</code></pre>
         </div>
 
 

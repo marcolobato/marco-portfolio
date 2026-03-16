@@ -73,12 +73,15 @@ const posts = (await getCollection('writing')).sort(
          ===================================================================== -->
     <section class="hero">
       <div class="container">
-        <!-- h1 inherits lemon color + bold weight + tight leading from global.css -->
-        <h1 class="hero-name">Marco Lobato</h1>
-
         <!-- AvatarScratcher replaces the static hero photo.
              Click + drag to scratch away the top image and reveal a second expression. -->
         <AvatarScratcher />
+
+        <!-- h1 inherits lemon color + bold weight + tight leading from global.css -->
+        <h1 class="hero-name">Marco Lobato</h1>
+
+        <!-- Subtitle — uses .hero-title from global.css: royal blue, medium weight -->
+        <p class="hero-title">Product and User Experience Designer Specialized in AI-Powered Products</p>
 
         <p class="hero-intro">
           I'm a product designer who works at the intersection of emerging

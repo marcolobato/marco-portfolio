@@ -1,4 +1,5 @@
 ---
+import Button from './Button.astro';
 // AvatarScratcher.astro
 // A canvas-based scratch-to-reveal interaction for the hero photo.
 //
@@ -42,11 +43,18 @@
   <!-- Brush size: controls the radius of the eraser circle -->
   <label class="scratcher-label">
     Brush
-    <input type="range" id="brushSize" min="15" max="80" value="40" />
+    <input type="range" id="brushSize" min="15" max="80" value="20" />
   </label>
 
-  <!-- Reset: redraws the top image, restoring the scratch surface -->
-  <button class="scratcher-reset" id="resetCanvas">↺ Reset</button>
+  <!-- Reset: redraws the top image, restoring the scratch surface.
+       Uses Button.astro with icon-left variant — no href so it renders as <button>. -->
+  <span id="resetCanvas">
+    <Button
+      label="Reset"
+      variant="secondary"
+      icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
+    />
+  </span>
 
 </div>
 
@@ -140,22 +148,7 @@
     cursor: pointer;
   }
 
-  .scratcher-reset {
-    background: none;
-    border: 1px solid var(--color-slate);
-    border-radius: 6px;
-    padding: 4px 12px;
-    font-size: var(--text-sm);
-    font-family: inherit;
-    cursor: pointer;
-    color: var(--color-charcoal);
-    transition: border-color 0.2s ease, color 0.2s ease;
-  }
 
-  .scratcher-reset:hover {
-    border-color: var(--color-navy);
-    color: var(--color-navy);
-  }
 </style>
 
 

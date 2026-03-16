@@ -11,7 +11,10 @@
 //   variant  — "primary" or "secondary" (defaults to "primary")
 //   download — adds the HTML `download` attribute, triggering a file save instead of navigation
 //   disabled — greys out the button and prevents interaction
-const { label, href, variant = 'primary', download = false, disabled = false } = Astro.props;
+//   icon     — optional SVG string rendered on the LEFT of the label.
+//              When provided, the right-side arrow is hidden and the icon appears instead.
+//              Pass a raw SVG string, e.g. icon='<svg ...>...</svg>'
+const { label, href, variant = 'primary', download = false, disabled = false, icon } = Astro.props;
 ---
 
 <!--
@@ -22,6 +25,37 @@ const { label, href, variant = 'primary', download = false, disabled = false } =
   CSS rotates it -45deg at rest (pointing ↗) and 0deg on hover (pointing →).
 -->
 
+<style>
+  /*
+    WHY STYLES ARE HERE AND NOT IN global.css:
+    Something in the Tailwind/shadcn base layer generates a rule that overrides
+    .btn--secondary:hover in global.css regardless of specificity.
+
+    Astro's scoped styles are the solution: Astro adds a unique data attribute
+    (like data-astro-cid-abc123) to every element this component renders, then
+    injects that attribute into these CSS selectors automatically. The result is
+    a selector like `.btn--secondary:hover[data-astro-cid-abc123]` which has
+    higher specificity than any plain class-based rule in global.css or Tailwind.
+
+    .cls-... (scoped) = guaranteed to win over global CSS for THIS component's elements.
+  */
+
+  /* Light mode hover — border and text shift to navy */
+  .btn--secondary:hover {
+    border-color: var(--color-navy);
+    color: var(--color-navy);
+  }
+
+  /* Dark mode hover — border and text lighten to near-white.
+     :global() tells Astro: don't scope [data-theme="dark"] (it lives on <html>),
+     but DO scope .btn--secondary:hover (it lives on the button element). */
+  :global([data-theme="dark"]) .btn--secondary:hover {
+    background-color: rgba(160, 175, 181, 0.2);
+    border-color: var(--color-heading);
+    color: var(--color-heading);
+  }
+</style>
+
 {href ? (
   <a
     href={disabled ? undefined : href}
@@ -30,19 +64,35 @@ const { label, href, variant = 'primary', download = false, disabled = false } =
     aria-disabled={disabled ? 'true' : undefined}
     tabindex={disabled ? -1 : undefined}
   >
+    {/* If an icon was passed: render it on the left and skip the arrow */}
+    {icon
+      ? <Fragment set:html={`<span class="btn-icon-left" aria-hidden="true">${icon}</span>`} />
+      : null
+    }
     {label}
-    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M2 8H14M9 3L14 8L9 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    {/* Only show the arrow when there is no left icon */}
+    {!icon &&
+      <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 8H14M9 3L14 8L9 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    }
   </a>
 ) : (
   <button
     class={`btn btn--${variant}${disabled ? ' btn--disabled' : ''}`}
     disabled={disabled ? true : undefined}
   >
+    {/* If an icon was passed: render it on the left and skip the arrow */}
+    {icon
+      ? <Fragment set:html={`<span class="btn-icon-left" aria-hidden="true">${icon}</span>`} />
+      : null
+    }
     {label}
-    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M2 8H14M9 3L14 8L9 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    {/* Only show the arrow when there is no left icon */}
+    {!icon &&
+      <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 8H14M9 3L14 8L9 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    }
   </button>
 )}

@@ -307,10 +307,12 @@ hr {
   color: var(--color-charcoal);
 }
 
-/* Secondary hover — fill goes white, border darkens to charcoal */
-.btn--secondary:hover {
-  background-color: var(--color-white);
-  border-color: var(--color-charcoal);
+/* Secondary hover — border and text shift to navy, background stays.
+   Uses .btn.btn--secondary:hover (specificity 0,3,0) instead of .btn--secondary:hover (0,2,0)
+   to beat the dark-mode rule [data-theme="dark"] .btn--secondary (also 0,2,0, but later in file). */
+.btn.btn--secondary:hover {
+  border-color: var(--color-navy);
+  color: var(--color-navy);
 }
 
 /* Arrow icon — the SVG inside every button */
@@ -324,6 +326,19 @@ hr {
 /* On hover: arrow returns to 0deg so it points → (right) */
 .btn:hover .btn-arrow {
   transform: rotate(0deg);
+}
+
+/* Left icon — rendered before the label when the `icon` prop is passed to Button.astro.
+   No rotation animation — utility icons like ↺ reset should stay static. */
+.btn-icon-left {
+  display: inline-flex;           /* keeps the SVG vertically centered with the text */
+  align-items: center;
+  flex-shrink: 0;                 /* prevents squishing if the button is in a tight space */
+}
+
+.btn-icon-left svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* shadcn buttons don't include cursor-pointer in their Tailwind base classes.
@@ -1219,6 +1234,23 @@ code {
   background-color: var(--color-heading);    /* #E8EDFF in dark — near-white for strong hover */
   border-color: var(--color-heading);
   color: var(--color-navy);
+}
+
+/* Secondary button in dark mode.
+   Problem: --color-charcoal (#3C2F39) is invisible on the dark navy surface,
+   and the light-mode hover (--color-white = #0B1229 in dark) barely changes.
+   Fix: use --color-heading for readable text, glass-like tint for background
+   (same pattern as carousel buttons), and lighten the border on hover. */
+[data-theme="dark"] .btn--secondary {
+  background-color: rgba(160, 175, 181, 0.1); /* slate at 10% — subtle tint, not loud */
+  border-color: var(--color-slate);
+  color: var(--color-heading);               /* #E8EDFF in dark — near-white, legible */
+}
+
+[data-theme="dark"] .btn.btn--secondary:hover {
+  background-color: rgba(160, 175, 181, 0.2); /* slightly more opaque — clear hover signal */
+  border-color: var(--color-heading);          /* border lightens to near-white on hover */
+  color: var(--color-heading);
 }
 
 /* Carousel buttons: in dark mode, the charcoal background flips to a light grey

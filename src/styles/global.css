@@ -1325,6 +1325,14 @@ code {
   line-height: var(--leading-relaxed);
 }
 
+.about-closer {
+  /* Italic sign-off — inherits body text color to maintain contrast.
+     Italic alone is enough to visually separate it from the paragraph above. */
+  font-style: italic;
+  margin-top: var(--space-md);
+  margin-bottom: 0;
+}
+
 /* Video column --------------------------------------------------------------- */
 
 .about-video {

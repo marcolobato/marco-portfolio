@@ -1224,7 +1224,7 @@ code {
 }
 
 .expertise-desc {
-  max-width: 72ch;
+  max-width: 52ch;
   margin-bottom: var(--space-2xl);
 }
 

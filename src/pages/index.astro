@@ -139,6 +139,34 @@ const posts = (await getCollection('writing')).sort(
 
 
     <!-- =====================================================================
+         EXPERTISE
+         A labeled section with a heading, short paragraph, and image carousel.
+         The carousel component handles all slide navigation logic.
+         ===================================================================== -->
+    <section class="expertise" id="expertise">
+      <div class="container">
+
+        <SectionLabel label="Expertise" />
+
+        <h2 class="expertise-heading">
+          Interaction and User-Centric Product Design
+        </h2>
+
+        <p class="expertise-desc">
+          I have always worked at the edge of new technology, where the biggest
+          design decisions are still open. My work spans the full arc: from early
+          research and prototyping to shipping experiences at scale, across platforms,
+          modalities, and domains.
+        </p>
+
+        <!-- Carousel — 7 slides, arrow + dot navigation, no auto-scroll -->
+        <Carousel />
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
          WORK
          One featured area with two project cards.
          Image areas are placeholders — replace src and alt when ready.
@@ -165,34 +193,6 @@ const posts = (await getCollection('writing')).sort(
 
         </div><!-- /.cards -->
       </div><!-- /.container -->
-    </section>
-
-
-    <!-- =====================================================================
-         EXPERTISE
-         A labeled section with a heading, short paragraph, and image carousel.
-         The carousel component handles all slide navigation logic.
-         ===================================================================== -->
-    <section class="expertise" id="expertise">
-      <div class="container">
-
-        <SectionLabel label="Expertise" />
-
-        <h2 class="expertise-heading">
-          Interaction and User-Centric Product Design
-        </h2>
-
-        <p class="expertise-desc">
-          I have always worked at the edge of new technology, where the biggest
-          design decisions are still open. My work spans the full arc: from early
-          research and prototyping to shipping experiences at scale, across platforms,
-          modalities, and domains.
-        </p>
-
-        <!-- Carousel — 7 slides, arrow + dot navigation, no auto-scroll -->
-        <Carousel />
-
-      </div>
     </section>
 
 

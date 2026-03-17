@@ -660,7 +660,6 @@ hr {
 /* WORK SECTION */
 .work {
   padding-block: var(--space-3xl);
-  background-color: var(--color-surface); /* subtle off-white panel separates work from hero */
 }
 
 .area-heading {
@@ -1216,6 +1215,7 @@ code {
 
 .expertise {
   padding-block: var(--space-3xl);
+  background-color: var(--color-surface); /* subtle off-white panel alternates section rhythm */
 }
 
 .expertise-heading {

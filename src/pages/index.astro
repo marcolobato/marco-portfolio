@@ -113,28 +113,26 @@ const posts = (await getCollection('writing')).sort(
 
         <div class="about-inner">
 
-          <!-- Text column — role title + descriptive paragraph -->
-          <div class="about-text">
-            <!-- "The Tech Weaver" — the role/subtitle, styled in royal blue -->
-            <p class="about-role">The Tech Weaver</p>
-
-            <p class="about-body">
-              I help teams weave technology into their products where it truly
-              matters. Through thoughtful iteration and prototyping, I guide teams
-              in shaping intuitive tools that feel tailor-made. When we get user
-              insights right, we can shape experiences that feel natural, the kind
-              you can't wait to share with a friend.
-            </p>
-          </div>
-
-          <!-- Video column — native video player with browser controls -->
-          <!-- controls: shows play/pause, volume, scrubber — no JS needed  -->
-          <!-- preload="metadata": loads only duration + first frame on page load -->
-          <video class="about-video" controls preload="metadata">
+          <!-- Video column — silent autoplay loop, no controls.
+               autoplay: starts playing immediately on page load.
+               loop: restarts when it reaches the end — like a GIF.
+               muted: required for autoplay to work in all browsers.
+               playsinline: prevents iOS from going full-screen automatically. -->
+          <video class="about-video" autoplay loop muted playsinline>
             <source src="/tsocial_lobatoux.mp4" type="video/mp4" />
-            <!-- Fallback text shown only if the browser can't play the video at all -->
             Your browser does not support the video tag.
           </video>
+
+          <!-- Text column — role title + short paragraph -->
+          <div class="about-text">
+            <p class="about-role">I go by the Tech Weaver</p>
+
+            <p class="about-body">
+              I sit between the teams building the technology and the people
+              it's built for, prototyping until the two feel inseparable.
+              The result is a product they can't wait to show someone.
+            </p>
+          </div>
 
         </div><!-- /.about-inner -->
       </div><!-- /.container -->
@@ -258,6 +256,18 @@ const posts = (await getCollection('writing')).sort(
     <div class="footer-spacer">
       <Footer />
     </div>
+
+    <!-- Accessibility: respect the user's system "Reduce Motion" setting.
+         If enabled, the about video is paused instead of autoplaying.
+         window.matchMedia mirrors the same media query you can write in CSS.
+         This script runs after the page loads (Astro defers all scripts by default),
+         so the video element is guaranteed to exist in the DOM by the time it runs. -->
+    <script>
+      const video = document.querySelector('.about-video') as HTMLVideoElement;
+      if (video && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        video.pause();
+      }
+    </script>
 
   </body>
 </html>

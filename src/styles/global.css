@@ -1302,18 +1302,18 @@ code {
 }
 
 .about-inner {
-  /* CSS Grid: two equal columns side by side on desktop */
+  /* Asymmetric grid: video gets ~2/3 of the width, text gets ~1/3 */
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: var(--space-2xl);
-  align-items: start; /* align tops of both columns, not centers */
+  align-items: center; /* vertically center the short text block beside the taller video */
 }
 
 /* Text column ---------------------------------------------------------------- */
 
 .about-role {
-  /* The "The Tech Weaver" subtitle — smaller than h2, styled like a label/role */
-  font-size: var(--text-2xl);
+  /* Matches .hero-title size for consistent type hierarchy across sections */
+  font-size: var(--text-xl);
   font-weight: var(--weight-medium);
   color: var(--color-royal-blue);
   margin-bottom: var(--space-md);
@@ -1345,7 +1345,7 @@ code {
 
 @media (max-width: 768px) {
   .about-inner {
-    /* Switch from 2 columns to 1 column — text stacks above video */
+    /* Collapse to single column — video on top, text below */
     grid-template-columns: 1fr;
     gap: var(--space-xl);
   }

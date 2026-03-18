@@ -25,6 +25,12 @@ If a task requires a component that does NOT exist in the styleguide, you must:
 2. Wait for confirmation before proceeding.
 3. If yes, build it in the styleguide first, then use it in the project.
 
+## Git Workflow
+
+- Commit after each meaningful, working change — not at the end of a long session.
+- Remind Marco to commit if several changes have been made without a commit.
+- Keep commit messages short and descriptive in plain English.
+
 ## Rules
 
 - Never introduce a new component without checking the styleguide first.

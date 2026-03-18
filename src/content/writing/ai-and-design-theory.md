@@ -7,7 +7,7 @@ image: "/images/writing/ai-and-design-theory/01-cover.png"
 
 ## Introduction: From Curiosity to Concept
 
-I've been using the WHOOP tracker for years to monitor daily strain and recovery, which helps guide the intensity of my workouts. While the band itself has no display, the iPhone widget shows your daily strain and recovery percentages using a combination of rings and numeric values. It works well, but lacks icons or labels that could make the widget easier to interpret at a glance.
+I've been using the [WHOOP tracker](http://whoop.com/) for years to monitor daily strain and recovery, which helps guide the intensity of my workouts. While the band itself has no display, the iPhone widget shows your daily strain and recovery percentages using a combination of rings and numeric values. It works well, but lacks icons or labels that could make the widget easier to interpret at a glance.
 
 Because those values can mean different things depending on your training focus — a strain score of 18 out of 21 might be ideal during a peak week but signal overtraining during a recovery phase — this nuance becomes harder to read without supporting text. While the main app includes helpful labels, the widget doesn't, which makes quick visual interpretation more difficult.
 
@@ -20,7 +20,7 @@ In this experiment, I explored how to use ChatGPT as a collaborator to apply sem
 
 ## The Context: Why This, Why Now
 
-The spark for this experiment came from a simple observation: the WHOOP iOS home screen widget doesn't use specific icons for strain and recovery. As someone who checks the iOS widget regularly and doesn't want to get distracted opening apps, I realized that without labels, I had to interpret the strain value and remember the focus of my training for the week — or open the app to interpret the number correctly. WHOOP Strain uses a simple 0–21 scale, but the meaning behind that number isn't always so straightforward to interpret.
+The spark for this experiment came from a simple observation: the WHOOP iOS home screen widget doesn't use specific icons for strain and recovery. As someone who checks the iOS widget regularly and doesn't want to get distracted opening apps, I realized that without labels, I had to interpret the strain value and remember the focus of my training for the week — or open the app to interpret the number correctly. [WHOOP Strain](https://www.whoop.com/us/en/thelocker/how-does-whoop-strain-work-101/) uses a simple 0–21 scale, but the meaning behind that number isn't always so straightforward to interpret.
 
 ![WHOOP Strain Scale in-app explainer](/images/writing/ai-and-design-theory/03-strain-scale.png)
 *WHOOP Strain Scale in-app explainer including icons to represent ranges.*
@@ -89,7 +89,7 @@ ChatGPT suggested that I generate a semiotic table to align metaphors with their
 ![Semiotic mapping table](/images/writing/ai-and-design-theory/13-semiotic-mapping-table.png)
 *Semiotic mapping table comparing each strain state with its metaphor, icon combination, and intended meaning.*
 
-Once that foundation was in place, I turned to MidJourney's new Draft and Conversational Mode — which felt almost like sketching with a friend. Unlike traditional, prompt-heavy workflows, this new mode let me build ideas quickly and naturally. I could refine visual styles on the fly and merge shapes with metaphor in a way that felt smooth and kept my creative flow going.
+Once that foundation was in place, I turned to MidJourney's new [Draft and Conversational Mode](https://docs.midjourney.com/hc/en-us/articles/35577175650957-Draft-Conversational-Modes) — which felt almost like sketching with a friend. Unlike traditional, prompt-heavy workflows, this new mode let me build ideas quickly and naturally. I could refine visual styles on the fly and merge shapes with metaphor in a way that felt smooth and kept my creative flow going.
 
 In this step I also eliminated color entirely, and the optimal bullseye icon appeared to still communicate meaning through its geometry. The feather nested inside a shield — originally in a blue circle — now conveyed protection.
 
@@ -100,7 +100,7 @@ This flexible workflow allowed me to move quickly from metaphor to icon, and rea
 
 ### 7. Prototyping
 
-To test the effectiveness of my icons in context, I used Firebase Studio — a prototyping tool recently enhanced with AI that lets you build simple interactive apps using natural language prompts. With a single prompt, I created a widget prototype that displays a random strain value and updates dynamically on refresh.
+To test the effectiveness of my icons in context, I used [Firebase Studio](https://firebase.studio/) — a prototyping tool recently enhanced with AI that lets you build simple interactive apps using natural language prompts. With a single prompt, I created a widget prototype that displays a random strain value and updates dynamically on refresh.
 
 While there's still much for me to learn about Firebase Studio, this was more than enough to test the usability and clarity of my icon system. The result felt like a functional preview of what could live in a WHOOP widget I could show to people.
 

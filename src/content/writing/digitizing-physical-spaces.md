@@ -11,7 +11,7 @@ After launching my week of Tiny Experiments, I wanted to dive into the first one
 
 ## Why Start with Matterport?
 
-Driven by a curiosity about the state of mobile scanning tools — and more specifically how 3D apps perform on mobile — I explored Matterport's Mobile app, focusing on their onboarding. I wanted to teach myself more about digital twin creation and how well the mobile app stacks up against their professional-grade tools. Could it be enough to share a scan of my office with an architect or interior designer?
+Driven by a curiosity about the state of mobile scanning tools — and more specifically how 3D apps perform on mobile — I explored [Matterport's Mobile app](https://matterport.com/3d-camera-app), focusing on their onboarding. I wanted to teach myself more about digital twin creation and how well the mobile app stacks up against their professional-grade tools. Could it be enough to share a scan of my office with an architect or interior designer?
 
 Matterport's app lets users scan real-world spaces and create digital twins — interactive 3D models you can view, edit, or share. It's a fascinating blend of AR, mobile UX, and professional tooling for industries like real estate, architecture, and construction.
 
@@ -19,7 +19,7 @@ Matterport's app lets users scan real-world spaces and create digital twins — 
 
 While exploring Matterport's onboarding flow, I observed that the process could benefit from streamlining to enhance user engagement. The current sequence felt prolonged, potentially hindering users from quickly achieving their primary goal: capturing their first digital twin.
 
-Drawing from my experience, effective onboarding should minimize friction and guide users seamlessly toward their objectives. For instance, Halide, a professional iOS camera app I downloaded over my holiday break, exemplifies this approach. Its email-based tutorial focused on one thing to try and learn at a time.
+Drawing from my experience, effective onboarding should minimize friction and guide users seamlessly toward their objectives. For instance, [Halide](https://halide.cam), a professional iOS camera app I downloaded over my holiday break, exemplifies this approach. Its email-based tutorial focused on one thing to try and learn at a time.
 
 ![Halide tutorial showing the exposure adjustment gesture on a camera viewfinder screen](/images/writing/digitizing-physical-spaces/02-halide-tutorial.png)
 *Halide's onboarding: teaching one interaction at a time, like adjusting exposure with a simple swipe gesture.*
@@ -114,7 +114,7 @@ I approached this onboarding exercise in the same spirit.
 
 I set up my iOS tools to reconstruct the flow from scratch, swapping in different components, reinterpreting the experience through Apple's design language. It helped me distill the workflow down to its essence, as if I were guiding someone else through it step-by-step.
 
-This experiment deepened my interest in designing tools that bridge the physical and digital — tools that help people scan, manipulate, and interact with 3D spaces and Digital Twins.
+This experiment deepened my interest in designing tools that bridge the physical and digital — tools that help people scan, manipulate, and interact with 3D spaces and [Digital Twins](https://matterport.com/learn/digital-twin/overview).
 
 Have you worked on anything like this? I'd love to swap notes, jam on ideas, and find more examples.
 

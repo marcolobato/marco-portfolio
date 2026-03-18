@@ -141,59 +141,34 @@ const posts = (await getCollection('writing')).sort(
 
 
     <!-- =====================================================================
-         EXPERTISE
-         A labeled section with a heading, short paragraph, and image carousel.
-         The carousel component handles all slide navigation logic.
-         ===================================================================== -->
-    <section class="expertise" id="expertise">
-      <div class="container">
-
-        <SectionLabel label="Expertise" />
-
-        <h2 class="expertise-heading">
-          Interaction and User-Centric Product Design
-        </h2>
-
-        <p class="expertise-desc">
-          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored. My work spans the full arc, from early research and prototyping to shipping experiences at scale, across many platforms and interaction modalities.
-        </p>
-
-        <!-- Carousel — 7 slides, arrow + dot navigation, no auto-scroll -->
-        <Carousel />
-
-      </div>
-    </section>
-
-
-    <!-- =====================================================================
          WORK
-         One featured area with two project cards.
-         Image areas are placeholders — replace src and alt when ready.
+         Featured cards + carousel merged into one section.
          ===================================================================== -->
     <section class="work" id="work">
       <div class="container">
 
-        <!-- Section label — small, uppercase, spaced lettering -->
         <SectionLabel label="Selected Work" />
 
-        <!-- Area heading — groups the two cards under a shared theme -->
         <h2 class="area-heading">Beyond the Touchscreen</h2>
 
         <p class="work-desc">
           The thread across my work is keeping people in their flow. The best interfaces never pull you out of what you are doing. These projects go beyond apps. They shape the platform itself, making it work across every way people interact, not just touch. If you are building something where that is the goal, I would like to work on it with you.
         </p>
 
-        <!-- Cards grid — two cards side by side on wider screens -->
+        <!-- Featured project cards -->
         <div class="cards">
-
-          <!-- Card 1 -->
           <ProjectCard title="Setting Up Android Your Way, From the Very First Screen" image="/images/selected-work/selected-work-1.png" />
-
-          <!-- Card 2 -->
           <ProjectCard title="Using Your Phone Entirely by Voice, on Your Terms" image="/images/selected-work/selected-work-2.png" />
+        </div>
 
-        </div><!-- /.cards -->
-      </div><!-- /.container -->
+        <!-- More projects — carousel shows broader range -->
+        <p class="about-role">More Projects</p>
+        <p class="work-desc">
+          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored.
+        </p>
+        <Carousel />
+
+      </div>
     </section>
 
 

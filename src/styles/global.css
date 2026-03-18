@@ -709,6 +709,7 @@ hr {
 /* WORK SECTION */
 .work {
   padding-block: var(--space-3xl);
+  background-color: var(--color-surface);
 }
 
 .area-heading {
@@ -721,6 +722,11 @@ hr {
   max-width: 72ch;
   margin-bottom: var(--space-2xl);
   line-height: var(--leading-relaxed);
+}
+
+/* Spacing above "More Projects" label — only when it follows the cards grid */
+.cards + .about-role {
+  margin-top: var(--space-3xl);
 }
 
 /* Cards: side by side with equal width. gap adds space between them. */
@@ -739,7 +745,6 @@ hr {
 /* NOW / CURRENTLY BUILDING SECTION */
 .now {
   padding-block: var(--space-3xl);
-  background-color: var(--color-surface);
 }
 
 .now-heading {
@@ -762,12 +767,13 @@ hr {
    The Footer component itself has no margin-top — spacing is managed
    here so the component can be placed on any page without side effects. */
 .footer-spacer {
-  margin-top: var(--space-3xl);
+  margin-top: 0;
 }
 
 /* WRITING SECTION */
 .writing {
   padding-block: var(--space-3xl);
+  background-color: var(--color-surface);
 }
 
 .writing-heading {
@@ -1279,7 +1285,6 @@ code {
 
 .expertise {
   padding-block: var(--space-3xl);
-  background-color: var(--color-surface); /* subtle off-white panel alternates section rhythm */
 }
 
 .expertise-heading {

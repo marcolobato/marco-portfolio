@@ -16,16 +16,13 @@ const currentPath = Astro.url.pathname;
   <a href="/" class="nav-name">Marco Lobato</a>
 
   <ul class="nav-links">
-    <li><a href="/#about">About</a></li>
     <li><a href="/#work">Work</a></li>
-    <li><a href="/#now">Now</a></li>
-    <li><a href="/#writing">Writing</a></li>
     <li>
-      <!-- aria-current="page" highlights the active link for the current page -->
+      <!-- aria-current="page" highlights the active link when on the playground page -->
       <a
-        href="/styleguide"
-        aria-current={currentPath === '/styleguide' ? 'page' : undefined}
-      >Style Guide</a>
+        href="/playground"
+        aria-current={currentPath === '/playground' ? 'page' : undefined}
+      >Playground</a>
     </li>
     <li><a href="mailto:marcolobato.ux@gmail.com">Contact</a></li>
   </ul>

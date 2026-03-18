@@ -908,7 +908,25 @@ hr {
   font-size: var(--text-base);
   color: var(--color-charcoal);
   max-width: 40ch;
-  margin-bottom: 0;
+  margin-bottom: var(--space-md);
+}
+
+.sg-header-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sg-header-links a {
+  font-size: var(--text-sm);
+  color: var(--color-royal-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.sg-header-links a:hover {
+  color: var(--color-navy);
 }
 
 /* Sections */

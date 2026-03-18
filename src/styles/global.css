@@ -1140,6 +1140,7 @@ code {
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: var(--space-lg);
+  box-shadow: 0 4px 24px rgba(8, 31, 93, 0.08); /* subtle navy-tinted shadow — matches writing card hover */
 }
 
 /* Track — a single horizontal row that holds ALL slides.
@@ -1151,12 +1152,12 @@ code {
   transition: transform 0.4s ease;
 }
 
-/* Individual slide — exactly as wide as the viewport (100%).
-   flex: 0 0 100% means: don't grow, don't shrink, start at 100% wide.
-   position: relative lets the caption be absolutely positioned inside it. */
+/* Individual slide — full viewport width, styled as a unified card. */
 .carousel-slide {
   flex: 0 0 100%;
-  position: relative;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  overflow: hidden; /* clips image to the card's rounded corners */
 }
 
 /* Image area — sized to match the 1080×720 source images (3:2 ratio).
@@ -1168,8 +1169,8 @@ code {
   aspect-ratio: 3 / 2;
   object-fit: cover;       /* fills box without distorting — safe even if ratio ever varies */
   object-position: center; /* crop anchor: center of the image */
-  border-radius: 8px;
   display: block;          /* removes the small gap browsers add below inline images */
+  /* border-radius removed — the parent .carousel-slide card handles corner rounding */
 }
 
 /* Placeholder div only — these styles apply while the image area is still a <div>.
@@ -1193,42 +1194,32 @@ code {
    The gradient fades from dark navy at the bottom to transparent at the top,
    creating a readable backdrop for the text without hiding the whole image. */
 .carousel-slide-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: var(--space-xl);
-  /* gradient uses the navy brand color as rgba for the transparent-to-opaque effect */
-  background: linear-gradient(to top, rgba(8, 31, 93, 0.85) 0%, transparent 100%);
-  border-radius: 0 0 8px 8px;
+  /* Caption sits below the image in normal document flow — no overlay */
+  padding: var(--space-md) var(--space-xl);
 }
 
-/* Title in the caption — uses lemon because:
-   1. It never flips between light/dark mode (always #F1F11C)
-   2. It stands out clearly on the dark navy gradient
-   3. It matches the lemon section labels — a consistent brand signal */
 .carousel-slide-title {
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
-  color: var(--color-lemon);
+  color: var(--color-heading); /* heading color works on any background */
   line-height: var(--leading-tight);
   margin-bottom: var(--space-2xs);
 }
 
-/* Subtitle — slate is a medium grey that's always readable on a dark navy background,
-   in both light and dark mode (it doesn't change between themes). */
 .carousel-slide-subtitle {
   font-size: var(--text-base);
-  color: var(--color-slate);
+  color: var(--color-charcoal);
   margin-bottom: 0;
   max-width: none;
 }
 
-/* Controls row — arrows on the left, dots fill the remaining space and center */
+/* Controls row — 3-column grid: arrows left | dots centered | empty right.
+   This ensures dots are truly centered regardless of arrow width. */
 .carousel-controls {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: var(--space-lg);
+  margin-top: var(--space-lg);
 }
 
 /* Arrow button pair — keeps both buttons together on the left */
@@ -1238,25 +1229,25 @@ code {
   flex-shrink: 0; /* never compress — always show full buttons */
 }
 
-/* Individual arrow button — circular, 44×44px (minimum accessible tap target).
-   In light mode: charcoal background with near-white icon.
-   See dark mode override in section 15. */
+/* Individual arrow button — matches .btn--secondary style for design system consistency */
 .carousel-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  background-color: var(--color-charcoal); /* dark in light mode */
-  color: var(--color-surface);             /* near-white icon in light mode */
+  border-radius: 100px;                  /* pill shape — matches .btn */
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-slate);
+  color: var(--color-charcoal);
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .carousel-btn:hover {
-  background-color: var(--color-navy);
-  transform: scale(1.05);
+  border-color: var(--color-navy);
+  color: var(--color-navy);
+  background-color: rgba(8, 31, 93, 0.05);
 }
 
 /* Keyboard focus ring — visible outline so keyboard users know what's focused */
@@ -1265,13 +1256,16 @@ code {
   outline-offset: 2px;
 }
 
-/* Dots container — takes up remaining horizontal space and centers dots within it */
+/* Dots container — pill-shaped surface hugs the dots tightly */
 .carousel-dots {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-xs);
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-slate);
+  border-radius: 100px;
+  padding: var(--space-xs) var(--space-md);
 }
 
 /* Individual pagination dot */
@@ -1372,12 +1366,15 @@ code {
 /* Carousel buttons: in dark mode, the charcoal background flips to a light grey
    which would make the dark icon invisible. Override to a subtle glass-like button. */
 [data-theme="dark"] .carousel-btn {
-  background-color: rgba(160, 175, 181, 0.2); /* slate at 20% opacity — subtle, not loud */
-  color: var(--color-heading);                 /* #E8EDFF in dark — near-white for the icon */
+  background-color: rgba(160, 175, 181, 0.1);
+  border-color: var(--color-slate);
+  color: var(--color-heading);
 }
 
 [data-theme="dark"] .carousel-btn:hover {
-  background-color: rgba(160, 175, 181, 0.35); /* slightly more opaque on hover */
+  background-color: rgba(160, 175, 181, 0.2);
+  border-color: var(--color-heading);
+  color: var(--color-heading);
 }
 
 /* --- 18. Page layout — About section ---------------------------------------

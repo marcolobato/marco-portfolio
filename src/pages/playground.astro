@@ -351,20 +351,64 @@ import { Badge } from '@/components/ui/badge';
         <div class="sg-component">
           <h3 class="sg-component-title">Carousel</h3>
           <p class="sg-component-desc">
-            A manually controlled image carousel showing 7 slides. Users navigate
-            with the <strong>previous/next arrow buttons</strong> or by clicking
-            any <strong>pagination dot</strong> to jump directly to a slide.
-            No auto-scroll — the user is always in control, which is the correct
-            approach for accessibility (WCAG 2.2 guideline 2.2.2).
-            The arrow buttons and dots adapt to both light and dark mode using
-            color tokens. Keyboard users can also navigate with the left/right
-            arrow keys when the carousel is focused.
-            Replace each <code>carousel-slide-image</code> placeholder div with
-            an <code>&lt;img&gt;</code> tag when real assets are ready.
+            A manually controlled image carousel. Navigate with the
+            <strong>arrow buttons</strong> or click any <strong>pagination dot</strong>
+            to jump directly to a slide. Keyboard users can also use the left/right
+            arrow keys. No auto-scroll — the user is always in control
+            (WCAG 2.2 guideline 2.2.2). Each slide shows an image with a title and
+            subtitle caption below it. To update content, edit the
+            <code>slides</code> array at the top of <code>Carousel.astro</code>.
           </p>
-          <!-- Full-width preview — no padding so the carousel sits edge-to-edge -->
+          <!-- Documentation demo — 3 generic placeholder slides, fully interactive -->
           <div class="sg-component-preview">
-            <Carousel />
+            <div class="carousel" aria-roledescription="carousel" aria-label="Carousel demo">
+              <div class="carousel-viewport">
+                <div class="carousel-track">
+                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
+                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
+                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
+                    </div>
+                    <div class="carousel-slide-caption">
+                      <h3 class="carousel-slide-title">Slide Title</h3>
+                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
+                    </div>
+                  </div>
+                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
+                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
+                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
+                    </div>
+                    <div class="carousel-slide-caption">
+                      <h3 class="carousel-slide-title">Slide Title</h3>
+                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
+                    </div>
+                  </div>
+                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
+                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
+                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
+                    </div>
+                    <div class="carousel-slide-caption">
+                      <h3 class="carousel-slide-title">Slide Title</h3>
+                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-controls">
+                <div class="carousel-arrows">
+                  <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  </button>
+                  <button class="carousel-btn carousel-btn--next" aria-label="Next slide">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                </div>
+                <div class="carousel-dots" role="tablist" aria-label="Slide navigation">
+                  <button class="carousel-dot carousel-dot--active" role="tab" aria-selected="true" aria-label="Slide 1" data-index="0"></button>
+                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 2" data-index="1"></button>
+                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 3" data-index="2"></button>
+                </div>
+              </div>
+            </div>
           </div>
           <pre class="sg-code"><code>import Carousel from '../components/Carousel.astro';
 
@@ -510,6 +554,38 @@ Ghost     → --muted           (hover-only background, invisible at rest)</code
     </main>
 
     <Footer />
+
+    <!-- Initializes all carousels on this page, including the documentation demo -->
+    <script>
+      document.querySelectorAll('.carousel').forEach((carousel) => {
+        const track   = carousel.querySelector('.carousel-track') as HTMLElement;
+        const prevBtn = carousel.querySelector('.carousel-btn--prev') as HTMLButtonElement;
+        const nextBtn = carousel.querySelector('.carousel-btn--next') as HTMLButtonElement;
+        const dots    = carousel.querySelectorAll('.carousel-dot') as NodeListOf<HTMLButtonElement>;
+
+        let currentIndex = 0;
+        const total = dots.length;
+
+        function goToSlide(index: number) {
+          currentIndex = ((index % total) + total) % total;
+          track.style.transform = `translateX(-${currentIndex * 100}%)`;
+          dots.forEach((dot, i) => {
+            const isActive = i === currentIndex;
+            dot.classList.toggle('carousel-dot--active', isActive);
+            dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+        }
+
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+        dots.forEach((dot, i) => dot.addEventListener('click', () => goToSlide(i)));
+        carousel.addEventListener('keydown', (e: Event) => {
+          const key = (e as KeyboardEvent).key;
+          if (key === 'ArrowLeft')  { goToSlide(currentIndex - 1); e.preventDefault(); }
+          if (key === 'ArrowRight') { goToSlide(currentIndex + 1); e.preventDefault(); }
+        });
+      });
+    </script>
 
   </body>
 </html>

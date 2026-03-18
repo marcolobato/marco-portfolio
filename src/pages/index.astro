@@ -7,6 +7,7 @@
 // not via a <link> tag. Astro processes this import through its build pipeline.
 import '../styles/global.css';
 import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
@@ -23,41 +24,7 @@ const posts = (await getCollection('writing')).sort(
 );
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/png" href="/lobo-favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Marco Lobato — The Tech Weaver</title>
-
-    <!-- Fraunces from Google Fonts — loaded in two weights we use: 400 and 700 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- global.css is imported in the frontmatter above, not here -->
-
-    <!-- Anti-flash theme script — MUST be in <head> before any content renders.
-         is:inline tells Astro to keep this exactly as written (don't bundle it).
-         It runs synchronously so the correct data-theme is set before the browser
-         paints anything — no flash of the wrong theme. -->
-    <script is:inline>
-      (function () {
-        // Check if the user has manually chosen a theme before
-        var saved = localStorage.getItem('theme');
-        // If not, check their OS setting
-        var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        // Apply the saved preference, or fall back to the system setting
-        document.documentElement.setAttribute('data-theme', saved || sys);
-      })();
-    </script>
-  </head>
-
-  <body>
+<BaseLayout title="Marco Lobato — The Tech Weaver">
 
     <!-- =====================================================================
          NAV
@@ -248,8 +215,7 @@ const posts = (await getCollection('writing')).sort(
       }
     </script>
 
-  </body>
-</html>
+</BaseLayout>
 
 
 <!-- All styles live in src/styles/global.css — sections 7–11 -->

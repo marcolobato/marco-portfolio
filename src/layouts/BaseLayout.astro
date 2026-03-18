@@ -1,0 +1,49 @@
+---
+// BaseLayout.astro — shared page shell for every page on the site.
+// Every page passes a `title` prop; the rest of the <head> is identical everywhere.
+//
+// Usage:
+//   <BaseLayout title="Page Title — Marco Lobato">
+//     <!-- your page body content here -->
+//   </BaseLayout>
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/lobo-favicon.png" />
+
+    <!-- Fraunces from Google Fonts — loaded in the weights we use: 400, 500, 700 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Anti-flash theme script — MUST be in <head> before any content renders.
+         is:inline keeps this exactly as written (not bundled).
+         Runs synchronously so the correct data-theme is set before the browser
+         paints anything — prevents a flash of the wrong theme on load. -->
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', saved || sys);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <!-- Each page provides its own content via this slot -->
+    <slot />
+  </body>
+</html>

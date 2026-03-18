@@ -4,6 +4,7 @@
 // Every color, type style, and component shown here is the real thing —
 // built with the same tokens and global styles used across the whole site.
 import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
@@ -15,31 +16,7 @@ import { Button as ShadcnButton } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Playground — Marco Lobato</title>
-    <link rel="icon" type="image/png" href="/lobo-favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,400&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Anti-flash theme script — MUST be in <head> before any content renders.
-         is:inline tells Astro to keep this exactly as written (don't bundle it). -->
-    <script is:inline>
-      (function () {
-        var saved = localStorage.getItem('theme');
-        var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', saved || sys);
-      })();
-    </script>
-  </head>
-
-  <body>
+<BaseLayout title="Playground — Marco Lobato">
 
     <Nav />
 
@@ -624,8 +601,7 @@ Ghost     → --muted           (hover-only background, invisible at rest)</code
       });
     </script>
 
-  </body>
-</html>
+</BaseLayout>
 
 
 <!-- All styles live in src/styles/global.css — sections 7–12 -->

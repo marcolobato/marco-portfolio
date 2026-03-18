@@ -153,7 +153,7 @@ const posts = (await getCollection('writing')).sort(
         </h2>
 
         <p class="expertise-desc">
-          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored. My work spans the full arc: from early research and prototyping to shipping experiences at scale, across platforms, modalities, and domains.
+          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored. My work spans the full arc, from early research and prototyping to shipping experiences at scale, across many platforms and interaction modalities.
         </p>
 
         <!-- Carousel — 7 slides, arrow + dot navigation, no auto-scroll -->
@@ -175,18 +175,20 @@ const posts = (await getCollection('writing')).sort(
         <SectionLabel label="Selected Work" />
 
         <!-- Area heading — groups the two cards under a shared theme -->
-        <h2 class="area-heading">
-          Designing distraction-free<br />multimodal interfaces
-        </h2>
+        <h2 class="area-heading">Beyond the Touchscreen</h2>
+
+        <p class="work-desc">
+          The thread across my work is keeping people in their flow. The best interfaces never pull you out of what you are doing. These projects go beyond apps. They shape the platform itself, making it work across every way people interact, not just touch. If you are building something where that is the goal, I would like to work on it with you.
+        </p>
 
         <!-- Cards grid — two cards side by side on wider screens -->
         <div class="cards">
 
           <!-- Card 1 -->
-          <ProjectCard title="Making Android setup accessible from day one" image="/images/selected-work/selected-work-1.png" />
+          <ProjectCard title="Setting Up Android Your Way, From the Very First Screen" image="/images/selected-work/selected-work-1.png" />
 
           <!-- Card 2 -->
-          <ProjectCard title="Keeping people in flow with smarter, more reliable voice interactions" image="/images/selected-work/selected-work-2.png" />
+          <ProjectCard title="Using Your Phone Entirely by Voice, on Your Terms" image="/images/selected-work/selected-work-2.png" />
 
         </div><!-- /.cards -->
       </div><!-- /.container -->
@@ -194,19 +196,25 @@ const posts = (await getCollection('writing')).sort(
 
 
     <!-- =====================================================================
-         NOW
-         A single honest paragraph about what I'm doing right now.
+         CURRENTLY BUILDING
+         A section label, heading, and paragraph about active work.
          ===================================================================== -->
     <section class="now" id="now">
       <div class="container">
         <div style="display: flex; align-items: baseline; gap: var(--space-sm);">
-          <SectionLabel label="Now" />
+          <SectionLabel label="Currently Building" />
           <Badge>New</Badge>
         </div>
+        <h2 class="now-heading">Playground</h2>
         <p class="now-text">
-          Right now I'm tinkering with AI, building prototypes for experiences
-          and tools that take advantage of what's newly possible.
+          I am building in public here. If you are working on the future of
+          consumer electronic interfaces or AI-powered products, let's talk.
+          This playground grows over time, starting with the design system
+          behind this site and expanding into prototypes as they take shape.
         </p>
+        <div class="now-actions">
+          <Button label="Visit the playground" href="/styleguide" variant="primary" />
+        </div>
       </div>
     </section>
 
@@ -218,11 +226,8 @@ const posts = (await getCollection('writing')).sort(
          ===================================================================== -->
     <section class="writing" id="writing">
       <div class="container">
-        <SectionLabel label="Writing" />
-        <h2 class="writing-heading">Tiny Experiments</h2>
-        <p class="writing-desc">
-          Hands-on UX explorations and the lessons I uncover along the way.
-        </p>
+        <SectionLabel label="Notes" />
+        <h2 class="writing-heading">Learning in Public</h2>
 
         <div class="writing-cards">
           {posts.map(post => (

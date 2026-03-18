@@ -131,7 +131,8 @@ a {
   --accent-foreground:    var(--color-navy);
 
   /* Destructive — error red. No brand equivalent, keep shadcn default */
-  --destructive:          oklch(0.577 0.245 27.325);
+  --destructive:            oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--color-white); /* white text on red background */
 
   /* Borders, inputs, and focus rings */
   --border:               var(--color-slate);
@@ -1533,6 +1534,7 @@ code {
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);

@@ -56,7 +56,7 @@ const { Content } = await render(post);
       <div class="post-container">
 
         <!-- Back link -->
-        <a href="/#writing" class="post-back">← Writing</a>
+        <a href="/#writing" class="post-back">← Notes</a>
 
         <!-- Post header -->
         <header class="post-header">
@@ -65,7 +65,6 @@ const { Content } = await render(post);
             {post.data.date.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
           <h1 class="post-title">{post.data.title}</h1>
-          <p class="post-description">{post.data.description}</p>
         </header>
 
         <!-- Cover image — shown if the post's frontmatter includes an `image` field -->
@@ -136,6 +135,38 @@ const { Content } = await render(post);
   .post-body h3 { margin-top: var(--space-xl);  margin-bottom: var(--space-sm); }
   .post-body p  { line-height: var(--leading-loose); }
 
+  /* Links — mirrors the .text-link component from the design system.
+     :global() is needed because <a> tags come from rendered markdown
+     and don't receive Astro's scope attribute. */
+  :global(.post-body a) {
+    color: var(--color-royal-blue);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  :global(.post-body a:hover) {
+    color: var(--color-heading);
+    text-decoration: underline;
+  }
+
+  /* Restore bullets and numbers — the global reset strips these from all lists.
+     :global() is required here because <ul> and <li> come from rendered markdown
+     via <Content />, so they don't receive Astro's scope attribute. Without
+     :global(), the scoped selector won't match those elements. */
+  :global(.post-body ul) {
+    list-style: disc;
+    padding-left: var(--space-xl);
+    margin-bottom: var(--space-md);
+  }
+  :global(.post-body ol) {
+    list-style: decimal;
+    padding-left: var(--space-xl);
+    margin-bottom: var(--space-md);
+  }
+  :global(.post-body li) {
+    line-height: var(--leading-loose);
+    margin-bottom: var(--space-xs);
+  }
+
   /* Cover image — full width, rounded, sits between the header and the body */
   .post-cover {
     width: 100%;
@@ -154,12 +185,16 @@ const { Content } = await render(post);
     display: block;
   }
 
-  /* Caption — the italic <em> text that follows each image.
-     Smaller, muted, tight top margin so it hugs the image. */
-  .post-body img + p > em:only-child {
+  /* Caption — the italic <em> text that follows each image or video.
+     Uses the UI text style: --text-xs + letter-spacing + slate color.
+     The selector matches a paragraph containing only an <em> that comes
+     right after an <img> or after any element (for video captions). */
+  .post-body img + p > em:only-child,
+  .post-body video + p > em:only-child {
     display: block;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     color: var(--color-slate);
+    letter-spacing: 0.08em;
     margin-top: var(--space-xs);
     margin-bottom: var(--space-xl);
     line-height: var(--leading-relaxed);

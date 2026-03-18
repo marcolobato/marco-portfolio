@@ -5,11 +5,11 @@ description: "On why showing unfinished work is more useful than waiting for the
 image: "/images/writing/turnform-1.png"
 ---
 
-After reading the book *Tiny Experiments* by Anne-Laure Le Cunff, I started noticing patterns in my design interests — skills I wanted to sharpen and questions that kept resurfacing. I've always believed in learning by doing. So with my growing interest in how AI can support design, I framed this hypothesis:
+After reading the book [*Tiny Experiments* by Anne-Laure Le Cunff](https://nesslabs.com/book), I started noticing patterns in my design interests — skills I wanted to sharpen and questions that kept resurfacing. I've always believed in learning by doing. So with my growing interest in how AI can support design, I framed this hypothesis:
 
 > Using AI to explore design areas where I want to deepen my understanding could accelerate my discovery of the products and industries I'd most like to contribute to.
 
-This idea energized me. I quickly drafted a PACT goal: over one week, I'll explore five tech products I'm curious about and design an improvement for each — learning by making, reflecting, and sharing.
+This idea energized me. I quickly drafted a [PACT goal](https://nesslabs.com/smart-goals-pact): over one week, I'll explore five tech products I'm curious about and design an improvement for each — learning by making, reflecting, and sharing.
 
 ## Why Tiny Experiments?
 
@@ -62,8 +62,8 @@ Let's dive in.
 
 ## More in this series
 
-- My First Tiny Experiment: Onboarding that Builds Momentum
-- Can AI Teach Design Theory? Designing Strain and Recovery Icons for my Fitness Wearable
+- [My First Tiny Experiment: Digitizing Physical Spaces](/writing/digitizing-physical-spaces)
+- [Can AI Teach Design Theory: Designing Strain and Recovery Icons for my Fitness Wearable](/writing/ai-and-design-theory)
 - *Coming soon…*
 
 *I'll update this list as I publish each article.*

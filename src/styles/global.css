@@ -362,6 +362,22 @@ hr {
   pointer-events: none;         /* Blocks clicks and prevents hover styles from firing */
 }
 
+/* Text Link — inline hyperlinks used in body copy and navigation lists.
+   Royal blue at rest, heading color on hover (--color-heading auto-flips:
+   navy in light mode, near-white in dark mode — always legible).
+   No underline at rest to keep prose clean; underline on hover as a clear
+   interactive signal. Transition matches the button's 0.2s ease timing. */
+.text-link {
+  color: var(--color-royal-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.text-link:hover {
+  color: var(--color-heading);
+  text-decoration: underline;
+}
+
 /* --- 9. Project Card --------------------------------------------------------
    Used in the Work section to display a single project.
    flex: 1 on .card means all cards in a flex row share space equally.
@@ -919,14 +935,9 @@ hr {
 }
 
 .sg-header-links a {
+  /* Color and hover behavior come from .text-link in global.css.
+     The <a> tags in this list also carry the .text-link class in the HTML. */
   font-size: var(--text-sm);
-  color: var(--color-royal-blue);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.sg-header-links a:hover {
-  color: var(--color-navy);
 }
 
 /* Sections */

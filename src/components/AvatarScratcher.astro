@@ -41,6 +41,7 @@ import Button from './Button.astro';
     id="scratchHint"
     viewBox="0 0 200 200"
     xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
     aria-label="scratch the surface"
   >
     <defs>
@@ -72,7 +73,7 @@ import Button from './Button.astro';
         The browser measures the arc length (~172px) and places the midpoint of the
         text string at the 50% position, giving perfect visual centering.
       -->
-      <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">
+      <textPath href="#bottomArc" xlink:href="#bottomArc" startOffset="50%" text-anchor="middle">
         scratch the surface
       </textPath>
     </text>
@@ -178,6 +179,19 @@ import Button from './Button.astro';
     width: 100%;
     height: 100%;
     display: block;
+    /* touch-action: none tells Safari (and other browsers) NOT to handle
+       scroll/pan gestures on this element. Without this, iOS Safari grabs
+       touch events before JavaScript can, and scratching does nothing on iPhone/iPad. */
+    touch-action: none;
+    /* background: transparent ensures Safari treats the canvas as fully
+       transparent. Without this, destination-out composite mode can render
+       scratched areas as black instead of transparent in some Safari versions. */
+    background: transparent;
+    /* user-select: none prevents desktop Safari from treating a click-drag as a
+       text/element selection gesture. Without this, Safari intercepts the mousemove
+       events before they reach the canvas listener — so dragging does nothing. */
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   /* --- Hint SVG (curved coin inscription) -------------------------------- */
@@ -314,11 +328,18 @@ import Button from './Button.astro';
 
   // --- Load and draw the top image onto the canvas -----------------------
   // We keep a reference to topImage so we can redraw it when resetting.
+  //
+  // IMPORTANT: onload must be set BEFORE .src — otherwise Safari may fire
+  // the load event synchronously when the image is already cached, before
+  // the handler is attached, and the canvas never gets drawn.
+  // The topImage.complete check is a fallback for the same reason.
   const topImage = new Image();
-  topImage.src = '/avatar-scratcher/avatar-scratch-1.png';
   topImage.onload = () => {
     drawCover(topImage);
   };
+  topImage.src = '/avatar-scratcher/avatar-scratch-1.png';
+  // If the image was already cached and onload already fired, draw it now.
+  if (topImage.complete) drawCover(topImage);
 
   // --- State -------------------------------------------------------------
   let isDrawing   = false; // true only while the mouse/finger is pressed down
@@ -349,32 +370,25 @@ import Button from './Button.astro';
     return diameter / 2; // canvas arc() uses radius, not diameter
   }
 
-  // getPos: extracts canvas-relative x/y from either a mouse or touch event.
+  // getPos: extracts canvas-relative x/y from a PointerEvent.
+  // PointerEvent has clientX/clientY for both mouse and touch — no branching needed.
   // We subtract the canvas's bounding rect to convert from page coords to canvas coords.
-  function getPos(e: MouseEvent | TouchEvent): { x: number; y: number } {
+  function getPos(e: PointerEvent): { x: number; y: number } {
     const rect = canvas.getBoundingClientRect();
     // Scale factor: needed if CSS size differs from canvas internal size.
     // Here both are 200px so scaleX/scaleY = 1, but good practice to include.
     const scaleX = SIZE / rect.width;
     const scaleY = SIZE / rect.height;
-
-    if (e instanceof TouchEvent && e.touches.length > 0) {
-      return {
-        x: (e.touches[0].clientX - rect.left) * scaleX,
-        y: (e.touches[0].clientY - rect.top)  * scaleY,
-      };
-    }
-    const me = e as MouseEvent;
     return {
-      x: (me.clientX - rect.left) * scaleX,
-      y: (me.clientY - rect.top)  * scaleY,
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top)  * scaleY,
     };
   }
 
   // scratch: erases a circle at the pointer position.
   // `destination-out` means "draw a transparent hole" — anything drawn
   // in this mode removes pixels from the canvas rather than adding them.
-  function scratch(e: MouseEvent | TouchEvent) {
+  function scratch(e: PointerEvent) {
     if (!isDrawing) return;
     const { x, y } = getPos(e);
 
@@ -390,17 +404,25 @@ import Button from './Button.astro';
     }
   }
 
-  // --- Mouse events ------------------------------------------------------
-  canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
-  canvas.addEventListener('mousemove', scratch);
-  canvas.addEventListener('mouseup',   () => { isDrawing = false; });
-  canvas.addEventListener('mouseleave',() => { isDrawing = false; });
-
-  // --- Touch events (mobile) ---------------------------------------------
-  // preventDefault() stops the page from scrolling while scratching.
-  canvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true;  scratch(e); }, { passive: false });
-  canvas.addEventListener('touchmove',  (e) => { e.preventDefault(); scratch(e); },                   { passive: false });
-  canvas.addEventListener('touchend',   ()  => { isDrawing = false; });
+  // --- Pointer events (replaces separate mouse + touch listeners) --------
+  // PointerEvent is a unified API that handles mouse, touch, and stylus in one place.
+  // It works reliably on desktop Safari, iOS Safari, Chrome, and Firefox.
+  // Safari has supported Pointer Events since version 13 (2019).
+  //
+  // setPointerCapture: keeps pointer events firing on the canvas even if the
+  // pointer moves outside it while the button is held — essential for scratch dragging.
+  canvas.addEventListener('pointerdown', (e) => {
+    e.preventDefault(); // stops scroll on touch devices
+    isDrawing = true;
+    canvas.setPointerCapture(e.pointerId); // capture keeps events on this element
+    scratch(e);
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    scratch(e);
+  });
+  canvas.addEventListener('pointerup',     () => { isDrawing = false; });
+  canvas.addEventListener('pointercancel', () => { isDrawing = false; }); // e.g. phone call interrupts
+  canvas.addEventListener('pointerleave',  () => { isDrawing = false; });
 
   // --- Stepper buttons (− and +) -----------------------------------------
   // Each click nudges the slider by a fixed step of 10 (on the 0–100 scale).

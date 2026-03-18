@@ -68,6 +68,11 @@ const { Content } = await render(post);
           <p class="post-description">{post.data.description}</p>
         </header>
 
+        <!-- Cover image — shown if the post's frontmatter includes an `image` field -->
+        {post.data.image && (
+          <img src={post.data.image} alt={post.data.title} class="post-cover" />
+        )}
+
         <!-- Post body — Content is the rendered Markdown from the .md file -->
         <div class="post-body">
           <Content />
@@ -130,4 +135,33 @@ const { Content } = await render(post);
   .post-body h2 { margin-top: var(--space-2xl); margin-bottom: var(--space-md); }
   .post-body h3 { margin-top: var(--space-xl);  margin-bottom: var(--space-sm); }
   .post-body p  { line-height: var(--leading-loose); }
+
+  /* Cover image — full width, rounded, sits between the header and the body */
+  .post-cover {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: var(--space-2xl);
+    display: block;
+  }
+
+  /* Images — full width, rounded corners, breathing room above and below */
+  .post-body img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: var(--space-xl);
+    display: block;
+  }
+
+  /* Caption — the italic <em> text that follows each image.
+     Smaller, muted, tight top margin so it hugs the image. */
+  .post-body img + p > em:only-child {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-xl);
+    line-height: var(--leading-relaxed);
+  }
 </style>

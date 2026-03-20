@@ -662,7 +662,7 @@ hr {
 
 /* HERO */
 .hero {
-  padding-block-start: var(--space-xl);  /* 32px — tighter to the nav */
+  padding-block-start: var(--space-sm);  /* 12px — sits close under the nav */
   padding-block-end: var(--space-3xl);   /* 72px — still breathes before the next section */
 }
 

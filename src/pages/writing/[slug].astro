@@ -108,9 +108,12 @@ const { Content } = await render(post);
   }
 
   /* Post body — styles the rendered Markdown content */
-  .post-body h2 { margin-top: var(--space-2xl); margin-bottom: var(--space-md); }
-  .post-body h3 { margin-top: var(--space-xl);  margin-bottom: var(--space-sm); }
-  .post-body p  { line-height: var(--leading-loose); }
+  /* :global() is required here — h2, h3, p come from rendered markdown via
+     <Content /> and don't receive Astro's scope attribute, so scoped selectors
+     like .post-body h2 would never match them. Same reason links/lists use :global(). */
+  :global(.post-body h2) { margin-top: var(--space-2xl); margin-bottom: var(--space-xl); }
+  :global(.post-body h3) { margin-top: var(--space-xl);  margin-bottom: var(--space-lg); }
+  :global(.post-body p)  { line-height: var(--leading-loose); }
 
   /* Links — mirrors the .text-link component from the design system.
      :global() is needed because <a> tags come from rendered markdown

@@ -39,8 +39,8 @@ const { Content } = await render(post);
         <!-- Post header -->
         <header class="post-header">
           <p class="post-date">
-            <!-- toLocaleDateString formats the date as "January 15, 2024" -->
-            {post.data.date.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}
+            <!-- "Marco Lobato · May 14, 2025" — name + middle dot + formatted date -->
+            Marco Lobato · {post.data.date.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
           <h1 class="post-title">{post.data.title}</h1>
         </header>

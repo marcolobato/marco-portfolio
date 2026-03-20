@@ -91,7 +91,10 @@ const { Content } = await render(post);
 
   .post-date {
     font-size: var(--text-sm);
-    color: var(--color-slate);
+    /* --color-charcoal gives 12:1 contrast on white in light mode, and
+       auto-flips to #B0BFCC (8:1) on the dark navy background in dark mode.
+       --color-slate was 2.24:1 on white — too low to pass WCAG AA. */
+    color: var(--color-charcoal);
     margin-bottom: var(--space-sm);
     max-width: none;
   }

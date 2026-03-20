@@ -34,7 +34,7 @@ When I worked on Voice Access for Android alongside teams passionate about acces
 
 That question pointed to something we were not calling by its right name at the time. It was not just a privacy feature. It was a contextual decision: the recognition that the environment a person is in is also part of the experience. The people who can see the screen without permission are part of the design problem. The technology had to hold that context, not just the hand holding the device.
 
-That was nine years ago. Today, the Samsung Galaxy S26 Ultra ships a feature called Privacy Display: it controls how light leaves the screen, restricting what people at side angles can see, applied automatically when entering passwords, configurable by app. What my team was working through on a whiteboard with disability advocates is now a flagship feature.
+That was nine years ago. Today, the Samsung Galaxy S26 Ultra ships a feature called [Privacy Display](https://news.samsung.com/za/samsungs-first-privacy-display-on-the-samsung-galaxy-s26-ultra-is-redefining-mobile-privacy): it controls how light leaves the screen, restricting what people at side angles can see, applied automatically when entering passwords, configurable by app. What my team was working through on a whiteboard with disability advocates is now a flagship feature.
 
 The multimodal AI assistant of the future will be designed around hundreds of contextual decisions exactly like that one, not only for the person using the device, but aware of who else can see it. A form factor like Astra's glasses already moves toward that answer by removing the screen from the equation entirely. In the meantime, screen technology like Samsung's can do the same work for the phone in someone's hand on a bus.
 

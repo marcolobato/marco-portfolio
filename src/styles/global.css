@@ -10,8 +10,6 @@
    --------------------------------------------------------------------------- */
 @import "./tokens.css";
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
 /* Tell shadcn to use [data-theme="dark"] instead of .dark class —

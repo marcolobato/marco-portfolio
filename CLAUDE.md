@@ -1,16 +1,27 @@
 # CLAUDE.md — marcolobato.info portfolio
 
-## Project identity
+## Project overview
 
 This is Marco Lobato's personal portfolio site. Marco is an interaction designer who works at the intersection of multimodal AI, voice systems, accessibility, and physical computing. He calls himself a "tech weaver" — someone who weaves technology into physical spaces and artifacts so interfaces become invisible and people can focus on what they're doing.
 
 The site tone is: thoughtful, warm, technically fluent, never flashy. Think Don Norman meets a well-worn notebook. The writing is personal essay, not corporate. The design should feel like broken-in denim — fitted, comfortable, already shaped to the person.
 
+**Before writing any HTML, CSS, or component, always read these files first:**
+
+1. `src/styles/globals.css` — CSS variables and Tailwind base. All color tokens live here.
+2. `src/styles/global.css` — existing styles and component rules. Do not add styles that already exist here.
+3. `src/styles/tokens.css` — legacy color tokens (old system, still imported). Do not add new tokens here.
+
+**Build commands:**
+- `npm run dev` — start local dev server
+- `npm run build` — build for production
+- `npm run preview` — preview the production build locally
+
 ## Stack
 
 - **Framework**: Astro 4+ (static-first, island architecture)
 - **Components**: Basis UI (`@basisui/ui`) — shadcn-style copy-paste components for Astro + Alpine.js
-- **Styling**: Tailwind CSS 3+ with CSS variable theming
+- **Styling**: Tailwind CSS with CSS variable theming
 - **Interactivity**: Alpine.js (lightweight, declarative, no build step)
 - **Hosting**: Cloudflare Pages (deploy from GitHub)
 - **Domain**: marcolobato.info (registered at Network Solutions)
@@ -82,29 +93,32 @@ All colors are defined as CSS variables in `src/styles/globals.css` using HSL va
 ```
 src/
 ├── components/
-│   └── ui/              # Basis UI components (added via CLI)
+│   ├── AvatarScratcher.astro
+│   ├── Button.astro
+│   ├── Carousel.astro
+│   ├── Footer.astro
+│   ├── Nav.astro
+│   ├── ProjectCard.astro
+│   ├── SectionLabel.astro
+│   ├── ThemeToggle.astro
+│   └── ui/              # Basis UI components (badge, button)
+├── content/
+│   └── writing/         # Markdown articles (4 articles so far)
+├── content.config.ts    # Astro Content Collections schema
 ├── layouts/
-│   ├── BaseLayout.astro # Shell: head, nav, footer, global styles
-│   └── ArticleLayout.astro # Article-specific: max-width prose, metadata
+│   └── BaseLayout.astro # Shell: head, nav, footer, global styles
+├── lib/
+│   └── utils.ts         # cn() helper from Basis UI
 ├── pages/
 │   ├── index.astro      # Home
-│   ├── writing/
-│   │   └── index.astro  # Writing index
-│   └── about.astro      # About (placeholder for now)
-├── content/
+│   ├── playground.astro # Component playground
 │   └── writing/
-│       └── ai-broken-in-denim.md  # First article
-├── styles/
-│   └── globals.css      # CSS variables, Tailwind base
-└── lib/
-    └── utils.ts         # cn() helper from Basis UI
+│       └── [slug].astro # Dynamic article page
+└── styles/
+    ├── globals.css      # New: CSS variables + Tailwind base (HSL tokens)
+    ├── global.css       # Existing: reset, typography, component styles
+    └── tokens.css       # Legacy: old color token system
 ```
-
-## Content rules
-
-- Articles are markdown files in `src/content/writing/` with frontmatter (title, date, description, image).
-- Use Astro's Content Collections API to type and query articles.
-- Article slugs are derived from filename: `ai-broken-in-denim.md` → `/writing/ai-broken-in-denim`
 
 ## Component usage
 
@@ -117,6 +131,11 @@ Only add Basis UI components as needed. For experiment 1, the minimum set is:
 
 Add more components only when a specific experiment requires them.
 
+**Missing component check:** If a task requires a component that does NOT exist yet, stop and flag it:
+> ⚠️ Missing Component: `[component name]` does not exist yet. Do you want me to build it first?
+
+Wait for confirmation before proceeding. Build the component in isolation first, then use it.
+
 ## Design principles
 
 1. **Restraint over capability.** The site should do less than it could. Every interactive element must earn its presence.
@@ -125,6 +144,13 @@ Add more components only when a specific experiment requires them.
 4. **Mobile is the primary context.** Marco's article talks about people on buses. The site should read beautifully on a phone.
 5. **Each experiment lives here.** The site grows as prototypes get built. The architecture should make adding a new page trivial.
 
+## Git workflow
+
+- Commit after each meaningful, working change — not at the end of a long session.
+- Stage specific files by name — never use `git add .`
+- Keep commit messages short and descriptive in plain English (e.g. "Add hero section styles").
+- Ask before pushing to any remote.
+
 ## What NOT to do
 
 - No gradients, glows, or decorative effects. Flat, clean, warm.
@@ -132,3 +158,6 @@ Add more components only when a specific experiment requires them.
 - No "hero section" patterns with giant headlines and abstract blobs. The homepage is a quiet introduction.
 - No JavaScript frameworks beyond Alpine.js. If it needs React, it's too complex for this site.
 - Do not install shadcn/ui for React. This project uses Basis UI for Astro. They share the CSS variable convention but the component implementations are different.
+- Never use a raw hex value — always use a token from `globals.css`.
+- Never duplicate styles that already exist in `global.css`.
+- Never install a package without explaining what it does and why it's needed.

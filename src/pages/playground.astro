@@ -14,6 +14,11 @@ import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
 import BasisButton from '@/components/ui/forms/Button.astro';
 import Badge from '@/components/ui/feedback/Badge.astro';
+import Card from '@/components/ui/display/card/Card.astro';
+import CardHeader from '@/components/ui/display/card/CardHeader.astro';
+import CardContent from '@/components/ui/display/card/CardContent.astro';
+import CardFooter from '@/components/ui/display/card/CardFooter.astro';
+import Divider from '@/components/ui/layout/Divider.astro';
 ---
 
 <BaseLayout title="Playground — Marco Lobato">
@@ -37,7 +42,7 @@ import Badge from '@/components/ui/feedback/Badge.astro';
               <li><a href="#color" class="text-link">Color</a></li>
               <li><a href="#typography" class="text-link">Typography</a></li>
               <li><a href="#astro-components" class="text-link">Astro Components</a></li>
-              <li><a href="#shadcn-components" class="text-link">shadcn Components</a></li>
+              <li><a href="#basis-ui-components" class="text-link">Basis UI Components</a></li>
             </ul>
           </div>
           <div class="sg-header-section">
@@ -55,72 +60,120 @@ import Badge from '@/components/ui/feedback/Badge.astro';
         <h2 class="sg-section-title">Color</h2>
         <p class="sg-section-desc">
           All colors are defined as CSS custom properties in
-          <code>tokens.css</code>. Nothing in this project uses a hardcoded
-          hex value — every color reference points back to one of these tokens.
+          <code>global.css</code> using HSL values. Nothing in this project
+          uses a hardcoded hex value — every color reference points back to
+          one of these tokens.
         </p>
 
-        <h3 class="sg-subsection-title">Brand palette</h3>
+        <h3 class="sg-subsection-title">Semantic tokens</h3>
         <div class="sg-swatches">
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-navy); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Navy</p>
-            <code class="sg-swatch-token">--color-navy</code>
-            <p class="sg-swatch-use">Headings, footer background</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--primary)); border: 1px solid var(--color-slate);"></div>
+            <p class="sg-swatch-name">Primary</p>
+            <code class="sg-swatch-token">--primary</code>
+            <p class="sg-swatch-use">Headings, footer, primary buttons</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-royal-blue);"></div>
-            <p class="sg-swatch-name">Royal Blue</p>
-            <code class="sg-swatch-token">--color-royal-blue</code>
-            <p class="sg-swatch-use">Links, hover states, hero title</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--accent)); border: 1px solid var(--color-slate);"></div>
+            <p class="sg-swatch-name">Accent</p>
+            <code class="sg-swatch-token">--accent</code>
+            <p class="sg-swatch-use">Section labels, badges, CTAs</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-lemon); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Lemon</p>
-            <code class="sg-swatch-token">--color-lemon</code>
-            <p class="sg-swatch-use">Section labels, footer accents</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--secondary));"></div>
+            <p class="sg-swatch-name">Secondary</p>
+            <code class="sg-swatch-token">--secondary</code>
+            <p class="sg-swatch-use">Navy-100 tint — button variant, cards</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-citrine); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Citrine</p>
-            <code class="sg-swatch-token">--color-citrine</code>
-            <p class="sg-swatch-use">Secondary accent, available</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--muted)); border: 1px solid var(--color-slate);"></div>
+            <p class="sg-swatch-name">Muted</p>
+            <code class="sg-swatch-token">--muted</code>
+            <p class="sg-swatch-use">Alternate section backgrounds</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-slate);"></div>
-            <p class="sg-swatch-name">Slate</p>
-            <code class="sg-swatch-token">--color-slate</code>
-            <p class="sg-swatch-use">Borders, dividers, placeholders</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--muted-foreground));"></div>
+            <p class="sg-swatch-name">Muted fg</p>
+            <code class="sg-swatch-token">--muted-foreground</code>
+            <p class="sg-swatch-use">Captions, placeholders, borders</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-charcoal);"></div>
-            <p class="sg-swatch-name">Charcoal</p>
-            <code class="sg-swatch-token">--color-charcoal</code>
-            <p class="sg-swatch-use">Body text</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--border)); border: 1px solid var(--color-slate);"></div>
+            <p class="sg-swatch-name">Border</p>
+            <code class="sg-swatch-token">--border</code>
+            <p class="sg-swatch-use">Dividers, card borders</p>
           </div>
 
         </div>
 
-        <h3 class="sg-subsection-title">Surfaces</h3>
+        <h3 class="sg-subsection-title">Brand ramp — Navy</h3>
         <div class="sg-swatches">
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-white); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">White</p>
-            <code class="sg-swatch-token">--color-white</code>
-            <p class="sg-swatch-use">Primary page background</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-900));"></div>
+            <p class="sg-swatch-name">Navy 900</p>
+            <code class="sg-swatch-token">--navy-900</code>
+            <p class="sg-swatch-use">#081F5D — Deep Navy</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-surface); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Surface</p>
-            <code class="sg-swatch-token">--color-surface</code>
-            <p class="sg-swatch-use">Alternate section backgrounds</p>
+            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-700));"></div>
+            <p class="sg-swatch-name">Navy 700</p>
+            <code class="sg-swatch-token">--navy-700</code>
+            <p class="sg-swatch-use">#1040A8 — Links, active states</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-500));"></div>
+            <p class="sg-swatch-name">Navy 500</p>
+            <code class="sg-swatch-token">--navy-500</code>
+            <p class="sg-swatch-use">#2060D0 — Interactive elements</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-300));"></div>
+            <p class="sg-swatch-name">Navy 300</p>
+            <code class="sg-swatch-token">--navy-300</code>
+            <p class="sg-swatch-use">#6090E0 — Hover states</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-100)); border: 1px solid var(--color-slate);"></div>
+            <p class="sg-swatch-name">Navy 100</p>
+            <code class="sg-swatch-token">--navy-100</code>
+            <p class="sg-swatch-use">#C0D4F4 — Light backgrounds</p>
+          </div>
+
+        </div>
+
+        <h3 class="sg-subsection-title">Brand ramp — Lemon</h3>
+        <div class="sg-swatches">
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background-color: hsl(var(--lemon-900));"></div>
+            <p class="sg-swatch-name">Lemon 900</p>
+            <code class="sg-swatch-token">--lemon-900</code>
+            <p class="sg-swatch-use">#8A8A0A — Accent text on light</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background-color: hsl(var(--lemon-500)); border: 1px solid var(--color-slate);"></div>
+            <p class="sg-swatch-name">Lemon 500</p>
+            <code class="sg-swatch-token">--lemon-500</code>
+            <p class="sg-swatch-use">#F1F11C — Primary accent</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background-color: hsl(var(--lemon-100)); border: 1px solid var(--color-slate);"></div>
+            <p class="sg-swatch-name">Lemon 100</p>
+            <code class="sg-swatch-token">--lemon-100</code>
+            <p class="sg-swatch-use">#FAFABC — Accent backgrounds</p>
           </div>
 
         </div>
@@ -457,14 +510,14 @@ import Badge from '@/components/ui/feedback/Badge.astro';
            This section documents the shadcn/ui component layer and how brand
            tokens flow from Figma all the way to a production component.
            =================================================================== -->
-      <section class="sg-section" id="shadcn-components">
-        <h2 class="sg-section-title">shadcn Components</h2>
+      <section class="sg-section" id="basis-ui-components">
+        <h2 class="sg-section-title">Basis UI Components</h2>
         <p class="sg-section-desc">
-          shadcn/ui is an open-source component library used by teams at Vercel,
-          Linear, and Resend. Components are not installed as a dependency —
-          the source code lives in <code>src/components/ui/</code> so it can
-          be edited directly. Styling is driven entirely by CSS variables, which
-          means a single token change propagates to every component at once.
+          Basis UI is a component library for Astro + Alpine.js built on the
+          shadcn/ui convention. Components are not installed as a dependency —
+          source lives in <code>src/components/ui/</code> and can be edited
+          directly. Styling is driven entirely by CSS variables, so a single
+          token change propagates to every component at once.
         </p>
 
         <h3 class="sg-subsection-title">The token pipeline</h3>
@@ -476,16 +529,16 @@ import Badge from '@/components/ui/feedback/Badge.astro';
         <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
          color/navy = #081F5D
 
-Step 2 — Brand token in tokens.css
-         --color-navy: #081F5D;
+Step 2 — Brand ramp token in global.css
+         --navy-900: 223.8 84.2% 19.8%;  /* stored as HSL, no hsl() wrapper */
 
 Step 3 — Semantic mapping in global.css (the bridge layer)
-         --primary: var(--color-navy);    /* "primary" is shadcn's name for it */
-         --ring:    var(--color-royal-blue);
+         --primary: 223.8 84.2% 19.8%;   /* "primary" maps to Deep Navy */
+         --ring:    221.1 82.6% 36.1%;   /* focus rings use Navy 700 */
 
-Step 4 — shadcn component in button.tsx
-         bg-primary   → reads --color-primary → reads --primary → reads --color-navy
-         hover:bg-ring → shifts to royal-blue on hover</code></pre>
+Step 4 — Basis UI component in Button.astro
+         bg-primary   → resolves --primary → #081F5D in light mode
+         hover:bg-ring → shifts to Navy 700 on focus/hover</code></pre>
 
         <h3 class="sg-subsection-title">What each variant controls</h3>
         <p class="sg-section-desc">
@@ -493,10 +546,10 @@ Step 4 — shadcn component in button.tsx
           Changing the token value updates the variant everywhere it is used —
           no per-component overrides needed.
         </p>
-        <pre class="sg-code"><code>Default   → --primary         (navy fill, white text)
-Outline   → --border          (border stroke color, currently slate)
-Secondary → --secondary       (subtle surface background)
-Ghost     → --muted           (hover-only background, invisible at rest)</code></pre>
+        <pre class="sg-code"><code>default   → bg-primary         (navy fill, white text)
+outline   → border-border      (border stroke, no fill)
+secondary → bg-secondary       (navy-100 tint surface)
+ghost     → bg-transparent     (hover-only muted background)</code></pre>
 
 
         <!-- Component: shadcn Button — side-by-side comparison -->
@@ -562,6 +615,101 @@ Ghost     → --muted           (hover-only background, invisible at rest)</code
 &lt;Badge variant="secondary"&gt;Secondary&lt;/Badge&gt;
 &lt;Badge variant="destructive"&gt;Destructive&lt;/Badge&gt;
 &lt;Badge variant="outline"&gt;Outline&lt;/Badge&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Card -->
+        <div class="sg-component">
+          <h3 class="sg-component-title">Card</h3>
+          <p class="sg-component-desc">
+            A flexible surface container. The <code>variant</code> prop controls
+            the background — <code>default</code> uses <code>--card</code>
+            (white in light mode), <code>muted</code> uses the neutral
+            <code>--muted</code> surface. Compose with
+            <code>CardHeader</code>, <code>CardContent</code>, and
+            <code>CardFooter</code> sub-components to build structured layouts.
+            The <code>padding</code> prop accepts a spacing key
+            (<code>xs</code> through <code>3xl</code>).
+          </p>
+          <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: flex-start;">
+            <!-- Default card -->
+            <Card padding="lg" style="width: 240px;">
+              <CardHeader>
+                <p style="font-weight: var(--weight-bold); margin: 0;">Card heading</p>
+                <p style="font-size: var(--text-sm); color: var(--color-slate); margin: 0;">A short subtitle</p>
+              </CardHeader>
+              <CardContent>
+                <p style="font-size: var(--text-sm); margin: 0;">Body content lives here. Cards flex-col by default and stretch to fill their children.</p>
+              </CardContent>
+              <CardFooter>
+                <BasisButton size="sm">Action</BasisButton>
+              </CardFooter>
+            </Card>
+            <!-- Muted variant -->
+            <Card variant="muted" padding="lg" style="width: 240px;">
+              <CardHeader>
+                <p style="font-weight: var(--weight-bold); margin: 0;">Muted variant</p>
+              </CardHeader>
+              <CardContent>
+                <p style="font-size: var(--text-sm); margin: 0;">Uses <code>--muted</code> as its background — useful for sidebar panels or secondary surfaces.</p>
+              </CardContent>
+            </Card>
+          </div>
+          <pre class="sg-code"><code>import Card from '@/components/ui/display/card/Card.astro';
+import CardHeader from '@/components/ui/display/card/CardHeader.astro';
+import CardContent from '@/components/ui/display/card/CardContent.astro';
+import CardFooter from '@/components/ui/display/card/CardFooter.astro';
+
+&lt;Card padding="lg"&gt;
+  &lt;CardHeader&gt;
+    &lt;p&gt;Card heading&lt;/p&gt;
+    &lt;p&gt;A short subtitle&lt;/p&gt;
+  &lt;/CardHeader&gt;
+  &lt;CardContent&gt;
+    &lt;p&gt;Body content goes here.&lt;/p&gt;
+  &lt;/CardContent&gt;
+  &lt;CardFooter&gt;
+    &lt;BasisButton size="sm"&gt;Action&lt;/BasisButton&gt;
+  &lt;/CardFooter&gt;
+&lt;/Card&gt;
+
+&lt;!-- Muted surface variant --&gt;
+&lt;Card variant="muted" padding="lg"&gt;...&lt;/Card&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Divider -->
+        <div class="sg-component">
+          <h3 class="sg-component-title">Divider</h3>
+          <p class="sg-component-desc">
+            A simple visual separator that uses <code>--border</code> as its
+            color so it automatically adapts to dark mode. The
+            <code>direction</code> prop switches between horizontal (default)
+            and vertical. The <code>spacing</code> prop controls the margin
+            around it.
+          </p>
+          <div class="sg-component-preview" style="display: flex; flex-direction: column; gap: var(--space-sm);">
+            <p style="margin: 0; font-size: var(--text-sm);">Content above the divider</p>
+            <Divider spacing="2" />
+            <p style="margin: 0; font-size: var(--text-sm);">Content below the divider</p>
+            <!-- Vertical demo -->
+            <div style="display: flex; align-items: center; height: 40px; margin-top: var(--space-md);">
+              <span style="font-size: var(--text-sm);">Left</span>
+              <Divider direction="vertical" spacing="4" />
+              <span style="font-size: var(--text-sm);">Right</span>
+            </div>
+          </div>
+          <pre class="sg-code"><code>import Divider from '@/components/ui/layout/Divider.astro';
+
+&lt;!-- Horizontal (default) --&gt;
+&lt;Divider /&gt;
+
+&lt;!-- Vertical — place inside a flex row container --&gt;
+&lt;div style="display: flex; align-items: center; height: 40px;"&gt;
+  &lt;span&gt;Left&lt;/span&gt;
+  &lt;Divider direction="vertical" /&gt;
+  &lt;span&gt;Right&lt;/span&gt;
+&lt;/div&gt;</code></pre>
         </div>
 
       </section>

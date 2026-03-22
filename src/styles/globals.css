@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* === Marco Lobato portfolio — Light mode === */
+
+    /* Primary: Deep Navy ramp */
+    --primary: 223.8 84.2% 19.8%;          /* #081F5D — Deep Navy */
+    --primary-foreground: 0 0% 100%;        /* White text on navy */
+
+    /* Accent: Lemon Sorbet ramp */
+    --accent: 60 88.4% 52.7%;              /* #F1F11C — Lemon Sorbet */
+    --accent-foreground: 60 86.5% 29%;     /* #8A8A0A — Dark lemon for text on accent bg */
+
+    /* Surfaces */
+    --background: 0 0% 100%;               /* White */
+    --foreground: 0 0% 10.2%;              /* #1A1A1A — near-black body text */
+
+    --card: 0 0% 100%;                     /* White cards */
+    --card-foreground: 0 0% 10.2%;         /* near-black */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10.2%;
+
+    /* Secondary: Light navy tint */
+    --secondary: 216.9 70.3% 85.5%;        /* #C0D4F4 — Navy 100 */
+    --secondary-foreground: 223.8 84.2% 19.8%; /* Deep Navy text on light bg */
+
+    /* Muted: Neutral surfaces */
+    --muted: 0 0% 94.9%;                   /* #F2F2F2 */
+    --muted-foreground: 0 0% 50.2%;        /* #808080 */
+
+    /* Destructive */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & inputs */
+    --border: 0 0% 85.1%;                  /* #D9D9D9 */
+    --input: 0 0% 85.1%;
+    --ring: 221.1 82.6% 36.1%;             /* Navy 700 — focus ring */
+
+    /* Radius */
+    --radius: 0.5rem;
+
+    /* === Extended brand tokens (non-shadcn, for custom components) === */
+    --navy-900: 223.8 84.2% 19.8%;
+    --navy-800: 222.7 83.9% 24.3%;
+    --navy-700: 221.1 82.6% 36.1%;
+    --navy-500: 218.2 73.3% 47.1%;
+    --navy-300: 217.5 67.4% 62.7%;
+    --navy-100: 216.9 70.3% 85.5%;
+
+    --lemon-900: 60 86.5% 29%;
+    --lemon-700: 60 82.8% 41%;
+    --lemon-500: 60 88.4% 52.7%;
+    --lemon-300: 60 88.2% 70.2%;
+    --lemon-100: 60 86.1% 85.9%;
+  }
+
+  .dark {
+    /* === Dark mode === */
+
+    --primary: 216.9 70.3% 85.5%;          /* Navy 100 — light navy on dark bg */
+    --primary-foreground: 223.8 84.2% 19.8%; /* Deep Navy text on light primary */
+
+    --accent: 60 88.2% 70.2%;              /* Lemon 300 — softened for dark */
+    --accent-foreground: 60 86.5% 29%;     /* Lemon 900 */
+
+    --background: 0 0% 10.2%;              /* #1A1A1A */
+    --foreground: 0 0% 94.9%;              /* #F2F2F2 */
+
+    --card: 0 0% 14%;                      /* Slightly lighter than bg */
+    --card-foreground: 0 0% 94.9%;
+
+    --popover: 0 0% 14%;
+    --popover-foreground: 0 0% 94.9%;
+
+    --secondary: 222.7 83.9% 24.3%;        /* Navy 800 */
+    --secondary-foreground: 216.9 70.3% 85.5%; /* Navy 100 */
+
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 50.2%;        /* Gray 500 */
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 30.2%;                  /* #4D4D4D */
+    --input: 0 0% 30.2%;
+    --ring: 217.5 67.4% 62.7%;             /* Navy 300 — focus ring in dark */
+  }
+
+  /* Base resets */
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Article prose — comfortable reading */
+  .prose-article {
+    @apply max-w-[65ch] mx-auto;
+    line-height: 1.7;
+  }
+
+  .prose-article h1 {
+    @apply text-3xl font-semibold tracking-tight mt-10 mb-4;
+    color: hsl(var(--primary));
+  }
+
+  .prose-article h2 {
+    @apply text-xl font-semibold tracking-tight mt-8 mb-3;
+    color: hsl(var(--primary));
+  }
+
+  .prose-article h3 {
+    @apply text-lg font-medium mt-6 mb-2;
+    color: hsl(var(--primary));
+  }
+
+  .prose-article p {
+    @apply mb-4;
+  }
+
+  .prose-article a {
+    color: hsl(var(--navy-700));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+
+  .prose-article a:hover {
+    color: hsl(var(--navy-500));
+  }
+
+  .dark .prose-article a {
+    color: hsl(var(--navy-300));
+  }
+
+  .dark .prose-article a:hover {
+    color: hsl(var(--navy-100));
+  }
+
+  .prose-article blockquote {
+    @apply border-l-2 pl-4 my-4 italic;
+    border-color: hsl(var(--accent));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .prose-article hr {
+    @apply my-8;
+    border-color: hsl(var(--border));
+  }
+
+  .prose-article code {
+    @apply font-mono text-sm px-1.5 py-0.5 rounded;
+    background: hsl(var(--muted));
+  }
+}

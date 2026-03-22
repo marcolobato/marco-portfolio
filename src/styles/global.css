@@ -1,20 +1,71 @@
 /* =============================================================================
    global.css — Marco Lobato Portfolio
-   Base reset, typography, and spacing.
-   No components live here — this is the foundation layer only.
-   All colors come from tokens.css. Never hardcode hex values here.
+   Single source of truth for all tokens, resets, and component styles.
+   Color system: HSL semantic tokens (Basis UI convention).
+   Never hardcode hex values — always reference CSS variables.
    ============================================================================= */
 
-/* --- 1. Import tokens -------------------------------------------------------
-   This makes all --color-* variables available throughout this file.
+/* --- 1. Imports -------------------------------------------------------------
+   tailwindcss — the full v4 utility layer.
+   geist — variable font, loaded as a self-hosted asset via npm.
    --------------------------------------------------------------------------- */
-@import "./tokens.css";
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 
-/* Tell shadcn to use [data-theme="dark"] instead of .dark class —
-   this matches the existing ThemeToggle behaviour in this project */
+/* Dark mode variant — matches ThemeToggle which sets data-theme="dark" on <html>.
+   This lets Tailwind's dark: modifier and [data-theme="dark"] selectors work together. */
 @custom-variant dark (&:is([data-theme="dark"] *));
+
+/* --- Spacing utilities for Basis UI -----------------------------------------
+   Basis UI component classes use p-sm, gap-md, m-lg etc.
+   @theme registers them as Tailwind utilities without overriding the built-in scale.
+   --------------------------------------------------------------------------- */
+@theme {
+  --spacing-2xs: 0.25rem;  /*  4px */
+  --spacing-xs:  0.5rem;   /*  8px */
+  --spacing-sm:  0.75rem;  /* 12px */
+  --spacing-md:  1rem;     /* 16px */
+  --spacing-lg:  1.5rem;   /* 24px */
+  --spacing-xl:  2rem;     /* 32px */
+  --spacing-2xl: 3rem;     /* 48px */
+  --spacing-3xl: 4.5rem;   /* 72px */
+  --spacing-4xl: 6rem;     /* 96px */
+}
+
+/* --- Tailwind color utilities -----------------------------------------------
+   @theme inline registers CSS variable aliases as Tailwind utility classes.
+   bg-primary, text-foreground, border-border etc. will all resolve correctly
+   and update automatically when [data-theme="dark"] is active.
+   --------------------------------------------------------------------------- */
+@theme inline {
+  --font-sans: var(--font-body);
+  --color-background:             hsl(var(--background));
+  --color-foreground:             hsl(var(--foreground));
+  --color-card:                   hsl(var(--card));
+  --color-card-foreground:        hsl(var(--card-foreground));
+  --color-popover:                hsl(var(--popover));
+  --color-popover-foreground:     hsl(var(--popover-foreground));
+  --color-primary:                hsl(var(--primary));
+  --color-primary-foreground:     hsl(var(--primary-foreground));
+  --color-secondary:              hsl(var(--secondary));
+  --color-secondary-foreground:   hsl(var(--secondary-foreground));
+  --color-muted:                  hsl(var(--muted));
+  --color-muted-foreground:       hsl(var(--muted-foreground));
+  --color-accent:                 hsl(var(--accent));
+  --color-accent-foreground:      hsl(var(--accent-foreground));
+  --color-destructive:            hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border:                 hsl(var(--border));
+  --color-input:                  hsl(var(--input));
+  --color-ring:                   hsl(var(--ring));
+  --radius-sm:  calc(var(--radius) * 0.6);
+  --radius-md:  calc(var(--radius) * 0.8);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
 
 /* --- 2. CSS Reset -----------------------------------------------------------
    Browsers apply their own default styles (margins, paddings, box-sizing).
@@ -57,7 +108,7 @@ video {
 /* Remove default button and input styles so we start fresh.
    Each :not() exclusion prevents the reset's high specificity from overriding
    styles those components set on their own hover/active states:
-   - [data-slot="button"] → shadcn buttons (use Tailwind classes)
+   - [data-slot="button"] → Basis UI buttons (use Tailwind classes)
    - .carousel-btn / .carousel-dot → carousel controls
    - .theme-toggle → has its own hover background (pill effect) */
 button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle),
@@ -95,52 +146,122 @@ a {
 }
 
 
-/* --- shadcn semantic tokens — mapped to Marco Lobato brand ----------------
-   shadcn components use these variable names internally (--primary, --border…).
-   We point them at our brand tokens so shadcn components automatically
-   use our design system colors. This is the "token mapping" layer —
-   the bridge between Figma variables → CSS tokens → shadcn components.
+/* --- 2. Design tokens -------------------------------------------------------
+   Single token system using the Basis UI / shadcn convention:
+   HSL values stored without hsl() wrapper so components can compose them:
+     color: hsl(var(--primary))       ← direct use
+     color: hsl(var(--primary) / 50%) ← with alpha
+
+   Sections:
+     a. Semantic tokens (--primary, --background, etc.)
+     b. Extended brand ramp (--navy-*, --lemon-*)
+     c. Backward-compatible aliases (--color-*) for existing component styles
+     d. Spacing scale
+     e. Typography scale
    --------------------------------------------------------------------------- */
 :root {
-  /* Page surfaces */
-  --background:           var(--color-white);
-  --foreground:           var(--color-charcoal);
+  /* === a. Semantic tokens — light mode === */
 
-  /* Cards and popovers */
-  --card:                 var(--color-white);
-  --card-foreground:      var(--color-charcoal);
-  --popover:              var(--color-white);
-  --popover-foreground:   var(--color-charcoal);
+  /* Primary: Deep Navy */
+  --primary:              223.8 84.2% 19.8%;  /* #081F5D */
+  --primary-foreground:   0 0% 100%;          /* white text on navy */
 
-  /* Primary action — navy fill, white text */
-  --primary:              var(--color-navy);
-  --primary-foreground:   var(--color-white);
+  /* Accent: Lemon Sorbet */
+  --accent:               60 88.4% 52.7%;     /* #F1F11C */
+  --accent-foreground:    60 86.5% 29%;       /* #8A8A0A — dark lemon for text on accent bg */
 
-  /* Secondary — subtle surface, dark text */
-  --secondary:            var(--color-surface);
-  --secondary-foreground: var(--color-charcoal);
+  /* Surfaces */
+  --background:           0 0% 100%;          /* white */
+  --foreground:           0 0% 10.2%;         /* #1A1A1A — near-black body text */
 
-  /* Muted — same as surface, slate text for de-emphasised labels */
-  --muted:                var(--color-surface);
-  --muted-foreground:     var(--color-slate);
+  --card:                 0 0% 100%;
+  --card-foreground:      0 0% 10.2%;
 
-  /* Accent — lemon highlight, navy text */
-  --accent:               var(--color-lemon);
-  --accent-foreground:    var(--color-navy);
+  --popover:              0 0% 100%;
+  --popover-foreground:   0 0% 10.2%;
 
-  /* Destructive — error red. No brand equivalent, keep shadcn default */
-  --destructive:            oklch(0.577 0.245 27.325);
-  --destructive-foreground: var(--color-white); /* white text on red background */
+  /* Secondary: light navy tint */
+  --secondary:            216.9 70.3% 85.5%;  /* #C0D4F4 — Navy 100 */
+  --secondary-foreground: 223.8 84.2% 19.8%;
 
-  /* Borders, inputs, and focus rings */
-  --border:               var(--color-slate);
-  --input:                var(--color-slate);
-  --ring:                 var(--color-royal-blue);
+  /* Muted: neutral surfaces */
+  --muted:                0 0% 94.9%;         /* #F2F2F2 */
+  --muted-foreground:     0 0% 50.2%;         /* #808080 */
 
-  /* Radius — base value for shadcn's scale system.
-     rounded-4xl (used by Button) = calc(1rem × 2.6) = 41.6px → pill shape.
-     100px was too large and made small buttons circular. */
-  --radius:               1rem;
+  /* Destructive */
+  --destructive:          0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Borders & inputs */
+  --border:               0 0% 85.1%;         /* #D9D9D9 */
+  --input:                0 0% 85.1%;
+  --ring:                 221.1 82.6% 36.1%;  /* Navy 700 — focus ring */
+
+  /* Radius */
+  --radius: 0.5rem;
+
+  /* === b. Extended brand ramp tokens === */
+  --navy-900: 223.8 84.2% 19.8%;   /* #081F5D — Deep Navy */
+  --navy-800: 222.7 83.9% 24.3%;   /* #0A2872 */
+  --navy-700: 221.1 82.6% 36.1%;   /* #1040A8 — active states, links */
+  --navy-500: 218.2 73.3% 47.1%;   /* #2060D0 — interactive elements */
+  --navy-300: 217.5 67.4% 62.7%;   /* #6090E0 — hover states */
+  --navy-100: 216.9 70.3% 85.5%;   /* #C0D4F4 — light backgrounds */
+
+  --lemon-900: 60 86.5% 29%;       /* #8A8A0A — accent text on light bg */
+  --lemon-700: 60 82.8% 41%;       /* #BFBF12 — accent borders, tags */
+  --lemon-500: 60 88.4% 52.7%;     /* #F1F11C — primary accent */
+  --lemon-300: 60 88.2% 70.2%;     /* #F6F670 — accent hover */
+  --lemon-100: 60 86.1% 85.9%;     /* #FAFABC — accent backgrounds */
+
+  /* === c. Backward-compatible aliases for existing component styles =========
+     Component classes (.nav, .footer, .btn, .carousel, etc.) still reference
+     --color-* names. These aliases point them at the new token system so
+     those components keep working without any changes.
+     ========================================================================= */
+  --color-navy:       hsl(var(--navy-900));       /* always #081F5D — footer, code blocks */
+  --color-royal-blue: hsl(var(--navy-700));       /* #1040A8 — links, interactive states */
+  --color-lemon:      hsl(var(--lemon-500));      /* always #F1F11C */
+  --color-citrine:    hsl(var(--lemon-700));      /* always #BFBF12 */
+  --color-slate:      hsl(var(--muted-foreground)); /* #808080 — muted text, borders */
+  --color-charcoal:   hsl(var(--foreground));     /* flips: #1A1A1A → #F2F2F2 in dark */
+  --color-white:      hsl(var(--background));     /* flips: #FFFFFF → #1A1A1A in dark */
+  --color-surface:    hsl(var(--muted));          /* flips: #F2F2F2 → #2E2E2E in dark */
+  --color-heading:    hsl(var(--primary));        /* flips: #081F5D → #C0D4F4 in dark */
+}
+
+[data-theme="dark"] {
+  /* Semantic token overrides for dark mode */
+  --primary:              216.9 70.3% 85.5%;  /* Navy 100 — light navy on dark bg */
+  --primary-foreground:   223.8 84.2% 19.8%;
+
+  --accent:               60 88.2% 70.2%;     /* Lemon 300 — softened for dark */
+  --accent-foreground:    60 86.5% 29%;
+
+  --background:           0 0% 10.2%;         /* #1A1A1A */
+  --foreground:           0 0% 94.9%;         /* #F2F2F2 */
+
+  --card:                 0 0% 14%;
+  --card-foreground:      0 0% 94.9%;
+
+  --popover:              0 0% 14%;
+  --popover-foreground:   0 0% 94.9%;
+
+  --secondary:            222.7 83.9% 24.3%;  /* Navy 800 */
+  --secondary-foreground: 216.9 70.3% 85.5%;
+
+  --muted:                0 0% 18%;
+  --muted-foreground:     0 0% 50.2%;
+
+  --destructive:          0 62.8% 50%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border:               0 0% 30.2%;         /* #4D4D4D */
+  --input:                0 0% 30.2%;
+  --ring:                 217.5 67.4% 62.7%;  /* Navy 300 — focus ring in dark */
+
+  /* Royal blue alias flips to a lighter navy so it stays readable on dark backgrounds */
+  --color-royal-blue: hsl(var(--navy-300));   /* #6090E0 */
 }
 
 /* --- 4. Typography scale ----------------------------------------------------
@@ -165,9 +286,10 @@ a {
   --text-6xl:  5rem;      /* 80px — extra large display */
 
   /* Line heights */
-  --leading-tight:  1.15; /* Headlines — tighter feels more editorial */
-  --leading-normal: 1.5;  /* Body text — more air for comfortable reading */
-  --leading-loose:  1.75; /* Small text — more space improves legibility */
+  --leading-tight:   1.15; /* Headlines — tighter feels more editorial */
+  --leading-normal:  1.5;  /* Body text — more air for comfortable reading */
+  --leading-relaxed: 1.6;  /* Mid-length body copy — between normal and loose */
+  --leading-loose:   1.75; /* Small text — more space improves legibility */
 
   /* Font weights */
   --weight-regular: 400;
@@ -340,8 +462,8 @@ hr {
   height: 16px;
 }
 
-/* shadcn buttons don't include cursor-pointer in their Tailwind base classes.
-   We add it here globally so all [data-slot="button"] elements show the hand cursor.
+/* Basis UI buttons rely on Tailwind classes and don't always include cursor-pointer.
+   Adding it globally here ensures all [data-slot="button"] elements show the hand cursor.
    The :not([disabled]) part makes sure disabled buttons still show not-allowed. */
 [data-slot="button"]:not([disabled]) {
   cursor: pointer;
@@ -1479,98 +1601,85 @@ code {
   }
 }
 
-[data-theme="dark"] {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/* --- 19. Article prose ------------------------------------------------------
+   Applied to article pages via the .prose-article class on the content wrapper.
+   65ch max-width gives a comfortable ~65-character reading line length.
+   Colors use hsl(var(--token)) so they respond automatically to dark mode.
+   --------------------------------------------------------------------------- */
+.prose-article {
+  max-width: 65ch;
+  margin-inline: auto;
+  line-height: 1.7;
 }
 
-@theme inline {
-  --font-sans: 'Geist Variable', system-ui, sans-serif;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+.prose-article h1 {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  margin-top: var(--space-3xl);
+  margin-bottom: var(--space-md);
+  color: hsl(var(--primary));
 }
 
-@layer base {
-  /* Reset margin and padding here (in a layer) so Tailwind utilities
-     like px-6 and my- can override them. This is the correct place
-     for a reset when using Tailwind v4. */
-  *, *::before, *::after {
-    margin: 0;
-    padding: 0;
-  }
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
+.prose-article h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.01em;
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-sm);
+  color: hsl(var(--primary));
 }
+
+.prose-article h3 {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xs);
+  color: hsl(var(--primary));
+}
+
+.prose-article p {
+  margin-bottom: var(--space-md);
+}
+
+.prose-article a {
+  color: hsl(var(--navy-700));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 150ms ease;
+}
+
+.prose-article a:hover {
+  color: hsl(var(--navy-500));
+}
+
+[data-theme="dark"] .prose-article a {
+  color: hsl(var(--navy-300));
+}
+
+[data-theme="dark"] .prose-article a:hover {
+  color: hsl(var(--navy-100));
+}
+
+.prose-article blockquote {
+  border-left: 2px solid hsl(var(--accent));
+  padding-left: var(--space-md);
+  margin-block: var(--space-md);
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+.prose-article hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin-block: var(--space-2xl);
+}
+
+.prose-article code {
+  font-family: monospace;
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  background: hsl(var(--muted));
+}
+

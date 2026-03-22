@@ -99,6 +99,18 @@ import Divider from '@/components/ui/layout/Divider.astro';
             </div>
           </div>
 
+          <!-- popover / popover-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--popover)); border-bottom: 1px solid hsl(var(--border));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--popover-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Popover</p>
+              <code class="sg-color-pair-token">--popover</code>
+              <code class="sg-color-pair-token">--popover-foreground</code>
+            </div>
+          </div>
+
           <!-- primary / primary-foreground -->
           <div class="sg-color-pair">
             <div class="sg-color-pair-swatch" style="background: hsl(var(--primary));">
@@ -280,6 +292,118 @@ import Divider from '@/components/ui/layout/Divider.astro';
             <span class="sg-ramp-stop-name" style="color: #1A1A1A;">0</span>
             <span class="sg-ramp-stop-hex" style="color: #1A1A1A;">#FFFFFF</span>
           </div>
+        </div>
+
+
+        <!-- ── Component aliases ────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Component aliases</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          The <code>--color-*</code> tokens are backward-compatible aliases used
+          by the handbuilt components (Button, Nav, Footer, Carousel,
+          SectionLabel). They sit on top of the semantic tokens above.
+          <strong>Fixed</strong> aliases always resolve to the same value
+          regardless of theme. <strong>Theme-aware</strong> aliases flip
+          automatically — toggle dark mode above to see them change.
+        </p>
+
+        <!-- Group 1: Fixed aliases -->
+        <p class="sg-color-group-label">Fixed — same in light and dark</p>
+        <div class="sg-swatches" style="margin-bottom: var(--space-xl);">
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-navy);"></div>
+            <p class="sg-swatch-name">Navy</p>
+            <code class="sg-swatch-token">--color-navy</code>
+            <p class="sg-swatch-use">Footer bg, code blocks, button hover<br>#081F5D → Navy 900</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-royal-blue);"></div>
+            <p class="sg-swatch-name">Royal Blue</p>
+            <code class="sg-swatch-token">--color-royal-blue</code>
+            <p class="sg-swatch-use">Links, nav hover, hero title<br>#1040A8 → Navy 700</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-lemon); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Lemon</p>
+            <code class="sg-swatch-token">--color-lemon</code>
+            <p class="sg-swatch-use">SectionLabel bg, Footer name<br>#F1F11C → Lemon 500</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-citrine); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Citrine <em style="font-style: normal; font-size: 10px; color: var(--color-slate);">(unused)</em></p>
+            <code class="sg-swatch-token">--color-citrine</code>
+            <p class="sg-swatch-use">Defined but not used in any component<br>#BFBF12 → Lemon 700</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-slate);"></div>
+            <p class="sg-swatch-name">Slate</p>
+            <code class="sg-swatch-token">--color-slate</code>
+            <p class="sg-swatch-use">Borders, placeholders, Footer links<br>#808080 → Neutral 500</p>
+          </div>
+
+        </div>
+
+        <!-- Group 2: Theme-aware aliases -->
+        <p class="sg-color-group-label">Theme-aware — flips with dark mode</p>
+        <div class="sg-swatches">
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-heading); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Heading</p>
+            <code class="sg-swatch-token">--color-heading</code>
+            <p class="sg-swatch-use">h1–h6, nav name, carousel title<br>→ <code>--primary</code></p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-charcoal); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Charcoal</p>
+            <code class="sg-swatch-token">--color-charcoal</code>
+            <p class="sg-swatch-use">Body text, nav links, button text<br>→ <code>--foreground</code></p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-surface); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Surface</p>
+            <code class="sg-swatch-token">--color-surface</code>
+            <p class="sg-swatch-use">Section backgrounds, preview areas<br>→ <code>--muted</code></p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-white); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">White</p>
+            <code class="sg-swatch-token">--color-white</code>
+            <p class="sg-swatch-use">Card backgrounds, slide backgrounds<br>→ <code>--background</code></p>
+          </div>
+
+        </div>
+
+
+        <!-- ── What this system intentionally excludes ───────────────────── -->
+        <h3 class="sg-subsection-title">Intentionally excluded</h3>
+        <p class="sg-section-desc">
+          Shadcn/ui defines additional token groups that this site does not use.
+          They are absent by design — not an oversight.
+        </p>
+        <div class="sg-swatches">
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color sg-swatch-color--excluded"></div>
+            <p class="sg-swatch-name">Chart 1–5</p>
+            <code class="sg-swatch-token">--chart-1…5</code>
+            <p class="sg-swatch-use">Data visualization palette. Not needed — no charts in this portfolio.</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color sg-swatch-color--excluded"></div>
+            <p class="sg-swatch-name">Sidebar tokens</p>
+            <code class="sg-swatch-token">--sidebar-*</code>
+            <p class="sg-swatch-use">Sidebar navigation system. Not needed — this site uses a simple top nav.</p>
+          </div>
+
         </div>
 
       </section>

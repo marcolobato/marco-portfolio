@@ -14,7 +14,7 @@ Three questions I want to explore. How we might reduce friction without asking p
 
 ---
 
-## Multimodal interaction only matters if it creates less friction
+## Multimodal interaction only matters if removes friction
 
 The engineering ambition behind Project Astra is real. Google DeepMind fused live video, audio, and text into a single transformer trained on all three simultaneously. The result is something that feels less like typing into a search bar and more like talking to a person who can see what you see.
 

@@ -1200,6 +1200,101 @@ hr {
   max-width: 320px;
 }
 
+/* --- Color palette: color pair cards ---------------------------------------
+   Each card shows a background color with "Aa" text in the paired foreground
+   color — this demonstrates real contrast, not just the color in isolation.
+   --------------------------------------------------------------------------- */
+.sg-color-pairs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.sg-color-pair {
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+}
+
+/* The colored rectangle at the top of each card */
+.sg-color-pair-swatch {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* "Aa" sample — font-size is large enough to judge readability at a glance */
+.sg-color-pair-sample {
+  font-size: 1.75rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  opacity: 0.9;
+}
+
+/* Label area below the swatch */
+.sg-color-pair-meta {
+  padding: var(--space-xs) var(--space-sm);
+  border-top: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+}
+
+.sg-color-pair-name {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: hsl(var(--foreground));
+  margin-bottom: 2px;
+}
+
+/* Token name in navy — monospace so it reads as code */
+.sg-color-pair-token {
+  display: block;
+  font-size: 11px;
+  font-family: monospace;
+  color: var(--color-royal-blue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Color palette: brand ramp strips --------------------------------------
+   Ramps show the full scale of a brand color as a horizontal strip.
+   Each stop has its number and hex shown inside with contrasting text.
+   --------------------------------------------------------------------------- */
+.sg-ramp {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: var(--space-xl);
+  border: 1px solid hsl(var(--border));
+}
+
+.sg-ramp-stop {
+  flex: 1;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--space-xs) var(--space-sm);
+  gap: 2px;
+}
+
+.sg-ramp-stop-name {
+  font-size: 11px;
+  font-family: monospace;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.sg-ramp-stop-hex {
+  font-size: 10px;
+  font-family: monospace;
+  opacity: 0.7;
+  line-height: 1;
+}
+
 /* Code snippets */
 .sg-code {
   background-color: var(--color-navy);

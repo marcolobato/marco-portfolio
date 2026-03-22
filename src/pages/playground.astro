@@ -11,7 +11,6 @@ import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
-import Carousel from '../components/Carousel.astro';
 import BasisButton from '@/components/ui/forms/Button.astro';
 import Badge from '@/components/ui/feedback/Badge.astro';
 import Card from '@/components/ui/display/card/Card.astro';
@@ -60,123 +59,229 @@ import Divider from '@/components/ui/layout/Divider.astro';
         <h2 class="sg-section-title">Color</h2>
         <p class="sg-section-desc">
           All colors are defined as CSS custom properties in
-          <code>global.css</code> using HSL values. Nothing in this project
-          uses a hardcoded hex value — every color reference points back to
-          one of these tokens.
+          <code>global.css</code> using HSL values. The system has two layers:
+          semantic tokens (what Basis UI components use) and brand ramps
+          (the raw scale each semantic token draws from).
         </p>
 
-        <h3 class="sg-subsection-title">Semantic tokens</h3>
+
+        <!-- ── Theme colors ─────────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Theme colors</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          Each card shows a background color with its paired foreground color
+          as text — so you can immediately judge contrast. These are the tokens
+          Basis UI components read directly.
+        </p>
+
+        <div class="sg-color-pairs">
+
+          <!-- background / foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--background)); border-bottom: 1px solid hsl(var(--border));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Background</p>
+              <code class="sg-color-pair-token">--background</code>
+              <code class="sg-color-pair-token">--foreground</code>
+            </div>
+          </div>
+
+          <!-- card / card-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--card)); border-bottom: 1px solid hsl(var(--border));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--card-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Card</p>
+              <code class="sg-color-pair-token">--card</code>
+              <code class="sg-color-pair-token">--card-foreground</code>
+            </div>
+          </div>
+
+          <!-- primary / primary-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--primary));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--primary-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Primary</p>
+              <code class="sg-color-pair-token">--primary</code>
+              <code class="sg-color-pair-token">--primary-foreground</code>
+            </div>
+          </div>
+
+          <!-- secondary / secondary-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--secondary));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--secondary-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Secondary</p>
+              <code class="sg-color-pair-token">--secondary</code>
+              <code class="sg-color-pair-token">--secondary-foreground</code>
+            </div>
+          </div>
+
+          <!-- accent / accent-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--accent));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--accent-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Accent</p>
+              <code class="sg-color-pair-token">--accent</code>
+              <code class="sg-color-pair-token">--accent-foreground</code>
+            </div>
+          </div>
+
+          <!-- muted / muted-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--muted));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--muted-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Muted</p>
+              <code class="sg-color-pair-token">--muted</code>
+              <code class="sg-color-pair-token">--muted-foreground</code>
+            </div>
+          </div>
+
+          <!-- destructive / destructive-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--destructive));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--destructive-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Destructive</p>
+              <code class="sg-color-pair-token">--destructive</code>
+              <code class="sg-color-pair-token">--destructive-foreground</code>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- ── UI colors ────────────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">UI colors</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          Single-use tokens for structural UI elements — not surfaces or text,
+          but borders, inputs, and focus rings.
+        </p>
+
         <div class="sg-swatches">
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--primary)); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Primary</p>
-            <code class="sg-swatch-token">--primary</code>
-            <p class="sg-swatch-use">Headings, footer, primary buttons</p>
-          </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--accent)); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Accent</p>
-            <code class="sg-swatch-token">--accent</code>
-            <p class="sg-swatch-use">Section labels, badges, CTAs</p>
-          </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--secondary));"></div>
-            <p class="sg-swatch-name">Secondary</p>
-            <code class="sg-swatch-token">--secondary</code>
-            <p class="sg-swatch-use">Navy-100 tint — button variant, cards</p>
-          </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--muted)); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Muted</p>
-            <code class="sg-swatch-token">--muted</code>
-            <p class="sg-swatch-use">Alternate section backgrounds</p>
-          </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--muted-foreground));"></div>
-            <p class="sg-swatch-name">Muted fg</p>
-            <code class="sg-swatch-token">--muted-foreground</code>
-            <p class="sg-swatch-use">Captions, placeholders, borders</p>
-          </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--border)); border: 1px solid var(--color-slate);"></div>
+            <div class="sg-swatch-color" style="background: hsl(var(--border)); border: 1px solid hsl(var(--muted-foreground) / 30%);"></div>
             <p class="sg-swatch-name">Border</p>
             <code class="sg-swatch-token">--border</code>
-            <p class="sg-swatch-use">Dividers, card borders</p>
+            <p class="sg-swatch-use">Card edges, dividers</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: hsl(var(--input)); border: 1px solid hsl(var(--muted-foreground) / 30%);"></div>
+            <p class="sg-swatch-name">Input</p>
+            <code class="sg-swatch-token">--input</code>
+            <p class="sg-swatch-use">Form field borders</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: hsl(var(--ring));"></div>
+            <p class="sg-swatch-name">Ring</p>
+            <code class="sg-swatch-token">--ring</code>
+            <p class="sg-swatch-use">Focus ring — Navy 700</p>
           </div>
 
         </div>
 
+
+        <!-- ── Brand ramp — Navy ────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Brand ramp — Navy</h3>
-        <div class="sg-swatches">
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-900));"></div>
-            <p class="sg-swatch-name">Navy 900</p>
-            <code class="sg-swatch-token">--navy-900</code>
-            <p class="sg-swatch-use">#081F5D — Deep Navy</p>
+        <div class="sg-ramp">
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-900));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">900</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#081F5D</span>
           </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-700));"></div>
-            <p class="sg-swatch-name">Navy 700</p>
-            <code class="sg-swatch-token">--navy-700</code>
-            <p class="sg-swatch-use">#1040A8 — Links, active states</p>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-800));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">800</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#0A2872</span>
           </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-500));"></div>
-            <p class="sg-swatch-name">Navy 500</p>
-            <code class="sg-swatch-token">--navy-500</code>
-            <p class="sg-swatch-use">#2060D0 — Interactive elements</p>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-700));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">700</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#1040A8</span>
           </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-300));"></div>
-            <p class="sg-swatch-name">Navy 300</p>
-            <code class="sg-swatch-token">--navy-300</code>
-            <p class="sg-swatch-use">#6090E0 — Hover states</p>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-500));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">500</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#2060D0</span>
           </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--navy-100)); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Navy 100</p>
-            <code class="sg-swatch-token">--navy-100</code>
-            <p class="sg-swatch-use">#C0D4F4 — Light backgrounds</p>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-300));">
+            <span class="sg-ramp-stop-name" style="color: #081F5D;">300</span>
+            <span class="sg-ramp-stop-hex" style="color: #081F5D;">#6090E0</span>
           </div>
-
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-100));">
+            <span class="sg-ramp-stop-name" style="color: #081F5D;">100</span>
+            <span class="sg-ramp-stop-hex" style="color: #081F5D;">#C0D4F4</span>
+          </div>
         </div>
 
+
+        <!-- ── Brand ramp — Lemon ───────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Brand ramp — Lemon</h3>
-        <div class="sg-swatches">
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--lemon-900));"></div>
-            <p class="sg-swatch-name">Lemon 900</p>
-            <code class="sg-swatch-token">--lemon-900</code>
-            <p class="sg-swatch-use">#8A8A0A — Accent text on light</p>
+        <div class="sg-ramp">
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-900));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">900</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#8A8A0A</span>
           </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--lemon-500)); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Lemon 500</p>
-            <code class="sg-swatch-token">--lemon-500</code>
-            <p class="sg-swatch-use">#F1F11C — Primary accent</p>
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-700));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">700</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#BFBF12</span>
           </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: hsl(var(--lemon-100)); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Lemon 100</p>
-            <code class="sg-swatch-token">--lemon-100</code>
-            <p class="sg-swatch-use">#FAFABC — Accent backgrounds</p>
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-500));">
+            <span class="sg-ramp-stop-name" style="color: #8A8A0A;">500</span>
+            <span class="sg-ramp-stop-hex" style="color: #8A8A0A;">#F1F11C</span>
           </div>
-
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-300));">
+            <span class="sg-ramp-stop-name" style="color: #8A8A0A;">300</span>
+            <span class="sg-ramp-stop-hex" style="color: #8A8A0A;">#F6F670</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-100));">
+            <span class="sg-ramp-stop-name" style="color: #8A8A0A;">100</span>
+            <span class="sg-ramp-stop-hex" style="color: #8A8A0A;">#FAFABC</span>
+          </div>
         </div>
+
+
+        <!-- ── Neutral scale ────────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Neutral scale</h3>
+        <div class="sg-ramp">
+          <!-- Values inline because neutrals don't have --neutral-* ramp tokens;
+               they map directly to semantic tokens (foreground, muted, border, etc.) -->
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 10.2%);">
+            <span class="sg-ramp-stop-name" style="color: #fff;">950</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#1A1A1A</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 30.2%);">
+            <span class="sg-ramp-stop-name" style="color: #fff;">800</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#4D4D4D</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 50.2%);">
+            <span class="sg-ramp-stop-name" style="color: #fff;">500</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#808080</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 85.1%);">
+            <span class="sg-ramp-stop-name" style="color: #1A1A1A;">200</span>
+            <span class="sg-ramp-stop-hex" style="color: #1A1A1A;">#D9D9D9</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 94.9%);">
+            <span class="sg-ramp-stop-name" style="color: #1A1A1A;">100</span>
+            <span class="sg-ramp-stop-hex" style="color: #1A1A1A;">#F2F2F2</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 100%); border: 1px solid hsl(var(--border));">
+            <span class="sg-ramp-stop-name" style="color: #1A1A1A;">0</span>
+            <span class="sg-ramp-stop-hex" style="color: #1A1A1A;">#FFFFFF</span>
+          </div>
+        </div>
+
       </section>
 
 
@@ -216,7 +321,7 @@ import Divider from '@/components/ui/layout/Divider.astro';
 
           <div class="sg-type-row">
             <span class="sg-type-meta">--text-2xl · 24px · Medium</span>
-            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--color-navy); margin: 0;">Hero title / Now statement</p>
+            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--color-heading); margin: 0;">Hero title / Now statement</p>
           </div>
 
           <div class="sg-type-row">

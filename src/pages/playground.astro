@@ -27,7 +27,54 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
     <Nav />
 
 
-    <main class="sg-main">
+    <div class="pg-layout">
+
+      <!-- ===================================================================
+           SIDEBAR NAVIGATION
+           Tree-style nav inspired by Storybook. Group labels are non-linked
+           headers. Links jump to sections; sub-links jump to individual
+           components within a section.
+           =================================================================== -->
+      <aside class="pg-sidebar">
+
+        <nav aria-label="Design system navigation">
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Design Tokens</p>
+            <a href="#color-palette" class="pg-sidebar-link">Color Palette</a>
+            <a href="#typography" class="pg-sidebar-link">Typography</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Basis UI</p>
+            <a href="#basis-ui-components" class="pg-sidebar-link">Overview</a>
+            <a href="#basis-button" class="pg-sidebar-sublink">Button</a>
+            <a href="#basis-text" class="pg-sidebar-sublink">Text</a>
+            <a href="#basis-card" class="pg-sidebar-sublink">Card</a>
+            <a href="#basis-divider" class="pg-sidebar-sublink">Divider</a>
+            <a href="#basis-navbar" class="pg-sidebar-sublink">Navbar</a>
+            <a href="#basis-badge" class="pg-sidebar-sublink">Badge</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Astro Components</p>
+            <a href="#astro-components" class="pg-sidebar-link">Overview</a>
+            <a href="#astro-button" class="pg-sidebar-sublink">Button</a>
+            <a href="#astro-text-link" class="pg-sidebar-sublink">Text Link</a>
+            <a href="#astro-section-label" class="pg-sidebar-sublink">Section Label</a>
+            <a href="#astro-navigation" class="pg-sidebar-sublink">Navigation</a>
+            <a href="#astro-project-card" class="pg-sidebar-sublink">Project Card</a>
+            <a href="#astro-theme-toggle" class="pg-sidebar-sublink">Theme Toggle</a>
+            <a href="#astro-carousel" class="pg-sidebar-sublink">Carousel</a>
+            <a href="#astro-footer" class="pg-sidebar-sublink">Footer</a>
+          </div>
+
+        </nav>
+
+      </aside>
+
+
+      <main class="sg-main">
 
       <!-- ===================================================================
            PAGE HEADER
@@ -38,13 +85,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
         <div class="sg-header-sections">
           <div class="sg-header-section">
             <p class="sg-header-section-title">Design System</p>
-            <p class="sg-header-desc">The foundation of this site — tokens, typography, and components built for AI-ready design.</p>
-            <ul class="sg-header-links">
-              <li><a href="#color" class="text-link">Color</a></li>
-              <li><a href="#typography" class="text-link">Typography</a></li>
-              <li><a href="#astro-components" class="text-link">Astro Components</a></li>
-              <li><a href="#basis-ui-components" class="text-link">Basis UI Components</a></li>
-            </ul>
+            <p class="sg-header-desc">Everything I built to make this site. Colors, type, and components — shown as-is, no abstractions.</p>
           </div>
           <div class="sg-header-section">
             <p class="sg-header-section-title">Prototypes</p>
@@ -55,15 +96,13 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
 
 
       <!-- ===================================================================
-           SECTION: COLORS
+           SECTION: COLOR PALETTE
            =================================================================== -->
-      <section class="sg-section" id="color">
-        <h2 class="sg-section-title">Color</h2>
+      <section class="sg-section" id="color-palette">
+        <h2 class="sg-section-title">Color Palette</h2>
         <p class="sg-section-desc">
-          All colors are defined as CSS custom properties in
-          <code>global.css</code> using HSL values. The system has two layers:
-          semantic tokens (what Basis UI components use) and brand ramps
-          (the raw scale each semantic token draws from).
+          The full palette — semantic tokens for UI, and the brand ramps they're built from.
+          All values are CSS custom properties in <code>global.css</code> using HSL.
         </p>
 
 
@@ -417,9 +456,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
       <section class="sg-section" id="typography">
         <h2 class="sg-section-title">Typography</h2>
         <p class="sg-section-desc">
-          All type is set in <strong>Fraunces</strong> — a variable serif with
-          optical sizes and a warm, editorial character. Sizes come from a
-          base-16 scale defined in <code>global.css</code>.
+          The type scale used across the site. <strong>Fraunces</strong> for display headings, <strong>Geist</strong> for everything else. Sizes are defined as CSS variables in <code>global.css</code>.
         </p>
 
         <!-- Type scale samples -->
@@ -475,268 +512,6 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
 
 
       <!-- ===================================================================
-           SECTION: COMPONENTS
-           Each component is shown as it actually appears on the site,
-           using the exact same HTML structure and class names.
-           =================================================================== -->
-      <section class="sg-section" id="astro-components">
-        <h2 class="sg-section-title">Astro Components</h2>
-        <p class="sg-section-desc">
-          Every component below uses the same HTML and class names as the live
-          portfolio. There is no separate "demo" version — what you see here
-          is the real component.
-        </p>
-
-
-        <!-- Component: Button -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Button</h3>
-          <p class="sg-component-desc">
-            Two variants: <strong>primary</strong> (navy fill) and
-            <strong>secondary</strong> (surface + outline). Both use a pill
-            shape and share the same hover behavior — the background shifts
-            and the arrow icon rotates from ↗ (rest) to → (hover) over a
-            smooth 0.2s ease transition. When an <code>href</code> prop is
-            passed, the component renders as an <code>&lt;a&gt;</code> tag
-            (correct for navigation). Without <code>href</code>, it renders
-            as a <code>&lt;button&gt;</code> (correct for actions). The
-            <code>download</code> prop triggers a file save instead of
-            navigating. The optional <code>icon</code> prop accepts an SVG
-            string — when provided, the icon renders on the <strong>left</strong>
-            of the label and the right-side arrow is hidden.
-          </p>
-          <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
-            <!-- Primary — the default, strong call-to-action -->
-            <Button label="Primary" href="#" variant="primary" />
-            <!-- Secondary — a softer alternative action -->
-            <Button label="Secondary" href="#" variant="secondary" />
-            <!-- Disabled — shown at 40% opacity, no hover, no pointer -->
-            <Button label="Disabled" href="#" variant="primary" disabled={true} />
-            <!-- Icon left — pass any SVG string; arrow is replaced by the icon on the left -->
-            <Button
-              label="Reset"
-              variant="secondary"
-              icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
-            />
-          </div>
-          <pre class="sg-code"><code>import Button from '../components/Button.astro';
-
-&lt;!-- Primary (default) --&gt;
-&lt;Button label="LinkedIn" href="https://linkedin.com/in/..." variant="primary" /&gt;
-
-&lt;!-- Secondary --&gt;
-&lt;Button label="Download Resume" href="/resume.pdf" variant="secondary" download=&#123;true&#125; /&gt;
-
-&lt;!-- Disabled --&gt;
-&lt;Button label="Coming Soon" href="#" variant="primary" disabled=&#123;true&#125; /&gt;
-
-&lt;!-- Icon left (no href = renders as &lt;button&gt;, not &lt;a&gt;) --&gt;
-&lt;Button label="Reset" variant="secondary" icon='&lt;svg ...&gt;...&lt;/svg&gt;' /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Text Link -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Text Link</h3>
-          <p class="sg-component-desc">
-            Inline hyperlinks for body copy and navigation lists. Royal blue
-            at rest — no underline, to keep prose clean. On hover: color shifts
-            to <code>--color-heading</code> (navy in light mode, near-white in
-            dark mode) and an underline appears as a clear interactive signal.
-            Apply using the <code>.text-link</code> class on any <code>&lt;a&gt;</code> tag.
-            Do not use for buttons or CTAs — use the <strong>Button</strong>
-            component for those instead.
-          </p>
-          <div class="sg-component-preview">
-            <p style="margin: 0;">
-              The thread across my work is <a href="#" class="text-link">keeping people in their flow</a>.
-              The best interfaces never pull you out of what you are doing —
-              they blend into <a href="#" class="text-link">the task itself</a>.
-            </p>
-          </div>
-          <pre class="sg-code"><code>&lt;!-- Apply .text-link to any &lt;a&gt; tag --&gt;
-&lt;a href="/some-page" class="text-link"&gt;Link label&lt;/a&gt;
-
-&lt;!-- In a navigation list --&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href="#color" class="text-link"&gt;Color&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#typography" class="text-link"&gt;Typography&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Section Label -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Section Label</h3>
-          <p class="sg-component-desc">
-            A small lemon pill used to introduce each major section.
-            Built with <code>display: inline-block</code> and
-            <code>background-color: var(--color-lemon)</code>.
-            Lemon is used nowhere else on the page at full saturation —
-            this constraint keeps it feeling like a signal, not decoration.
-          </p>
-          <div class="sg-component-preview">
-            <SectionLabel label="Selected Work" />
-          </div>
-          <pre class="sg-code"><code>import SectionLabel from '../components/SectionLabel.astro';
-
-&lt;SectionLabel label="Selected Work" /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Nav -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Navigation</h3>
-          <p class="sg-component-desc">
-            Top bar with name on the left and anchor links on the right.
-            On screens 768px and smaller, the links collapse into a hamburger
-            menu that toggles open and closed. Links use
-            <code>/#section</code> anchors so they work correctly from any page,
-            not just the homepage. <code>aria-current="page"</code> is applied
-            automatically to the active link.
-          </p>
-          <div class="sg-component-preview sg-component-preview--flush">
-            <Nav />
-          </div>
-          <pre class="sg-code"><code>import Nav from '../components/Nav.astro';
-
-&lt;Nav /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Project Card -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Project Card</h3>
-          <p class="sg-component-desc">
-            Used in the Work section to display a project. Image placeholder
-            uses <code>aspect-ratio: 4 / 3</code> to stay proportional at
-            any width. Cards sit in a flex row with <code>flex: 1</code> so
-            they share space equally regardless of content length.
-          </p>
-          <div class="sg-component-preview">
-            <div class="sg-card-demo">
-              <ProjectCard title="Project title goes here" />
-            </div>
-          </div>
-          <pre class="sg-code"><code>import ProjectCard from '../components/ProjectCard.astro';
-
-&lt;ProjectCard title="Project title goes here" /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Theme Toggle -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Theme Toggle</h3>
-          <p class="sg-component-desc">
-            Sun/moon icon button that lives in the navigation. Clicking it
-            switches between light and dark mode and saves the choice to
-            <code>localStorage</code> so it persists on future visits.
-            On first load, the site reads the user's OS preference
-            (<code>prefers-color-scheme</code>) as the default — the toggle
-            lets them override it. The moon icon is shown in light mode
-            (click to go dark), the sun icon in dark mode (click to go light).
-          </p>
-          <div class="sg-component-preview">
-            <ThemeToggle />
-          </div>
-          <pre class="sg-code"><code>import ThemeToggle from '../components/ThemeToggle.astro';
-
-&lt;ThemeToggle /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Carousel -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Carousel</h3>
-          <p class="sg-component-desc">
-            A manually controlled image carousel. Navigate with the
-            <strong>arrow buttons</strong> or click any <strong>pagination dot</strong>
-            to jump directly to a slide. Keyboard users can also use the left/right
-            arrow keys. No auto-scroll — the user is always in control
-            (WCAG 2.2 guideline 2.2.2). Each slide shows an image with a title and
-            subtitle caption below it. To update content, edit the
-            <code>slides</code> array at the top of <code>Carousel.astro</code>.
-          </p>
-          <!-- Documentation demo — 3 generic placeholder slides, fully interactive -->
-          <div class="sg-component-preview">
-            <div class="carousel" aria-roledescription="carousel" aria-label="Carousel demo">
-              <div class="carousel-viewport">
-                <div class="carousel-track">
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-controls">
-                <div class="carousel-arrows">
-                  <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                  </button>
-                  <button class="carousel-btn carousel-btn--next" aria-label="Next slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </button>
-                </div>
-                <div class="carousel-dots" role="tablist" aria-label="Slide navigation">
-                  <button class="carousel-dot carousel-dot--active" role="tab" aria-selected="true" aria-label="Slide 1" data-index="0"></button>
-                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 2" data-index="1"></button>
-                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 3" data-index="2"></button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <pre class="sg-code"><code>import Carousel from '../components/Carousel.astro';
-
-&lt;Carousel /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Footer -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Footer</h3>
-          <p class="sg-component-desc">
-            Navy panel at the bottom of the page — the strongest use of the
-            brand color. Lemon is used as the name accent, creating a bookend
-            with the lemon section labels above. On mobile, name and links
-            stack vertically and center-align. The component itself has no
-            <code>margin-top</code> — spacing is set at the page level so it
-            can be dropped onto any page without side effects.
-          </p>
-          <div class="sg-component-preview sg-component-preview--flush">
-            <Footer />
-          </div>
-          <pre class="sg-code"><code>import Footer from '../components/Footer.astro';
-
-&lt;Footer /&gt;</code></pre>
-        </div>
-
-      </section>
-
-
-      <!-- ===================================================================
            SECTION: BASIS UI COMPONENTS
            Live component gallery. Toggle dark/light mode inside the preview
            using the Alpine.js button — it sets data-theme on the canvas div,
@@ -745,10 +520,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
       <section class="sg-section" id="basis-ui-components">
         <h2 class="sg-section-title">Basis UI Components</h2>
         <p class="sg-section-desc">
-          Basis UI is a component library for Astro + Alpine.js built on the
-          shadcn/ui convention. Source lives in <code>src/components/ui/</code>
-          and can be edited directly. Every color comes from CSS variables —
-          toggle the preview below to see how each component looks in dark mode.
+          Astro components from Basis UI, customized to match this palette. Each one is a copy-paste component — source lives in <code>src/components/ui/</code>. Toggle the preview to see dark mode.
         </p>
 
         <h3 class="sg-subsection-title">The token pipeline</h3>
@@ -819,7 +591,7 @@ Step 4 — Basis UI component in Button.astro
 
 
             <!-- ── BUTTONS ──────────────────────────────────────────────── -->
-            <div class="sg-gallery-block">
+            <div class="sg-gallery-block" id="basis-button">
               <p class="sg-gallery-block-title">Button — <code>src/components/ui/forms/Button.astro</code></p>
 
               <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-2xs);">Variants</p>
@@ -856,7 +628,7 @@ Step 4 — Basis UI component in Button.astro
 
 
             <!-- ── TEXT ────────────────────────────────────────────────── -->
-            <div class="sg-gallery-block">
+            <div class="sg-gallery-block" id="basis-text">
               <p class="sg-gallery-block-title">Text — <code>src/components/ui/display/Text.astro</code></p>
               <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
                 Variant picks the correct HTML element automatically (h1, h2, p, span, etc.)
@@ -913,7 +685,7 @@ Step 4 — Basis UI component in Button.astro
 
 
             <!-- ── CARD ────────────────────────────────────────────────── -->
-            <div class="sg-gallery-block">
+            <div class="sg-gallery-block" id="basis-card">
               <p class="sg-gallery-block-title">Card — <code>src/components/ui/display/card/</code></p>
               <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: flex-start;">
 
@@ -965,7 +737,7 @@ Step 4 — Basis UI component in Button.astro
 
 
             <!-- ── DIVIDER ──────────────────────────────────────────────── -->
-            <div class="sg-gallery-block">
+            <div class="sg-gallery-block" id="basis-divider">
               <p class="sg-gallery-block-title">Divider — <code>src/components/ui/layout/Divider.astro</code></p>
               <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
                 Always uses <code>--border</code> — flips automatically in dark mode.
@@ -995,7 +767,7 @@ Step 4 — Basis UI component in Button.astro
 
 
             <!-- ── NAVBAR ───────────────────────────────────────────────── -->
-            <div class="sg-gallery-block">
+            <div class="sg-gallery-block" id="basis-navbar">
               <p class="sg-gallery-block-title">Navbar — <code>src/components/ui/display/Navbar.astro</code></p>
               <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
                 Uses <code>sticky={false}</code> here so it doesn't float over the page.
@@ -1018,7 +790,7 @@ Step 4 — Basis UI component in Button.astro
 
 
             <!-- ── BADGE ────────────────────────────────────────────────── -->
-            <div class="sg-gallery-block">
+            <div class="sg-gallery-block" id="basis-badge">
               <p class="sg-gallery-block-title">Badge — <code>src/components/ui/feedback/Badge.astro</code></p>
               <div class="sg-gallery-row">
                 <!-- default: bg-primary (navy) -->
@@ -1060,7 +832,269 @@ muted        → bg-muted         border-border
 outline      → bg-transparent   border-2 border-border</code></pre>
 
       </section>
+
+
+      <!-- ===================================================================
+           SECTION: COMPONENTS
+           Each component is shown as it actually appears on the site,
+           using the exact same HTML structure and class names.
+           =================================================================== -->
+      <section class="sg-section" id="astro-components">
+        <h2 class="sg-section-title">Astro Components</h2>
+        <p class="sg-section-desc">
+          Hand-built components specific to this site. These predate the Basis UI migration and may be refactored over time. What you see here is the real component — no separate demo version.
+        </p>
+
+
+        <!-- Component: Button -->
+        <div class="sg-component" id="astro-button">
+          <h3 class="sg-component-title">Button</h3>
+          <p class="sg-component-desc">
+            Two variants: <strong>primary</strong> (navy fill) and
+            <strong>secondary</strong> (surface + outline). Both use a pill
+            shape and share the same hover behavior — the background shifts
+            and the arrow icon rotates from ↗ (rest) to → (hover) over a
+            smooth 0.2s ease transition. When an <code>href</code> prop is
+            passed, the component renders as an <code>&lt;a&gt;</code> tag
+            (correct for navigation). Without <code>href</code>, it renders
+            as a <code>&lt;button&gt;</code> (correct for actions). The
+            <code>download</code> prop triggers a file save instead of
+            navigating. The optional <code>icon</code> prop accepts an SVG
+            string — when provided, the icon renders on the <strong>left</strong>
+            of the label and the right-side arrow is hidden.
+          </p>
+          <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
+            <!-- Primary — the default, strong call-to-action -->
+            <Button label="Primary" href="#" variant="primary" />
+            <!-- Secondary — a softer alternative action -->
+            <Button label="Secondary" href="#" variant="secondary" />
+            <!-- Disabled — shown at 40% opacity, no hover, no pointer -->
+            <Button label="Disabled" href="#" variant="primary" disabled={true} />
+            <!-- Icon left — pass any SVG string; arrow is replaced by the icon on the left -->
+            <Button
+              label="Reset"
+              variant="secondary"
+              icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
+            />
+          </div>
+          <pre class="sg-code"><code>import Button from '../components/Button.astro';
+
+&lt;!-- Primary (default) --&gt;
+&lt;Button label="LinkedIn" href="https://linkedin.com/in/..." variant="primary" /&gt;
+
+&lt;!-- Secondary --&gt;
+&lt;Button label="Download Resume" href="/resume.pdf" variant="secondary" download=&#123;true&#125; /&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;Button label="Coming Soon" href="#" variant="primary" disabled=&#123;true&#125; /&gt;
+
+&lt;!-- Icon left (no href = renders as &lt;button&gt;, not &lt;a&gt;) --&gt;
+&lt;Button label="Reset" variant="secondary" icon='&lt;svg ...&gt;...&lt;/svg&gt;' /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Text Link -->
+        <div class="sg-component" id="astro-text-link">
+          <h3 class="sg-component-title">Text Link</h3>
+          <p class="sg-component-desc">
+            Inline hyperlinks for body copy and navigation lists. Royal blue
+            at rest — no underline, to keep prose clean. On hover: color shifts
+            to <code>--color-heading</code> (navy in light mode, near-white in
+            dark mode) and an underline appears as a clear interactive signal.
+            Apply using the <code>.text-link</code> class on any <code>&lt;a&gt;</code> tag.
+            Do not use for buttons or CTAs — use the <strong>Button</strong>
+            component for those instead.
+          </p>
+          <div class="sg-component-preview">
+            <p style="margin: 0;">
+              The thread across my work is <a href="#" class="text-link">keeping people in their flow</a>.
+              The best interfaces never pull you out of what you are doing —
+              they blend into <a href="#" class="text-link">the task itself</a>.
+            </p>
+          </div>
+          <pre class="sg-code"><code>&lt;!-- Apply .text-link to any &lt;a&gt; tag --&gt;
+&lt;a href="/some-page" class="text-link"&gt;Link label&lt;/a&gt;
+
+&lt;!-- In a navigation list --&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="#color" class="text-link"&gt;Color&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#typography" class="text-link"&gt;Typography&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Section Label -->
+        <div class="sg-component" id="astro-section-label">
+          <h3 class="sg-component-title">Section Label</h3>
+          <p class="sg-component-desc">
+            A small lemon pill used to introduce each major section.
+            Built with <code>display: inline-block</code> and
+            <code>background-color: var(--color-lemon)</code>.
+            Lemon is used nowhere else on the page at full saturation —
+            this constraint keeps it feeling like a signal, not decoration.
+          </p>
+          <div class="sg-component-preview">
+            <SectionLabel label="Selected Work" />
+          </div>
+          <pre class="sg-code"><code>import SectionLabel from '../components/SectionLabel.astro';
+
+&lt;SectionLabel label="Selected Work" /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Nav -->
+        <div class="sg-component" id="astro-navigation">
+          <h3 class="sg-component-title">Navigation</h3>
+          <p class="sg-component-desc">
+            Top bar with name on the left and anchor links on the right.
+            On screens 768px and smaller, the links collapse into a hamburger
+            menu that toggles open and closed. Links use
+            <code>/#section</code> anchors so they work correctly from any page,
+            not just the homepage. <code>aria-current="page"</code> is applied
+            automatically to the active link.
+          </p>
+          <div class="sg-component-preview sg-component-preview--flush">
+            <Nav />
+          </div>
+          <pre class="sg-code"><code>import Nav from '../components/Nav.astro';
+
+&lt;Nav /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Project Card -->
+        <div class="sg-component" id="astro-project-card">
+          <h3 class="sg-component-title">Project Card</h3>
+          <p class="sg-component-desc">
+            Used in the Work section to display a project. Image placeholder
+            uses <code>aspect-ratio: 4 / 3</code> to stay proportional at
+            any width. Cards sit in a flex row with <code>flex: 1</code> so
+            they share space equally regardless of content length.
+          </p>
+          <div class="sg-component-preview">
+            <div class="sg-card-demo">
+              <ProjectCard title="Project title goes here" />
+            </div>
+          </div>
+          <pre class="sg-code"><code>import ProjectCard from '../components/ProjectCard.astro';
+
+&lt;ProjectCard title="Project title goes here" /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Theme Toggle -->
+        <div class="sg-component" id="astro-theme-toggle">
+          <h3 class="sg-component-title">Theme Toggle</h3>
+          <p class="sg-component-desc">
+            Sun/moon icon button that lives in the navigation. Clicking it
+            switches between light and dark mode and saves the choice to
+            <code>localStorage</code> so it persists on future visits.
+            On first load, the site reads the user's OS preference
+            (<code>prefers-color-scheme</code>) as the default — the toggle
+            lets them override it. The moon icon is shown in light mode
+            (click to go dark), the sun icon in dark mode (click to go light).
+          </p>
+          <div class="sg-component-preview">
+            <ThemeToggle />
+          </div>
+          <pre class="sg-code"><code>import ThemeToggle from '../components/ThemeToggle.astro';
+
+&lt;ThemeToggle /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Carousel -->
+        <div class="sg-component" id="astro-carousel">
+          <h3 class="sg-component-title">Carousel</h3>
+          <p class="sg-component-desc">
+            A manually controlled image carousel. Navigate with the
+            <strong>arrow buttons</strong> or click any <strong>pagination dot</strong>
+            to jump directly to a slide. Keyboard users can also use the left/right
+            arrow keys. No auto-scroll — the user is always in control
+            (WCAG 2.2 guideline 2.2.2). Each slide shows an image with a title and
+            subtitle caption below it. To update content, edit the
+            <code>slides</code> array at the top of <code>Carousel.astro</code>.
+          </p>
+          <!-- Documentation demo — 3 generic placeholder slides, fully interactive -->
+          <div class="sg-component-preview">
+            <div class="carousel" aria-roledescription="carousel" aria-label="Carousel demo">
+              <div class="carousel-viewport">
+                <div class="carousel-track">
+                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
+                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
+                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
+                    </div>
+                    <div class="carousel-slide-caption">
+                      <h3 class="carousel-slide-title">Slide Title</h3>
+                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
+                    </div>
+                  </div>
+                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
+                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
+                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
+                    </div>
+                    <div class="carousel-slide-caption">
+                      <h3 class="carousel-slide-title">Slide Title</h3>
+                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
+                    </div>
+                  </div>
+                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
+                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
+                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
+                    </div>
+                    <div class="carousel-slide-caption">
+                      <h3 class="carousel-slide-title">Slide Title</h3>
+                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-controls">
+                <div class="carousel-arrows">
+                  <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  </button>
+                  <button class="carousel-btn carousel-btn--next" aria-label="Next slide">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                </div>
+                <div class="carousel-dots" role="tablist" aria-label="Slide navigation">
+                  <button class="carousel-dot carousel-dot--active" role="tab" aria-selected="true" aria-label="Slide 1" data-index="0"></button>
+                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 2" data-index="1"></button>
+                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 3" data-index="2"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <pre class="sg-code"><code>import Carousel from '../components/Carousel.astro';
+
+&lt;Carousel /&gt;</code></pre>
+        </div>
+
+
+        <!-- Component: Footer -->
+        <div class="sg-component" id="astro-footer">
+          <h3 class="sg-component-title">Footer</h3>
+          <p class="sg-component-desc">
+            Navy panel at the bottom of the page — the strongest use of the
+            brand color. Lemon is used as the name accent, creating a bookend
+            with the lemon section labels above. On mobile, name and links
+            stack vertically and center-align. The component itself has no
+            <code>margin-top</code> — spacing is set at the page level so it
+            can be dropped onto any page without side effects.
+          </p>
+          <div class="sg-component-preview sg-component-preview--flush">
+            <Footer />
+          </div>
+          <pre class="sg-code"><code>import Footer from '../components/Footer.astro';
+
+&lt;Footer /&gt;</code></pre>
+        </div>
+
+      </section>
+
     </main>
+    </div><!-- end .pg-layout -->
 
     <Footer />
 

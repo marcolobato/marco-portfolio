@@ -1181,6 +1181,60 @@ outline      → bg-transparent   border-2 border-border</code></pre>
         }
       });
 
+      // ── Mobile nav scrollspy ──────────────────────────────────────────────
+      // Updates the "Playground" title in the mobile sticky bar to reflect
+      // which section the user is currently reading.
+      //
+      // How it works: IntersectionObserver watches every section and sub-section
+      // on the page. The rootMargin carves out an "active zone" — the top 25%
+      // of the viewport. When a section's top edge enters that zone, the title
+      // updates to match. This is more efficient than a scroll listener because
+      // it only fires when something actually crosses the boundary.
+      const mobileTitleEl = document.querySelector('.pg-mobile-nav-title');
+
+      if (mobileTitleEl) {
+        // Map each section ID to the label shown in the mobile title bar.
+        // Order doesn't matter — IntersectionObserver fires for whichever
+        // section enters the active zone first as the user scrolls.
+        const sectionTitles: Record<string, string> = {
+          'color-palette':       'Color Palette',
+          'typography':          'Typography',
+          'basis-ui-components': 'Basis UI',
+          'basis-button':        'Button',
+          'basis-text':          'Text',
+          'basis-card':          'Card',
+          'basis-divider':       'Divider',
+          'basis-navbar':        'Navbar',
+          'basis-badge':         'Badge',
+          'astro-components':    'Astro Components',
+          'astro-button':        'Button',
+          'astro-text-link':     'Text Link',
+          'astro-section-label': 'Section Label',
+          'astro-navigation':    'Navigation',
+          'astro-project-card':  'Project Card',
+          'astro-theme-toggle':  'Theme Toggle',
+          'astro-carousel':      'Carousel',
+          'astro-footer':        'Footer',
+        };
+
+        // rootMargin '0px 0px -75% 0px' shrinks the observation window so only
+        // the top 25% of the viewport counts as "active". A section triggers the
+        // callback only when its top edge enters that top quarter of the screen.
+        const scrollspy = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              mobileTitleEl.textContent = sectionTitles[entry.target.id] ?? 'Playground';
+            }
+          });
+        }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+
+        // Attach the observer to every section that has a mapped ID.
+        Object.keys(sectionTitles).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) scrollspy.observe(el);
+        });
+      }
+
       document.querySelectorAll('.carousel').forEach((carousel) => {
         const track   = carousel.querySelector('.carousel-track') as HTMLElement;
         const prevBtn = carousel.querySelector('.carousel-btn--prev') as HTMLButtonElement;

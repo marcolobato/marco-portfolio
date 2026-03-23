@@ -8,7 +8,6 @@
 //
 // aria-current="page" is added to the Style Guide link when on that page.
 import ThemeToggle from './ThemeToggle.astro';
-const currentPath = Astro.url.pathname;
 ---
 
 <nav class="nav">
@@ -18,11 +17,9 @@ const currentPath = Astro.url.pathname;
   <ul class="nav-links">
     <li><a href="/#work">Work</a></li>
     <li>
-      <!-- aria-current="page" highlights the active link when on the playground page -->
-      <a
-        href="/playground"
-        aria-current={currentPath === '/playground' ? 'page' : undefined}
-      >Playground</a>
+      <!-- /#now scrolls to the "Currently Building" section on the home page.
+           Works from any page — same pattern as /#work above. -->
+      <a href="/#now">Playground</a>
     </li>
     <li><a href="mailto:marcolobato.ux@gmail.com">Contact</a></li>
   </ul>

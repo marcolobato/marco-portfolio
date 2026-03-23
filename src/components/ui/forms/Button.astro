@@ -58,10 +58,11 @@ Sizes: xs, sm, default, md, lg, icon
 Props: href (renders as <a> tag when provided)
 -->
 
-<Tag 
+<Tag
   type={(href || dynamicHref) ? undefined : type}
   href={href}
   disabled={(href || dynamicHref) ? undefined : disabled}
+  data-slot="button"
   class={cn(buttonVariants({ variant, size, shape, elevation, effect }), className)}
   {...(dynamicHref ? {':href': dynamicHref} : {})}
   {...alpineProps}

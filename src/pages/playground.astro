@@ -27,7 +27,19 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
     <Nav />
 
 
-    <div class="pg-layout">
+    <!-- Alpine.js scope — tracks whether the sidebar is open.
+         Starts open on desktop (≥769px) and closed on mobile, matching the CSS defaults.
+         @keydown.escape.window + @close-sidebar.window both close the sidebar from anywhere. -->
+    <div x-data="{ open: window.innerWidth >= 769 }" @keydown.escape.window="open = false" @close-sidebar.window="open = false">
+
+    <!-- Backdrop — translucent overlay behind the sidebar on mobile only.
+         CSS hides it on desktop via display:none !important (regardless of Alpine state).
+         style="display:none" also prevents a flash before Alpine initializes on mobile. -->
+    <div class="pg-backdrop" x-show="open" @click="open = false" x-transition style="display: none;"></div>
+
+    <!-- pg-layout--collapsed: shrinks the left grid column to 0 on desktop.
+         On mobile the grid is already 1fr, so this class has no visual effect there. -->
+    <div class="pg-layout" :class="{ 'pg-layout--collapsed': !open }">
 
       <!-- ===================================================================
            SIDEBAR NAVIGATION
@@ -35,38 +47,42 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
            headers. Links jump to sections; sub-links jump to individual
            components within a section.
            =================================================================== -->
-      <aside class="pg-sidebar">
+      <!-- :class adds pg-sidebar--open when open=true.
+           On desktop: content clips away as the grid column shrinks to 0.
+           On mobile: the drawer slides in from the left. -->
+      <aside class="pg-sidebar" :class="{ 'pg-sidebar--open': open }">
 
         <nav aria-label="Design system navigation">
 
           <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Design Tokens</p>
-            <a href="#color-palette" class="pg-sidebar-link">Color Palette</a>
-            <a href="#typography" class="pg-sidebar-link">Typography</a>
+            <!-- Only close the drawer on mobile — on desktop the sidebar stays open -->
+            <a href="#color-palette" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Color Palette</a>
+            <a href="#typography" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Typography</a>
           </div>
 
           <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Basis UI</p>
-            <a href="#basis-ui-components" class="pg-sidebar-link">Overview</a>
-            <a href="#basis-button" class="pg-sidebar-sublink">Button</a>
-            <a href="#basis-text" class="pg-sidebar-sublink">Text</a>
-            <a href="#basis-card" class="pg-sidebar-sublink">Card</a>
-            <a href="#basis-divider" class="pg-sidebar-sublink">Divider</a>
-            <a href="#basis-navbar" class="pg-sidebar-sublink">Navbar</a>
-            <a href="#basis-badge" class="pg-sidebar-sublink">Badge</a>
+            <a href="#basis-ui-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#basis-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
+            <a href="#basis-text" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text</a>
+            <a href="#basis-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Card</a>
+            <a href="#basis-divider" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Divider</a>
+            <a href="#basis-navbar" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navbar</a>
+            <a href="#basis-badge" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Badge</a>
           </div>
 
           <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Astro Components</p>
-            <a href="#astro-components" class="pg-sidebar-link">Overview</a>
-            <a href="#astro-button" class="pg-sidebar-sublink">Button</a>
-            <a href="#astro-text-link" class="pg-sidebar-sublink">Text Link</a>
-            <a href="#astro-section-label" class="pg-sidebar-sublink">Section Label</a>
-            <a href="#astro-navigation" class="pg-sidebar-sublink">Navigation</a>
-            <a href="#astro-project-card" class="pg-sidebar-sublink">Project Card</a>
-            <a href="#astro-theme-toggle" class="pg-sidebar-sublink">Theme Toggle</a>
-            <a href="#astro-carousel" class="pg-sidebar-sublink">Carousel</a>
-            <a href="#astro-footer" class="pg-sidebar-sublink">Footer</a>
+            <a href="#astro-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#astro-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
+            <a href="#astro-text-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text Link</a>
+            <a href="#astro-section-label" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Section Label</a>
+            <a href="#astro-navigation" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
+            <a href="#astro-project-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Project Card</a>
+            <a href="#astro-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
+            <a href="#astro-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
+            <a href="#astro-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
           </div>
 
         </nav>
@@ -80,6 +96,28 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
            PAGE HEADER
            =================================================================== -->
       <header class="sg-header">
+
+        <!-- Sidebar toggle — Basis UI ghost icon button.
+             Desktop: collapses/expands the 220px left column
+             Mobile: opens/closes the left drawer overlay
+             Uses a panel/sidebar icon (rectangle + left divider line) to distinguish
+             it from the site's main navigation menu button (which uses a hamburger). -->
+        <BasisButton
+          variant="ghost"
+          size="icon"
+          className="pg-sidebar-toggle"
+          @click="open = !open"
+          :aria-expanded="open ? 'true' : 'false'"
+          aria-label="Toggle navigation"
+        >
+          <!-- Sidebar/panel icon: window outline with a left-panel divider.
+               Standard icon used in VS Code, Linear, Notion, etc. -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M9 3v18"/>
+          </svg>
+        </BasisButton>
+
         <p class="section-label">Living Document</p>
         <h1>Playground</h1>
         <div class="sg-header-sections">
@@ -1096,10 +1134,22 @@ outline      → bg-transparent   border-2 border-border</code></pre>
     </main>
     </div><!-- end .pg-layout -->
 
+    </div><!-- end Alpine scope -->
+
     <Footer />
 
     <!-- Initializes all carousels on this page, including the documentation demo -->
     <script>
+      // Escape key: close the sidebar bottom sheet if it's open.
+      // This is a vanilla JS fallback in case Alpine's @keydown.escape.window
+      // binding doesn't fire in all browsers. It dispatches a custom event that
+      // the Alpine x-data scope listens for via @close-sidebar.window.
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          window.dispatchEvent(new CustomEvent('close-sidebar'));
+        }
+      });
+
       document.querySelectorAll('.carousel').forEach((carousel) => {
         const track   = carousel.querySelector('.carousel-track') as HTMLElement;
         const prevBtn = carousel.querySelector('.carousel-btn--prev') as HTMLButtonElement;

@@ -1490,26 +1490,52 @@ code {
 }
 
 /* --- Playground sidebar layout ---------------------------------------------
-   Two-column grid: sticky sidebar on the left, scrollable content on the right.
-   The sidebar provides a Storybook-style tree navigation for jumping to any
-   section or individual component. All colors use CSS variables so dark mode
-   works automatically.
+   Two-column grid: collapsible sidebar on the left, scrollable content on the right.
+   On desktop the sidebar can be toggled open/closed via a button in the page header.
+   On mobile it becomes a left-side drawer overlay (see media query below).
+   All colors use CSS variables so dark mode works automatically.
    --------------------------------------------------------------------------- */
+
+/* Sidebar toggle — Basis UI ghost/icon button handles all visual styles.
+   Only spacing is needed here. */
+.pg-sidebar-toggle {
+  display: flex; /* keeps icon centered (flex), but on its own line since block-level */
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-sm);
+}
+
 .pg-layout {
   display: grid;
   grid-template-columns: 220px 1fr;
   align-items: start;
   max-width: 1200px;
   margin-inline: auto;
+  /* Smooth column width animation when sidebar collapses on desktop */
+  transition: grid-template-columns 250ms ease;
+}
+
+/* Collapsed state: the 220px column shrinks to 0, sidebar content clips away */
+.pg-layout--collapsed {
+  grid-template-columns: 0px 1fr;
 }
 
 .pg-sidebar {
   position: sticky;
   top: 0;
   height: 100dvh;
+  overflow: hidden; /* clips nav content as the column width animates to 0 */
   overflow-y: auto;
   border-right: 1px solid hsl(var(--border));
   padding: var(--space-xl) var(--space-md);
+  white-space: nowrap; /* prevents text from wrapping mid-collapse */
+  transition: padding 250ms ease;
+}
+
+/* When collapsed, clear padding and border so nothing bleeds into the content column */
+.pg-layout--collapsed .pg-sidebar {
+  padding-inline: 0;
+  border-right: none;
 }
 
 /* Group label — uppercase category headers like "BASIS UI" */
@@ -1576,23 +1602,67 @@ code {
   color: hsl(var(--muted-foreground));
 }
 
-/* Mobile: sidebar stacks above content */
+/* Mobile: sidebar becomes a left-side drawer
+   ─────────────────────────────────────────────────────────────────────────────
+   On mobile the sidebar leaves the grid (grid is 1fr) and becomes a
+   position:fixed left drawer. It starts off-screen (translateX -100%) and
+   slides into view when Alpine adds .pg-sidebar--open.
+   The toggle button in the sg-header opens/closes it.
+   A translucent backdrop sits behind it; tapping it closes the drawer.
+   ─────────────────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .pg-layout {
-    grid-template-columns: 1fr;
+  /* Prevent wide playground content sections from creating horizontal scroll */
+  body {
+    overflow-x: clip;
   }
 
+  .pg-layout {
+    grid-template-columns: 1fr; /* sidebar is out of flow on mobile */
+    max-width: 100%;
+  }
+
+  /* Left drawer — fixed to the full left edge, slides in from the left */
   .pg-sidebar {
-    position: static;
-    height: auto;
-    overflow-y: visible;
-    border-right: none;
-    border-bottom: 1px solid hsl(var(--border));
-    padding: var(--space-md);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100dvh;
+    overflow-y: auto;
+    background: hsl(var(--background));
+    border-right: 1px solid hsl(var(--border));
+    padding: var(--space-xl) var(--space-md);
+    white-space: normal; /* override desktop nowrap — text wraps normally in the drawer */
+    transform: translateX(-100%);
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 50;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Alpine adds this class when open=true — drawer slides into view */
+  .pg-sidebar--open {
+    transform: translateX(0);
+  }
+
+  /* Full-screen semi-transparent backdrop behind the open drawer */
+  .pg-backdrop {
+    position: fixed;
+    inset: 0;
+    background: hsl(var(--foreground) / 0.4);
+    z-index: 40;
   }
 
   .pg-layout .sg-main {
     padding-inline: var(--space-xl);
+  }
+}
+
+/* On desktop, the backdrop is never shown regardless of Alpine state */
+@media (min-width: 769px) {
+  .pg-backdrop {
+    display: none !important;
   }
 }
 

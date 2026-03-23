@@ -266,6 +266,11 @@ select {
 
   /* Royal blue alias flips to a lighter navy so it stays readable on dark backgrounds */
   --color-royal-blue: hsl(var(--navy-300));   /* #6090E0 */
+
+  /* Restore original navy-black page background.
+     body uses var(--color-white), so this fixes the body canvas and anything
+     that inherits from it (nav sides, hero, about, now section). */
+  --color-white: #0B1229;
 }
 
 /* Light mode forced on a SCOPED element (e.g. the playground gallery preview canvas).
@@ -1990,6 +1995,14 @@ code {
    Most of the dark mode work is done by the token overrides in tokens.css —
    these are the edge cases.
    --------------------------------------------------------------------------- */
+
+/* Section backgrounds: restore the original navy-tinted surface color.
+   body (and everything that inherits from it) is already #0B1229 via --color-white.
+   Work and writing need to be one step lighter — the original "surface" level. */
+[data-theme="dark"] .work,
+[data-theme="dark"] .writing {
+  background-color: #111A36;
+}
 
 /* Writing cards: the border uses --color-surface which becomes very close to
    --color-white in dark mode. Use --color-slate instead for a visible edge. */

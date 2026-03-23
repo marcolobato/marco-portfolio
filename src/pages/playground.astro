@@ -11,34 +11,149 @@ import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
-import Carousel from '../components/Carousel.astro';
-import { Button as ShadcnButton } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import BasisButton from '@/components/ui/forms/Button.astro';
+import Badge from '@/components/ui/feedback/Badge.astro';
+import Card from '@/components/ui/display/card/Card.astro';
+import CardHeader from '@/components/ui/display/card/CardHeader.astro';
+import CardContent from '@/components/ui/display/card/CardContent.astro';
+import CardFooter from '@/components/ui/display/card/CardFooter.astro';
+import Divider from '@/components/ui/layout/Divider.astro';
+import BasisText from '@/components/ui/display/Text.astro';
+import BasisNavbar from '@/components/ui/display/Navbar.astro';
 ---
 
 <BaseLayout title="Playground — Marco Lobato">
 
+    <!-- Sticky wrapper — on mobile both bars stick together as a unit.
+         Wrapping them in a single element is more reliable than two sibling sticky elements. -->
+    <div class="pg-nav-wrapper">
     <Nav />
 
+    <!-- Mobile secondary nav bar — lives inside the sticky wrapper so it always stays
+         anchored below the site nav. The button dispatches a plain window event;
+         the Alpine scope below listens for it via @toggle-sidebar.window. -->
+    <div class="pg-mobile-nav-bar">
+      <BasisButton
+        variant="ghost"
+        size="icon"
+        className="pg-mobile-nav-trigger"
+        onclick="window.dispatchEvent(new CustomEvent('toggle-sidebar'))"
+        aria-label="Toggle navigation"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M9 3v18"/>
+        </svg>
+      </BasisButton>
+      <span class="pg-mobile-nav-title">Playground</span>
+    </div>
+    </div><!-- /.pg-nav-wrapper -->
 
-    <main class="sg-main">
+    <!-- Alpine.js scope — tracks whether the sidebar is open.
+         Starts open on desktop (≥1200px) and closed on mobile.
+         Listens for toggle-sidebar (from mobile nav bar), close-sidebar, and Escape. -->
+    <div x-data="{ open: window.innerWidth >= 1200 }" @keydown.escape.window="open = false" @close-sidebar.window="open = false" @toggle-sidebar.window="open = !open">
+
+    <!-- Backdrop — mobile only. CSS hides it on desktop via display:none !important. -->
+    <div class="pg-backdrop" x-show="open" @click="open = false" x-transition style="display: none;"></div>
+
+    <div class="pg-layout">
+
+      <!-- ===================================================================
+           SIDEBAR NAVIGATION
+           Tree-style nav inspired by Storybook. Group labels are non-linked
+           headers. Links jump to sections; sub-links jump to individual
+           components within a section.
+           =================================================================== -->
+      <!-- Desktop ≥1200px: closed = 40px rail (expand button only, no occlusion).
+           Desktop 769–1199px: closed = fully hidden (translateX -100%).
+           Mobile: open = slides in as drawer. -->
+      <aside class="pg-sidebar" :class="{ 'pg-sidebar--closed': !open, 'pg-sidebar--open': open }">
+
+        <!-- Expand button — visible only in rail mode (closed, ≥1200px). Centered in the 40px strip. -->
+        <BasisButton variant="ghost" size="icon" className="pg-sidebar-expand-btn" @click="open = true" aria-label="Open navigation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M9 3v18"/>
+          </svg>
+        </BasisButton>
+
+        <!-- Close button row — visible when sidebar is fully open. Right-aligned. -->
+        <div class="pg-sidebar-header">
+          <BasisButton variant="ghost" size="icon" className="pg-sidebar-close-btn" @click="open = false" aria-label="Close navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </BasisButton>
+        </div>
+
+        <!-- Nav links — hidden in rail mode, shown when fully open -->
+        <nav class="pg-sidebar-nav" aria-label="Design system navigation">
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Design Tokens</p>
+            <!-- Only close the drawer on mobile — on desktop the sidebar stays open -->
+            <a href="#color-palette" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Color Palette</a>
+            <a href="#typography" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Typography</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Basis UI</p>
+            <a href="#basis-ui-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#basis-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
+            <a href="#basis-text" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text</a>
+            <a href="#basis-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Card</a>
+            <a href="#basis-divider" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Divider</a>
+            <a href="#basis-navbar" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navbar</a>
+            <a href="#basis-badge" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Badge</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Astro Components</p>
+            <a href="#astro-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#astro-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
+            <a href="#astro-text-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text Link</a>
+            <a href="#astro-section-label" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Section Label</a>
+            <a href="#astro-navigation" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
+            <a href="#astro-project-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Project Card</a>
+            <a href="#astro-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
+            <a href="#astro-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
+            <a href="#astro-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
+          </div>
+
+        </nav><!-- /.pg-sidebar-nav -->
+
+      </aside>
+
+
+      <main class="sg-main">
 
       <!-- ===================================================================
            PAGE HEADER
            =================================================================== -->
       <header class="sg-header">
+
+        <!-- Panel icon toggle — desktop only. Hidden on mobile; pg-mobile-nav-bar handles mobile. -->
+        <BasisButton
+          variant="ghost"
+          size="icon"
+          className="pg-sidebar-toggle"
+          @click="open = !open"
+          :aria-expanded="open ? 'true' : 'false'"
+          aria-label="Toggle navigation"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M9 3v18"/>
+          </svg>
+        </BasisButton>
+
         <p class="section-label">Living Document</p>
         <h1>Playground</h1>
         <div class="sg-header-sections">
           <div class="sg-header-section">
             <p class="sg-header-section-title">Design System</p>
-            <p class="sg-header-desc">The foundation of this site — tokens, typography, and components built for AI-ready design.</p>
-            <ul class="sg-header-links">
-              <li><a href="#color" class="text-link">Color</a></li>
-              <li><a href="#typography" class="text-link">Typography</a></li>
-              <li><a href="#astro-components" class="text-link">Astro Components</a></li>
-              <li><a href="#shadcn-components" class="text-link">shadcn Components</a></li>
-            </ul>
+            <p class="sg-header-desc">Everything I built to make this site. Colors, type, and components — shown as-is, no abstractions.</p>
           </div>
           <div class="sg-header-section">
             <p class="sg-header-section-title">Prototypes</p>
@@ -49,81 +164,357 @@ import { Badge } from '@/components/ui/badge';
 
 
       <!-- ===================================================================
-           SECTION: COLORS
+           SECTION: COLOR PALETTE
            =================================================================== -->
-      <section class="sg-section" id="color">
-        <h2 class="sg-section-title">Color</h2>
+      <section class="sg-section" id="color-palette">
+        <h2 class="sg-section-title">Color Palette</h2>
         <p class="sg-section-desc">
-          All colors are defined as CSS custom properties in
-          <code>tokens.css</code>. Nothing in this project uses a hardcoded
-          hex value — every color reference points back to one of these tokens.
+          The full palette — semantic tokens for UI, and the brand ramps they're built from.
+          All values are CSS custom properties in <code>global.css</code> using HSL.
         </p>
 
-        <h3 class="sg-subsection-title">Brand palette</h3>
+
+        <!-- ── Theme colors ─────────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Theme colors</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          Each card shows a background color with its paired foreground color
+          as text — so you can immediately judge contrast. These are the tokens
+          Basis UI components read directly.
+        </p>
+
+        <div class="sg-color-pairs">
+
+          <!-- background / foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--background)); border-bottom: 1px solid hsl(var(--border));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Background</p>
+              <code class="sg-color-pair-token">--background</code>
+              <code class="sg-color-pair-token">--foreground</code>
+            </div>
+          </div>
+
+          <!-- card / card-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--card)); border-bottom: 1px solid hsl(var(--border));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--card-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Card</p>
+              <code class="sg-color-pair-token">--card</code>
+              <code class="sg-color-pair-token">--card-foreground</code>
+            </div>
+          </div>
+
+          <!-- popover / popover-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--popover)); border-bottom: 1px solid hsl(var(--border));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--popover-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Popover</p>
+              <code class="sg-color-pair-token">--popover</code>
+              <code class="sg-color-pair-token">--popover-foreground</code>
+            </div>
+          </div>
+
+          <!-- primary / primary-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--primary));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--primary-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Primary</p>
+              <code class="sg-color-pair-token">--primary</code>
+              <code class="sg-color-pair-token">--primary-foreground</code>
+            </div>
+          </div>
+
+          <!-- secondary / secondary-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--secondary));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--secondary-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Secondary</p>
+              <code class="sg-color-pair-token">--secondary</code>
+              <code class="sg-color-pair-token">--secondary-foreground</code>
+            </div>
+          </div>
+
+          <!-- accent / accent-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--accent));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--accent-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Accent</p>
+              <code class="sg-color-pair-token">--accent</code>
+              <code class="sg-color-pair-token">--accent-foreground</code>
+            </div>
+          </div>
+
+          <!-- muted / muted-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--muted));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--muted-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Muted</p>
+              <code class="sg-color-pair-token">--muted</code>
+              <code class="sg-color-pair-token">--muted-foreground</code>
+            </div>
+          </div>
+
+          <!-- destructive / destructive-foreground -->
+          <div class="sg-color-pair">
+            <div class="sg-color-pair-swatch" style="background: hsl(var(--destructive));">
+              <span class="sg-color-pair-sample" style="color: hsl(var(--destructive-foreground));">Aa</span>
+            </div>
+            <div class="sg-color-pair-meta">
+              <p class="sg-color-pair-name">Destructive</p>
+              <code class="sg-color-pair-token">--destructive</code>
+              <code class="sg-color-pair-token">--destructive-foreground</code>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- ── UI colors ────────────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">UI colors</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          Single-use tokens for structural UI elements — not surfaces or text,
+          but borders, inputs, and focus rings.
+        </p>
+
         <div class="sg-swatches">
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-navy); border: 1px solid var(--color-slate);"></div>
+            <div class="sg-swatch-color" style="background: hsl(var(--border)); border: 1px solid hsl(var(--muted-foreground) / 30%);"></div>
+            <p class="sg-swatch-name">Border</p>
+            <code class="sg-swatch-token">--border</code>
+            <p class="sg-swatch-use">Card edges, dividers</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: hsl(var(--input)); border: 1px solid hsl(var(--muted-foreground) / 30%);"></div>
+            <p class="sg-swatch-name">Input</p>
+            <code class="sg-swatch-token">--input</code>
+            <p class="sg-swatch-use">Form field borders</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: hsl(var(--ring));"></div>
+            <p class="sg-swatch-name">Ring</p>
+            <code class="sg-swatch-token">--ring</code>
+            <p class="sg-swatch-use">Focus ring — Navy 700</p>
+          </div>
+
+        </div>
+
+
+        <!-- ── Brand ramp — Navy ────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Brand ramp — Navy</h3>
+        <div class="sg-ramp">
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-900));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">900</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#081F5D</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-800));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">800</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#0A2872</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-700));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">700</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#1040A8</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-500));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">500</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#2060D0</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-300));">
+            <span class="sg-ramp-stop-name" style="color: #081F5D;">300</span>
+            <span class="sg-ramp-stop-hex" style="color: #081F5D;">#6090E0</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--navy-100));">
+            <span class="sg-ramp-stop-name" style="color: #081F5D;">100</span>
+            <span class="sg-ramp-stop-hex" style="color: #081F5D;">#C0D4F4</span>
+          </div>
+        </div>
+
+
+        <!-- ── Brand ramp — Lemon ───────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Brand ramp — Lemon</h3>
+        <div class="sg-ramp">
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-900));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">900</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#8A8A0A</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-700));">
+            <span class="sg-ramp-stop-name" style="color: #fff;">700</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#BFBF12</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-500));">
+            <span class="sg-ramp-stop-name" style="color: #8A8A0A;">500</span>
+            <span class="sg-ramp-stop-hex" style="color: #8A8A0A;">#F1F11C</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-300));">
+            <span class="sg-ramp-stop-name" style="color: #8A8A0A;">300</span>
+            <span class="sg-ramp-stop-hex" style="color: #8A8A0A;">#F6F670</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(var(--lemon-100));">
+            <span class="sg-ramp-stop-name" style="color: #8A8A0A;">100</span>
+            <span class="sg-ramp-stop-hex" style="color: #8A8A0A;">#FAFABC</span>
+          </div>
+        </div>
+
+
+        <!-- ── Neutral scale ────────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Neutral scale</h3>
+        <div class="sg-ramp">
+          <!-- Values inline because neutrals don't have --neutral-* ramp tokens;
+               they map directly to semantic tokens (foreground, muted, border, etc.) -->
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 10.2%);">
+            <span class="sg-ramp-stop-name" style="color: #fff;">950</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#1A1A1A</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 30.2%);">
+            <span class="sg-ramp-stop-name" style="color: #fff;">800</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#4D4D4D</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 50.2%);">
+            <span class="sg-ramp-stop-name" style="color: #fff;">500</span>
+            <span class="sg-ramp-stop-hex" style="color: #fff;">#808080</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 85.1%);">
+            <span class="sg-ramp-stop-name" style="color: #1A1A1A;">200</span>
+            <span class="sg-ramp-stop-hex" style="color: #1A1A1A;">#D9D9D9</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 94.9%);">
+            <span class="sg-ramp-stop-name" style="color: #1A1A1A;">100</span>
+            <span class="sg-ramp-stop-hex" style="color: #1A1A1A;">#F2F2F2</span>
+          </div>
+          <div class="sg-ramp-stop" style="background: hsl(0 0% 100%); border: 1px solid hsl(var(--border));">
+            <span class="sg-ramp-stop-name" style="color: #1A1A1A;">0</span>
+            <span class="sg-ramp-stop-hex" style="color: #1A1A1A;">#FFFFFF</span>
+          </div>
+        </div>
+
+
+        <!-- ── Component aliases ────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Component aliases</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          The <code>--color-*</code> tokens are backward-compatible aliases used
+          by the handbuilt components (Button, Nav, Footer, Carousel,
+          SectionLabel). They sit on top of the semantic tokens above.
+          <strong>Fixed</strong> aliases always resolve to the same value
+          regardless of theme. <strong>Theme-aware</strong> aliases flip
+          automatically — toggle dark mode above to see them change.
+        </p>
+
+        <!-- Group 1: Fixed aliases -->
+        <p class="sg-color-group-label">Fixed — same in light and dark</p>
+        <div class="sg-swatches" style="margin-bottom: var(--space-xl);">
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-navy);"></div>
             <p class="sg-swatch-name">Navy</p>
             <code class="sg-swatch-token">--color-navy</code>
-            <p class="sg-swatch-use">Headings, footer background</p>
+            <p class="sg-swatch-use">Footer bg, code blocks, button hover<br>#081F5D → Navy 900</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-royal-blue);"></div>
+            <div class="sg-swatch-color" style="background: var(--color-royal-blue);"></div>
             <p class="sg-swatch-name">Royal Blue</p>
             <code class="sg-swatch-token">--color-royal-blue</code>
-            <p class="sg-swatch-use">Links, hover states, hero title</p>
+            <p class="sg-swatch-use">Links, nav hover, hero title<br>#1040A8 → Navy 700</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-lemon); border: 1px solid var(--color-slate);"></div>
+            <div class="sg-swatch-color" style="background: var(--color-lemon); border: 1px solid hsl(var(--border));"></div>
             <p class="sg-swatch-name">Lemon</p>
             <code class="sg-swatch-token">--color-lemon</code>
-            <p class="sg-swatch-use">Section labels, footer accents</p>
+            <p class="sg-swatch-use">SectionLabel bg, Footer name<br>#F1F11C → Lemon 500</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-citrine); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">Citrine</p>
+            <div class="sg-swatch-color" style="background: var(--color-citrine); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Citrine <em style="font-style: normal; font-size: 10px; color: var(--color-slate);">(unused)</em></p>
             <code class="sg-swatch-token">--color-citrine</code>
-            <p class="sg-swatch-use">Secondary accent, available</p>
+            <p class="sg-swatch-use">Defined but not used in any component<br>#BFBF12 → Lemon 700</p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-slate);"></div>
+            <div class="sg-swatch-color" style="background: var(--color-slate);"></div>
             <p class="sg-swatch-name">Slate</p>
             <code class="sg-swatch-token">--color-slate</code>
-            <p class="sg-swatch-use">Borders, dividers, placeholders</p>
-          </div>
-
-          <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-charcoal);"></div>
-            <p class="sg-swatch-name">Charcoal</p>
-            <code class="sg-swatch-token">--color-charcoal</code>
-            <p class="sg-swatch-use">Body text</p>
+            <p class="sg-swatch-use">Borders, placeholders, Footer links<br>#808080 → Neutral 500</p>
           </div>
 
         </div>
 
-        <h3 class="sg-subsection-title">Surfaces</h3>
+        <!-- Group 2: Theme-aware aliases -->
+        <p class="sg-color-group-label">Theme-aware — flips with dark mode</p>
         <div class="sg-swatches">
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-white); border: 1px solid var(--color-slate);"></div>
-            <p class="sg-swatch-name">White</p>
-            <code class="sg-swatch-token">--color-white</code>
-            <p class="sg-swatch-use">Primary page background</p>
+            <div class="sg-swatch-color" style="background: var(--color-heading); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Heading</p>
+            <code class="sg-swatch-token">--color-heading</code>
+            <p class="sg-swatch-use">h1–h6, nav name, carousel title<br>→ <code>--primary</code></p>
           </div>
 
           <div class="sg-swatch">
-            <div class="sg-swatch-color" style="background-color: var(--color-surface); border: 1px solid var(--color-slate);"></div>
+            <div class="sg-swatch-color" style="background: var(--color-charcoal); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">Charcoal</p>
+            <code class="sg-swatch-token">--color-charcoal</code>
+            <p class="sg-swatch-use">Body text, nav links, button text<br>→ <code>--foreground</code></p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-surface); border: 1px solid hsl(var(--border));"></div>
             <p class="sg-swatch-name">Surface</p>
             <code class="sg-swatch-token">--color-surface</code>
-            <p class="sg-swatch-use">Alternate section backgrounds</p>
+            <p class="sg-swatch-use">Section backgrounds, preview areas<br>→ <code>--muted</code></p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color" style="background: var(--color-white); border: 1px solid hsl(var(--border));"></div>
+            <p class="sg-swatch-name">White</p>
+            <code class="sg-swatch-token">--color-white</code>
+            <p class="sg-swatch-use">Card backgrounds, slide backgrounds<br>→ <code>--background</code></p>
           </div>
 
         </div>
+
+
+        <!-- ── What this system intentionally excludes ───────────────────── -->
+        <h3 class="sg-subsection-title">Intentionally excluded</h3>
+        <p class="sg-section-desc">
+          Shadcn/ui defines additional token groups that this site does not use.
+          They are absent by design — not an oversight.
+        </p>
+        <div class="sg-swatches">
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color sg-swatch-color--excluded"></div>
+            <p class="sg-swatch-name">Chart 1–5</p>
+            <code class="sg-swatch-token">--chart-1…5</code>
+            <p class="sg-swatch-use">Data visualization palette. Not needed — no charts in this portfolio.</p>
+          </div>
+
+          <div class="sg-swatch">
+            <div class="sg-swatch-color sg-swatch-color--excluded"></div>
+            <p class="sg-swatch-name">Sidebar tokens</p>
+            <code class="sg-swatch-token">--sidebar-*</code>
+            <p class="sg-swatch-use">Sidebar navigation system. Not needed — this site uses a simple top nav.</p>
+          </div>
+
+        </div>
+
       </section>
 
 
@@ -133,9 +524,7 @@ import { Badge } from '@/components/ui/badge';
       <section class="sg-section" id="typography">
         <h2 class="sg-section-title">Typography</h2>
         <p class="sg-section-desc">
-          All type is set in <strong>Fraunces</strong> — a variable serif with
-          optical sizes and a warm, editorial character. Sizes come from a
-          base-16 scale defined in <code>global.css</code>.
+          The type scale used across the site. <strong>Fraunces</strong> for display headings, <strong>Geist</strong> for everything else. Sizes are defined as CSS variables in <code>global.css</code>.
         </p>
 
         <!-- Type scale samples -->
@@ -163,7 +552,7 @@ import { Badge } from '@/components/ui/badge';
 
           <div class="sg-type-row">
             <span class="sg-type-meta">--text-2xl · 24px · Medium</span>
-            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--color-navy); margin: 0;">Hero title / Now statement</p>
+            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--color-heading); margin: 0;">Hero title / Now statement</p>
           </div>
 
           <div class="sg-type-row">
@@ -191,6 +580,329 @@ import { Badge } from '@/components/ui/badge';
 
 
       <!-- ===================================================================
+           SECTION: BASIS UI COMPONENTS
+           Live component gallery. Toggle dark/light mode inside the preview
+           using the Alpine.js button — it sets data-theme on the canvas div,
+           so CSS variable overrides cascade to every component inside it.
+           =================================================================== -->
+      <section class="sg-section" id="basis-ui-components">
+        <h2 class="sg-section-title">Basis UI Components</h2>
+        <p class="sg-section-desc">
+          Astro components from Basis UI, customized to match this palette. Each one is a copy-paste component — source lives in <code>src/components/ui/</code>. Toggle the preview to see dark mode.
+        </p>
+
+        <h3 class="sg-subsection-title">The token pipeline</h3>
+        <p class="sg-section-desc">
+          Every color decision starts in Figma as a variable and ends up in a
+          live component through a four-layer chain. A brand update touches one
+          value and cascades everywhere.
+        </p>
+        <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
+         color/navy = #081F5D
+
+Step 2 — Brand ramp token in global.css
+         --navy-900: 223.8 84.2% 19.8%;  /* stored as HSL, no hsl() wrapper */
+
+Step 3 — Semantic mapping in global.css (the bridge layer)
+         --primary: 223.8 84.2% 19.8%;   /* "primary" maps to Deep Navy */
+         --ring:    221.1 82.6% 36.1%;   /* focus rings use Navy 700 */
+
+Step 4 — Basis UI component in Button.astro
+         bg-primary   → resolves --primary → #081F5D in light / #C0D4F4 in dark
+         hover:bg-ring → shifts to Navy 700 on hover / focus</code></pre>
+
+
+        <!-- ── Component gallery ─────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Component gallery</h3>
+
+        <!-- Alpine.js wrapper.
+             dark initialises from the CURRENT site theme on load.
+             toggle() writes back to <html> — the same element the nav ThemeToggle
+             writes to — so both controls are always in sync.
+             The MutationObserver keeps dark in sync when the nav toggle fires. -->
+        <div
+          x-data="{
+            dark: document.documentElement.getAttribute('data-theme') === 'dark',
+            toggle() {
+              this.dark = !this.dark;
+              const theme = this.dark ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', theme);
+              localStorage.setItem('theme', theme);
+            }
+          }"
+          x-init="
+            new MutationObserver(() => {
+              dark = document.documentElement.getAttribute('data-theme') === 'dark';
+            }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+          "
+        >
+
+          <!-- Toolbar -->
+          <div class="sg-gallery-toolbar">
+            <span class="sg-gallery-toolbar-label">Component preview</span>
+            <button
+              class="sg-gallery-toggle"
+              @click="toggle()"
+              :aria-label="dark ? 'Switch to light preview' : 'Switch to dark preview'"
+            >
+              <!-- Moon icon — shown when light, click to see dark preview -->
+              <svg x-show="!dark" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <!-- Sun icon — shown when dark, click to return to light preview -->
+              <svg x-show="dark" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+              <span x-text="dark ? 'Light preview' : 'Dark preview'"></span>
+            </button>
+          </div>
+
+          <!-- Preview canvas — no data-theme here. Inherits from <html>, which both
+               the gallery toggle and the nav ThemeToggle write to. -->
+          <div class="sg-gallery-canvas">
+
+
+            <!-- ── BUTTONS ──────────────────────────────────────────────── -->
+            <div class="sg-gallery-block" id="basis-button">
+              <p class="sg-gallery-block-title">Button — <code>src/components/ui/forms/Button.astro</code></p>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-2xs);">Variants</p>
+              <div class="sg-gallery-row">
+                <!-- default: bg-primary (navy) / text-primary-foreground (white) -->
+                <BasisButton>Default</BasisButton>
+                <!-- secondary: bg-secondary (navy-100) / text-secondary-foreground -->
+                <BasisButton variant="secondary">Secondary</BasisButton>
+                <!-- destructive: bg-destructive / text-destructive-foreground -->
+                <BasisButton variant="destructive">Destructive</BasisButton>
+                <!-- outline: border-border bg-background — hover shows accent -->
+                <BasisButton variant="outline">Outline</BasisButton>
+                <!-- ghost: transparent — hover bg-accent, text-accent-foreground -->
+                <BasisButton variant="ghost">Ghost</BasisButton>
+                <!-- link: text-primary with underline on hover -->
+                <BasisButton variant="link">Link</BasisButton>
+              </div>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-md) 0 var(--space-2xs);">Sizes</p>
+              <div class="sg-gallery-row">
+                <BasisButton size="sm">Small</BasisButton>
+                <BasisButton size="md">Medium</BasisButton>
+                <BasisButton size="lg">Large</BasisButton>
+              </div>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-md) 0 var(--space-2xs);">States</p>
+              <div class="sg-gallery-row">
+                <BasisButton disabled>Disabled</BasisButton>
+                <BasisButton variant="outline" disabled>Outline disabled</BasisButton>
+              </div>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-md) 0 var(--space-2xs);">Note: ghost and outline buttons show <code>--accent</code> (Lemon) on hover</p>
+            </div>
+
+
+            <!-- ── TEXT ────────────────────────────────────────────────── -->
+            <div class="sg-gallery-block" id="basis-text">
+              <p class="sg-gallery-block-title">Text — <code>src/components/ui/display/Text.astro</code></p>
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
+                Variant picks the correct HTML element automatically (h1, h2, p, span, etc.)
+                and applies the matching token. All colors adapt to dark mode.
+              </p>
+
+              <div class="sg-gallery-text-scale">
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">hero-title → h1</span>
+                  <BasisText variant="hero-title">Hero Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">page-title → h1</span>
+                  <BasisText variant="page-title">Page Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">section-title → h2</span>
+                  <BasisText variant="section-title">Section Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">card-title → h2</span>
+                  <BasisText variant="card-title">Card Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">card-subtitle → h3</span>
+                  <BasisText variant="card-subtitle">Card Subtitle</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">body → p</span>
+                  <BasisText variant="body">The quick brown fox jumps over the lazy dog.</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">body-small → small</span>
+                  <BasisText variant="body-small">Smaller body — uses muted-foreground</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">muted → small</span>
+                  <BasisText variant="muted">Muted text — captions, helper text</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">caption → span</span>
+                  <BasisText variant="caption">Caption — uppercase, tracked</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">overline → span</span>
+                  <BasisText variant="overline">Overline label</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">link → span</span>
+                  <BasisText variant="link">Text link style</BasisText>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- ── CARD ────────────────────────────────────────────────── -->
+            <div class="sg-gallery-block" id="basis-card">
+              <p class="sg-gallery-block-title">Card — <code>src/components/ui/display/card/</code></p>
+              <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: flex-start;">
+
+                <!-- Default variant — uses --card (white / dark surface) -->
+                <Card padding="lg" style="width: 220px;">
+                  <CardHeader>
+                    <BasisText variant="card-title">Default card</BasisText>
+                    <BasisText variant="card-subtitle">With header / content / footer</BasisText>
+                  </CardHeader>
+                  <CardContent>
+                    <BasisText variant="card-description">Body content lives here. Background uses <code>--card</code>.</BasisText>
+                  </CardContent>
+                  <CardFooter>
+                    <BasisButton size="sm">Action</BasisButton>
+                    <BasisButton size="sm" variant="ghost">Cancel</BasisButton>
+                  </CardFooter>
+                </Card>
+
+                <!-- Muted variant — uses --muted surface -->
+                <Card variant="muted" padding="lg" style="width: 220px;">
+                  <CardHeader>
+                    <BasisText variant="card-title">Muted card</BasisText>
+                    <BasisText variant="card-subtitle">Secondary surface</BasisText>
+                  </CardHeader>
+                  <CardContent>
+                    <BasisText variant="card-description">Background uses <code>--muted</code> — good for sidebar panels.</BasisText>
+                  </CardContent>
+                  <CardFooter>
+                    <BasisButton size="sm" variant="secondary">Action</BasisButton>
+                  </CardFooter>
+                </Card>
+
+                <!-- Outline variant — transparent bg with a 2px border -->
+                <Card variant="outline" padding="lg" style="width: 220px;">
+                  <CardHeader>
+                    <BasisText variant="card-title">Outline card</BasisText>
+                    <BasisText variant="card-subtitle">Border only, no fill</BasisText>
+                  </CardHeader>
+                  <CardContent>
+                    <BasisText variant="card-description">Background is transparent. Uses <code>--border</code> for its edge.</BasisText>
+                  </CardContent>
+                  <CardFooter>
+                    <BasisButton size="sm" variant="outline">Action</BasisButton>
+                  </CardFooter>
+                </Card>
+
+              </div>
+            </div>
+
+
+            <!-- ── DIVIDER ──────────────────────────────────────────────── -->
+            <div class="sg-gallery-block" id="basis-divider">
+              <p class="sg-gallery-block-title">Divider — <code>src/components/ui/layout/Divider.astro</code></p>
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
+                Always uses <code>--border</code> — flips automatically in dark mode.
+                No accent variant in the component; use a wrapper with a colored background for accent rules.
+              </p>
+
+              <!-- Thin (default) -->
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-xs);">thickness="1" (default)</p>
+              <BasisText variant="muted">Content above</BasisText>
+              <Divider spacing="2" />
+              <BasisText variant="muted">Content below</BasisText>
+
+              <!-- Thick -->
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-lg) 0 var(--space-xs);">thickness="4"</p>
+              <BasisText variant="muted">Content above</BasisText>
+              <Divider spacing="2" thickness="4" />
+              <BasisText variant="muted">Content below</BasisText>
+
+              <!-- Vertical -->
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-lg) 0 var(--space-xs);">direction="vertical" (needs a flex-row parent)</p>
+              <div style="display: flex; align-items: center; height: 40px;">
+                <BasisText variant="body">Left content</BasisText>
+                <Divider direction="vertical" spacing="4" />
+                <BasisText variant="body">Right content</BasisText>
+              </div>
+            </div>
+
+
+            <!-- ── NAVBAR ───────────────────────────────────────────────── -->
+            <div class="sg-gallery-block" id="basis-navbar">
+              <p class="sg-gallery-block-title">Navbar — <code>src/components/ui/display/Navbar.astro</code></p>
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
+                Uses <code>sticky={false}</code> here so it doesn't float over the page.
+                In production, the default <code>sticky={true}</code> pins it to the top with a blur backdrop.
+                Background is <code>bg-background/95</code> — semi-transparent, adapts to dark mode.
+              </p>
+              <!-- overflow: hidden clips the sticky positioning inside the preview box -->
+              <div style="border: 1px solid hsl(var(--border)); border-radius: 6px; overflow: hidden;">
+                <BasisNavbar sticky={false}>
+                  <span slot="brand" style="font-weight: 700; font-size: var(--text-base); color: hsl(var(--foreground));">Marco Lobato</span>
+                  <div slot="links" style="display: flex; gap: var(--space-lg);">
+                    <a href="/#work" class="text-sm text-muted-foreground hover:text-primary transition-colors duration-150">Work</a>
+                    <a href="/writing" class="text-sm text-primary font-medium transition-colors duration-150">Writing</a>
+                    <a href="/#about" class="text-sm text-muted-foreground hover:text-primary transition-colors duration-150">About</a>
+                  </div>
+                  <BasisButton slot="actions" size="sm" variant="outline">Contact</BasisButton>
+                </BasisNavbar>
+              </div>
+            </div>
+
+
+            <!-- ── BADGE ────────────────────────────────────────────────── -->
+            <div class="sg-gallery-block" id="basis-badge">
+              <p class="sg-gallery-block-title">Badge — <code>src/components/ui/feedback/Badge.astro</code></p>
+              <div class="sg-gallery-row">
+                <!-- default: bg-primary (navy) -->
+                <Badge>Default</Badge>
+                <!-- secondary: bg-secondary (navy-100) -->
+                <Badge variant="secondary">Secondary</Badge>
+                <!-- destructive: bg-destructive -->
+                <Badge variant="destructive">Destructive</Badge>
+                <!-- outline: border-border, transparent bg -->
+                <Badge variant="outline">Outline</Badge>
+              </div>
+            </div>
+
+
+          </div><!-- end .sg-gallery-canvas -->
+        </div><!-- end x-data -->
+
+
+        <!-- Token pipeline reference (below the gallery) -->
+        <h3 class="sg-subsection-title" style="margin-top: var(--space-3xl);">Variant → token reference</h3>
+        <p class="sg-section-desc">
+          Each variant name maps to a specific semantic token pair. Changing
+          the token in <code>global.css</code> updates every component that
+          uses that variant instantly.
+        </p>
+        <pre class="sg-code"><code>Button / Badge variants → token used
+─────────────────────────────────────────────
+default      → bg-primary       text-primary-foreground
+secondary    → bg-secondary     text-secondary-foreground
+destructive  → bg-destructive   text-destructive-foreground
+outline      → border-border    bg-background    hover:bg-accent
+ghost        → bg-transparent   text-foreground  hover:bg-accent
+link         → text-primary     (underline on hover)
+
+Card variants → token used
+─────────────────────────────────────────────
+default      → bg-card          border-border
+muted        → bg-muted         border-border
+outline      → bg-transparent   border-2 border-border</code></pre>
+
+      </section>
+
+
+      <!-- ===================================================================
            SECTION: COMPONENTS
            Each component is shown as it actually appears on the site,
            using the exact same HTML structure and class names.
@@ -198,14 +910,12 @@ import { Badge } from '@/components/ui/badge';
       <section class="sg-section" id="astro-components">
         <h2 class="sg-section-title">Astro Components</h2>
         <p class="sg-section-desc">
-          Every component below uses the same HTML and class names as the live
-          portfolio. There is no separate "demo" version — what you see here
-          is the real component.
+          Hand-built components specific to this site. These predate the Basis UI migration and may be refactored over time. What you see here is the real component — no separate demo version.
         </p>
 
 
         <!-- Component: Button -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-button">
           <h3 class="sg-component-title">Button</h3>
           <p class="sg-component-desc">
             Two variants: <strong>primary</strong> (navy fill) and
@@ -252,7 +962,7 @@ import { Badge } from '@/components/ui/badge';
 
 
         <!-- Component: Text Link -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-text-link">
           <h3 class="sg-component-title">Text Link</h3>
           <p class="sg-component-desc">
             Inline hyperlinks for body copy and navigation lists. Royal blue
@@ -282,7 +992,7 @@ import { Badge } from '@/components/ui/badge';
 
 
         <!-- Component: Section Label -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-section-label">
           <h3 class="sg-component-title">Section Label</h3>
           <p class="sg-component-desc">
             A small lemon pill used to introduce each major section.
@@ -301,7 +1011,7 @@ import { Badge } from '@/components/ui/badge';
 
 
         <!-- Component: Nav -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-navigation">
           <h3 class="sg-component-title">Navigation</h3>
           <p class="sg-component-desc">
             Top bar with name on the left and anchor links on the right.
@@ -321,7 +1031,7 @@ import { Badge } from '@/components/ui/badge';
 
 
         <!-- Component: Project Card -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-project-card">
           <h3 class="sg-component-title">Project Card</h3>
           <p class="sg-component-desc">
             Used in the Work section to display a project. Image placeholder
@@ -341,7 +1051,7 @@ import { Badge } from '@/components/ui/badge';
 
 
         <!-- Component: Theme Toggle -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-theme-toggle">
           <h3 class="sg-component-title">Theme Toggle</h3>
           <p class="sg-component-desc">
             Sun/moon icon button that lives in the navigation. Clicking it
@@ -362,7 +1072,7 @@ import { Badge } from '@/components/ui/badge';
 
 
         <!-- Component: Carousel -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-carousel">
           <h3 class="sg-component-title">Carousel</h3>
           <p class="sg-component-desc">
             A manually controlled image carousel. Navigate with the
@@ -431,7 +1141,7 @@ import { Badge } from '@/components/ui/badge';
 
 
         <!-- Component: Footer -->
-        <div class="sg-component">
+        <div class="sg-component" id="astro-footer">
           <h3 class="sg-component-title">Footer</h3>
           <p class="sg-component-desc">
             Navy panel at the bottom of the page — the strongest use of the
@@ -451,126 +1161,79 @@ import { Badge } from '@/components/ui/badge';
 
       </section>
 
-
-      <!-- ===================================================================
-           SECTION: SHADCN COMPONENTS
-           This section documents the shadcn/ui component layer and how brand
-           tokens flow from Figma all the way to a production component.
-           =================================================================== -->
-      <section class="sg-section" id="shadcn-components">
-        <h2 class="sg-section-title">shadcn Components</h2>
-        <p class="sg-section-desc">
-          shadcn/ui is an open-source component library used by teams at Vercel,
-          Linear, and Resend. Components are not installed as a dependency —
-          the source code lives in <code>src/components/ui/</code> so it can
-          be edited directly. Styling is driven entirely by CSS variables, which
-          means a single token change propagates to every component at once.
-        </p>
-
-        <h3 class="sg-subsection-title">The token pipeline</h3>
-        <p class="sg-section-desc">
-          Every color decision starts in Figma as a variable and ends up in a
-          live component through a four-layer chain. Nothing is hardcoded at
-          any step — a brand update touches one value and cascades everywhere.
-        </p>
-        <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
-         color/navy = #081F5D
-
-Step 2 — Brand token in tokens.css
-         --color-navy: #081F5D;
-
-Step 3 — Semantic mapping in global.css (the bridge layer)
-         --primary: var(--color-navy);    /* "primary" is shadcn's name for it */
-         --ring:    var(--color-royal-blue);
-
-Step 4 — shadcn component in button.tsx
-         bg-primary   → reads --color-primary → reads --primary → reads --color-navy
-         hover:bg-ring → shifts to royal-blue on hover</code></pre>
-
-        <h3 class="sg-subsection-title">What each variant controls</h3>
-        <p class="sg-section-desc">
-          Each shadcn variant maps to a different semantic token.
-          Changing the token value updates the variant everywhere it is used —
-          no per-component overrides needed.
-        </p>
-        <pre class="sg-code"><code>Default   → --primary         (navy fill, white text)
-Outline   → --border          (border stroke color, currently slate)
-Secondary → --secondary       (subtle surface background)
-Ghost     → --muted           (hover-only background, invisible at rest)</code></pre>
-
-
-        <!-- Component: shadcn Button — side-by-side comparison -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Button — custom vs. shadcn</h3>
-          <p class="sg-component-desc">
-            Left: <code>Button.astro</code> — hand-built with custom CSS classes,
-            no dependencies. Right: <code>components/ui/button.tsx</code> — the
-            shadcn version whose appearance comes entirely from the token mapping
-            above. Both render identically because they read from the same brand
-            tokens. The shadcn version adds four variants and scales to a full
-            component library without writing new CSS.
-          </p>
-
-          <div class="sg-component-preview" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
-
-            <!-- Left: custom Astro button -->
-            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm);">
-              <p style="font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-slate); margin: 0 0 var(--space-xs);">Custom — Button.astro</p>
-              <Button label="Primary" href="#" variant="primary" />
-              <Button label="Secondary" href="#" variant="secondary" />
-            </div>
-
-            <!-- Right: shadcn button -->
-            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm);">
-              <p style="font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-slate); margin: 0 0 var(--space-xs);">shadcn — Button.tsx</p>
-              <ShadcnButton>
-                Default
-                <svg class="btn-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </ShadcnButton>
-              <ShadcnButton variant="outline">Outline</ShadcnButton>
-              <ShadcnButton variant="secondary">Secondary</ShadcnButton>
-              <ShadcnButton variant="ghost">Ghost</ShadcnButton>
-            </div>
-
-          </div>
-          <pre class="sg-code"><code>import &#123; Button &#125; from '@/components/ui/button';
-
-&lt;Button&gt;Default&lt;/Button&gt;
-&lt;Button variant="outline"&gt;Outline&lt;/Button&gt;
-&lt;Button variant="secondary"&gt;Secondary&lt;/Button&gt;
-&lt;Button variant="ghost"&gt;Ghost&lt;/Button&gt;</code></pre>
-        </div>
-
-        <!-- Component: Badge — read from Figma via MCP -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Badge — imported via Figma MCP</h3>
-          <p class="sg-component-desc">
-            This component was read directly from a Figma file using the Figma MCP server.
-            The MCP detected that the Figma variables (<code>--primary</code>, <code>--border</code>, etc.)
-            match the semantic tokens already mapped in <code>global.css</code> — so no color changes
-            were needed. The badge automatically uses my brand colors.
-          </p>
-          <div class="sg-preview" style="display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap;">
-            <Badge>Default</Badge>
-            <Badge variant="secondary">Secondary</Badge>
-            <Badge variant="destructive">Destructive</Badge>
-            <Badge variant="outline">Outline</Badge>
-          </div>
-          <pre class="sg-code"><code>import &#123; Badge &#125; from '@/components/ui/badge';
-
-&lt;Badge&gt;Default&lt;/Badge&gt;
-&lt;Badge variant="secondary"&gt;Secondary&lt;/Badge&gt;
-&lt;Badge variant="destructive"&gt;Destructive&lt;/Badge&gt;
-&lt;Badge variant="outline"&gt;Outline&lt;/Badge&gt;</code></pre>
-        </div>
-
-      </section>
     </main>
+    </div><!-- end .pg-layout -->
+
+    </div><!-- end Alpine scope -->
 
     <Footer />
 
     <!-- Initializes all carousels on this page, including the documentation demo -->
     <script>
+      // Escape key: close the sidebar bottom sheet if it's open.
+      // This is a vanilla JS fallback in case Alpine's @keydown.escape.window
+      // binding doesn't fire in all browsers. It dispatches a custom event that
+      // the Alpine x-data scope listens for via @close-sidebar.window.
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          window.dispatchEvent(new CustomEvent('close-sidebar'));
+        }
+      });
+
+      // ── Mobile nav scrollspy ──────────────────────────────────────────────
+      // Updates the "Playground" title in the mobile sticky bar to reflect
+      // which section the user is currently reading.
+      //
+      // How it works: IntersectionObserver watches every section and sub-section
+      // on the page. The rootMargin carves out an "active zone" — the top 25%
+      // of the viewport. When a section's top edge enters that zone, the title
+      // updates to match. This is more efficient than a scroll listener because
+      // it only fires when something actually crosses the boundary.
+      const mobileTitleEl = document.querySelector('.pg-mobile-nav-title');
+
+      if (mobileTitleEl) {
+        // Map each section ID to the label shown in the mobile title bar.
+        // Order doesn't matter — IntersectionObserver fires for whichever
+        // section enters the active zone first as the user scrolls.
+        const sectionTitles: Record<string, string> = {
+          'color-palette':       'Color Palette',
+          'typography':          'Typography',
+          'basis-ui-components': 'Basis UI',
+          'basis-button':        'Button',
+          'basis-text':          'Text',
+          'basis-card':          'Card',
+          'basis-divider':       'Divider',
+          'basis-navbar':        'Navbar',
+          'basis-badge':         'Badge',
+          'astro-components':    'Astro Components',
+          'astro-button':        'Button',
+          'astro-text-link':     'Text Link',
+          'astro-section-label': 'Section Label',
+          'astro-navigation':    'Navigation',
+          'astro-project-card':  'Project Card',
+          'astro-theme-toggle':  'Theme Toggle',
+          'astro-carousel':      'Carousel',
+          'astro-footer':        'Footer',
+        };
+
+        // rootMargin '0px 0px -75% 0px' shrinks the observation window so only
+        // the top 25% of the viewport counts as "active". A section triggers the
+        // callback only when its top edge enters that top quarter of the screen.
+        const scrollspy = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              mobileTitleEl.textContent = sectionTitles[entry.target.id] ?? 'Playground';
+            }
+          });
+        }, { rootMargin: '0px 0px -75% 0px', threshold: 0 });
+
+        // Attach the observer to every section that has a mapped ID.
+        Object.keys(sectionTitles).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) scrollspy.observe(el);
+        });
+      }
+
       document.querySelectorAll('.carousel').forEach((carousel) => {
         const track   = carousel.querySelector('.carousel-track') as HTMLElement;
         const prevBtn = carousel.querySelector('.carousel-btn--prev') as HTMLButtonElement;

@@ -10,15 +10,18 @@ image: "/images/writing/ai-broken-in-denim/01-cover.png"
 import PharmacyScenario from '../../components/PharmacyScenario.astro'
 
 
-[Project Astra](https://deepmind.google/models/project-astra/) sees through a phone camera, hears ambient sound, remembers what you showed it last Tuesday, and responds in under 300 milliseconds. It can read a whiteboard while you are talking, locate an object in a room, and pull up Google Maps before you finish the sentence. The technical achievement is impressive. My open question: what should it feel like to have Project Astra as a companion?
+Project Astra sees through a phone camera, hears ambient sound, and remembers what you showed it last Tuesday. It can locate an object in a room, pull up Google Maps before you finish the sentence, and through the glasses, recall a saved door code and show it to you privately. No announcement. Just the right information, at the right moment, visible only to you. The technical achievement is impressive. My open question: what should it feel like to have Project Astra as a companion?
 
 That is a question I want to dive into.
+
+![POV through Project Astra smart glasses showing a hand pressing a numeric keypad. An AI overlay displays "The door code you saved previously is 1170." Labels in the upper left read Cross-Device Memory and Glasses.](/images/writing/ai-broken-in-denim/image-1-astra-memory-glasses.png)
+*Project Astra recalls a door code through the glasses, at the moment it is needed.*
 
 Three questions I want to explore. How we might reduce friction without asking people to switch modes or announce what they need. How a companion might know when to reassure and when to simply stay quiet. And how that contrast between presence and silence could make this feel like a cooperative relationship worth trusting.
 
 ---
 
-## Multimodal interaction only matters if removes friction
+## Multimodal interaction only matters if it creates less friction
 
 The engineering ambition behind Project Astra is real. Google DeepMind fused live video, audio, and text into a single transformer trained on all three simultaneously. The result is something that feels less like typing into a search bar and more like talking to a person who can see what you see.
 
@@ -26,15 +29,23 @@ But capability is not the same as value. My experience designing assistive techn
 
 Multimodal AI has the opportunity to succeed in the same way: making those context transitions feel ordinary, until you forget there was ever a reason to switch modes or apps.
 
+![Rear view of a person wearing a bicycle helmet and a patterned poncho, pausing at a park entrance. A subtitle reads "Can you check if I can bike in there?" Labels indicate Tool Use, Maps and Glasses.](/images/writing/ai-broken-in-denim/image-2-astra-cyclist-maps.png)
+*Hands on the handlebars, the companion checks Maps by voice. No stopping, no switching.*
+
 ---
 
 ## Choosing what not to do
 
-Astra's roadmap includes agents that handle professional workflows, manage files, navigate Chrome on your behalf. A 95% success rate is impressive for a chatbot. For an agent authorized to move money or delete files, a 5% failure rate is catastrophic.
+Astra's roadmap includes agents that handle professional workflows, manage files, navigate Chrome on your behalf. A 95% success rate is impressive for a chatbot. For an agent authorized to move money or delete files, a 5% failure rate is the kind of friction that keeps people from ever fully handing it over.
 
 The design question is not what the assistant can do. It is what the assistant should choose not to do. Restraint is the hardest interaction to ship because there is no demo moment. You cannot show a crowd the conversation that did not happen, the action held back, the question asked before the decision was made. But that is the work. That is what trust is made of.
 
-When I worked on Voice Access for Android alongside teams passionate about accessibility, the conversation we kept coming back to was about privacy: not just of the person holding the phone, but of what the phone reveals to everyone else in the room. The people we were designing for were low vision users who needed the camera running and the screen on just to find the exit on a transit bus, to locate a medication on a pharmacy shelf, to identify the right aisle in a grocery store without asking a stranger for help. They could not dim the screen when someone leaned over to look. The constraint we were working through was simpler to say than to solve: how do you protect what is on that screen from the person sitting two seats away?
+That question has a version anyone has felt. Imagine being on a bus and asking your AI companion for directions. It answers out loud: the route, the stop, the neighborhood. Every person in that carriage now knows where you are going. For a tourist it is an awkward moment. For someone navigating a difficult situation, it is an exposure they did not choose. The AI answered correctly. What it did not ask was whether speaking out loud was the right choice in that moment.
+
+![A young man sits alone on a bus, looking out the window. A subtitle reads "The 24 bus route goes through Leicester Square, which is very close to Chinatown." Labels indicate Tool Use, Maps and Multimodal Reasoning.](/images/writing/ai-broken-in-denim/image-3-astra-bus-audio-privacy.png)
+*No headphones. Astra reads a destination out loud. The question the AI did not ask: should it?*
+
+When I worked on Voice Access for Android alongside teams passionate about accessibility, the conversation we kept coming back to was the same design problem in a different sense: not what the AI says out loud, but what the screen reveals to the people around you. The people we were designing for were low vision users who needed the camera running and the screen on just to find the exit on a transit bus, to locate a medication on a pharmacy shelf, to identify the right aisle in a grocery store without asking a stranger for help. They could not dim the screen when someone leaned over to look. The constraint we were working through was simpler to say than to solve: how do you protect what is on that screen from the person sitting two seats away?
 
 That question pointed to something we were not calling by its right name at the time. It was not just a privacy feature. It was a contextual decision: the recognition that the environment a person is in is also part of the experience. The people who can see the screen without permission are part of the design problem. The technology had to hold that context, not just the hand holding the device.
 
@@ -54,7 +65,10 @@ Pre-washed denim works the same way. Already shaped to you before you put it on,
 
 Project Astra's persistent memory is the beginning of that fit: keeping track of objects just out of sight, the things set down or left behind, without asking you to repeat yourself. The integration with Maps matters for the same reason, not just navigation but awareness of where you are going and what you want to do when you get there. At home, on the bus, on the way to the pharmacy, inside the pharmacy: the context changes and the companion changes with it. It knows when to stay quiet at a bus stop. It remembers when you feel comfortable speaking out loud. That is when this cooperative relationship earns trust: not because it does more, but because it knows when to do less.
 
-The assistant that earns trust will be the one that feels like it was always there. Not because it is everywhere, but because it is quiet enough to forget.
+![A hand holds a smartphone running Project Astra, camera pointed at a red London double-decker bus on a city street. A subtitle reads "Will that bus take me anywhere near Chinatown?"](/images/writing/ai-broken-in-denim/image-4-astra-phone-bus.png)
+*In an unfamiliar city, context becomes serendipity. Point, ask, know: just the question and the world in front of you.*
+
+The assistant that earns trust is the one that sees what you almost missed. Peripheral vision is not passive; it is always building context. At home on a familiar route, you might prefer the quiet. Traveling somewhere unfamiliar, you want the wider lens: the street name you did not look up, the building you walked past, the bus connection you would not have thought to ask about. Context becomes serendipity. That is when this stops being a tool you point at things and starts being a companion that sees the world with you.
 
 ---
 

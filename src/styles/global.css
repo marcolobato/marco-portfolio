@@ -110,8 +110,9 @@ video {
    styles those components set on their own hover/active states:
    - [data-slot="button"] → Basis UI buttons (use Tailwind classes)
    - .carousel-btn / .carousel-dot → carousel controls
-   - .theme-toggle → has its own hover background (pill effect) */
-button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle),
+   - .theme-toggle → has its own hover background (pill effect)
+   - .ps-nav-btn / .ps-dot → PharmacyScenario storyboard controls */
+button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle):not(.ps-nav-btn):not(.ps-dot),
 input,
 textarea,
 select {

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.5.0",
+    "@astrojs/mdx": "^5.0.2",
     "@fontsource-variable/figtree": "^5.2.10",
     "@fontsource-variable/geist": "^5.2.8",
     "@hugeicons/core-free-icons": "^4.0.0",

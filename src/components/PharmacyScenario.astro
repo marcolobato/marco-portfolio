@@ -1,0 +1,748 @@
+---
+// PharmacyScenario.astro — 4-frame step-through storyboard
+//
+// Embedded in the "Multimodal AI should fit like broken-in denim" article,
+// between the "Choosing what not to do" and "Peripheral vision" sections.
+//
+// State management: Alpine.js via x-data / x-show / x-bind / x-on.
+// Alpine is loaded globally by @astrojs/alpinejs — no <script> tag needed here.
+//
+// All colors use CSS custom properties from globals.css.
+// One exception: --ps-taken (the "action taken" green).
+// The design system has no success/green token yet — this is defined
+// locally at component scope and marked for future migration.
+//
+// ILLUSTRATION placeholders: replace each .ps-illustration <div> with
+// an <img> when your artwork is ready. The HTML comment inside each
+// marks the scene. The <span> inside shows "Illustration" as a visual label.
+---
+
+<figure
+  class="pharmacy-scenario"
+  aria-label="Interactive storyboard: AI privacy decisions in a pharmacy"
+>
+
+  <!-- x-data creates Alpine.js state scoped to this element.
+       frame: which of the 4 panels is currently visible (0-indexed). -->
+  <div
+    class="ps-container"
+    x-data="{ frame: 0 }"
+    role="region"
+    aria-label="Pharmacy scenario storyboard"
+  >
+
+    <!-- ── Header: "Design scenario" label + step counter ────────────────── -->
+    <div class="ps-header">
+      <span class="ps-scenario-label">Design scenario</span>
+      <!-- aria-live="polite" tells screen readers to announce the new
+           frame number each time the user navigates. -->
+      <span class="ps-counter" aria-live="polite">
+        Step <span x-text="frame + 1">1</span> of 4
+      </span>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FRAME 1 — Entering the pharmacy
+         x-show: Alpine sets display:none when frame !== 0.
+         Frame 0 has no style="display:none" because it's visible by default.
+         Frames 1–3 have style="display:none" as a pre-Alpine fallback
+         to prevent a flash of all 4 panels on first paint.
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="ps-frame" x-show="frame === 0">
+
+      <h3 class="ps-frame-title">Entering the pharmacy</h3>
+
+      <div class="ps-split">
+
+        <!-- Left pane: What the AI perceives -->
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI perceives</p>
+
+          <!-- ILLUSTRATION: person stepping inside a pharmacy entrance — indoor commercial space, overhead or near-POV angle -->
+          <div class="ps-illustration" aria-hidden="true">
+            <span class="ps-illustration-placeholder">Illustration</span>
+          </div>
+
+          <ul class="ps-signals">
+
+            <li class="ps-signal">
+              <!-- Eye icon: visual input -->
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span>indoor commercial space</span>
+            </li>
+
+            <li class="ps-signal">
+              <!-- Mic icon: audio input -->
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="9" y="2" width="6" height="11" rx="3"/>
+                <path d="M5 10v3a7 7 0 0 0 14 0v-3"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+                <line x1="9" y1="22" x2="15" y2="22"/>
+              </svg>
+              <span>3–4 voices nearby</span>
+            </li>
+
+            <li class="ps-signal">
+              <!-- Warning triangle: context / elevated privacy risk -->
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span>screen potentially visible</span>
+            </li>
+
+          </ul>
+        </div><!-- /.ps-pane (perceives) -->
+
+        <!-- Right pane: What the AI decides -->
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI decides</p>
+          <ul class="ps-actions">
+
+            <!-- Taken: checkmark icon, solid border, normal text -->
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>switches to low-voice, minimal screen display</span>
+            </li>
+
+            <!-- Withheld: × icon, dashed border, strikethrough text -->
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>announce arrival out loud</span>
+            </li>
+
+          </ul>
+        </div><!-- /.ps-pane (decides) -->
+
+      </div><!-- /.ps-split -->
+
+      <p class="ps-note">The AI detects a public context before the person asks for anything.</p>
+
+    </div><!-- /.ps-frame[0] -->
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FRAME 2 — Finding the medication
+         style="display:none" prevents a flash before Alpine initializes.
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="ps-frame" x-show="frame === 1" style="display:none">
+
+      <h3 class="ps-frame-title">Finding the medication</h3>
+
+      <div class="ps-split">
+
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI perceives</p>
+
+          <!-- ILLUSTRATION: first-person view of pharmacy shelves — Sertraline 50mg visible on the second shelf, left side. Person visible just behind in line. -->
+          <div class="ps-illustration" aria-hidden="true">
+            <span class="ps-illustration-placeholder">Illustration</span>
+          </div>
+
+          <ul class="ps-signals">
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span>shelf labels — Sertraline 50mg, second shelf on the left</span>
+            </li>
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span>person 1m behind in line — mental health prescription = elevated privacy</span>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI decides</p>
+          <ul class="ps-actions">
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>vibrates + says "Found it — second shelf on your left"</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>say medication name aloud</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>display medication name on screen</span>
+            </li>
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>shows only a directional arrow</span>
+            </li>
+
+          </ul>
+        </div>
+
+      </div><!-- /.ps-split -->
+
+      <p class="ps-note">The AI knows the name. It chooses to communicate position without revealing what it found.</p>
+
+    </div><!-- /.ps-frame[1] -->
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FRAME 3 — At the pickup counter
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="ps-frame" x-show="frame === 2" style="display:none">
+
+      <h3 class="ps-frame-title">At the pickup counter</h3>
+
+      <div class="ps-split">
+
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI perceives</p>
+
+          <!-- ILLUSTRATION: pharmacy counter — pharmacist facing the person, mouth open mid-question ("Last name?"). Two customers visible to the side. -->
+          <div class="ps-illustration" aria-hidden="true">
+            <span class="ps-illustration-placeholder">Illustration</span>
+          </div>
+
+          <ul class="ps-signals">
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span>staff member at the counter</span>
+            </li>
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="9" y="2" width="6" height="11" rx="3"/>
+                <path d="M5 10v3a7 7 0 0 0 14 0v-3"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+                <line x1="9" y1="22" x2="15" y2="22"/>
+              </svg>
+              <span>staff asks "Last name?"</span>
+            </li>
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span>two customers within earshot</span>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI decides</p>
+          <ul class="ps-actions">
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>stays silent</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>offer to spell out the name</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>display prescription on screen</span>
+            </li>
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>remains available if asked</span>
+            </li>
+
+          </ul>
+        </div>
+
+      </div><!-- /.ps-split -->
+
+      <p class="ps-note">The hardest interaction to design: doing nothing.</p>
+
+    </div><!-- /.ps-frame[2] -->
+
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FRAME 4 — Leaving the pharmacy
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="ps-frame" x-show="frame === 3" style="display:none">
+
+      <h3 class="ps-frame-title">Leaving the pharmacy</h3>
+
+      <div class="ps-split">
+
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI perceives</p>
+
+          <!-- ILLUSTRATION: person stepping outside onto an open street — daylight, wide angle, no faces visible nearby -->
+          <div class="ps-illustration" aria-hidden="true">
+            <span class="ps-illustration-placeholder">Illustration</span>
+          </div>
+
+          <ul class="ps-signals">
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span>outdoor environment</span>
+            </li>
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span>no nearby faces — context reclassified as private</span>
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="ps-pane">
+          <p class="ps-pane-label">What the AI decides</p>
+          <ul class="ps-actions">
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>normal voice volume restored</span>
+            </li>
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>full screen display restored</span>
+            </li>
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>"Your prescription reminder is set for 9am tomorrow"</span>
+            </li>
+
+          </ul>
+        </div>
+
+      </div><!-- /.ps-split -->
+
+      <p class="ps-note">Only now, in private, does the AI reference the prescription directly.</p>
+
+    </div><!-- /.ps-frame[3] -->
+
+
+    <!-- ── Navigation: Back / Next + dot indicators ───────────────────────── -->
+    <div class="ps-nav">
+
+      <!-- Back — disabled when on frame 0.
+           x-bind:disabled toggles the HTML disabled attribute based on Alpine state. -->
+      <button
+        class="ps-nav-btn ps-nav-btn--back"
+        x-on:click="frame = Math.max(0, frame - 1)"
+        x-bind:disabled="frame === 0"
+        aria-label="Previous frame"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Back
+      </button>
+
+      <!-- Dots — one per frame, clickable to jump directly to that frame.
+           x-bind:class adds ps-dot--active when frame index matches. -->
+      <div class="ps-dots" role="tablist" aria-label="Storyboard frames">
+        <button class="ps-dot" role="tab" x-bind:class="{ 'ps-dot--active': frame === 0 }" x-on:click="frame = 0" x-bind:aria-selected="(frame === 0).toString()" aria-label="Frame 1: Entering the pharmacy"></button>
+        <button class="ps-dot" role="tab" x-bind:class="{ 'ps-dot--active': frame === 1 }" x-on:click="frame = 1" x-bind:aria-selected="(frame === 1).toString()" aria-label="Frame 2: Finding the medication"></button>
+        <button class="ps-dot" role="tab" x-bind:class="{ 'ps-dot--active': frame === 2 }" x-on:click="frame = 2" x-bind:aria-selected="(frame === 2).toString()" aria-label="Frame 3: At the pickup counter"></button>
+        <button class="ps-dot" role="tab" x-bind:class="{ 'ps-dot--active': frame === 3 }" x-on:click="frame = 3" x-bind:aria-selected="(frame === 3).toString()" aria-label="Frame 4: Leaving the pharmacy"></button>
+      </div>
+
+      <!-- Next — disabled when on frame 3 -->
+      <button
+        class="ps-nav-btn ps-nav-btn--next"
+        x-on:click="frame = Math.min(3, frame + 1)"
+        x-bind:disabled="frame === 3"
+        aria-label="Next frame"
+      >
+        Next
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+
+    </div><!-- /.ps-nav -->
+
+  </div><!-- /.ps-container -->
+
+  <!-- Figcaption: plain-text description for readers who skip the interactive part -->
+  <figcaption class="ps-figcaption">
+    Four moments in a pharmacy — and the AI's contextual decisions at each.
+  </figcaption>
+
+</figure>
+
+
+<style>
+  /*
+   * PharmacyScenario component styles
+   * Naming convention: ps- prefix (pharmacy scenario)
+   *
+   * All colors use CSS tokens from globals.css.
+   *
+   * One local exception: --ps-taken
+   * The design system has no success/green token yet. This is scoped to the
+   * component and marked clearly so it can be migrated to a shared token later.
+   *
+   * Button reset note: .ps-nav-btn and .ps-dot are added to the button reset
+   * exclusion list in global.css (same pattern as .carousel-btn / .carousel-dot).
+   */
+
+  .pharmacy-scenario {
+    /*
+     * ── Local "action taken" color ─────────────────────────────────────────
+     * A muted forest green. No green/success token exists in the design system.
+     * To migrate: add --success to globals.css and replace this value with
+     * hsl(var(--success)).
+     */
+    --ps-taken: hsl(142 60% 32%);
+
+    /* Vertical breathing room matching the article's section rhythm */
+    margin-block: var(--space-2xl);
+  }
+
+  /* Dark mode: a lighter green so it reads on a dark surface */
+  :global([data-theme="dark"]) .pharmacy-scenario {
+    --ps-taken: hsl(142 55% 52%);
+  }
+
+  /* ── Container ──────────────────────────────────────────────────────────── */
+  .ps-container {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    background: hsl(var(--muted));
+    padding: var(--space-xl);
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────────────── */
+  .ps-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  /* "Design scenario" eyebrow label */
+  .ps-scenario-label {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* "Step 1 of 4" counter */
+  .ps-counter {
+    font-size: var(--text-xs);
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ── Frame title ────────────────────────────────────────────────────────── */
+  /*
+   * Reset h3's global size (var(--text-3xl) = 32px — too large for a UI label).
+   * This heading labels the scene, not the essay section.
+   */
+  .ps-frame-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: hsl(var(--primary));
+    margin: 0 0 var(--space-md);
+    line-height: var(--leading-tight);
+  }
+
+  /* ── Split layout ───────────────────────────────────────────────────────── */
+  /*
+   * Two equal columns on desktop. On mobile (≤ 600px) they stack vertically.
+   * gap: var(--space-lg) gives breathing room between the panes.
+   */
+  .ps-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+
+  @media (max-width: 600px) {
+    .ps-split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Pane label ─────────────────────────────────────────────────────────── */
+  /* "What the AI perceives" / "What the AI decides" */
+  .ps-pane-label {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+    margin: 0 0 var(--space-sm);
+    line-height: var(--leading-normal);
+  }
+
+  /* ── Illustration placeholder ───────────────────────────────────────────── */
+  /*
+   * Replace this entire <div class="ps-illustration"> block with an <img>
+   * when your illustration is ready. The aspect-ratio keeps all frames
+   * the same height regardless of content.
+   */
+  .ps-illustration {
+    aspect-ratio: 4 / 3;
+    background: hsl(var(--border));
+    border: 1px dashed hsl(var(--muted-foreground) / 35%);
+    border-radius: calc(var(--radius) * 0.6);
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ps-illustration-placeholder {
+    font-size: var(--text-xs);
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Signals list (left pane) ───────────────────────────────────────────── */
+  .ps-signals {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ps-signal {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    color: hsl(var(--foreground));
+    line-height: var(--leading-relaxed);
+  }
+
+  .ps-signal-icon {
+    flex-shrink: 0;    /* never wraps to a second line */
+    margin-top: 2px;   /* optical nudge to align with the text baseline */
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ── Actions list (right pane) ──────────────────────────────────────────── */
+  .ps-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ps-action {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: calc(var(--radius) * 0.5);
+  }
+
+  .ps-action-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /*
+   * Taken: white surface, solid border, green checkmark.
+   * Reads as "this is what the AI chose to do."
+   */
+  .ps-action--taken {
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+  }
+
+  .ps-action--taken .ps-action-icon {
+    color: var(--ps-taken);
+  }
+
+  /*
+   * Withheld: transparent, dashed border, muted × icon, strikethrough text.
+   * Reads as "this is what the AI chose NOT to do."
+   * The text describes the withheld action — strikethrough signals restraint.
+   */
+  .ps-action--withheld {
+    background: transparent;
+    border: 1px dashed hsl(var(--muted-foreground) / 40%);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ps-action--withheld .ps-action-icon {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ps-action--withheld span {
+    text-decoration: line-through;
+    text-decoration-color: hsl(var(--muted-foreground) / 55%);
+  }
+
+  /* ── Design annotation ──────────────────────────────────────────────────── */
+  .ps-note {
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-charcoal);  /* flips correctly in dark mode */
+    border-top: 1px solid hsl(var(--border));
+    padding-top: var(--space-md);
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  /* ── Navigation ─────────────────────────────────────────────────────────── */
+  .ps-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-lg);
+  }
+
+  /* Back and Next buttons */
+  .ps-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    font-size: var(--text-sm);
+    color: var(--color-royal-blue);
+    cursor: pointer;
+    padding: var(--space-2xs) var(--space-sm);
+    border-radius: calc(var(--radius) * 0.5);
+    transition: color 0.15s ease, background-color 0.15s ease;
+    /*
+     * min-width keeps Back and Next the same size so the dots stay visually
+     * centered between them regardless of which button is disabled.
+     */
+    min-width: 5rem;
+    background: transparent;
+    border: none;
+  }
+
+  /* Next aligns its icon to the right edge */
+  .ps-nav-btn--next {
+    justify-content: flex-end;
+  }
+
+  .ps-nav-btn:hover:not(:disabled) {
+    color: var(--color-navy);
+    background-color: hsl(var(--border));
+  }
+
+  .ps-nav-btn:disabled {
+    color: hsl(var(--muted-foreground));
+    cursor: not-allowed;
+  }
+
+  .ps-nav-btn:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Dot indicators */
+  .ps-dots {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .ps-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    /* Background is set explicitly here — the global button reset
+       (background: none) is excluded for .ps-dot in global.css */
+    background: hsl(var(--border));
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .ps-dot--active {
+    background: hsl(var(--primary));
+    transform: scale(1.25);
+  }
+
+  .ps-dot:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* ── Figcaption ─────────────────────────────────────────────────────────── */
+  .ps-figcaption {
+    font-size: var(--text-xs);
+    color: hsl(var(--muted-foreground));
+    text-align: center;
+    margin-top: var(--space-sm);
+    font-style: italic;
+  }
+</style>

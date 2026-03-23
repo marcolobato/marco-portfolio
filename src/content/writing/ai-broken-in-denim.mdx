@@ -5,6 +5,10 @@ description: "From years of designing with people with disabilities, what I beli
 image: "/images/writing/ai-broken-in-denim/01-cover.png"
 ---
 
+{/* Import the interactive storyboard component.
+    This only works because the file is .mdx — plain .md cannot use imports. */}
+import PharmacyScenario from '../../components/PharmacyScenario.astro'
+
 
 [Project Astra](https://deepmind.google/models/project-astra/) sees through a phone camera, hears ambient sound, remembers what you showed it last Tuesday, and responds in under 300 milliseconds. It can read a whiteboard while you are talking, locate an object in a room, and pull up Google Maps before you finish the sentence. The technical achievement is impressive. My open question: what should it feel like to have Project Astra as a companion?
 
@@ -37,6 +41,8 @@ That question pointed to something we were not calling by its right name at the 
 That was nine years ago. Today, the Samsung Galaxy S26 Ultra ships a feature called [Privacy Display](https://news.samsung.com/za/samsungs-first-privacy-display-on-the-samsung-galaxy-s26-ultra-is-redefining-mobile-privacy): it controls how light leaves the screen, restricting what people at side angles can see, applied automatically when entering passwords, configurable by app. What my team was working through on a whiteboard with disability advocates is now a flagship feature.
 
 The multimodal AI assistant of the future will be designed around hundreds of contextual decisions exactly like that one, not only for the person using the device, but aware of who else can see it. A form factor like Astra's glasses already moves toward that answer by removing the screen from the equation entirely. In the meantime, screen technology like Samsung's can do the same work for the phone in someone's hand on a bus.
+
+<PharmacyScenario />
 
 ---
 

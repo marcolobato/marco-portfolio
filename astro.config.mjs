@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
 import alpinejs from '@astrojs/alpinejs';
+import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,5 +12,7 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [alpinejs()]
+  // mdx() lets .mdx files use Astro components inside Markdown.
+  // alpinejs() injects Alpine.js globally on every page.
+  integrations: [mdx(), alpinejs()]
 });

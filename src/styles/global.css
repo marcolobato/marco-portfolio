@@ -1544,24 +1544,11 @@ code {
 }
 
 /* ── Expand button (shown in rail mode only) ────────────────────────────── */
+/* Ghost button styling handled by BasisButton variant="ghost" size="icon". */
+/* Only layout-specific overrides live here. */
 .pg-sidebar-expand-btn {
   display: none; /* hidden when sidebar is fully open */
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
   margin: 0 auto;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: hsl(var(--muted-foreground));
-  cursor: pointer;
-  transition: background 150ms ease, color 150ms ease;
-}
-
-.pg-sidebar-expand-btn:hover {
-  background: hsl(var(--muted));
-  color: hsl(var(--foreground));
 }
 
 /* ── Close button row (shown when sidebar is fully open) ────────────────── */
@@ -1573,24 +1560,7 @@ code {
   border-bottom: 1px solid hsl(var(--border));
 }
 
-.pg-sidebar-close-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: hsl(var(--muted-foreground));
-  cursor: pointer;
-  transition: background 150ms ease, color 150ms ease;
-}
-
-.pg-sidebar-close-btn:hover {
-  background: hsl(var(--muted));
-  color: hsl(var(--foreground));
-}
+/* .pg-sidebar-close-btn — ghost button styling handled by BasisButton variant="ghost" size="icon". No overrides needed. */
 
 /* ── Rail mode: closed state on ALL desktop widths (≥769px) ────────────── */
 
@@ -1754,17 +1724,9 @@ code {
     background: hsl(var(--background));
   }
 
+  /* .pg-mobile-nav-trigger — ghost button styling handled by BasisButton variant="ghost" size="icon". */
+  /* flex-shrink: 0 prevents the button from squishing inside the .pg-mobile-nav-bar flex row. */
   .pg-mobile-nav-trigger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border: none;
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: hsl(var(--muted-foreground));
-    cursor: pointer;
     flex-shrink: 0;
   }
 

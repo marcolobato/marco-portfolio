@@ -33,8 +33,10 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
          anchored below the site nav. The button dispatches a plain window event;
          the Alpine scope below listens for it via @toggle-sidebar.window. -->
     <div class="pg-mobile-nav-bar">
-      <button
-        class="pg-mobile-nav-trigger"
+      <BasisButton
+        variant="ghost"
+        size="icon"
+        className="pg-mobile-nav-trigger"
         onclick="window.dispatchEvent(new CustomEvent('toggle-sidebar'))"
         aria-label="Toggle navigation"
       >
@@ -43,7 +45,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
           <line x1="4" y1="12" x2="20" y2="12"/>
           <line x1="4" y1="18" x2="20" y2="18"/>
         </svg>
-      </button>
+      </BasisButton>
       <span class="pg-mobile-nav-title">Playground</span>
     </div>
     </div><!-- /.pg-nav-wrapper -->
@@ -70,20 +72,20 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
       <aside class="pg-sidebar" :class="{ 'pg-sidebar--closed': !open, 'pg-sidebar--open': open }">
 
         <!-- Expand button — visible only in rail mode (closed, ≥1200px). Centered in the 40px strip. -->
-        <button class="pg-sidebar-expand-btn" @click="open = true" aria-label="Open navigation">
+        <BasisButton variant="ghost" size="icon" className="pg-sidebar-expand-btn" @click="open = true" aria-label="Open navigation">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="2"/>
             <path d="M9 3v18"/>
           </svg>
-        </button>
+        </BasisButton>
 
         <!-- Close button row — visible when sidebar is fully open. Right-aligned. -->
         <div class="pg-sidebar-header">
-          <button class="pg-sidebar-close-btn" @click="open = false" aria-label="Close navigation">
+          <BasisButton variant="ghost" size="icon" className="pg-sidebar-close-btn" @click="open = false" aria-label="Close navigation">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m15 18-6-6 6-6"/>
             </svg>
-          </button>
+          </BasisButton>
         </div>
 
         <!-- Nav links — hidden in rail mode, shown when fully open -->

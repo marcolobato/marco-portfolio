@@ -172,7 +172,7 @@ select {
 
   /* Accent: Lemon Sorbet */
   --accent:               60 88.4% 52.7%;     /* #F1F11C */
-  --accent-foreground:    60 86.5% 29%;       /* #8A8A0A — dark lemon for text on accent bg */
+  --accent-foreground:    0 0% 0%;            /* #000000 — pure black, AAA contrast on lemon (~17:1) */
 
   /* Surfaces */
   --background:           0 0% 100%;          /* white */
@@ -240,7 +240,7 @@ select {
   --primary-foreground:   223.8 84.2% 19.8%;
 
   --accent:               60 88.2% 70.2%;     /* Lemon 300 — softened for dark */
-  --accent-foreground:    60 86.5% 29%;
+  --accent-foreground:    0 0% 0%;            /* #000000 — pure black, AAA contrast on light lemon (~15:1) */
 
   --background:           0 0% 10.2%;         /* #1A1A1A */
   --foreground:           0 0% 94.9%;         /* #F2F2F2 */
@@ -277,7 +277,7 @@ select {
   --primary:              223.8 84.2% 19.8%;
   --primary-foreground:   0 0% 100%;
   --accent:               60 88.4% 52.7%;
-  --accent-foreground:    60 86.5% 29%;
+  --accent-foreground:    0 0% 0%;            /* #000000 — black, AAA contrast on lemon */
   --background:           0 0% 100%;
   --foreground:           0 0% 10.2%;
   --card:                 0 0% 100%;

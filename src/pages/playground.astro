@@ -775,19 +775,34 @@ Step 4 — Basis UI component in Button.astro
         <!-- ── Component gallery ─────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Component gallery</h3>
 
-        <!-- Alpine.js wrapper — x-data holds the dark boolean, the button toggles it.
-             :data-theme sets the attribute on the canvas div when dark is true,
-             causing all CSS variable overrides inside it to switch to dark mode.
-             When dark is false, the attribute is removed and the canvas inherits
-             the page theme from <html>. -->
-        <div x-data="{ dark: false }">
+        <!-- Alpine.js wrapper.
+             dark initialises from the CURRENT site theme on load.
+             toggle() writes back to <html> — the same element the nav ThemeToggle
+             writes to — so both controls are always in sync.
+             The MutationObserver keeps dark in sync when the nav toggle fires. -->
+        <div
+          x-data="{
+            dark: document.documentElement.getAttribute('data-theme') === 'dark',
+            toggle() {
+              this.dark = !this.dark;
+              const theme = this.dark ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', theme);
+              localStorage.setItem('theme', theme);
+            }
+          }"
+          x-init="
+            new MutationObserver(() => {
+              dark = document.documentElement.getAttribute('data-theme') === 'dark';
+            }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+          "
+        >
 
           <!-- Toolbar -->
           <div class="sg-gallery-toolbar">
             <span class="sg-gallery-toolbar-label">Component preview</span>
             <button
               class="sg-gallery-toggle"
-              @click="dark = !dark"
+              @click="toggle()"
               :aria-label="dark ? 'Switch to light preview' : 'Switch to dark preview'"
             >
               <!-- Moon icon — shown when light, click to see dark preview -->
@@ -798,8 +813,9 @@ Step 4 — Basis UI component in Button.astro
             </button>
           </div>
 
-          <!-- Preview canvas — background and all tokens flip when data-theme="dark" -->
-          <div class="sg-gallery-canvas" :data-theme="dark ? 'dark' : null">
+          <!-- Preview canvas — no data-theme here. Inherits from <html>, which both
+               the gallery toggle and the nav ThemeToggle write to. -->
+          <div class="sg-gallery-canvas">
 
 
             <!-- ── BUTTONS ──────────────────────────────────────────────── -->

@@ -1,0 +1,164 @@
+---
+// experiments.astro — Marco Lobato Experiments Index
+// This page is an index of interaction design explorations and prototypes.
+// Each row in the table is one experiment: a name, description, notes, and link.
+import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import BasisButton from '@/components/ui/forms/Button.astro';
+import Table from '@/components/ui/data/Table.astro';
+import TableHeader from '@/components/ui/data/TableHeader.astro';
+import TableBody from '@/components/ui/data/TableBody.astro';
+import TableRow from '@/components/ui/data/TableRow.astro';
+import TableCell from '@/components/ui/data/TableCell.astro';
+// Note: TableHead.astro is skipped — it depends on astro-icon which is not installed.
+// Column headers are written as plain <th> elements with the same Tailwind classes.
+---
+
+<BaseLayout title="Experiments — Marco Lobato">
+
+    <!-- Sticky wrapper — matches the same sticky pattern as playground.astro -->
+    <div class="pg-nav-wrapper">
+    <Nav />
+
+    <!-- Mobile secondary nav bar — same pattern as playground.astro -->
+    <div class="pg-mobile-nav-bar">
+      <BasisButton
+        variant="ghost"
+        size="icon"
+        className="pg-mobile-nav-trigger"
+        onclick="window.dispatchEvent(new CustomEvent('toggle-sidebar'))"
+        aria-label="Toggle navigation"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M9 3v18"/>
+        </svg>
+      </BasisButton>
+      <span class="pg-mobile-nav-title">Experiments</span>
+    </div>
+    </div><!-- /.pg-nav-wrapper -->
+
+    <!-- Alpine.js scope — same open/close logic as playground.astro -->
+    <div x-data="{ open: window.innerWidth >= 1200 }" @keydown.escape.window="open = false" @close-sidebar.window="open = false" @toggle-sidebar.window="open = !open">
+
+    <!-- Backdrop — mobile only -->
+    <div class="pg-backdrop" x-show="open" @click="open = false" x-transition style="display: none;"></div>
+
+    <div class="pg-layout">
+
+      <!-- ===================================================================
+           SIDEBAR NAVIGATION
+           =================================================================== -->
+      <aside class="pg-sidebar" :class="{ 'pg-sidebar--closed': !open, 'pg-sidebar--open': open }">
+
+        <!-- Expand button — visible only in rail mode (closed, ≥1200px) -->
+        <BasisButton variant="ghost" size="icon" className="pg-sidebar-expand-btn" @click="open = true" aria-label="Open navigation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M9 3v18"/>
+          </svg>
+        </BasisButton>
+
+        <!-- Close button row -->
+        <div class="pg-sidebar-header">
+          <BasisButton variant="ghost" size="icon" className="pg-sidebar-close-btn" @click="open = false" aria-label="Close navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </BasisButton>
+        </div>
+
+        <!-- Nav links -->
+        <nav class="pg-sidebar-nav" aria-label="Experiments navigation">
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Experiments</p>
+            <!-- Clicking a section link closes the drawer on mobile only -->
+            <a href="#experiments-index" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Index</a>
+          </div>
+
+        </nav><!-- /.pg-sidebar-nav -->
+
+      </aside>
+
+
+      <main class="sg-main">
+
+        <!-- ===================================================================
+             PAGE HEADER
+             =================================================================== -->
+        <header class="sg-header">
+
+          <!-- Toggle button for desktop sidebar — matches playground.astro -->
+          <BasisButton
+            variant="ghost"
+            size="icon"
+            className="pg-sidebar-toggle"
+            @click="open = !open"
+            :aria-expanded="open ? 'true' : 'false'"
+            aria-label="Toggle navigation"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 3v18"/>
+            </svg>
+          </BasisButton>
+
+          <p class="section-label">Playground</p>
+          <h1>Experiments</h1>
+          <div class="sg-header-sections">
+            <div class="sg-header-section">
+              <p class="sg-header-section-title">Prototypes & Explorations</p>
+              <p class="sg-header-desc">Interaction design experiments as they take shape. Each one is an exploration — some have code, some are just ideas.</p>
+            </div>
+          </div>
+        </header>
+
+
+        <!-- ===================================================================
+             SECTION: EXPERIMENTS INDEX
+             A Basis UI table listing each experiment with name, description,
+             notes, and a link to the prototype (when one exists).
+             =================================================================== -->
+        <section class="sg-section" id="experiments-index">
+          <h2 class="sg-section-title">Experiments Index</h2>
+          <p class="sg-section-desc">
+            A running list of interaction design explorations. Add rows here as new prototypes take shape.
+          </p>
+
+          <!-- Table uses Basis UI Table component.
+               - variant="hoverable" highlights each row on hover for readability
+               - responsive=true (default) wraps in overflow-x:auto so it scrolls on mobile -->
+          <Table variant="hoverable">
+            <!-- TableHeader = <thead>. Plain <th> elements used for cells
+                 instead of TableHead.astro, which depends on astro-icon (not installed). -->
+            <TableHeader>
+              <TableRow>
+                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
+                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Description</th>
+                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Notes</th>
+                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Link</th>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <!-- ── Placeholder row — replace with real experiments as they're built ── -->
+              <TableRow>
+                <TableCell>Haptic Rhythm UI</TableCell>
+                <TableCell>Exploring tap-pattern interaction for non-visual feedback on mobile devices.</TableCell>
+                <TableCell>Early exploration, no code yet.</TableCell>
+                <TableCell>
+                  <!-- When there's no link yet, show a muted dash instead of a broken link -->
+                  <span style="color: var(--muted-foreground);">—</span>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+
+        </section>
+
+      </main><!-- /.sg-main -->
+    </div><!-- /.pg-layout -->
+    </div><!-- /x-data -->
+
+</BaseLayout>

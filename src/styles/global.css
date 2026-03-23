@@ -649,9 +649,16 @@ hr {
 /* Mobile nav — screens 768px wide and smaller */
 @media (max-width: 768px) {
 
-  /* Allow the nav items to wrap so the menu drops to a second row */
+  /* Allow the nav items to wrap so the menu drops to a second row.
+     Sticky keeps the nav at the top when scrolling without breaking the hamburger dropdown.
+     width: 100% ensures it covers the full viewport on mobile. */
   .nav {
     flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 30;
+    background: hsl(var(--background));
   }
 
   /* Show the hamburger button on mobile */
@@ -1724,13 +1731,15 @@ code {
     z-index: 40;
   }
 
-  /* Sticky secondary nav bar — shows page title + hamburger trigger */
+  /* Secondary nav bar — sticky below the site nav.
+     top: 4rem matches the site nav height (padding-block: 1.5rem × 2 + text ≈ 4rem).
+     Sticky means it scrolls with the page until it hits the threshold, then stays put. */
   .pg-mobile-nav-bar {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
     position: sticky;
-    top: 3.5rem; /* clears the site nav bar */
+    top: 4rem;
     z-index: 20;
     background: hsl(var(--background));
     border-bottom: 1px solid hsl(var(--border));

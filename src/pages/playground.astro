@@ -37,9 +37,8 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
          style="display:none" also prevents a flash before Alpine initializes on mobile. -->
     <div class="pg-backdrop" x-show="open" @click="open = false" x-transition style="display: none;"></div>
 
-    <!-- pg-layout--collapsed: shrinks the left grid column to 0 on desktop.
-         On mobile the grid is already 1fr, so this class has no visual effect there. -->
-    <div class="pg-layout" :class="{ 'pg-layout--collapsed': !open }">
+    <!-- Sidebar is position:fixed and overlays the content — layout doesn't need a collapsed class -->
+    <div class="pg-layout">
 
       <!-- ===================================================================
            SIDEBAR NAVIGATION

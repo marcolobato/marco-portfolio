@@ -1506,36 +1506,33 @@ code {
 }
 
 .pg-layout {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  align-items: start;
-  max-width: 1200px;
-  margin-inline: auto;
-  /* Smooth column width animation when sidebar collapses on desktop */
-  transition: grid-template-columns 250ms ease;
+  width: 100%;
+  /* Sidebar is position:fixed and overlays the content — no grid needed */
 }
 
-/* Collapsed state: the 220px column shrinks to 0, sidebar content clips away */
-.pg-layout--collapsed {
-  grid-template-columns: 0px 1fr;
-}
-
+/* Sidebar is always a fixed overlay on both desktop and mobile.
+   It starts hidden (translateX -100%) and slides in when Alpine adds .pg-sidebar--open. */
 .pg-sidebar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  bottom: 0;
+  width: 220px;
   height: 100dvh;
-  overflow: hidden; /* clips nav content as the column width animates to 0 */
+  overflow: hidden;
   overflow-y: auto;
   border-right: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
   padding: var(--space-xl) var(--space-md);
-  white-space: nowrap; /* prevents text from wrapping mid-collapse */
-  transition: padding 250ms ease;
+  white-space: nowrap;
+  transform: translateX(-100%); /* hidden by default */
+  transition: transform 250ms ease;
+  z-index: 50;
 }
 
-/* When collapsed, clear padding and border so nothing bleeds into the content column */
-.pg-layout--collapsed .pg-sidebar {
-  padding-inline: 0;
-  border-right: none;
+/* Alpine adds this class when open=true — sidebar slides into view */
+.pg-sidebar--open {
+  transform: translateX(0);
 }
 
 /* Group label — uppercase category headers like "BASIS UI" */
@@ -1587,8 +1584,8 @@ code {
 
 /* Scope sg-main overrides inside the layout — grid column controls the width */
 .pg-layout .sg-main {
-  max-width: 780px;
-  margin-inline: 0;
+  max-width: 960px; /* matches index.astro and the global .sg-main width */
+  margin-inline: auto;
   padding-inline: var(--space-2xl);
   padding-block-start: var(--space-xl);
 }
@@ -1621,29 +1618,13 @@ code {
     max-width: 100%;
   }
 
-  /* Left drawer — fixed to the full left edge, slides in from the left */
+  /* On mobile the drawer is wider and has a shadow — overrides desktop fixed values */
   .pg-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
     width: 280px;
     max-width: 85vw;
-    height: 100dvh;
-    overflow-y: auto;
-    background: hsl(var(--background));
-    border-right: 1px solid hsl(var(--border));
-    padding: var(--space-xl) var(--space-md);
-    white-space: normal; /* override desktop nowrap — text wraps normally in the drawer */
-    transform: translateX(-100%);
+    white-space: normal; /* text wraps normally in the mobile drawer */
     transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 50;
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Alpine adds this class when open=true — drawer slides into view */
-  .pg-sidebar--open {
-    transform: translateX(0);
   }
 
   /* Full-screen semi-transparent backdrop behind the open drawer */

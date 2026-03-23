@@ -933,6 +933,8 @@ hr {
 
 .now-actions {
   display: flex;
+  flex-wrap: wrap;          /* Buttons stack on very small screens */
+  gap: var(--space-sm);     /* Same gap as .hero-actions — consistent spacing between buttons */
 }
 
 /* FOOTER SPACER

@@ -157,7 +157,10 @@ const posts = (await getCollection('writing')).sort(
           behind this site and expanding into prototypes as they take shape.
         </p>
         <div class="now-actions">
-          <Button label="Visit the playground" href="/playground" variant="primary" />
+          <!-- Primary destination: the design system reference page -->
+          <Button label="Design System" href="/playground" variant="primary" />
+          <!-- Secondary destination: the experiments and prototypes index -->
+          <Button label="Experiments" href="/experiments" variant="secondary" />
         </div>
       </div>
     </section>

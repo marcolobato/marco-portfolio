@@ -18,6 +18,8 @@ import CardHeader from '@/components/ui/display/card/CardHeader.astro';
 import CardContent from '@/components/ui/display/card/CardContent.astro';
 import CardFooter from '@/components/ui/display/card/CardFooter.astro';
 import Divider from '@/components/ui/layout/Divider.astro';
+import BasisText from '@/components/ui/display/Text.astro';
+import BasisNavbar from '@/components/ui/display/Navbar.astro';
 ---
 
 <BaseLayout title="Playground — Marco Lobato">
@@ -735,25 +737,25 @@ import Divider from '@/components/ui/layout/Divider.astro';
 
 
       <!-- ===================================================================
-           SECTION: SHADCN COMPONENTS
-           This section documents the shadcn/ui component layer and how brand
-           tokens flow from Figma all the way to a production component.
+           SECTION: BASIS UI COMPONENTS
+           Live component gallery. Toggle dark/light mode inside the preview
+           using the Alpine.js button — it sets data-theme on the canvas div,
+           so CSS variable overrides cascade to every component inside it.
            =================================================================== -->
       <section class="sg-section" id="basis-ui-components">
         <h2 class="sg-section-title">Basis UI Components</h2>
         <p class="sg-section-desc">
           Basis UI is a component library for Astro + Alpine.js built on the
-          shadcn/ui convention. Components are not installed as a dependency —
-          source lives in <code>src/components/ui/</code> and can be edited
-          directly. Styling is driven entirely by CSS variables, so a single
-          token change propagates to every component at once.
+          shadcn/ui convention. Source lives in <code>src/components/ui/</code>
+          and can be edited directly. Every color comes from CSS variables —
+          toggle the preview below to see how each component looks in dark mode.
         </p>
 
         <h3 class="sg-subsection-title">The token pipeline</h3>
         <p class="sg-section-desc">
           Every color decision starts in Figma as a variable and ends up in a
-          live component through a four-layer chain. Nothing is hardcoded at
-          any step — a brand update touches one value and cascades everywhere.
+          live component through a four-layer chain. A brand update touches one
+          value and cascades everywhere.
         </p>
         <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
          color/navy = #081F5D
@@ -766,180 +768,280 @@ Step 3 — Semantic mapping in global.css (the bridge layer)
          --ring:    221.1 82.6% 36.1%;   /* focus rings use Navy 700 */
 
 Step 4 — Basis UI component in Button.astro
-         bg-primary   → resolves --primary → #081F5D in light mode
-         hover:bg-ring → shifts to Navy 700 on focus/hover</code></pre>
+         bg-primary   → resolves --primary → #081F5D in light / #C0D4F4 in dark
+         hover:bg-ring → shifts to Navy 700 on hover / focus</code></pre>
 
-        <h3 class="sg-subsection-title">What each variant controls</h3>
+
+        <!-- ── Component gallery ─────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">Component gallery</h3>
+
+        <!-- Alpine.js wrapper — x-data holds the dark boolean, the button toggles it.
+             :data-theme sets the attribute on the canvas div when dark is true,
+             causing all CSS variable overrides inside it to switch to dark mode.
+             When dark is false, the attribute is removed and the canvas inherits
+             the page theme from <html>. -->
+        <div x-data="{ dark: false }">
+
+          <!-- Toolbar -->
+          <div class="sg-gallery-toolbar">
+            <span class="sg-gallery-toolbar-label">Component preview</span>
+            <button
+              class="sg-gallery-toggle"
+              @click="dark = !dark"
+              :aria-label="dark ? 'Switch to light preview' : 'Switch to dark preview'"
+            >
+              <!-- Moon icon — shown when light, click to see dark preview -->
+              <svg x-show="!dark" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <!-- Sun icon — shown when dark, click to return to light preview -->
+              <svg x-show="dark" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+              <span x-text="dark ? 'Light preview' : 'Dark preview'"></span>
+            </button>
+          </div>
+
+          <!-- Preview canvas — background and all tokens flip when data-theme="dark" -->
+          <div class="sg-gallery-canvas" :data-theme="dark ? 'dark' : null">
+
+
+            <!-- ── BUTTONS ──────────────────────────────────────────────── -->
+            <div class="sg-gallery-block">
+              <p class="sg-gallery-block-title">Button — <code>src/components/ui/forms/Button.astro</code></p>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-2xs);">Variants</p>
+              <div class="sg-gallery-row">
+                <!-- default: bg-primary (navy) / text-primary-foreground (white) -->
+                <BasisButton>Default</BasisButton>
+                <!-- secondary: bg-secondary (navy-100) / text-secondary-foreground -->
+                <BasisButton variant="secondary">Secondary</BasisButton>
+                <!-- destructive: bg-destructive / text-destructive-foreground -->
+                <BasisButton variant="destructive">Destructive</BasisButton>
+                <!-- outline: border-border bg-background — hover shows accent -->
+                <BasisButton variant="outline">Outline</BasisButton>
+                <!-- ghost: transparent — hover bg-accent, text-accent-foreground -->
+                <BasisButton variant="ghost">Ghost</BasisButton>
+                <!-- link: text-primary with underline on hover -->
+                <BasisButton variant="link">Link</BasisButton>
+              </div>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-md) 0 var(--space-2xs);">Sizes</p>
+              <div class="sg-gallery-row">
+                <BasisButton size="sm">Small</BasisButton>
+                <BasisButton size="md">Medium</BasisButton>
+                <BasisButton size="lg">Large</BasisButton>
+              </div>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-md) 0 var(--space-2xs);">States</p>
+              <div class="sg-gallery-row">
+                <BasisButton disabled>Disabled</BasisButton>
+                <BasisButton variant="outline" disabled>Outline disabled</BasisButton>
+              </div>
+
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-md) 0 var(--space-2xs);">Note: ghost and outline buttons show <code>--accent</code> (Lemon) on hover</p>
+            </div>
+
+
+            <!-- ── TEXT ────────────────────────────────────────────────── -->
+            <div class="sg-gallery-block">
+              <p class="sg-gallery-block-title">Text — <code>src/components/ui/display/Text.astro</code></p>
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
+                Variant picks the correct HTML element automatically (h1, h2, p, span, etc.)
+                and applies the matching token. All colors adapt to dark mode.
+              </p>
+
+              <div class="sg-gallery-text-scale">
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">hero-title → h1</span>
+                  <BasisText variant="hero-title">Hero Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">page-title → h1</span>
+                  <BasisText variant="page-title">Page Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">section-title → h2</span>
+                  <BasisText variant="section-title">Section Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">card-title → h2</span>
+                  <BasisText variant="card-title">Card Title</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">card-subtitle → h3</span>
+                  <BasisText variant="card-subtitle">Card Subtitle</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">body → p</span>
+                  <BasisText variant="body">The quick brown fox jumps over the lazy dog.</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">body-small → small</span>
+                  <BasisText variant="body-small">Smaller body — uses muted-foreground</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">muted → small</span>
+                  <BasisText variant="muted">Muted text — captions, helper text</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">caption → span</span>
+                  <BasisText variant="caption">Caption — uppercase, tracked</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">overline → span</span>
+                  <BasisText variant="overline">Overline label</BasisText>
+                </div>
+                <div class="sg-gallery-text-row">
+                  <span class="sg-gallery-text-label">link → span</span>
+                  <BasisText variant="link">Text link style</BasisText>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- ── CARD ────────────────────────────────────────────────── -->
+            <div class="sg-gallery-block">
+              <p class="sg-gallery-block-title">Card — <code>src/components/ui/display/card/</code></p>
+              <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: flex-start;">
+
+                <!-- Default variant — uses --card (white / dark surface) -->
+                <Card padding="lg" style="width: 220px;">
+                  <CardHeader>
+                    <BasisText variant="card-title">Default card</BasisText>
+                    <BasisText variant="card-subtitle">With header / content / footer</BasisText>
+                  </CardHeader>
+                  <CardContent>
+                    <BasisText variant="card-description">Body content lives here. Background uses <code>--card</code>.</BasisText>
+                  </CardContent>
+                  <CardFooter>
+                    <BasisButton size="sm">Action</BasisButton>
+                    <BasisButton size="sm" variant="ghost">Cancel</BasisButton>
+                  </CardFooter>
+                </Card>
+
+                <!-- Muted variant — uses --muted surface -->
+                <Card variant="muted" padding="lg" style="width: 220px;">
+                  <CardHeader>
+                    <BasisText variant="card-title">Muted card</BasisText>
+                    <BasisText variant="card-subtitle">Secondary surface</BasisText>
+                  </CardHeader>
+                  <CardContent>
+                    <BasisText variant="card-description">Background uses <code>--muted</code> — good for sidebar panels.</BasisText>
+                  </CardContent>
+                  <CardFooter>
+                    <BasisButton size="sm" variant="secondary">Action</BasisButton>
+                  </CardFooter>
+                </Card>
+
+                <!-- Outline variant — transparent bg with a 2px border -->
+                <Card variant="outline" padding="lg" style="width: 220px;">
+                  <CardHeader>
+                    <BasisText variant="card-title">Outline card</BasisText>
+                    <BasisText variant="card-subtitle">Border only, no fill</BasisText>
+                  </CardHeader>
+                  <CardContent>
+                    <BasisText variant="card-description">Background is transparent. Uses <code>--border</code> for its edge.</BasisText>
+                  </CardContent>
+                  <CardFooter>
+                    <BasisButton size="sm" variant="outline">Action</BasisButton>
+                  </CardFooter>
+                </Card>
+
+              </div>
+            </div>
+
+
+            <!-- ── DIVIDER ──────────────────────────────────────────────── -->
+            <div class="sg-gallery-block">
+              <p class="sg-gallery-block-title">Divider — <code>src/components/ui/layout/Divider.astro</code></p>
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
+                Always uses <code>--border</code> — flips automatically in dark mode.
+                No accent variant in the component; use a wrapper with a colored background for accent rules.
+              </p>
+
+              <!-- Thin (default) -->
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-xs);">thickness="1" (default)</p>
+              <BasisText variant="muted">Content above</BasisText>
+              <Divider spacing="2" />
+              <BasisText variant="muted">Content below</BasisText>
+
+              <!-- Thick -->
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-lg) 0 var(--space-xs);">thickness="4"</p>
+              <BasisText variant="muted">Content above</BasisText>
+              <Divider spacing="2" thickness="4" />
+              <BasisText variant="muted">Content below</BasisText>
+
+              <!-- Vertical -->
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: var(--space-lg) 0 var(--space-xs);">direction="vertical" (needs a flex-row parent)</p>
+              <div style="display: flex; align-items: center; height: 40px;">
+                <BasisText variant="body">Left content</BasisText>
+                <Divider direction="vertical" spacing="4" />
+                <BasisText variant="body">Right content</BasisText>
+              </div>
+            </div>
+
+
+            <!-- ── NAVBAR ───────────────────────────────────────────────── -->
+            <div class="sg-gallery-block">
+              <p class="sg-gallery-block-title">Navbar — <code>src/components/ui/display/Navbar.astro</code></p>
+              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
+                Uses <code>sticky={false}</code> here so it doesn't float over the page.
+                In production, the default <code>sticky={true}</code> pins it to the top with a blur backdrop.
+                Background is <code>bg-background/95</code> — semi-transparent, adapts to dark mode.
+              </p>
+              <!-- overflow: hidden clips the sticky positioning inside the preview box -->
+              <div style="border: 1px solid hsl(var(--border)); border-radius: 6px; overflow: hidden;">
+                <BasisNavbar sticky={false}>
+                  <span slot="brand" style="font-weight: 700; font-size: var(--text-base); color: hsl(var(--foreground));">Marco Lobato</span>
+                  <div slot="links" style="display: flex; gap: var(--space-lg);">
+                    <a style="font-size: var(--text-sm); color: hsl(var(--muted-foreground));">Work</a>
+                    <a style="font-size: var(--text-sm); color: hsl(var(--muted-foreground));">Writing</a>
+                    <a style="font-size: var(--text-sm); color: hsl(var(--muted-foreground));">About</a>
+                  </div>
+                  <BasisButton slot="actions" size="sm" variant="outline">Contact</BasisButton>
+                </BasisNavbar>
+              </div>
+            </div>
+
+
+            <!-- ── BADGE ────────────────────────────────────────────────── -->
+            <div class="sg-gallery-block">
+              <p class="sg-gallery-block-title">Badge — <code>src/components/ui/feedback/Badge.astro</code></p>
+              <div class="sg-gallery-row">
+                <!-- default: bg-primary (navy) -->
+                <Badge>Default</Badge>
+                <!-- secondary: bg-secondary (navy-100) -->
+                <Badge variant="secondary">Secondary</Badge>
+                <!-- destructive: bg-destructive -->
+                <Badge variant="destructive">Destructive</Badge>
+                <!-- outline: border-border, transparent bg -->
+                <Badge variant="outline">Outline</Badge>
+              </div>
+            </div>
+
+
+          </div><!-- end .sg-gallery-canvas -->
+        </div><!-- end x-data -->
+
+
+        <!-- Token pipeline reference (below the gallery) -->
+        <h3 class="sg-subsection-title" style="margin-top: var(--space-3xl);">Variant → token reference</h3>
         <p class="sg-section-desc">
-          Each shadcn variant maps to a different semantic token.
-          Changing the token value updates the variant everywhere it is used —
-          no per-component overrides needed.
+          Each variant name maps to a specific semantic token pair. Changing
+          the token in <code>global.css</code> updates every component that
+          uses that variant instantly.
         </p>
-        <pre class="sg-code"><code>default   → bg-primary         (navy fill, white text)
-outline   → border-border      (border stroke, no fill)
-secondary → bg-secondary       (navy-100 tint surface)
-ghost     → bg-transparent     (hover-only muted background)</code></pre>
+        <pre class="sg-code"><code>Button / Badge variants → token used
+─────────────────────────────────────────────
+default      → bg-primary       text-primary-foreground
+secondary    → bg-secondary     text-secondary-foreground
+destructive  → bg-destructive   text-destructive-foreground
+outline      → border-border    bg-background    hover:bg-accent
+ghost        → bg-transparent   text-foreground  hover:bg-accent
+link         → text-primary     (underline on hover)
 
-
-        <!-- Component: shadcn Button — side-by-side comparison -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Button — custom vs. shadcn</h3>
-          <p class="sg-component-desc">
-            Left: <code>Button.astro</code> — hand-built with custom CSS classes,
-            no dependencies. Right: <code>components/ui/button.tsx</code> — the
-            shadcn version whose appearance comes entirely from the token mapping
-            above. Both render identically because they read from the same brand
-            tokens. The shadcn version adds four variants and scales to a full
-            component library without writing new CSS.
-          </p>
-
-          <div class="sg-component-preview" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
-
-            <!-- Left: custom Astro button -->
-            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm);">
-              <p style="font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-slate); margin: 0 0 var(--space-xs);">Custom — Button.astro</p>
-              <Button label="Primary" href="#" variant="primary" />
-              <Button label="Secondary" href="#" variant="secondary" />
-            </div>
-
-            <!-- Right: shadcn button -->
-            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm);">
-              <p style="font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-slate); margin: 0 0 var(--space-xs);">Basis UI — Button.astro</p>
-              <BasisButton>
-                Default
-                <svg class="btn-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </BasisButton>
-              <BasisButton variant="outline">Outline</BasisButton>
-              <BasisButton variant="secondary">Secondary</BasisButton>
-              <BasisButton variant="ghost">Ghost</BasisButton>
-            </div>
-
-          </div>
-          <pre class="sg-code"><code>import BasisButton from '@/components/ui/forms/Button.astro';
-
-&lt;BasisButton&gt;Default&lt;/BasisButton&gt;
-&lt;BasisButton variant="outline"&gt;Outline&lt;/BasisButton&gt;
-&lt;BasisButton variant="secondary"&gt;Secondary&lt;/BasisButton&gt;
-&lt;BasisButton variant="ghost"&gt;Ghost&lt;/BasisButton&gt;</code></pre>
-        </div>
-
-        <!-- Component: Badge — read from Figma via MCP -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Badge — imported via Figma MCP</h3>
-          <p class="sg-component-desc">
-            This component was read directly from a Figma file using the Figma MCP server.
-            The MCP detected that the Figma variables (<code>--primary</code>, <code>--border</code>, etc.)
-            match the semantic tokens already mapped in <code>global.css</code> — so no color changes
-            were needed. The badge automatically uses my brand colors.
-          </p>
-          <div class="sg-preview" style="display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap;">
-            <Badge>Default</Badge>
-            <Badge variant="secondary">Secondary</Badge>
-            <Badge variant="destructive">Destructive</Badge>
-            <Badge variant="outline">Outline</Badge>
-          </div>
-          <pre class="sg-code"><code>import Badge from '@/components/ui/feedback/Badge.astro';
-
-&lt;Badge&gt;Default&lt;/Badge&gt;
-&lt;Badge variant="secondary"&gt;Secondary&lt;/Badge&gt;
-&lt;Badge variant="destructive"&gt;Destructive&lt;/Badge&gt;
-&lt;Badge variant="outline"&gt;Outline&lt;/Badge&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Card -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Card</h3>
-          <p class="sg-component-desc">
-            A flexible surface container. The <code>variant</code> prop controls
-            the background — <code>default</code> uses <code>--card</code>
-            (white in light mode), <code>muted</code> uses the neutral
-            <code>--muted</code> surface. Compose with
-            <code>CardHeader</code>, <code>CardContent</code>, and
-            <code>CardFooter</code> sub-components to build structured layouts.
-            The <code>padding</code> prop accepts a spacing key
-            (<code>xs</code> through <code>3xl</code>).
-          </p>
-          <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: flex-start;">
-            <!-- Default card -->
-            <Card padding="lg" style="width: 240px;">
-              <CardHeader>
-                <p style="font-weight: var(--weight-bold); margin: 0;">Card heading</p>
-                <p style="font-size: var(--text-sm); color: var(--color-slate); margin: 0;">A short subtitle</p>
-              </CardHeader>
-              <CardContent>
-                <p style="font-size: var(--text-sm); margin: 0;">Body content lives here. Cards flex-col by default and stretch to fill their children.</p>
-              </CardContent>
-              <CardFooter>
-                <BasisButton size="sm">Action</BasisButton>
-              </CardFooter>
-            </Card>
-            <!-- Muted variant -->
-            <Card variant="muted" padding="lg" style="width: 240px;">
-              <CardHeader>
-                <p style="font-weight: var(--weight-bold); margin: 0;">Muted variant</p>
-              </CardHeader>
-              <CardContent>
-                <p style="font-size: var(--text-sm); margin: 0;">Uses <code>--muted</code> as its background — useful for sidebar panels or secondary surfaces.</p>
-              </CardContent>
-            </Card>
-          </div>
-          <pre class="sg-code"><code>import Card from '@/components/ui/display/card/Card.astro';
-import CardHeader from '@/components/ui/display/card/CardHeader.astro';
-import CardContent from '@/components/ui/display/card/CardContent.astro';
-import CardFooter from '@/components/ui/display/card/CardFooter.astro';
-
-&lt;Card padding="lg"&gt;
-  &lt;CardHeader&gt;
-    &lt;p&gt;Card heading&lt;/p&gt;
-    &lt;p&gt;A short subtitle&lt;/p&gt;
-  &lt;/CardHeader&gt;
-  &lt;CardContent&gt;
-    &lt;p&gt;Body content goes here.&lt;/p&gt;
-  &lt;/CardContent&gt;
-  &lt;CardFooter&gt;
-    &lt;BasisButton size="sm"&gt;Action&lt;/BasisButton&gt;
-  &lt;/CardFooter&gt;
-&lt;/Card&gt;
-
-&lt;!-- Muted surface variant --&gt;
-&lt;Card variant="muted" padding="lg"&gt;...&lt;/Card&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Divider -->
-        <div class="sg-component">
-          <h3 class="sg-component-title">Divider</h3>
-          <p class="sg-component-desc">
-            A simple visual separator that uses <code>--border</code> as its
-            color so it automatically adapts to dark mode. The
-            <code>direction</code> prop switches between horizontal (default)
-            and vertical. The <code>spacing</code> prop controls the margin
-            around it.
-          </p>
-          <div class="sg-component-preview" style="display: flex; flex-direction: column; gap: var(--space-sm);">
-            <p style="margin: 0; font-size: var(--text-sm);">Content above the divider</p>
-            <Divider spacing="2" />
-            <p style="margin: 0; font-size: var(--text-sm);">Content below the divider</p>
-            <!-- Vertical demo -->
-            <div style="display: flex; align-items: center; height: 40px; margin-top: var(--space-md);">
-              <span style="font-size: var(--text-sm);">Left</span>
-              <Divider direction="vertical" spacing="4" />
-              <span style="font-size: var(--text-sm);">Right</span>
-            </div>
-          </div>
-          <pre class="sg-code"><code>import Divider from '@/components/ui/layout/Divider.astro';
-
-&lt;!-- Horizontal (default) --&gt;
-&lt;Divider /&gt;
-
-&lt;!-- Vertical — place inside a flex row container --&gt;
-&lt;div style="display: flex; align-items: center; height: 40px;"&gt;
-  &lt;span&gt;Left&lt;/span&gt;
-  &lt;Divider direction="vertical" /&gt;
-  &lt;span&gt;Right&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-        </div>
+Card variants → token used
+─────────────────────────────────────────────
+default      → bg-card          border-border
+muted        → bg-muted         border-border
+outline      → bg-transparent   border-2 border-border</code></pre>
 
       </section>
     </main>

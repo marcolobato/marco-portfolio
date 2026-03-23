@@ -24,7 +24,7 @@ The site tone is: thoughtful, warm, technically fluent, never flashy. Think Don 
 - **Styling**: Tailwind CSS with CSS variable theming
 - **Interactivity**: Alpine.js (lightweight, declarative, no build step)
 - **Hosting**: Cloudflare Pages (deploy from GitHub)
-- **Domain**: marcolobato.info (registered at Network Solutions)
+- **Domain**: marcolobato.info (registered at Cloudflare)
 
 ## Color system
 
@@ -135,6 +135,12 @@ Add more components only when a specific experiment requires them.
 > ⚠️ Missing Component: `[component name]` does not exist yet. Do you want me to build it first?
 
 Wait for confirmation before proceeding. Build the component in isolation first, then use it.
+
+**Styling Basis UI components:**
+- Always prefer CSS-only solutions first. Reach for a class, a CSS variable override, or a utility before touching component code.
+- Never edit a Basis UI component file directly without checking in first. Stop and flag it:
+  > 🛑 This change requires editing `[component name]` directly. Shall we review it together before I make any changes?
+- If a component does need changes, we revise them together — do not proceed unilaterally.
 
 ## Design principles
 

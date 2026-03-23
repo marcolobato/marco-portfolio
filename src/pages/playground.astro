@@ -24,11 +24,14 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
 
 <BaseLayout title="Playground — Marco Lobato">
 
+    <!-- Sticky wrapper — on mobile both bars stick together as a unit.
+         Wrapping them in a single element is more reliable than two sibling sticky elements. -->
+    <div class="pg-nav-wrapper">
     <Nav />
 
-    <!-- Mobile secondary nav bar — OUTSIDE the Alpine scope so position:sticky works reliably.
-         Sticky requires no Alpine/overflow parent interference. The button dispatches a plain
-         window event; the Alpine scope below listens for it via @toggle-sidebar.window. -->
+    <!-- Mobile secondary nav bar — lives inside the sticky wrapper so it always stays
+         anchored below the site nav. The button dispatches a plain window event;
+         the Alpine scope below listens for it via @toggle-sidebar.window. -->
     <div class="pg-mobile-nav-bar">
       <button
         class="pg-mobile-nav-trigger"
@@ -43,6 +46,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
       </button>
       <span class="pg-mobile-nav-title">Playground</span>
     </div>
+    </div><!-- /.pg-nav-wrapper -->
 
     <!-- Alpine.js scope — tracks whether the sidebar is open.
          Starts open on desktop (≥1200px) and closed on mobile.

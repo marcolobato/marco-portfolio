@@ -649,15 +649,11 @@ hr {
 /* Mobile nav — screens 768px wide and smaller */
 @media (max-width: 768px) {
 
-  /* Allow the nav items to wrap so the menu drops to a second row.
-     Sticky keeps the nav at the top when scrolling without breaking the hamburger dropdown.
-     width: 100% ensures it covers the full viewport on mobile. */
+  /* Allow the nav items to wrap so the menu drops to a second row on mobile.
+     No sticky here — the .pg-nav-wrapper wrapper handles sticky on the playground page.
+     Other pages: the nav just scrolls away on mobile (intentional). */
   .nav {
     flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    z-index: 30;
     background: hsl(var(--background));
   }
 
@@ -1510,7 +1506,15 @@ code {
   display: none;
 }
 
-/* Mobile nav bar — sticky bar below site nav, hidden on desktop */
+/* Nav wrapper — used only on the playground page.
+   On desktop: transparent in-flow wrapper (no layout effect).
+   On mobile: single sticky element that holds both the site nav and the secondary bar.
+   Using one sticky wrapper is more reliable than two sibling sticky elements. */
+.pg-nav-wrapper {
+  /* Desktop: nothing — wrapper is invisible to layout */
+}
+
+/* Mobile nav bar — secondary sticky bar below site nav, hidden on desktop */
 .pg-mobile-nav-bar {
   display: none;
 }
@@ -1731,19 +1735,23 @@ code {
     z-index: 40;
   }
 
-  /* Secondary nav bar — sticky below the site nav.
-     top: 4rem matches the site nav height (padding-block: 1.5rem × 2 + text ≈ 4rem).
-     Sticky means it scrolls with the page until it hits the threshold, then stays put. */
+  /* Secondary nav bar — inside the sticky .pg-nav-wrapper, so no position needed here.
+     It just renders as a flex row below the site nav within the wrapper. */
   .pg-mobile-nav-bar {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    position: sticky;
-    top: 4rem;
-    z-index: 20;
     background: hsl(var(--background));
     border-bottom: 1px solid hsl(var(--border));
     padding: var(--space-xs) var(--space-md);
+  }
+
+  /* Sticky wrapper — on mobile both bars stick together as a single unit */
+  .pg-nav-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: hsl(var(--background));
   }
 
   .pg-mobile-nav-trigger {

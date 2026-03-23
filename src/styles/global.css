@@ -122,10 +122,14 @@ select {
   outline: none;
 }
 
-/* Remove underline from links — we'll add intentional styles per component */
-a {
-  text-decoration: none;
-  color: inherit;
+/* Remove underline from links — placed in @layer base so Tailwind utility
+   classes (text-primary, text-foreground, etc.) can override color on <a> tags.
+   Without this layer, the unlayered reset wins over all Tailwind utilities. */
+@layer base {
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 /* --- 3. Spacing scale -------------------------------------------------------

@@ -51,7 +51,7 @@
          ═══════════════════════════════════════════════════════════════════ -->
     <div class="ps-frame" x-show="frame === 0">
 
-      <h3 class="ps-frame-title">Entering the pharmacy</h3>
+      <h3 class="ps-frame-title">Entering the pharmacy: context before action</h3>
 
       <div class="ps-split">
 
@@ -59,20 +59,31 @@
         <div class="ps-pane">
           <p class="ps-pane-label">What the AI perceives</p>
 
-          <!-- ILLUSTRATION: person stepping inside a pharmacy entrance — indoor commercial space, overhead or near-POV angle -->
-          <div class="ps-illustration" aria-hidden="true">
-            <span class="ps-illustration-placeholder">Illustration</span>
-          </div>
+          <img
+            src="/images/writing/ai-broken-in-denim/scenario-01.png"
+            alt="Person stepping inside a pharmacy entrance"
+            class="ps-illustration-img"
+          />
 
           <ul class="ps-signals">
 
             <li class="ps-signal">
-              <!-- Eye icon: visual input -->
+              <!-- Warning triangle: context / public location flag -->
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span>location: pharmacy, strongest public context signal</span>
+            </li>
+
+            <li class="ps-signal">
+              <!-- Eye icon: visual confirmation -->
               <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                 <circle cx="12" cy="12" r="3"/>
               </svg>
-              <span>indoor commercial space</span>
+              <span>store sign at entrance: exact location confirmed</span>
             </li>
 
             <li class="ps-signal">
@@ -83,17 +94,7 @@
                 <line x1="12" y1="19" x2="12" y2="22"/>
                 <line x1="9" y1="22" x2="15" y2="22"/>
               </svg>
-              <span>3–4 voices nearby</span>
-            </li>
-
-            <li class="ps-signal">
-              <!-- Warning triangle: context / elevated privacy risk -->
-              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                <line x1="12" y1="9" x2="12" y2="13"/>
-                <line x1="12" y1="17" x2="12.01" y2="17"/>
-              </svg>
-              <span>screen potentially visible</span>
+              <span>reduced ambient volume, indoor acoustic signature</span>
             </li>
 
           </ul>
@@ -109,7 +110,7 @@
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>switches to low-voice, minimal screen display</span>
+              <span>switches to screen-only alerts, minimal display mode</span>
             </li>
 
             <!-- Withheld: × icon, dashed border, strikethrough text -->
@@ -118,7 +119,7 @@
                 <line x1="18" y1="6" x2="6" y2="18"/>
                 <line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
-              <span>announce arrival out loud</span>
+              <span>audio output</span>
             </li>
 
           </ul>
@@ -126,7 +127,7 @@
 
       </div><!-- /.ps-split -->
 
-      <p class="ps-note">The AI detects a public context before the person asks for anything.</p>
+      <p class="ps-note">Location is the anchor. Vision and audio confirm it. Together they resolve: public context.</p>
 
     </div><!-- /.ps-frame[0] -->
 
@@ -137,17 +138,18 @@
          ═══════════════════════════════════════════════════════════════════ -->
     <div class="ps-frame" x-show="frame === 1" style="display:none">
 
-      <h3 class="ps-frame-title">Finding the medication</h3>
+      <h3 class="ps-frame-title">Finding the medication: research, compressed</h3>
 
       <div class="ps-split">
 
         <div class="ps-pane">
           <p class="ps-pane-label">What the AI perceives</p>
 
-          <!-- ILLUSTRATION: first-person view of pharmacy shelves — Sertraline 50mg visible on the second shelf, left side. Person visible just behind in line. -->
-          <div class="ps-illustration" aria-hidden="true">
-            <span class="ps-illustration-placeholder">Illustration</span>
-          </div>
+          <img
+            src="/images/writing/ai-broken-in-denim/scenario-02.png"
+            alt="Person using their phone to find a cold medication among many similar-looking boxes on pharmacy shelves"
+            class="ps-illustration-img"
+          />
 
           <ul class="ps-signals">
 
@@ -156,7 +158,26 @@
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                 <circle cx="12" cy="12" r="3"/>
               </svg>
-              <span>shelf labels — Sertraline 50mg, second shelf on the left</span>
+              <span>shelf labels across multiple aisles: spatial map built while browsing</span>
+            </li>
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span>many similar-looking boxes, visual complexity and choice overload</span>
+            </li>
+
+            <li class="ps-signal">
+              <!-- Mic icon: active conversation -->
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="9" y="2" width="6" height="11" rx="3"/>
+                <path d="M5 10v3a7 7 0 0 0 14 0v-3"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+                <line x1="9" y1="22" x2="15" y2="22"/>
+              </svg>
+              <span>active back-and-forth conversation about options</span>
             </li>
 
             <li class="ps-signal">
@@ -165,7 +186,7 @@
                 <line x1="12" y1="9" x2="12" y2="13"/>
                 <line x1="12" y1="17" x2="12.01" y2="17"/>
               </svg>
-              <span>person 1m behind in line — mental health prescription = elevated privacy</span>
+              <span>people nearby in the aisle, elevated display privacy</span>
             </li>
 
           </ul>
@@ -179,30 +200,30 @@
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>vibrates + says "Found it — second shelf on your left"</span>
-            </li>
-
-            <li class="ps-action ps-action--withheld">
-              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-              <span>say medication name aloud</span>
-            </li>
-
-            <li class="ps-action ps-action--withheld">
-              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-              <span>display medication name on screen</span>
+              <span>switches to audio guidance</span>
             </li>
 
             <li class="ps-action ps-action--taken">
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>shows only a directional arrow</span>
+              <span>vibration and small directional arrow: lower shelf, around the corner</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>large text or images on screen</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>medication name on display</span>
             </li>
 
           </ul>
@@ -210,7 +231,7 @@
 
       </div><!-- /.ps-split -->
 
-      <p class="ps-note">The AI knows the name. It chooses to communicate position without revealing what it found.</p>
+      <p class="ps-note">Minutes of back-and-forth, distilled to a single direction and a quiet vibration.</p>
 
     </div><!-- /.ps-frame[1] -->
 
@@ -220,17 +241,18 @@
          ═══════════════════════════════════════════════════════════════════ -->
     <div class="ps-frame" x-show="frame === 2" style="display:none">
 
-      <h3 class="ps-frame-title">At the pickup counter</h3>
+      <h3 class="ps-frame-title">At the pickup counter: show, don't speak</h3>
 
       <div class="ps-split">
 
         <div class="ps-pane">
           <p class="ps-pane-label">What the AI perceives</p>
 
-          <!-- ILLUSTRATION: pharmacy counter — pharmacist facing the person, mouth open mid-question ("Last name?"). Two customers visible to the side. -->
-          <div class="ps-illustration" aria-hidden="true">
-            <span class="ps-illustration-placeholder">Illustration</span>
-          </div>
+          <img
+            src="/images/writing/ai-broken-in-denim/scenario-03.png"
+            alt="Person at a pharmacy counter, holding up their phone to show details to the staff member"
+            class="ps-illustration-img"
+          />
 
           <ul class="ps-signals">
 
@@ -239,7 +261,7 @@
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                 <circle cx="12" cy="12" r="3"/>
               </svg>
-              <span>staff member at the counter</span>
+              <span>staff at counter, one-on-one</span>
             </li>
 
             <li class="ps-signal">
@@ -249,7 +271,7 @@
                 <line x1="12" y1="19" x2="12" y2="22"/>
                 <line x1="9" y1="22" x2="15" y2="22"/>
               </svg>
-              <span>staff asks "Last name?"</span>
+              <span>staff asks for pharmacy ID or insurance details</span>
             </li>
 
             <li class="ps-signal">
@@ -258,7 +280,7 @@
                 <line x1="12" y1="9" x2="12" y2="13"/>
                 <line x1="12" y1="17" x2="12.01" y2="17"/>
               </svg>
-              <span>two customers within earshot</span>
+              <span>personal information requested: show, don't speak</span>
             </li>
 
           </ul>
@@ -272,30 +294,29 @@
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>stays silent</span>
-            </li>
-
-            <li class="ps-action ps-action--withheld">
-              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-              <span>offer to spell out the name</span>
-            </li>
-
-            <li class="ps-action ps-action--withheld">
-              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-              <span>display prescription on screen</span>
+              <span>surfaces relevant details on phone screen, ready to show</span>
             </li>
 
             <li class="ps-action ps-action--taken">
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>remains available if asked</span>
+              <span>turns off glasses display</span>
+            </li>
+
+            <li class="ps-action ps-action--taken">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>freezes screen state: details persist until done</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>says details out loud</span>
             </li>
 
           </ul>
@@ -303,7 +324,7 @@
 
       </div><!-- /.ps-split -->
 
-      <p class="ps-note">The hardest interaction to design: doing nothing.</p>
+      <p class="ps-note">No searching, no speaking. Just the right detail, ready to show.</p>
 
     </div><!-- /.ps-frame[2] -->
 
@@ -313,17 +334,18 @@
          ═══════════════════════════════════════════════════════════════════ -->
     <div class="ps-frame" x-show="frame === 3" style="display:none">
 
-      <h3 class="ps-frame-title">Leaving the pharmacy</h3>
+      <h3 class="ps-frame-title">Leaving the pharmacy: back to flow</h3>
 
       <div class="ps-split">
 
         <div class="ps-pane">
           <p class="ps-pane-label">What the AI perceives</p>
 
-          <!-- ILLUSTRATION: person stepping outside onto an open street — daylight, wide angle, no faces visible nearby -->
-          <div class="ps-illustration" aria-hidden="true">
-            <span class="ps-illustration-placeholder">Illustration</span>
-          </div>
+          <img
+            src="/images/writing/ai-broken-in-denim/scenario-04.png"
+            alt="Person walking out of the pharmacy into a mall or supermarket area"
+            class="ps-illustration-img"
+          />
 
           <ul class="ps-signals">
 
@@ -332,7 +354,7 @@
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                 <circle cx="12" cy="12" r="3"/>
               </svg>
-              <span>outdoor environment</span>
+              <span>different environment, no longer in pharmacy</span>
             </li>
 
             <li class="ps-signal">
@@ -341,7 +363,17 @@
                 <line x1="12" y1="9" x2="12" y2="13"/>
                 <line x1="12" y1="17" x2="12.01" y2="17"/>
               </svg>
-              <span>no nearby faces — context reclassified as private</span>
+              <span>task completed, prescription collected</span>
+            </li>
+
+            <li class="ps-signal">
+              <svg class="ps-signal-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="9" y="2" width="6" height="11" rx="3"/>
+                <path d="M5 10v3a7 7 0 0 0 14 0v-3"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+                <line x1="9" y1="22" x2="15" y2="22"/>
+              </svg>
+              <span>ambient noise shift, more open space</span>
             </li>
 
           </ul>
@@ -355,21 +387,29 @@
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>normal voice volume restored</span>
+              <span>resumes glasses display: no mode switch, continuous</span>
             </li>
 
             <li class="ps-action ps-action--taken">
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>full screen display restored</span>
+              <span>resumes audio at normal volume</span>
             </li>
 
             <li class="ps-action ps-action--taken">
               <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span>"Your prescription reminder is set for 9am tomorrow"</span>
+              <span>quiet confirmation: "Reminder saved"</span>
+            </li>
+
+            <li class="ps-action ps-action--withheld">
+              <svg class="ps-action-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>prescription name shown visually</span>
             </li>
 
           </ul>
@@ -377,7 +417,7 @@
 
       </div><!-- /.ps-split -->
 
-      <p class="ps-note">Only now, in private, does the AI reference the prescription directly.</p>
+      <p class="ps-note">No mode switch, no announcement. A quiet confirmation that everything is handled.</p>
 
     </div><!-- /.ps-frame[3] -->
 
@@ -562,6 +602,15 @@
     color: hsl(var(--muted-foreground));
     text-transform: uppercase;
     letter-spacing: 0.1em;
+  }
+
+  /* ── Illustration image (replaces placeholder once artwork is ready) ───── */
+  .ps-illustration-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: calc(var(--radius) * 0.6);
+    margin-bottom: var(--space-md);
   }
 
   /* ── Signals list (left pane) ───────────────────────────────────────────── */

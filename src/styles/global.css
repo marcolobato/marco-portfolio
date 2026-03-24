@@ -660,7 +660,7 @@ hr {
      Other pages: the nav just scrolls away on mobile (intentional). */
   .nav {
     flex-wrap: wrap;
-    background: hsl(var(--background));
+    background: var(--color-white);
   }
 
   /* Show the hamburger button on mobile */

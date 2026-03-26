@@ -1,18 +1,15 @@
 ---
 // experiments.astro — Marco Lobato Experiments Index
 // This page is an index of interaction design explorations and prototypes.
-// Each row in the table is one experiment: a name, description, notes, and link.
+// Each accordion item is one experiment: name as trigger, full detail in the body.
 import '../styles/global.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import BasisButton from '@/components/ui/forms/Button.astro';
-import Table from '@/components/ui/data/Table.astro';
-import TableHeader from '@/components/ui/data/TableHeader.astro';
-import TableBody from '@/components/ui/data/TableBody.astro';
-import TableRow from '@/components/ui/data/TableRow.astro';
-import TableCell from '@/components/ui/data/TableCell.astro';
-// Note: TableHead.astro is skipped — it depends on astro-icon which is not installed.
-// Column headers are written as plain <th> elements with the same Tailwind classes.
+import Accordion from '@/components/ui/display/accordion/Accordion.astro';
+import AccordionItem from '@/components/ui/display/accordion/AccordionItem.astro';
+import AccordionTrigger from '@/components/ui/display/accordion/AccordionTrigger.astro';
+import AccordionContent from '@/components/ui/display/accordion/AccordionContent.astro';
 ---
 
 <BaseLayout title="Experiments — Marco Lobato">
@@ -110,7 +107,7 @@ import TableCell from '@/components/ui/data/TableCell.astro';
           <div class="sg-header-sections">
             <div class="sg-header-section">
               <p class="sg-header-section-title">Prototypes & Explorations</p>
-              <p class="sg-header-desc">Interaction design experiments as they take shape. Each one is an exploration — some have code, some are just ideas.</p>
+              <p class="sg-header-desc">Interaction design experiments as they take shape. Each one is an interactive exploration.</p>
             </div>
           </div>
         </header>
@@ -124,36 +121,71 @@ import TableCell from '@/components/ui/data/TableCell.astro';
         <section class="sg-section" id="experiments-index">
           <h2 class="sg-section-title">Experiments Index</h2>
           <p class="sg-section-desc">
-            A running list of interaction design explorations. Add rows here as new prototypes take shape.
+            A running list of interaction design explorations.
           </p>
 
-          <!-- Table uses Basis UI Table component.
-               - variant="hoverable" highlights each row on hover for readability
-               - responsive=true (default) wraps in overflow-x:auto so it scrolls on mobile -->
-          <Table variant="hoverable">
-            <!-- TableHeader = <thead>. Plain <th> elements used for cells
-                 instead of TableHead.astro, which depends on astro-icon (not installed). -->
-            <TableHeader>
-              <TableRow>
-                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Name</th>
-                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Description</th>
-                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Notes</th>
-                <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Link</th>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <!-- ── Placeholder row — replace with real experiments as they're built ── -->
-              <TableRow>
-                <TableCell>Haptic Rhythm UI</TableCell>
-                <TableCell>Exploring tap-pattern interaction for non-visual feedback on mobile devices.</TableCell>
-                <TableCell>Early exploration, no code yet.</TableCell>
-                <TableCell>
-                  <!-- When there's no link yet, show a muted dash instead of a broken link -->
-                  <span style="color: var(--muted-foreground);">—</span>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <!-- Accordion: each experiment is one item. Trigger = name, body = full detail. -->
+          <Accordion maxWidth="full" centered={false}>
+
+            <!-- ── PharmAssist: Show, Don't Speak ── -->
+            <AccordionItem>
+              <AccordionTrigger>PharmAssist: Show, Don't Speak.</AccordionTrigger>
+              <AccordionContent>
+
+                <!-- Description — full width, sits above the detail grid -->
+                <p style="margin: 0 0 1.25em; line-height: 1.7;">
+                  A Voiceflow prototype exploring privacy-first prescription pickup.
+                  The system helps patients share personal details on screen instead of speaking them aloud,
+                  splitting voice, screen, and text into three channels based on who can perceive them.
+                  Built to test whether "default-private" can work as a design principle, not just a toggle.
+                </p>
+
+                <!-- 2-column grid: What I learned / Notes on top row, Tools / Links on bottom -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+
+                  <!-- What I learned -->
+                  <div>
+                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">What I learned</p>
+                    <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
+                      <li>How to design a conversation where the most important moment is silence.</li>
+                      <li>How Voiceflow Workflows handle deterministic medical flows while leaving room for open-ended questions.</li>
+                      <li>How Cards and Messages map to "screen" and "voice" channels.</li>
+                      <li>How a follow-up text becomes the first private moment in a public interaction.</li>
+                    </ul>
+                  </div>
+
+                  <!-- Notes -->
+                  <div>
+                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Notes</p>
+                    <p style="margin: 0 0 0.4em; font-weight: 500;">Design concepts explored:</p>
+                    <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
+                      <li>Default-private (the "broken-in" principle)</li>
+                      <li>Channel splitting (screen / voice / text)</li>
+                      <li>Vague grammar as a social protocol</li>
+                      <li>Context-released information</li>
+                      <li>Cooperative recording (patient + pharmacist + system)</li>
+                    </ul>
+                  </div>
+
+                  <!-- Tools -->
+                  <div>
+                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Tools</p>
+                    <p style="margin: 0; line-height: 1.7;">Voiceflow (Workflow, Cards, Buttons, Variables, Conditions)</p>
+                  </div>
+
+                  <!-- Links -->
+                  <div>
+                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Links</p>
+                    <a href="https://creator.voiceflow.com/share/69c42fb2bfd66a6ff39d6c1a/development" target="_blank" rel="noopener noreferrer" class="text-link" style="display: block; margin-bottom: 0.4em;">Try the prototype →</a>
+                    <a href="/writing/pharmassist/" class="text-link" style="display: block; margin-bottom: 0.4em;">Read the case study →</a>
+                    <a href="/writing/ai-broken-in-denim/" class="text-link" style="display: block;">Read the essay that inspired it →</a>
+                  </div>
+
+                </div><!-- /.grid -->
+              </AccordionContent>
+            </AccordionItem>
+
+          </Accordion>
 
         </section>
 

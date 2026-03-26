@@ -8,6 +8,7 @@ import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
+import BasisButton from '@/components/ui/forms/Button.astro';
 
 // getStaticPaths runs once at build time and returns one entry per post.
 // Each entry becomes a separate page URL.
@@ -27,6 +28,38 @@ const { Content } = await render(post);
 ---
 
 <BaseLayout title={`${post.data.title} — Marco Lobato`}>
+
+  <!-- x-data holds lightbox state: open/closed, current image src, current caption.
+       @open-lightbox.window listens for the custom event fired by the script below.
+       @keydown.escape.window lets the user press Escape to close. -->
+  <div
+    x-data="{ open: false, src: '', caption: '' }"
+    @open-lightbox.window="open = true; src = $event.detail.src; caption = $event.detail.caption"
+    @keydown.escape.window="open = false"
+  >
+
+    <!-- Lightbox overlay — dark backdrop, tap outside or press Escape to close -->
+    <div
+      class="lightbox-overlay"
+      x-show="open"
+      x-transition
+      style="display: none;"
+      @click.self="open = false"
+    >
+      <div class="lightbox-inner">
+        <!-- Close button — Basis UI ghost/icon button with an X icon -->
+        <BasisButton variant="ghost" size="icon" className="lightbox-close" @click="open = false" aria-label="Close image">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </BasisButton>
+        <!-- The enlarged image -->
+        <img class="lightbox-img" :src="src" :alt="caption" />
+        <!-- Caption — only shown if the image has one -->
+        <p class="lightbox-caption" x-show="caption" x-text="caption"></p>
+      </div>
+    </div>
 
     <Nav />
 
@@ -58,7 +91,25 @@ const { Content } = await render(post);
       </div>
     </main>
 
+  </div>
+
 </BaseLayout>
+
+<script>
+  // Make every image in the post body open the lightbox when clicked or tapped.
+  // We fire a custom event that Alpine picks up via @open-lightbox.window above.
+  document.querySelectorAll<HTMLImageElement>('.post-body img').forEach(img => {
+    img.addEventListener('click', () => {
+      // Image and caption share the same <p> (no blank line between them in markdown).
+      // The <em> caption is the direct next sibling of <img> inside that paragraph.
+      const nextEl = img.nextElementSibling;
+      const caption = nextEl?.tagName === 'EM' ? nextEl.textContent ?? '' : '';
+      window.dispatchEvent(new CustomEvent('open-lightbox', {
+        detail: { src: img.src, caption }
+      }));
+    });
+  });
+</script>
 
 
 <style>
@@ -159,21 +210,81 @@ const { Content } = await render(post);
     display: block;
   }
 
-  /* Images — full width, rounded corners, breathing room above and below */
+  /* Images — full width, rounded corners, breathing room above and below.
+     cursor: zoom-in hints that the image is tappable to open the lightbox. */
   .post-body img {
     width: 100%;
     height: auto;
     border-radius: 8px;
     margin-top: var(--space-xl);
     display: block;
+    cursor: zoom-in;
   }
 
-  /* Caption — the italic <em> text that follows each image or video.
-     Uses the UI text style: --text-xs + letter-spacing + slate color.
-     The selector matches a paragraph containing only an <em> that comes
-     right after an <img> or after any element (for video captions). */
-  .post-body img + p > em:only-child,
-  .post-body video + p > em:only-child {
+  /* Lightbox overlay — fixed full-screen dark backdrop */
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(8, 31, 93, 0.93); /* deep navy at high opacity */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl);
+  }
+
+  /* Inner container — holds the close button, image, and caption */
+  .lightbox-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    max-width: min(94vw, 1200px);
+  }
+
+  /* The enlarged image — constrained to viewport, natural aspect ratio */
+  .lightbox-img {
+    max-width: 100%;
+    max-height: 88vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    cursor: default;
+  }
+
+  /* Close button — top-right corner of the inner container.
+     Default white so the X is visible on the dark navy backdrop.
+     On hover, the ghost button supplies the yellow box naturally —
+     we just flip the icon to dark so it reads against it. */
+  .lightbox-close {
+    position: absolute;
+    top: -48px;
+    right: -8px;
+    color: white;
+  }
+  .lightbox-close:hover {
+    color: black !important;
+  }
+
+  /* Caption text below the lightbox image */
+  .lightbox-caption {
+    color: white;
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: var(--leading-relaxed);
+    max-width: 60ch;
+  }
+
+  /* Caption — the italic <em> that follows an image in the same paragraph.
+     Remark puts image and caption in the same <p> when there's no blank line
+     between them, so the <em> is a direct sibling of <img>, not a child of
+     a separate <p>. :global() is required because <img> and <em> come from
+     rendered markdown and don't receive Astro's scope attribute. */
+  :global(.post-body img + em) {
     display: block;
     font-size: var(--text-xs);
     color: var(--color-slate);

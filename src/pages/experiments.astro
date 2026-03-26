@@ -5,7 +5,6 @@
 import '../styles/global.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
-import BasisButton from '@/components/ui/forms/Button.astro';
 import Accordion from '@/components/ui/display/accordion/Accordion.astro';
 import AccordionItem from '@/components/ui/display/accordion/AccordionItem.astro';
 import AccordionTrigger from '@/components/ui/display/accordion/AccordionTrigger.astro';
@@ -14,183 +13,100 @@ import AccordionContent from '@/components/ui/display/accordion/AccordionContent
 
 <BaseLayout title="Experiments — Marco Lobato">
 
-    <!-- Sticky wrapper — matches the same sticky pattern as playground.astro -->
-    <div class="pg-nav-wrapper">
-    <Nav />
+  <Nav />
 
-    <!-- Mobile secondary nav bar — same pattern as playground.astro -->
-    <div class="pg-mobile-nav-bar">
-      <BasisButton
-        variant="ghost"
-        size="icon"
-        className="pg-mobile-nav-trigger"
-        onclick="window.dispatchEvent(new CustomEvent('toggle-sidebar'))"
-        aria-label="Toggle navigation"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <path d="M9 3v18"/>
-        </svg>
-      </BasisButton>
-      <span class="pg-mobile-nav-title">Experiments</span>
-    </div>
-    </div><!-- /.pg-nav-wrapper -->
+  <main class="sg-main">
 
-    <!-- Alpine.js scope — same open/close logic as playground.astro -->
-    <div x-data="{ open: window.innerWidth >= 1200 }" @keydown.escape.window="open = false" @close-sidebar.window="open = false" @toggle-sidebar.window="open = !open">
-
-    <!-- Backdrop — mobile only -->
-    <div class="pg-backdrop" x-show="open" @click="open = false" x-transition style="display: none;"></div>
-
-    <div class="pg-layout">
-
-      <!-- ===================================================================
-           SIDEBAR NAVIGATION
-           =================================================================== -->
-      <aside class="pg-sidebar" :class="{ 'pg-sidebar--closed': !open, 'pg-sidebar--open': open }">
-
-        <!-- Expand button — visible only in rail mode (closed, ≥1200px) -->
-        <BasisButton variant="ghost" size="icon" className="pg-sidebar-expand-btn" @click="open = true" aria-label="Open navigation">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <path d="M9 3v18"/>
-          </svg>
-        </BasisButton>
-
-        <!-- Close button row -->
-        <div class="pg-sidebar-header">
-          <BasisButton variant="ghost" size="icon" className="pg-sidebar-close-btn" @click="open = false" aria-label="Close navigation">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6"/>
-            </svg>
-          </BasisButton>
+    <!-- ===================================================================
+         PAGE HEADER
+         =================================================================== -->
+    <header class="sg-header">
+      <p class="section-label">Playground</p>
+      <h1>Experiments</h1>
+      <div class="sg-header-sections">
+        <div class="sg-header-section">
+          <p class="sg-header-section-title">Prototypes & Explorations</p>
+          <p class="sg-header-desc">Interaction design experiments as they take shape. Each one is an interactive exploration.</p>
         </div>
-
-        <!-- Nav links -->
-        <nav class="pg-sidebar-nav" aria-label="Experiments navigation">
-
-          <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Experiments</p>
-            <!-- Clicking a section link closes the drawer on mobile only -->
-            <a href="#experiments-index" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Index</a>
-          </div>
-
-        </nav><!-- /.pg-sidebar-nav -->
-
-      </aside>
+      </div>
+    </header>
 
 
-      <main class="sg-main">
+    <!-- ===================================================================
+         SECTION: EXPERIMENTS INDEX
+         Each accordion item is one experiment.
+         =================================================================== -->
+    <section class="sg-section" id="experiments-index">
+      <h2 class="sg-section-title">Experiments Index</h2>
+      <p class="sg-section-desc">
+        A running list of interaction design explorations.
+      </p>
 
-        <!-- ===================================================================
-             PAGE HEADER
-             =================================================================== -->
-        <header class="sg-header">
+      <!-- Accordion: each experiment is one item. Trigger = name, body = full detail. -->
+      <Accordion maxWidth="full" centered={false}>
 
-          <!-- Toggle button for desktop sidebar — matches playground.astro -->
-          <BasisButton
-            variant="ghost"
-            size="icon"
-            className="pg-sidebar-toggle"
-            @click="open = !open"
-            :aria-expanded="open ? 'true' : 'false'"
-            aria-label="Toggle navigation"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-              <path d="M9 3v18"/>
-            </svg>
-          </BasisButton>
+        <!-- ── PharmAssist: Show, Don't Speak ── -->
+        <AccordionItem>
+          <AccordionTrigger>PharmAssist: Show, Don't Speak.</AccordionTrigger>
+          <AccordionContent>
 
-          <p class="section-label">Playground</p>
-          <h1>Experiments</h1>
-          <div class="sg-header-sections">
-            <div class="sg-header-section">
-              <p class="sg-header-section-title">Prototypes & Explorations</p>
-              <p class="sg-header-desc">Interaction design experiments as they take shape. Each one is an interactive exploration.</p>
-            </div>
-          </div>
-        </header>
+            <!-- Description — full width, sits above the detail grid -->
+            <p style="margin: 0 0 1.25em; line-height: 1.7;">
+              A Voiceflow prototype exploring privacy-first prescription pickup.
+              The system helps patients share personal details on screen instead of speaking them aloud,
+              splitting voice, screen, and text into three channels based on who can perceive them.
+              Built to test whether "default-private" can work as a design principle, not just a toggle.
+            </p>
 
+            <!-- 2-column grid: What I learned / Notes on top row, Tools / Links on bottom -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
 
-        <!-- ===================================================================
-             SECTION: EXPERIMENTS INDEX
-             A Basis UI table listing each experiment with name, description,
-             notes, and a link to the prototype (when one exists).
-             =================================================================== -->
-        <section class="sg-section" id="experiments-index">
-          <h2 class="sg-section-title">Experiments Index</h2>
-          <p class="sg-section-desc">
-            A running list of interaction design explorations.
-          </p>
+              <!-- What I learned -->
+              <div>
+                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">What I learned</p>
+                <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
+                  <li>How to design a conversation where the most important moment is silence.</li>
+                  <li>How Voiceflow Workflows handle deterministic medical flows while leaving room for open-ended questions.</li>
+                  <li>How Cards and Messages map to "screen" and "voice" channels.</li>
+                  <li>How a follow-up text becomes the first private moment in a public interaction.</li>
+                </ul>
+              </div>
 
-          <!-- Accordion: each experiment is one item. Trigger = name, body = full detail. -->
-          <Accordion maxWidth="full" centered={false}>
+              <!-- Notes -->
+              <div>
+                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Notes</p>
+                <p style="margin: 0 0 0.4em; font-weight: 500;">Design concepts explored:</p>
+                <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
+                  <li>Default-private (the "broken-in" principle)</li>
+                  <li>Channel splitting (screen / voice / text)</li>
+                  <li>Vague grammar as a social protocol</li>
+                  <li>Context-released information</li>
+                  <li>Cooperative recording (patient + pharmacist + system)</li>
+                </ul>
+              </div>
 
-            <!-- ── PharmAssist: Show, Don't Speak ── -->
-            <AccordionItem>
-              <AccordionTrigger>PharmAssist: Show, Don't Speak.</AccordionTrigger>
-              <AccordionContent>
+              <!-- Tools -->
+              <div>
+                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Tools</p>
+                <p style="margin: 0; line-height: 1.7;">Voiceflow (Workflow, Cards, Buttons, Variables, Conditions)</p>
+              </div>
 
-                <!-- Description — full width, sits above the detail grid -->
-                <p style="margin: 0 0 1.25em; line-height: 1.7;">
-                  A Voiceflow prototype exploring privacy-first prescription pickup.
-                  The system helps patients share personal details on screen instead of speaking them aloud,
-                  splitting voice, screen, and text into three channels based on who can perceive them.
-                  Built to test whether "default-private" can work as a design principle, not just a toggle.
-                </p>
+              <!-- Links -->
+              <div>
+                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Links</p>
+                <a href="https://creator.voiceflow.com/share/69c42fb2bfd66a6ff39d6c1a/development" target="_blank" rel="noopener noreferrer" class="text-link" style="display: block; margin-bottom: 0.4em;">Try the prototype →</a>
+                <a href="/writing/pharmassist/" class="text-link" style="display: block; margin-bottom: 0.4em;">Read the case study →</a>
+                <a href="/writing/ai-broken-in-denim/" class="text-link" style="display: block;">Read the essay that inspired it →</a>
+              </div>
 
-                <!-- 2-column grid: What I learned / Notes on top row, Tools / Links on bottom -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            </div><!-- /.grid -->
+          </AccordionContent>
+        </AccordionItem>
 
-                  <!-- What I learned -->
-                  <div>
-                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">What I learned</p>
-                    <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
-                      <li>How to design a conversation where the most important moment is silence.</li>
-                      <li>How Voiceflow Workflows handle deterministic medical flows while leaving room for open-ended questions.</li>
-                      <li>How Cards and Messages map to "screen" and "voice" channels.</li>
-                      <li>How a follow-up text becomes the first private moment in a public interaction.</li>
-                    </ul>
-                  </div>
+      </Accordion>
 
-                  <!-- Notes -->
-                  <div>
-                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Notes</p>
-                    <p style="margin: 0 0 0.4em; font-weight: 500;">Design concepts explored:</p>
-                    <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
-                      <li>Default-private (the "broken-in" principle)</li>
-                      <li>Channel splitting (screen / voice / text)</li>
-                      <li>Vague grammar as a social protocol</li>
-                      <li>Context-released information</li>
-                      <li>Cooperative recording (patient + pharmacist + system)</li>
-                    </ul>
-                  </div>
+    </section>
 
-                  <!-- Tools -->
-                  <div>
-                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Tools</p>
-                    <p style="margin: 0; line-height: 1.7;">Voiceflow (Workflow, Cards, Buttons, Variables, Conditions)</p>
-                  </div>
-
-                  <!-- Links -->
-                  <div>
-                    <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Links</p>
-                    <a href="https://creator.voiceflow.com/share/69c42fb2bfd66a6ff39d6c1a/development" target="_blank" rel="noopener noreferrer" class="text-link" style="display: block; margin-bottom: 0.4em;">Try the prototype →</a>
-                    <a href="/writing/pharmassist/" class="text-link" style="display: block; margin-bottom: 0.4em;">Read the case study →</a>
-                    <a href="/writing/ai-broken-in-denim/" class="text-link" style="display: block;">Read the essay that inspired it →</a>
-                  </div>
-
-                </div><!-- /.grid -->
-              </AccordionContent>
-            </AccordionItem>
-
-          </Accordion>
-
-        </section>
-
-      </main><!-- /.sg-main -->
-    </div><!-- /.pg-layout -->
-    </div><!-- /x-data -->
+  </main>
 
 </BaseLayout>

@@ -20,7 +20,7 @@ import AccordionContent from '@/components/ui/display/accordion/AccordionContent
     <!-- ===================================================================
          PAGE HEADER
          =================================================================== -->
-    <header class="sg-header">
+    <header class="sg-header" style="margin-bottom: var(--space-sm)">
       <p class="section-label">Playground</p>
       <h1>Experiments</h1>
       <div class="sg-header-sections">
@@ -36,11 +36,7 @@ import AccordionContent from '@/components/ui/display/accordion/AccordionContent
          SECTION: EXPERIMENTS INDEX
          Each accordion item is one experiment.
          =================================================================== -->
-    <section class="sg-section" id="experiments-index">
-      <h2 class="sg-section-title">Experiments Index</h2>
-      <p class="sg-section-desc">
-        A running list of interaction design explorations.
-      </p>
+    <section class="sg-section" id="experiments-index" style="padding-top: 0">
 
       <!-- Accordion: each experiment is one item. Trigger = name, body = full detail. -->
       <Accordion maxWidth="full" centered={false}>

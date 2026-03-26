@@ -19,9 +19,10 @@ You arrive at the pharmacy pickup counter. You scan a QR code at the kiosk inste
 
 That's it. Privacy is on. You didn't toggle anything.
 
-<!-- IMAGE: Screenshot of the Voiceflow test chat showing the welcome message and "I'm on my own" button. Use your screenshot 2 (the full test run). Crop to show just the top portion: welcome message + companion check. -->
+![Voiceflow test chat showing the welcome message and companion check with an "I'm on my own" button](/images/writing/pharmassist/01-voiceflow-welcome.png)
+*Privacy is on before you say a word. The only question: "Are you picking up with someone today?"*
 
-The only question the system asks is whether you're with someone. Not "are you in public?" That feels like surveillance. Instead: "Are you picking up with someone today?" If you're with a caregiver who needs to follow along, you say so. If you're with a friend who gave you a ride, you don't. The system protects your information from them too.
+The only question the system asks is whether you're with someone. Not turning on a "privacy mode". Instead the kiosk prompts : "Are you picking up with someone today?" If you're with a caregiver who needs to follow along, you say so. If you're with a friend who gave you a ride, you don't. The system protects your information from them too.
 
 ---
 
@@ -29,7 +30,8 @@ The only question the system asks is whether you're with someone. Not "are you i
 
 Building this forced me to think about what each communication channel is actually good for when other people can hear you.
 
-<!-- IMAGE: The consolidated journey diagram (the SVG showing all four phases with the privacy/shared split). Export or screenshot the visualization from our conversation. -->
+![Journey diagram showing all four phases of the pharmacy interaction with the privacy and shared channel split](/images/writing/pharmassist/02-journey-diagram.png)
+*Visualized using Claude's diagram feature. Four phases, two channels: screen for specifics, voice for social.*
 
 **The screen** carries specifics. Your name, your insurance ID, your medication and dosage: everything private goes to a card on your phone. When the pharmacist asks for information, you show them the phone. The gesture is familiar. It's how people already hand over insurance cards. This prototype digitizes that gesture.
 
@@ -37,7 +39,8 @@ Building this forced me to think about what each communication channel is actual
 
 **A text message** arrives later. Two hours after you leave, everything the system held back in person arrives privately on your phone: medication name, dosage, your questions and answers from the counter. The first moment the system can be fully specific, because the channel is fully private.
 
-<!-- IMAGE: Screenshot of the Voiceflow test chat showing the prescription Card ("Your prescription: Sertraline 50mg...") followed by the coached message ("You can confirm by saying: Got it, I'll follow those instructions."). This is the money shot — crop it cleanly. -->
+![Voiceflow test chat showing the prescription card with medication details followed by the coached deictic response](/images/writing/pharmassist/03-voiceflow-prescription-card.png)
+*The Card shows private details on your phone. The message below coaches what to say out loud.*
 
 ---
 
@@ -59,7 +62,8 @@ The part that surprised me most while building was the Q&A loop.
 
 After the pharmacist hands you the medication and explains the dosage, the system asks: "Any quick questions while the pharmacist is right here?"
 
-<!-- IMAGE: Screenshot of the Q&A section of the Voiceflow canvas — the close-up showing the Q&A offer buttons, the three answer Cards, the "Anything else?" loop, and the notes summary. Use your screenshot 1 (the Q&A canvas close-up). -->
+![Voiceflow canvas close-up showing the Q&A offer buttons, answer cards, the Anything else loop, and the notes summary](/images/writing/pharmassist/04-voiceflow-qa-canvas.png)
+*The scripted Q&A loop — built manually for the prototype instead of using a Playbook.*
 
 This matters because people leave pharmacies without asking the questions they needed to ask. They're uncomfortable. There are people waiting. They don't want to say the medication name. They don't want to seem like they don't understand the instructions.
 
@@ -75,7 +79,8 @@ The system doesn't replace the pharmacist. It makes the human conversation more 
 
 This was my first time using Voiceflow. I built alongside Gemini, which could see my screen and point me to functions while I was learning the interface. Here's what I found and the design decisions I made along the way.
 
-<!-- IMAGE: Screenshot of the full Voiceflow canvas zoomed out (your screenshot 2 — the wide view showing the complete flow with the test chat panel open). This is the hero image of the build. -->
+![Full Voiceflow canvas zoomed out showing the complete flow with the test chat panel open](/images/writing/pharmassist/05-voiceflow-canvas-full.png)
+*The complete PharmAssist flow in Voiceflow, with the test chat running alongside.*
 
 ### Workflows, not Playbooks
 
@@ -89,7 +94,8 @@ This was the breakthrough for me. Voiceflow's Card component displays a visual e
 
 So at every step, the pattern is the same: **Card = what appears on your phone screen** (the specific, private data). **Message = what you'd say out loud** (the vague, deictic language).
 
-<!-- IMAGE: Screenshot of the privacy branch close-up (your screenshot 3 — showing the Condition step splitting to 4.11A Medication:private with the Card, and 4.11B Medication:shared with the Message). -->
+![Voiceflow canvas close-up showing the privacy branch condition splitting into the private card path and the shared message path](/images/writing/pharmassist/06-voiceflow-privacy-branch.png)
+*The screen shows the medication name. Your voice says "I'll take that." Same moment, two channels.*
 
 ### The privacy branch
 

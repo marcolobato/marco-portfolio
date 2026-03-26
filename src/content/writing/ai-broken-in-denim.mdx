@@ -5,9 +5,10 @@ description: "From years of designing with people with disabilities, what I beli
 image: "/images/writing/ai-broken-in-denim/01-cover.png"
 ---
 
-{/* Import the interactive storyboard component.
-    This only works because the file is .mdx — plain .md cannot use imports. */}
 import PharmacyScenario from '../../components/PharmacyScenario.astro'
+
+{/* PharmacyScenario is used in the "First sketches" section below.
+    The import must come before any content — MDX silently ignores imports that appear after JSX or prose. */}
 
 
 Project Astra sees through a phone camera, hears ambient sound, and remembers what you showed it last Tuesday. It can locate an object in a room, pull up Google Maps before you finish the sentence, and through the glasses, recall a saved door code and show it to you privately. No announcement. Just the right information, at the right moment, visible only to you. The technical achievement is impressive. My open question: what should it feel like to have Project Astra as a companion?

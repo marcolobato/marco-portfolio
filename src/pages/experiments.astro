@@ -39,12 +39,12 @@ import AccordionContent from '@/components/ui/display/accordion/AccordionContent
     <section class="sg-section" id="experiments-index" style="padding-top: 0">
 
       <!-- Accordion: each experiment is one item. Trigger = name, body = full detail. -->
-      <Accordion maxWidth="full" centered={false}>
+      <Accordion maxWidth="full" centered={false} x-data="{ activeAccordion: 'accordion-1', setActiveAccordion(id) { this.activeAccordion = id; } }">
 
         <!-- ── PharmAssist: Show, Don't Speak ── -->
         <AccordionItem>
           <AccordionTrigger>PharmAssist: Show, Don't Speak.</AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent class="px-6 pb-6 pt-4">
 
             <!-- Description — full width, sits above the detail grid -->
             <p style="margin: 0 0 1.25em; line-height: 1.7;">

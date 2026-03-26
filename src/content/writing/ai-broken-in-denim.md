@@ -1,0 +1,61 @@
+---
+title: "Multimodal AI should fit like broken-in denim"
+date: 2026-03-20
+description: "From years of designing with people with disabilities, what I believe multimodal AI still needs to get right."
+image: "/images/writing/ai-broken-in-denim/01-cover.png"
+---
+
+
+[Project Astra](https://deepmind.google/models/project-astra/) sees through a phone camera, hears ambient sound, remembers what you showed it last Tuesday, and responds in under 300 milliseconds. It can read a whiteboard while you are talking, locate an object in a room, and pull up Google Maps before you finish the sentence. The technical achievement is impressive. My open question: what should it feel like to have Project Astra as a companion?
+
+That is a question I want to dive into.
+
+Three questions I want to explore. How we might reduce friction without asking people to switch modes or announce what they need. How a companion might know when to reassure and when to simply stay quiet. And how that contrast between presence and silence could make this feel like a cooperative relationship worth trusting.
+
+---
+
+## Multimodal interaction only matters if removes friction
+
+The engineering ambition behind Project Astra is real. Google DeepMind fused live video, audio, and text into a single transformer trained on all three simultaneously. The result is something that feels less like typing into a search bar and more like talking to a person who can see what you see.
+
+But capability is not the same as value. My experience designing assistive technology taught me this. The tools people with disabilities use are not limited to their phones: a walking stick, the objects they are already manipulating, the availability of their hands. Having a lot of capability does not mean you can reach it while moving through the real world. The quality requirement is higher because people have to multitask, especially people with disabilities. Being able to find the right thing by voice is what is truly powerful; the technology pulls the weight so you never have to stop, switch apps, or interact with the phone itself.
+
+Multimodal AI has the opportunity to succeed in the same way: making those context transitions feel ordinary, until you forget there was ever a reason to switch modes or apps.
+
+---
+
+## Choosing what not to do
+
+Astra's roadmap includes agents that handle professional workflows, manage files, navigate Chrome on your behalf. A 95% success rate is impressive for a chatbot. For an agent authorized to move money or delete files, a 5% failure rate is catastrophic.
+
+The design question is not what the assistant can do. It is what the assistant should choose not to do. Restraint is the hardest interaction to ship because there is no demo moment. You cannot show a crowd the conversation that did not happen, the action held back, the question asked before the decision was made. But that is the work. That is what trust is made of.
+
+When I worked on Voice Access for Android alongside teams passionate about accessibility, the conversation we kept coming back to was about privacy: not just of the person holding the phone, but of what the phone reveals to everyone else in the room. The people we were designing for were low vision users who needed the camera running and the screen on just to find the exit on a transit bus, to locate a medication on a pharmacy shelf, to identify the right aisle in a grocery store without asking a stranger for help. They could not dim the screen when someone leaned over to look. The constraint we were working through was simpler to say than to solve: how do you protect what is on that screen from the person sitting two seats away?
+
+That question pointed to something we were not calling by its right name at the time. It was not just a privacy feature. It was a contextual decision: the recognition that the environment a person is in is also part of the experience. The people who can see the screen without permission are part of the design problem. The technology had to hold that context, not just the hand holding the device.
+
+That was nine years ago. Today, the Samsung Galaxy S26 Ultra ships a feature called [Privacy Display](https://news.samsung.com/za/samsungs-first-privacy-display-on-the-samsung-galaxy-s26-ultra-is-redefining-mobile-privacy): it controls how light leaves the screen, restricting what people at side angles can see, applied automatically when entering passwords, configurable by app. What my team was working through on a whiteboard with disability advocates is now a flagship feature.
+
+The multimodal AI assistant of the future will be designed around hundreds of contextual decisions exactly like that one, not only for the person using the device, but aware of who else can see it. A form factor like Astra's glasses already moves toward that answer by removing the screen from the equation entirely. In the meantime, screen technology like Samsung's can do the same work for the phone in someone's hand on a bus.
+
+---
+
+## Peripheral vision, not a camera
+
+The best multimodal AI will not feel like a camera pointed at the world. It will feel like peripheral vision: the sense that is working before you turn your head, that catches movement before you consciously register it, that is always on without demanding your attention.
+
+Pre-washed denim works the same way. Already shaped to you before you put it on, softened by someone else's work so you do not have to earn it. The difference matters. Stiff leather needs to be broken in; you adapt to it before it adapts to you. Technology has worked this way for decades: you learn the interface, you train the model, you adjust your behavior to meet the machine. What multimodal AI can offer is the opposite: an assistant that arrives already fitted to your context, holds what you have shown it, and gets easier with use instead of harder.
+
+Project Astra's persistent memory is the beginning of that fit: keeping track of objects just out of sight, the things set down or left behind, without asking you to repeat yourself. The integration with Maps matters for the same reason, not just navigation but awareness of where you are going and what you want to do when you get there. At home, on the bus, on the way to the pharmacy, inside the pharmacy: the context changes and the companion changes with it. It knows when to stay quiet at a bus stop. It remembers when you feel comfortable speaking out loud. That is when this cooperative relationship earns trust: not because it does more, but because it knows when to do less.
+
+The assistant that earns trust will be the one that feels like it was always there. Not because it is everywhere, but because it is quiet enough to forget.
+
+---
+
+My favorite design work is turning powerful technology into something delightfully ordinary that people can trust when it matters most. Multimodal AI is the most powerful category of technology I have watched develop in my career. The design challenge ahead is making it ordinary.
+
+What are you building that earns that trust? Show me something cool.
+
+---
+
+*Marco Lobato · marcolobato.ux@gmail.com · March 2026*

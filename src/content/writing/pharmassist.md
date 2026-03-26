@@ -63,7 +63,7 @@ The part that surprised me most while building was the Q&A loop.
 After the pharmacist hands you the medication and explains the dosage, the system asks: "Any quick questions while the pharmacist is right here?"
 
 ![Voiceflow canvas close-up showing the Q&A offer buttons, answer cards, the Anything else loop, and the notes summary](/images/writing/pharmassist/04-voiceflow-qa-canvas.png)
-*The scripted Q&A loop — built manually for the prototype instead of using a Playbook.*
+*This prototype uses a scripted Q&A loop rather than Voiceflow's Playbook feature.*
 
 This matters because people leave pharmacies without asking the questions they needed to ask. They're uncomfortable. There are people waiting. They don't want to say the medication name. They don't want to seem like they don't understand the instructions.
 

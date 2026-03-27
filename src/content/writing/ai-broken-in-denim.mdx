@@ -11,14 +11,13 @@ import PharmacyScenario from '../../components/PharmacyScenario.astro'
     The import must come before any content — MDX silently ignores imports that appear after JSX or prose. */}
 
 
-Project Astra sees through a phone camera, hears ambient sound, and remembers what you showed it last Tuesday. It can locate an object in a room, pull up Google Maps before you finish the sentence, and through the glasses, recall a saved door code and show it to you privately. No announcement. Just the right information, at the right moment, visible only to you. The technical achievement is impressive. My open question: what should it feel like to have Project Astra as a companion?
+Project Astra sees through a phone camera, hears ambient sound, and remembers what you showed it last Tuesday. It can locate an object in a room, pull up Google Maps before you finish the sentence and, through the glasses, recall a saved door code and show it to you privately. No announcement. Just the right information, at the right moment, visible only to you. The technical achievement is impressive. My open question: what should it feel like to have Project Astra as a companion?
 
-That is a question I want to dive into.
 
 ![POV through Project Astra smart glasses showing a hand pressing a numeric keypad. An AI overlay displays "The door code you saved previously is 1170." Labels in the upper left read Cross-Device Memory and Glasses.](/images/writing/ai-broken-in-denim/image-1-astra-memory-glasses.png)
 *Project Astra recalls a door code through the glasses, at the moment it is needed.*
 
-Three questions I want to explore. How we might reduce friction without asking people to switch modes or announce what they need. How a companion might know when to reassure and when to simply stay quiet. And how that contrast between presence and silence could make this feel like a cooperative relationship worth trusting.
+That question breaks into three parts. How we might reduce friction without asking people to switch modes or announce what they need. How a companion might know when to reassure and when to simply stay quiet. And how that contrast between presence and silence could make this feel like a cooperative relationship worth trusting.
 
 ---
 
@@ -26,9 +25,11 @@ Three questions I want to explore. How we might reduce friction without asking p
 
 The engineering ambition behind Project Astra is real. Google DeepMind fused live video, audio, and text into a single transformer trained on all three simultaneously. The result is something that feels less like typing into a search bar and more like talking to a person who can see what you see.
 
-But capability is not the same as value. My experience designing assistive technology taught me this. The tools people with disabilities use are not limited to their phones: a walking stick, the objects they are already manipulating, the availability of their hands. Having a lot of capability does not mean you can reach it while moving through the real world. The quality requirement is higher because people have to multitask, especially people with disabilities. Being able to find the right thing by voice is what is truly powerful; the technology pulls the weight so you never have to stop, switch apps, or interact with the phone itself.
+But capability is not the same as value.
 
-Multimodal AI has the opportunity to succeed in the same way: making those context transitions feel ordinary, until you forget there was ever a reason to switch modes or apps.
+My experience designing assistive technology taught me this. The tools people with disabilities use are not limited to their phones: a walking stick, the objects they are already manipulating, the availability of their hands. Having a lot of capability does not mean you can reach it while moving through the real world. The quality requirement is higher because people have to multitask, especially people with disabilities. Being able to find the right thing by voice is what is truly powerful; the technology pulls the weight so you never have to stop, switch apps, or interact with the phone itself.
+
+Multimodal AI has the opportunity to work the same way: fitting around the tools people already hold, until switching modes is something they never have to think about.
 
 ![Rear view of a person wearing a bicycle helmet and a patterned poncho, pausing at a park entrance. A subtitle reads "Can you check if I can bike in there?" Labels indicate Tool Use, Maps and Glasses.](/images/writing/ai-broken-in-denim/image-2-astra-cyclist-maps.png)
 *Hands on the handlebars, the companion checks Maps by voice. No stopping, no switching.*
@@ -37,7 +38,7 @@ Multimodal AI has the opportunity to succeed in the same way: making those conte
 
 ## Choosing what not to do
 
-Astra's roadmap includes agents that handle professional workflows, manage files, navigate Chrome on your behalf. A 95% success rate is impressive for a chatbot. For an agent authorized to move money or delete files, a 5% failure rate is the kind of friction that keeps people from ever fully handing it over.
+Astra's roadmap includes agents that handle professional workflows, manage files, navigate Chrome on your behalf. A 95% success rate is impressive for a chatbot. For an agent authorized to move money or delete files, a 5% failure rate is the kind of friction that keeps people from ever fully handing it over. One wrong transfer means calling your bank, explaining what happened, starting over. That is enough to take back control.
 
 The design question is not what the assistant can do. It is what the assistant should choose not to do. Restraint is the hardest interaction to ship because there is no demo moment. You cannot show a crowd the conversation that did not happen, the action held back, the question asked before the decision was made. But that is the work. That is what trust is made of.
 
@@ -50,7 +51,7 @@ When I worked on Voice Access for Android alongside teams passionate about acces
 
 That question pointed to something we were not calling by its right name at the time. It was not just a privacy feature. It was a contextual decision: the recognition that the environment a person is in is also part of the experience. The people who can see the screen without permission are part of the design problem. The technology had to hold that context, not just the hand holding the device.
 
-That was nine years ago. Today, the Samsung Galaxy S26 Ultra ships a feature called [Privacy Display](https://news.samsung.com/za/samsungs-first-privacy-display-on-the-samsung-galaxy-s26-ultra-is-redefining-mobile-privacy): it controls how light leaves the screen, restricting what people at side angles can see, applied automatically when entering passwords, configurable by app. What my team was working through on a whiteboard with disability advocates is now a flagship feature.
+That was nine years ago. Today, the Samsung Galaxy S26 Ultra ships a feature called [Privacy Display](https://news.samsung.com/za/samsungs-first-privacy-display-on-the-samsung-galaxy-s26-ultra-is-redefining-mobile-privacy): it controls how light leaves the screen, restricting what people at side angles can see, applied automatically when entering passwords, configurable by app. The problem my team was working through on a whiteboard with disability advocates is now something the industry ships as a flagship feature.
 
 The multimodal AI assistant of the future will be designed around hundreds of contextual decisions exactly like that one, not only for the person using the device, but aware of who else can see it. A form factor like Astra's glasses already moves toward that answer by removing the screen from the equation entirely. In the meantime, screen technology like Samsung's can do the same work for the phone in someone's hand on a bus.
 
@@ -67,17 +68,17 @@ Project Astra's persistent memory is the beginning of that fit: keeping track of
 ![A hand holds a smartphone running Project Astra, camera pointed at a red London double-decker bus on a city street. A subtitle reads "Will that bus take me anywhere near Chinatown?"](/images/writing/ai-broken-in-denim/image-4-astra-phone-bus.png)
 *In an unfamiliar city, context becomes serendipity. Point, ask, know: just the question and the world in front of you.*
 
-The assistant that earns trust is the one that sees what you almost missed. Peripheral vision is not passive; it is always building context. At home on a familiar route, you might prefer the quiet. Traveling somewhere unfamiliar, you want the wider lens: the street name you did not look up, the building you walked past, the bus connection you would not have thought to ask about. Context becomes serendipity. That is when this stops being a tool you point at things and starts being a companion that sees the world with you.
+The assistant that earns trust is the one that fits around what people already carry and sees what they almost missed. Peripheral vision is not passive; it is always building context. At home on a familiar route, you might prefer the quiet. Traveling somewhere unfamiliar, you want the wider lens: the street name you did not look up, the building you walked past, the bus connection you would not have thought to ask about. Context becomes serendipity. That is when this stops being a tool you point at things and starts being a companion that sees the world with you.
 
 ---
 
 ## First sketches
 
-Four moments from a single trip to the pharmacy. Each one is a concrete version of the questions I opened with: how the AI reduces friction without asking, when silence builds more trust than any response, and what it feels like when restraint is the right design decision. These are the interactions I am most excited to experiment with.
+Four moments from a single trip to the pharmacy. Each scenario maps what the AI perceives, what it decides, and what it holds back. Together they are a concrete place to explore: how the AI reduces friction without asking, when silence builds more trust than any response, and what it feels like when restraint is the right design decision.
 
 <PharmacyScenario />
 
-I am turning each one into a working prototype. That work lives in my [Experiments](/experiments) section as it comes together.
+These sketches became [a case study with a working prototype](/writing/pharmassist). The rest are coming together in my [Experiments](/experiments) section.
 
 What are you building that earns that trust? Show me something cool.
 

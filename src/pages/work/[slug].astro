@@ -140,6 +140,22 @@ const { Content } = await render(project);
       </section>
 
 
+      <!-- ── Project Reflection ────────────────────────────────────────────── -->
+      <!-- Only rendered when the reflection field is present in frontmatter.
+           The && operator means "if data.reflection exists, render this block".
+           The title is styled softly — smaller, lighter weight, not a bold UI heading.
+           Paragraphs are split on \n\n so one string can produce multiple <p> tags. -->
+      {data.reflection && (
+        <section class="project-reflection">
+          <p class="project-reflection-eyebrow">Project Reflection</p>
+          <h2 class="project-reflection-title">{data.reflection.title}</h2>
+          {data.reflection.body.split('\n\n').map((paragraph) => (
+            <p class="project-reflection-body">{paragraph}</p>
+          ))}
+        </section>
+      )}
+
+
     </div><!-- /.project-container -->
   </main>
 
@@ -377,5 +393,46 @@ const { Content } = await render(project);
     color: var(--color-charcoal);
     line-height: var(--leading-loose);
     font-size: var(--text-base);
+  }
+
+
+  /* ── Project Reflection ──────────────────────────────────────────────── */
+  /* Intentionally softer than the other sections — this is personal voice,
+     not a structured data section. No bold UI heading, no divider line. */
+
+  .project-reflection {
+    /* Extra space above separates it clearly from Outcomes */
+    margin-top: var(--space-4xl);
+    padding-top: var(--space-3xl);
+    border-top: 1px solid var(--color-slate);
+  }
+
+  /* Small label above the title — "Project Reflection" in muted caps */
+  .project-reflection-eyebrow {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    margin-bottom: var(--space-md);
+  }
+
+  /* The custom title — display font, lighter weight, not a bold heading.
+     Uses --font-display (Fraunces) so it feels editorial rather than structural. */
+  .project-reflection-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);  /* medium, not bold — softer feel */
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-xl);
+  }
+
+  .project-reflection-body {
+    font-size: var(--text-base);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    margin-bottom: var(--space-md);
+    max-width: 60ch; /* tighter measure for reflective writing — more intimate */
   }
 </style>

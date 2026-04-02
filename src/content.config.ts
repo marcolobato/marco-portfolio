@@ -67,6 +67,16 @@ const projects = defineCollection({
       text: z.string(), // e.g. "4.8★ rating at launch — users praised clarity."
     })),
 
+    // ── Project Reflection ───────────────────────────────────────────────────
+    // Closing section, always at the end of the page after Outcomes.
+    // title: a soft, project-specific heading (e.g. "Future Vision: Multimodal AI Assistants")
+    // body:  one or two paragraphs as a single string. Use \n\n to separate paragraphs.
+    // Optional — omit the entire field for projects that don't have a reflection yet.
+    reflection: z.object({
+      title: z.string(),
+      body:  z.string(),
+    }).optional(),
+
     // ── Home page card ───────────────────────────────────────────────────────
     // Controls how this project appears in the carousel and featured cards.
     card: z.object({

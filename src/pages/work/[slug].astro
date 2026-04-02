@@ -11,6 +11,7 @@ import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
+import ProjectAccordion from '../../components/project/ProjectAccordion.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -99,23 +100,12 @@ const { Content } = await render(project);
 
 
       <!-- ── Contributions ─────────────────────────────────────────────────── -->
-      <!-- Phase 1: rendered as a simple list.
-           Phase 2: this becomes an interactive accordion (Alpine.js).
-           The data structure (label + content) is already correct for the
-           accordion — we just need to swap the markup. -->
+      <!-- ProjectAccordion renders the contributions array as an exclusive
+           accordion: first item open by default, one open at a time.
+           Items with empty content show as label-only rows (no chevron). -->
       <section class="project-contributions">
         <h2 class="project-section-heading">Contributions</h2>
-
-        <ul class="project-contributions-list">
-          {data.contributions.map((item) => (
-            <li class="project-contribution-item">
-              <span class="project-contribution-label">{item.label}</span>
-              {item.content && (
-                <p class="project-contribution-body">{item.content}</p>
-              )}
-            </li>
-          ))}
-        </ul>
+        <ProjectAccordion contributions={data.contributions} />
       </section>
 
 
@@ -279,41 +269,11 @@ const { Content } = await render(project);
   }
 
 
-  /* ── Contributions (Phase 1 — simple list) ───────────────────────────── */
-  /* Phase 2 will replace this with the interactive accordion markup.
-     The list styles below are intentionally minimal — just enough to read. */
+  /* ── Contributions ───────────────────────────────────────────────────── */
+  /* Layout only — accordion styles live in ProjectAccordion.astro */
 
   .project-contributions {
     margin-bottom: var(--space-3xl);
-  }
-
-  .project-contributions-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border-top: 1px solid var(--color-slate);
-  }
-
-  .project-contribution-item {
-    padding: var(--space-md) 0;
-    border-bottom: 1px solid var(--color-slate);
-  }
-
-  .project-contribution-label {
-    display: block;
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--color-heading);
-    margin-bottom: var(--space-xs);
-  }
-
-  .project-contribution-body {
-    font-size: var(--text-sm);
-    color: var(--color-charcoal);
-    line-height: var(--leading-loose);
-    margin: 0;
   }
 
 

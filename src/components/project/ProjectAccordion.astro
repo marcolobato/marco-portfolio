@@ -1,0 +1,221 @@
+---
+// ProjectAccordion.astro — Contributions accordion for project pages.
+//
+// Usage in work/[slug].astro:
+//   import ProjectAccordion from '../../components/project/ProjectAccordion.astro';
+//   <ProjectAccordion contributions={data.contributions} />
+//
+// Behaviour (specified in PRD):
+//   - Exclusive: only one item open at a time.
+//   - First item open by default (open: 0).
+//   - Items with an empty content string are label-only — no chevron, not clickable.
+//
+// Alpine.js is loaded globally via @astrojs/alpinejs — no import needed here.
+// All directives (x-data, x-show, @click, :class) are rendered as plain HTML
+// attributes by Astro at build time and picked up by Alpine at runtime.
+
+interface Contribution {
+  label:   string;
+  content: string;
+}
+
+interface Props {
+  contributions: Contribution[];
+}
+
+const { contributions } = Astro.props;
+---
+
+<!--
+  x-data holds one piece of state: the index of the currently open item.
+  open: 0  →  first item starts open.
+  open: null  →  no item open (happens when the open item is clicked again).
+-->
+<div class="pa-accordion" x-data="{ open: 0 }">
+
+  {contributions.map((item, i) => (
+
+    <div class="pa-item">
+
+      {item.content ? (
+        // ── Expandable item ─────────────────────────────────────────────────
+        // Rendered when the contribution has detail text.
+        // The button opens/closes this item exclusively.
+        //
+        // @click logic:
+        //   If this item IS already open (open === i), close it (set open to null).
+        //   If this item is NOT open, open it (set open to i).
+        //   This is the "toggle" that also acts as "exclusive" accordion.
+        <>
+          <button
+            class="pa-trigger"
+            type="button"
+            @click={`open = (open === ${i}) ? null : ${i}`}
+            :aria-expanded={`open === ${i}`}
+            aria-controls={`pa-content-${i}`}
+          >
+            <span class="pa-label">{item.label}</span>
+
+            <!-- Chevron SVG — rotates 180° when this item is open.
+                 :class adds the pa-chevron--open modifier class when open === i,
+                 which triggers the CSS rotation. -->
+            <svg
+              class="pa-chevron"
+              :class={`{ 'pa-chevron--open': open === ${i} }`}
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+
+          <!-- x-show toggles display based on whether open === this item's index.
+               x-transition adds Alpine's built-in fade in/out (no plugin needed).
+               x-cloak hides the content before Alpine initialises so there's
+               no flash of expanded content on page load. -->
+          <div
+            class="pa-content"
+            id={`pa-content-${i}`}
+            x-show={`open === ${i}`}
+            x-transition:enter="pa-enter"
+            x-transition:enter-start="pa-enter-start"
+            x-transition:enter-end="pa-enter-end"
+            x-transition:leave="pa-leave"
+            x-transition:leave-start="pa-leave-start"
+            x-transition:leave-end="pa-leave-end"
+            x-cloak
+          >
+            <p class="pa-content-text">{item.content}</p>
+          </div>
+        </>
+
+      ) : (
+
+        // ── Label-only item ─────────────────────────────────────────────────
+        // Rendered when content is an empty string "".
+        // Not a button — just a styled row showing the contribution category.
+        // No chevron, no click handler.
+        <div class="pa-trigger pa-trigger--static" aria-label={item.label}>
+          <span class="pa-label">{item.label}</span>
+        </div>
+
+      )}
+
+    </div>
+
+  ))}
+
+</div>
+
+
+<style>
+  /* ── Accordion wrapper ──────────────────────────────────────────────────── */
+
+  .pa-accordion {
+    border-top: 1px solid var(--color-slate);
+  }
+
+
+  /* ── Each row ───────────────────────────────────────────────────────────── */
+
+  .pa-item {
+    border-bottom: 1px solid var(--color-slate);
+  }
+
+
+  /* ── Trigger (button row) ───────────────────────────────────────────────── */
+
+  /* Shared styles for both the interactive button and the static label row */
+  .pa-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-md) 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  /* Static rows (label-only) are not interactive — remove pointer cursor */
+  .pa-trigger--static {
+    cursor: default;
+  }
+
+  /* Subtle highlight on hover for interactive rows only.
+     :not(.pa-trigger--static) targets buttons but not the static divs. */
+  .pa-trigger:not(.pa-trigger--static):hover .pa-label {
+    color: var(--color-royal-blue);
+  }
+
+
+  /* ── Label text ─────────────────────────────────────────────────────────── */
+
+  .pa-label {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    transition: color 0.15s ease;
+  }
+
+
+  /* ── Chevron icon ───────────────────────────────────────────────────────── */
+
+  .pa-chevron {
+    color: var(--color-slate);
+    flex-shrink: 0;           /* Prevents the icon from shrinking on narrow screens */
+    transition: transform 0.2s ease;
+  }
+
+  /* When pa-chevron--open is added by Alpine's :class directive, rotate 180°.
+     This points the chevron upward when the item is expanded. */
+  .pa-chevron--open {
+    transform: rotate(180deg);
+  }
+
+
+  /* ── Content panel ──────────────────────────────────────────────────────── */
+
+  /* x-cloak hides the element before Alpine initialises.
+     Without this, content panels flash open on first load. */
+  [x-cloak] { display: none !important; }
+
+  .pa-content {
+    padding-bottom: var(--space-md);
+  }
+
+  .pa-content-text {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    margin: 0;
+    /* Indent the content slightly to visually align under the label */
+    padding-right: var(--space-2xl);
+  }
+
+
+  /* ── Transition classes (used by x-transition:* directives) ──────────────
+     Alpine's named transition system lets us define enter/leave animations
+     as CSS classes instead of using inline style attributes.
+
+     enter/leave:      applied for the full duration of the animation
+     enter-start:      the initial state (before the animation begins)
+     enter-end:        the final state (after the animation completes)
+     leave-start:      the state at the start of the leave animation
+     leave-end:        the state at the end of the leave animation            */
+
+  :global(.pa-enter)        { transition: opacity 0.15s ease; }
+  :global(.pa-enter-start)  { opacity: 0; }
+  :global(.pa-enter-end)    { opacity: 1; }
+  :global(.pa-leave)        { transition: opacity 0.1s ease; }
+  :global(.pa-leave-start)  { opacity: 1; }
+  :global(.pa-leave-end)    { opacity: 0; }
+</style>

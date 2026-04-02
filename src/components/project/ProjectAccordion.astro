@@ -117,10 +117,10 @@ const { contributions } = Astro.props;
 
 <style>
   /* ── Accordion wrapper ──────────────────────────────────────────────────── */
+  /* No border-top here — the section heading above already has a border-bottom
+     that acts as the divider. Adding one here would create a double line. */
 
-  .pa-accordion {
-    border-top: 1px solid var(--color-slate);
-  }
+  .pa-accordion {}
 
 
   /* ── Each row ───────────────────────────────────────────────────────────── */

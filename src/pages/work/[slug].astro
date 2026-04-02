@@ -276,6 +276,13 @@ const { Content } = await render(project);
     margin-bottom: var(--space-3xl);
   }
 
+  /* Tighten the gap between the "Contributions" heading and the first accordion
+     row. The heading's border-bottom already acts as the visual divider, so
+     the default margin-bottom is too generous here. */
+  .project-contributions .project-section-heading {
+    margin-bottom: 0;
+  }
+
 
   /* ── MDX body ─────────────────────────────────────────────────────────── */
 

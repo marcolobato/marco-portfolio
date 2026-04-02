@@ -137,7 +137,7 @@ These are reusable components that will be used inside project `.mdx` files. The
 | Component | What it does | Effort |
 |---|---|---|
 | `ProjectHero.astro` | Hero image + title + subtitle + optional app link | Small |
-| `ProjectAccordion.astro` | Renders the contributions array from frontmatter as expand/collapse rows. Uses Alpine.js — no new dependencies. | Medium |
+| `ProjectAccordion.astro` | Renders the contributions array from frontmatter as expand/collapse rows. Exclusive accordion: only one item open at a time, first item open by default. Uses Alpine.js — no new dependencies. | Medium |
 | `MetricsGrid.astro` | Renders the 4 outcomes as a 2×2 grid of big number + label | Small |
 | `Quote.astro` | Full-width pullquote with attribution. Used for opening user quotes and mid-page quotes | Small |
 | `PasswordGate.astro` | Wraps project content behind a password prompt when `locked: true` is set in frontmatter. Alpine.js, sessionStorage. | Medium |

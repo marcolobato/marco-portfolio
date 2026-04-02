@@ -136,10 +136,11 @@ These are reusable components that will be used inside project `.mdx` files. The
 
 | Component | What it does | Effort |
 |---|---|---|
-| `ProjectAccordion.astro` | Renders the contributions array from frontmatter as expand/collapse rows. Uses Alpine.js (already on the site) — no new dependencies. | Medium |
+| `ProjectHero.astro` | Hero image + title + subtitle + optional app link | Small |
+| `ProjectAccordion.astro` | Renders the contributions array from frontmatter as expand/collapse rows. Uses Alpine.js — no new dependencies. | Medium |
 | `MetricsGrid.astro` | Renders the 4 outcomes as a 2×2 grid of big number + label | Small |
 | `Quote.astro` | Full-width pullquote with attribution. Used for opening user quotes and mid-page quotes | Small |
-| `ProjectHero.astro` | Hero image + title + subtitle + optional app link | Small |
+| `PasswordGate.astro` | Wraps project content behind a password prompt when `locked: true` is set in frontmatter. Alpine.js, sessionStorage. | Medium |
 
 No new packages. No React. All Alpine.js or pure HTML/CSS.
 
@@ -252,8 +253,26 @@ Start with one project to validate that the system works before committing to al
 | Nav "Work" link | `/#work` (existing placeholder) | Already in the nav. Points to the home page work section for now. Will stay as-is until project pages are built. |
 | Branch strategy | `portfolio-work` branch | All project page work lives here. Merge to `main` when migration is complete and approved. The Framer portfolio link stays active on `main` during the transition. |
 
-## 9. Open Questions (to resolve before Phase 1)
+## 9. Final Decisions (all open questions resolved)
 
-1. **Do projects need a back-navigation link?** (e.g., "← Work" back to the home page `#work` anchor, like how Writing uses "← Notes")
-2. **Should the carousel on the home page show ALL projects, or only the non-featured ones?** (Currently the two featured cards and the carousel are separate — this could stay the same, or the carousel could show all projects including featured ones.)
-3. **Are any Framer projects password-protected or client-confidential?** Those would need a decision on whether they appear at all, or appear as locked/redacted.
+| Question | Decision |
+|---|---|
+| Back-link on project pages | Yes — "← Work" link at the top, linking to `/#work` |
+| Carousel scope | All projects. The two featured illustrations above the carousel belong to the paragraph copy and may eventually link inline to individual projects — they are thematic, not a project index. |
+| Password protection | Per-project opt-in via a `locked: true` frontmatter flag. A client-side password gate using Alpine.js will prompt for a password before showing content. Password is set per-project in frontmatter. |
+
+### Password protection approach
+
+This is a static site on Cloudflare Pages, so there is no server-side session. The protection is **client-side** — it hides content from casual visitors and requires a password to reveal it, but it is not cryptographically secure.
+
+This is the right tradeoff for a portfolio:
+- Recruiters and hiring managers who need access get the password from you directly (email, LinkedIn)
+- Random visitors hitting the URL see a gate, not the content
+- No infrastructure changes, no login system, no Cloudflare Access rules needed
+
+Implementation: a `PasswordGate.astro` component using Alpine.js that wraps the project content. The correct password hash is stored in an environment variable at build time (not in the `.mdx` file directly). When the visitor enters the correct password, the content is shown and the session is stored in `sessionStorage` so they don't have to re-enter it on page refresh.
+
+Frontmatter flag:
+```yaml
+locked: true   # omit or set to false for public projects
+```

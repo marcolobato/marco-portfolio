@@ -21,4 +21,60 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { writing };
+// ---------------------------------------------------------------------------
+// Projects collection — one .mdx file per portfolio project.
+//
+// Frontmatter handles all structured/repeatable data (hero fields, overview,
+// contributions, outcomes). The MDX body handles narrative sections (quotes,
+// user journeys, prototypes, reflection) that vary project to project.
+// ---------------------------------------------------------------------------
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
+
+  schema: z.object({
+    // ── Hero ────────────────────────────────────────────────────────────────
+    title:     z.string(),              // large heading on the project page
+    client:    z.string(),              // e.g. "Google"
+    brand:     z.string().optional(),   // e.g. "Made by Google" — shown below title
+    appLink:   z.string().optional(),   // URL for the "Download / View" CTA button
+    appLinkLabel: z.string().optional(), // label for the CTA button, e.g. "Download Magnifier"
+    heroImage: z.string().optional(),   // path to the hero image in /public
+    year:      z.number(),              // e.g. 2023 — shown in the hero
+
+    // ── Access ──────────────────────────────────────────────────────────────
+    // locked: true hides the page content behind a password gate.
+    // Omit this field (or set false) for public projects.
+    locked:    z.boolean().optional().default(false),
+
+    // ── Project Overview ────────────────────────────────────────────────────
+    overview: z.object({
+      what:           z.string(), // one sentence: what is this product?
+      objective:      z.string(), // what were you trying to achieve?
+      differentiator: z.string(), // what made it different?
+    }),
+
+    // ── Contributions accordion ──────────────────────────────────────────────
+    // Each item becomes one row in the accordion.
+    // content can be an empty string "" — those rows show as label-only (no expand).
+    contributions: z.array(z.object({
+      label:   z.string(), // e.g. "Role", "Research", "Visual Design"
+      content: z.string(), // detail text — leave empty "" for label-only rows
+    })),
+
+    // ── Outcomes & Impact ───────────────────────────────────────────────────
+    // A flexible bullet list — mix of metrics, milestones, and qualitative wins.
+    outcomes: z.array(z.object({
+      text: z.string(), // e.g. "4.8★ rating at launch — users praised clarity."
+    })),
+
+    // ── Home page card ───────────────────────────────────────────────────────
+    // Controls how this project appears in the carousel and featured cards.
+    card: z.object({
+      category:  z.string(),                    // carousel slide title
+      thumbnail: z.string(),                    // path to carousel image in /public
+      featured:  z.boolean().optional().default(false), // true = appears in featured cards above carousel
+    }),
+  }),
+});
+
+export const collections = { writing, projects };

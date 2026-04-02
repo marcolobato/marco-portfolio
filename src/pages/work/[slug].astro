@@ -1,0 +1,382 @@
+---
+// work/[slug].astro — Individual project page
+//
+// [slug] is a dynamic route — Astro generates one page per project file.
+// e.g. src/content/projects/magnifier.mdx → /work/magnifier
+//
+// This mirrors the pattern used in writing/[slug].astro.
+// getStaticPaths() runs once at build time and returns one entry per project.
+
+import { getCollection, render } from 'astro:content';
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.id },
+    props:  { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+
+// render() converts the MDX body into HTML, same as writing posts.
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${data.title} — Marco Lobato`}>
+
+  <Nav />
+
+  <main class="project-main">
+    <div class="project-container">
+
+      <!-- ── Back link ────────────────────────────────────────────────────── -->
+      <!-- Links back to the #work section on the home page, the same way
+           writing posts link back to /#writing. -->
+      <a href="/#work" class="project-back">← Work</a>
+
+      <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+      <header class="project-hero">
+
+        {data.heroImage && (
+          <img
+            src={data.heroImage}
+            alt={data.title}
+            class="project-hero-image"
+          />
+        )}
+
+        <div class="project-hero-meta">
+          <!-- "Made by Google" brand line, shown only if brand is set -->
+          {data.brand && <p class="project-brand">{data.brand}</p>}
+        </div>
+
+        <h1 class="project-title">{data.title}</h1>
+
+        <!-- App link button — only shown if appLink is set in frontmatter -->
+        {data.appLink && (
+          <a href={data.appLink} class="project-app-link" target="_blank" rel="noopener noreferrer">
+            {data.appLinkLabel ?? 'View Project'}
+            <!-- External link icon -->
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </a>
+        )}
+
+      </header>
+
+
+      <!-- ── Project Overview ──────────────────────────────────────────────── -->
+      <section class="project-overview">
+        <h2 class="project-section-heading">Project Overview</h2>
+
+        <div class="project-overview-grid">
+
+          <div class="project-overview-item">
+            <p class="project-overview-label">What it is</p>
+            <p class="project-overview-body">{data.overview.what}</p>
+          </div>
+
+          <div class="project-overview-item">
+            <p class="project-overview-label">Objective</p>
+            <p class="project-overview-body">{data.overview.objective}</p>
+          </div>
+
+          <div class="project-overview-item">
+            <p class="project-overview-label">What made it different</p>
+            <p class="project-overview-body">{data.overview.differentiator}</p>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ── Contributions ─────────────────────────────────────────────────── -->
+      <!-- Phase 1: rendered as a simple list.
+           Phase 2: this becomes an interactive accordion (Alpine.js).
+           The data structure (label + content) is already correct for the
+           accordion — we just need to swap the markup. -->
+      <section class="project-contributions">
+        <h2 class="project-section-heading">Contributions</h2>
+
+        <ul class="project-contributions-list">
+          {data.contributions.map((item) => (
+            <li class="project-contribution-item">
+              <span class="project-contribution-label">{item.label}</span>
+              {item.content && (
+                <p class="project-contribution-body">{item.content}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+
+      <!-- ── MDX body ──────────────────────────────────────────────────────── -->
+      <!-- Content is the rendered MDX from the project file's body.
+           Narrative sections (quotes, user journeys, prototypes, reflection)
+           all live here, written in the .mdx file. -->
+      <div class="project-body">
+        <Content />
+      </div>
+
+
+      <!-- ── Outcomes & Impact ─────────────────────────────────────────────── -->
+      <section class="project-outcomes">
+        <h2 class="project-section-heading">Outcomes & Impact</h2>
+
+        <ul class="project-outcomes-list">
+          {data.outcomes.map((item) => (
+            <li class="project-outcome-item">{item.text}</li>
+          ))}
+        </ul>
+      </section>
+
+
+    </div><!-- /.project-container -->
+  </main>
+
+</BaseLayout>
+
+
+<style>
+  /* ── Layout shell ─────────────────────────────────────────────────────── */
+
+  .project-main {
+    padding-block: var(--space-3xl);
+  }
+
+  /* Narrower than the site container — ideal for long-form reading.
+     Same max-width used by writing posts. */
+  .project-container {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--space-xl);
+  }
+
+
+  /* ── Back link ────────────────────────────────────────────────────────── */
+
+  .project-back {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--color-royal-blue);
+    margin-bottom: var(--space-2xl);
+    transition: color 0.2s ease;
+  }
+  .project-back:hover { color: var(--color-navy); }
+
+
+  /* ── Hero ─────────────────────────────────────────────────────────────── */
+
+  .project-hero {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .project-hero-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: var(--space-xl);
+    display: block;
+  }
+
+  .project-hero-meta {
+    margin-bottom: var(--space-sm);
+  }
+
+  /* "Made by Google" — small label above the title */
+  .project-brand {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-xs);
+  }
+
+  /* h1 styles come from global.css */
+  .project-title {
+    margin-bottom: var(--space-lg);
+  }
+
+  /* App link — styled as a small outlined button */
+  .project-app-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-royal-blue);
+    border: 1px solid var(--color-royal-blue);
+    border-radius: 4px;
+    padding: var(--space-xs) var(--space-md);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .project-app-link:hover {
+    background-color: var(--color-royal-blue);
+    color: var(--color-white);
+  }
+
+
+  /* ── Shared section heading ───────────────────────────────────────────── */
+
+  .project-section-heading {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-heading);
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-slate);
+  }
+
+
+  /* ── Project Overview ────────────────────────────────────────────────── */
+
+  .project-overview {
+    margin-bottom: var(--space-3xl);
+  }
+
+  /* Stack the three overview fields vertically with a divider between each */
+  .project-overview-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .project-overview-label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-charcoal);
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .project-overview-body {
+    color: var(--color-body);
+    line-height: var(--leading-loose);
+  }
+
+
+  /* ── Contributions (Phase 1 — simple list) ───────────────────────────── */
+  /* Phase 2 will replace this with the interactive accordion markup.
+     The list styles below are intentionally minimal — just enough to read. */
+
+  .project-contributions {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .project-contributions-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--color-slate);
+  }
+
+  .project-contribution-item {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--color-slate);
+  }
+
+  .project-contribution-label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-heading);
+    margin-bottom: var(--space-xs);
+  }
+
+  .project-contribution-body {
+    font-size: var(--text-sm);
+    color: var(--color-body);
+    line-height: var(--leading-loose);
+    margin: 0;
+  }
+
+
+  /* ── MDX body ─────────────────────────────────────────────────────────── */
+
+  .project-body {
+    margin-bottom: var(--space-3xl);
+  }
+
+  /* These :global() rules style elements that come from the rendered MDX.
+     Astro's scoped CSS doesn't reach inside <Content />, so :global() is
+     required — same reason writing posts use it. */
+  :global(.project-body h2) { margin-top: var(--space-2xl); margin-bottom: var(--space-xl); }
+  :global(.project-body h3) { margin-top: var(--space-xl);  margin-bottom: var(--space-lg); }
+  :global(.project-body p)  { line-height: var(--leading-loose); margin-bottom: var(--space-md); }
+
+  :global(.project-body a) {
+    color: var(--color-royal-blue);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  :global(.project-body a:hover) {
+    color: var(--color-navy);
+    text-decoration: underline;
+  }
+
+  /* Blockquote — used for the pullquotes until Quote.astro is built in Phase 3 */
+  :global(.project-body blockquote) {
+    border-left: 3px solid var(--color-lemon);
+    margin: var(--space-2xl) 0;
+    padding: var(--space-md) var(--space-xl);
+    background-color: var(--color-lemon-pale, transparent);
+  }
+  :global(.project-body blockquote p) {
+    font-size: var(--text-lg);
+    color: var(--color-heading);
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+  }
+
+  /* Images in the body — same treatment as writing posts */
+  :global(.project-body img) {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: var(--space-xl);
+    display: block;
+  }
+  :global(.project-body img + em) {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-slate);
+    letter-spacing: 0.08em;
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-xl);
+    line-height: var(--leading-relaxed);
+  }
+
+
+  /* ── Outcomes & Impact ───────────────────────────────────────────────── */
+
+  .project-outcomes {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .project-outcomes-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  /* Each outcome item gets a lemon-colored left border as a visual accent */
+  .project-outcome-item {
+    padding-left: var(--space-lg);
+    border-left: 3px solid var(--color-lemon);
+    color: var(--color-body);
+    line-height: var(--leading-loose);
+    font-size: var(--text-base);
+  }
+</style>

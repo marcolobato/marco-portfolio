@@ -316,6 +316,21 @@ const { Content } = await render(project);
   :global(.project-body h3) { margin-top: var(--space-xl);  margin-bottom: var(--space-lg); }
   :global(.project-body p)  { line-height: var(--leading-loose); margin-bottom: var(--space-md); }
 
+  /* Bullet and numbered lists — shared base styles */
+  :global(.project-body ul),
+  :global(.project-body ol) {
+    padding-left: var(--space-xl);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  :global(.project-body li) {
+    line-height: var(--leading-loose);
+    color: var(--color-charcoal);
+    font-size: var(--text-base);
+  }
+
   :global(.project-body a) {
     color: var(--color-royal-blue);
     text-decoration: none;

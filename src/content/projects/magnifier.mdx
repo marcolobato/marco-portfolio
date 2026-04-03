@@ -52,6 +52,7 @@ card:
 import Quote from '../../components/project/Quote.astro';
 import InsightGrid from '../../components/project/InsightGrid.astro';
 import ProblemCarousel from '../../components/project/ProblemCarousel.astro';
+import DesignIntent from '../../components/project/DesignIntent.astro';
 
 <Quote
   variant="dark"
@@ -107,6 +108,33 @@ _Content coming soon._
 _Content coming soon._
 
 ## Design Intent and User Needs
+
+<DesignIntent
+  intent="Make Magnifier feel as familiar as the camera app, but more capable."
+  needs={[
+    {
+      number: 1,
+      icon: "🧭",
+      label: "Frame",
+      description: "Easy zoom helpful for signage",
+      image: "/projects/magnifier/need-frame.png"
+    },
+    {
+      number: 2,
+      icon: "🛠",
+      label: "Adjust",
+      description: "Quick filters for text contrast",
+      image: "/projects/magnifier/need-adjust.png"
+    },
+    {
+      number: 3,
+      icon: "👁",
+      label: "Use",
+      description: "Seamless read / copy / translate",
+      image: "/projects/magnifier/need-use.png"
+    }
+  ]}
+/>
 
 ### Key Problems
 

@@ -112,7 +112,7 @@ video {
    - .carousel-btn / .carousel-dot → carousel controls
    - .theme-toggle → has its own hover background (pill effect)
    - .ps-nav-btn / .ps-dot → PharmacyScenario storyboard controls */
-button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle):not(.ps-nav-btn):not(.ps-dot),
+button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle):not(.ps-nav-btn):not(.ps-dot):not(.pc-btn):not(.pc-dot):not(.pa-trigger),
 input,
 textarea,
 select {

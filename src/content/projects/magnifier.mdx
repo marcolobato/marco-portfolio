@@ -51,6 +51,7 @@ card:
 
 import Quote from '../../components/project/Quote.astro';
 import InsightGrid from '../../components/project/InsightGrid.astro';
+import ProblemCarousel from '../../components/project/ProblemCarousel.astro';
 
 <Quote
   variant="dark"
@@ -107,7 +108,30 @@ _Content coming soon._
 
 ## Design Intent and User Needs
 
-_Content coming soon._
+### Key Problems
+
+<ProblemCarousel problems={[
+  {
+    image: "/projects/magnifier/problem-blurry-text.png",
+    title: "Blurry text",
+    body: "Camera smoothing at high zoom blurs text details on zoomed-in images of signage."
+  },
+  {
+    image: "/projects/magnifier/problem-glare.png",
+    title: "Screen glare",
+    body: "Bright environments wash out the screen, making the live camera view hard to read."
+  },
+  {
+    image: "/projects/magnifier/problem-one-handed.png",
+    title: "Hard to use one-handed",
+    body: "Top-aligned controls are out of reach when holding the phone with one hand."
+  },
+  {
+    image: "/projects/magnifier/problem-privacy.png",
+    title: "Privacy concerns",
+    body: "Third-party apps require camera and photo permissions, raising trust issues."
+  }
+]} />
 
 ## Prototypes and Solutions
 

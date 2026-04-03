@@ -1,0 +1,268 @@
+---
+// ProblemCarousel.astro — Key Problems card carousel for the Design Intent section.
+//
+// Each card has: an image on the left, a bold title + body text on the right.
+// Navigation: dot buttons only (no arrows) — tapping a dot jumps to that card.
+// Swiping left/right also works on touch screens (mobile-first).
+//
+// Usage in MDX:
+//   import ProblemCarousel from '../../components/project/ProblemCarousel.astro';
+//
+//   <ProblemCarousel problems={[
+//     {
+//       image: "/projects/magnifier/problem-blurry-text.png",
+//       title: "Blurry text",
+//       body: "Camera smoothing at high zoom blurs text details on zoomed-in images of signage."
+//     },
+//     {
+//       image: "/projects/magnifier/problem-glare.png",
+//       title: "Screen glare",
+//       body: "Bright environments wash out the screen, making the live camera view hard to read."
+//     },
+//   ]} />
+
+interface Problem {
+  image: string;  // path to image in /public, e.g. "/projects/magnifier/problem-1.png"
+  title: string;  // bold heading on the card
+  body:  string;  // one or two sentences of description
+}
+
+interface Props {
+  problems: Problem[];
+}
+
+const { problems } = Astro.props;
+---
+
+<div class="pc-carousel" aria-roledescription="carousel" aria-label="Key problems">
+
+  <!-- Viewport — clips everything except the active card -->
+  <div class="pc-viewport">
+
+    <!-- Track — all cards sit side-by-side in a single row.
+         Slides left/right via CSS transform when a dot is clicked. -->
+    <div class="pc-track">
+
+      {problems.map((problem, i) => (
+        <div
+          class="pc-card"
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${i + 1} of ${problems.length}: ${problem.title}`}
+        >
+          <!-- Left: image -->
+          <div class="pc-card-image-wrap">
+            <img
+              src={problem.image}
+              alt={problem.title}
+              class="pc-card-image"
+            />
+          </div>
+
+          <!-- Right: title + body -->
+          <div class="pc-card-text">
+            <h4 class="pc-card-title">{problem.title}</h4>
+            <p class="pc-card-body">{problem.body}</p>
+          </div>
+
+        </div>
+      ))}
+
+    </div><!-- /.pc-track -->
+  </div><!-- /.pc-viewport -->
+
+
+  <!-- Dot navigation — one dot per card, centered below -->
+  <div class="pc-dots" role="tablist" aria-label="Go to slide">
+    {problems.map((problem, i) => (
+      <button
+        class={`pc-dot${i === 0 ? ' pc-dot--active' : ''}`}
+        role="tab"
+        aria-label={`Slide ${i + 1}: ${problem.title}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        data-index={String(i)}
+      ></button>
+    ))}
+  </div>
+
+</div><!-- /.pc-carousel -->
+
+
+<script>
+  document.querySelectorAll('.pc-carousel').forEach((carousel) => {
+    const track = carousel.querySelector('.pc-track') as HTMLElement;
+    const dots  = carousel.querySelectorAll('.pc-dot') as NodeListOf<HTMLButtonElement>;
+
+    let current = 0;
+    const total = dots.length;
+
+    function goTo(index: number) {
+      // Wrap around in both directions
+      current = ((index % total) + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+
+      dots.forEach((dot, i) => {
+        const active = i === current;
+        dot.classList.toggle('pc-dot--active', active);
+        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    // Dot clicks
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+    // Touch swipe support — track where the finger started and which direction it moved.
+    // swipeDist > 50px triggers a slide change — short swipes are ignored.
+    let touchStartX = 0;
+    const viewport = carousel.querySelector('.pc-viewport') as HTMLElement;
+
+    viewport.addEventListener('touchstart', (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e: TouchEvent) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+    }, { passive: true });
+
+    // Keyboard support when the carousel is focused
+    carousel.addEventListener('keydown', (e: Event) => {
+      const key = (e as KeyboardEvent).key;
+      if (key === 'ArrowLeft')  { goTo(current - 1); (e as KeyboardEvent).preventDefault(); }
+      if (key === 'ArrowRight') { goTo(current + 1); (e as KeyboardEvent).preventDefault(); }
+    });
+  });
+</script>
+
+
+<style>
+  /* ── Outer wrapper ──────────────────────────────────────────────────────── */
+
+  .pc-carousel {
+    margin: var(--space-xl) 0 var(--space-2xl);
+  }
+
+
+  /* ── Viewport ───────────────────────────────────────────────────────────── */
+  /* overflow: hidden clips the off-screen cards so only the active one shows */
+
+  .pc-viewport {
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+
+  /* ── Track ──────────────────────────────────────────────────────────────── */
+  /* All cards sit side-by-side. The track moves left via transform.
+     transition gives the sliding animation when goTo() fires. */
+
+  .pc-track {
+    display: flex;
+    transition: transform 0.35s ease;
+  }
+
+
+  /* ── Card ───────────────────────────────────────────────────────────────── */
+  /* flex-shrink: 0 + width: 100% means each card is exactly one viewport wide.
+     The light blue background matches the Navy 100 surface used in Quote light variant. */
+
+  .pc-card {
+    flex-shrink: 0;
+    width: 100%;
+    background-color: hsl(var(--secondary)); /* Navy 100 — #C0D4F4 in light, Navy 800 in dark */
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xl);
+    padding: var(--space-2xl);
+    box-sizing: border-box;
+  }
+
+
+  /* ── Card image ─────────────────────────────────────────────────────────── */
+  /* Fixed-size square, rounded corners — matches the Framer reference screenshot. */
+
+  .pc-card-image-wrap {
+    flex-shrink: 0;
+    width: 220px;
+    height: 220px;
+  }
+
+  .pc-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* fills the square without distorting the image */
+    border-radius: 8px;
+    display: block;
+  }
+
+
+  /* ── Card text ──────────────────────────────────────────────────────────── */
+
+  .pc-card-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .pc-card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+
+  .pc-card-body {
+    font-size: var(--text-base);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    margin: 0;
+  }
+
+
+  /* ── Dots ───────────────────────────────────────────────────────────────── */
+
+  .pc-dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+
+  .pc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-slate);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  /* Active dot is navy-colored and slightly larger */
+  .pc-dot--active {
+    background-color: var(--color-navy);
+    transform: scale(1.25);
+  }
+
+
+  /* ── Mobile ─────────────────────────────────────────────────────────────── */
+  /* Stack image above text on narrow screens */
+
+  @media (max-width: 560px) {
+    .pc-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-lg);
+      padding: var(--space-xl);
+    }
+
+    .pc-card-image-wrap {
+      width: 100%;
+      height: 180px;
+    }
+  }
+</style>

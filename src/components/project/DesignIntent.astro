@@ -73,28 +73,28 @@ const { intent, needs } = Astro.props;
   </div>
 
   <div class="di-needs-grid">
+
+    <!-- Row 1: all three labels — rendered together so they share a grid row -->
     {needs.map((need) => (
-      <div class="di-need">
+      <p class="di-need-tag">
+        <span class="di-need-number">{need.number}.</span>
+        <span class="di-need-icon" aria-hidden="true">{need.icon}</span>
+        <span class="di-need-label">{need.label}:</span>
+        <span class="di-need-desc">{need.description}</span>
+      </p>
+    ))}
 
-        <!-- Number + icon + label row -->
-        <p class="di-need-tag">
-          <span class="di-need-number">{need.number}.</span>
-          <span class="di-need-icon" aria-hidden="true">{need.icon}</span>
-          <span class="di-need-label">{need.label}:</span>
-          <span class="di-need-desc">{need.description}</span>
-        </p>
-
-        <!-- Portrait screenshot — shown at full natural height, never cropped -->
-        <div class="di-need-image-wrap">
-          <img
-            src={need.image}
-            alt={`${need.label}: ${need.description}`}
-            class="di-need-image"
-          />
-        </div>
-
+    <!-- Row 2: all three images — rendered together so they share a grid row -->
+    {needs.map((need) => (
+      <div class="di-need-image-wrap">
+        <img
+          src={need.image}
+          alt={`${need.label}: ${need.description}`}
+          class="di-need-image"
+        />
       </div>
     ))}
+
   </div>
 
   <!-- Closing line — sits below the images, centered -->
@@ -166,15 +166,14 @@ const { intent, needs } = Astro.props;
        items 4-6 → all three images, same row
      This means images always align horizontally regardless of label text height. */
 
+  /* Labels fill row 1, images fill row 2 — guaranteed alignment because
+     all three labels are rendered before any image in the DOM. */
   .di-needs-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: var(--space-xl);
     row-gap: var(--space-md);
-  }
-
-  .di-need {
-    display: contents;
+    align-items: end; /* labels align to bottom of row 1 so images always start at same point */
   }
 
 

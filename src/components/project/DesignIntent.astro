@@ -173,7 +173,7 @@ const { intent, needs } = Astro.props;
     grid-template-columns: repeat(3, 1fr);
     column-gap: var(--space-xl);
     row-gap: var(--space-md);
-    align-items: end; /* labels align to bottom of row 1 so images always start at same point */
+    align-items: start; /* all items anchor to top of their row — labels and images stay aligned */
   }
 
 

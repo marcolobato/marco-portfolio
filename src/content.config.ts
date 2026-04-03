@@ -62,9 +62,18 @@ const projects = defineCollection({
     })),
 
     // ── Outcomes & Impact ───────────────────────────────────────────────────
-    // A flexible bullet list — mix of metrics, milestones, and qualitative wins.
+    // Two-column layout: quote on the left, outcome list on the right.
+    // outcomesQuote: optional pullquote shown in the left column.
+    // outcomes: each item has an emoji, a bold label, and a description.
+    outcomesQuote: z.object({
+      text:        z.string(),
+      attribution: z.string(),
+    }).optional(),
+
     outcomes: z.array(z.object({
-      text: z.string(), // e.g. "4.8★ rating at launch — users praised clarity."
+      emoji:       z.string(),  // e.g. "🚀"
+      label:       z.string(),  // bold text, e.g. "Launched with Pixel 8"
+      description: z.string(),  // regular text after the em dash
     })),
 
     // ── Project Reflection ───────────────────────────────────────────────────

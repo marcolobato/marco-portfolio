@@ -122,11 +122,30 @@ const { Content } = await render(project);
       <section class="project-outcomes">
         <h2 class="project-section-heading">Outcomes & Impact</h2>
 
-        <ul class="project-outcomes-list">
-          {data.outcomes.map((item) => (
-            <li class="project-outcome-item">{item.text}</li>
-          ))}
-        </ul>
+        <!-- Two-column layout: quote left, outcomes list right.
+             If no outcomesQuote is set, the list spans full width. -->
+        <div class={`project-outcomes-inner${data.outcomesQuote ? ' project-outcomes-inner--split' : ''}`}>
+
+          {data.outcomesQuote && (
+            <div class="project-outcomes-quote">
+              <p class="project-outcomes-quote-text">{data.outcomesQuote.text}</p>
+              <p class="project-outcomes-quote-attr">{data.outcomesQuote.attribution}</p>
+            </div>
+          )}
+
+          <ul class="project-outcomes-list">
+            {data.outcomes.map((item) => (
+              <li class="project-outcome-item">
+                <span class="project-outcome-emoji" aria-hidden="true">{item.emoji}</span>
+                <span class="project-outcome-text">
+                  <strong class="project-outcome-label">{item.label}</strong>
+                  {' — '}{item.description}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+        </div>
       </section>
 
 
@@ -345,21 +364,85 @@ const { Content } = await render(project);
     margin-bottom: var(--space-3xl);
   }
 
+  /* Default: single column. --split enables two-column when a quote is present. */
+  .project-outcomes-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .project-outcomes-inner--split {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-3xl);
+  }
+
+  /* ── Left column: testimonial quote ─────────────────────────────────── */
+
+  /* Fixed-width quote column — quote doesn't need to grow beyond ~240px */
+  .project-outcomes-quote {
+    flex: 0 0 240px;
+  }
+
+  /* Large Fraunces italic — same editorial feel as the project reflection */
+  .project-outcomes-quote-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    color: var(--color-heading);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Small muted attribution line below the quote */
+  .project-outcomes-quote-attr {
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* ── Right column (or full width): outcomes list ─────────────────────── */
+
   .project-outcomes-list {
     list-style: none;
     padding: 0;
+    flex: 1;       /* take remaining space when in two-column layout */
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
   }
 
-  /* Each outcome item gets a lemon-colored left border as a visual accent */
+  /* Each item: emoji + bold label — description, with lemon left border */
   .project-outcome-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
     padding-left: var(--space-lg);
     border-left: 3px solid var(--color-lemon);
     color: var(--color-charcoal);
     line-height: var(--leading-loose);
     font-size: var(--text-base);
+  }
+
+  /* Emoji doesn't need to shrink — keep it full size */
+  .project-outcome-emoji {
+    flex-shrink: 0;
+  }
+
+  /* Bold label inherits heading color so it stands out from the description */
+  .project-outcome-label {
+    color: var(--color-heading);
+  }
+
+  /* Stack to single column on mobile — 240px quote column is too narrow */
+  @media (max-width: 600px) {
+    .project-outcomes-inner--split {
+      flex-direction: column;
+    }
+    .project-outcomes-quote {
+      flex: none;
+    }
   }
 
 

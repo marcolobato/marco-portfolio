@@ -27,11 +27,23 @@ contributions:
   - label: "Visual Design"
     content: "Designed instructional Play Store overview images and app iconography."
 
+outcomesQuote:
+  text: "&ldquo;Magnifier has quickly become one of the tools I use daily.&rdquo;"
+  attribution: "Pixel 8 Trusted Tester"
+
 outcomes:
-  - text: "Launched with Pixel 8 — met pre-installed quality standards."
-  - text: "4.8★ rating at launch — users praised clarity, speed, and practical design."
-  - text: "45% less battery usage compared to camera workarounds, boosting adoption."
-  - text: "Partnership with RNIB — real community feedback used for continuous improvement."
+  - emoji: "🚀"
+    label: "Launched with Pixel 8"
+    description: "Met pre-installed quality standards."
+  - emoji: "⭐"
+    label: "4.8★ rating at launch"
+    description: "Users praised clarity, speed, and practical design."
+  - emoji: "🔋"
+    label: "45% less battery usage"
+    description: "Compared to camera hacks, boosting adoption."
+  - emoji: "🤝"
+    label: "Partnership with RNIB"
+    description: "Used real community feedback for continuous improvement, resulting in instructors teaching Magnifier continuing to collaborate on other features."
 
 reflection:
   title: "Future Vision: Multimodal AI Assistants"
@@ -53,6 +65,7 @@ import Quote from '../../components/project/Quote.astro';
 import InsightGrid from '../../components/project/InsightGrid.astro';
 import ProblemCarousel from '../../components/project/ProblemCarousel.astro';
 import DesignIntent from '../../components/project/DesignIntent.astro';
+import SolutionBlock from '../../components/project/SolutionBlock.astro';
 
 <Quote
   variant="dark"
@@ -163,4 +176,47 @@ _Content coming soon._
 
 ## Prototypes and Solutions
 
-_Content coming soon._
+### Prototype Highlight: Read Distant Signs
+
+<SolutionBlock
+  emoji="🔭"
+  title="Read Distant Signs"
+  problem="Reading signs at a distance — like airport departure gates."
+  question="We wanted to know if users preferred seeing the zoomed image themselves, or having the app reformat the text and icons or describe it aloud."
+  solution="The captured image is enhanced and displayed alongside a readable text version that includes audio narration and icon descriptions."
+  outcome="Most users preferred visual confirmation, using the zoomed image to match signs in context. This quick test helped us prioritise a large view area and focus text post-processing on legibility rather than replacement."
+  image="/projects/magnifier/solution-distant-signs.png"
+  imageCaption="Prototype flow for reading signs: low-fidelity mocks tested ways to confirm real-world signage — visually, with audio, or both."
+/>
+
+### Solutions
+
+<SolutionBlock
+  emoji="📲"
+  title="Quick Access"
+  problem="Setup friction from settings resetting between sessions."
+  solution="Multiple native entry points — gesture shortcut, lock screen button, persistent last-used settings."
+  outcome="Users return to Magnifier faster with no configuration overhead."
+  image="/projects/magnifier/solution-quick-access.png"
+  imageCaption="Letting users open Pixel Magnifier with familiar shortcuts encourages new habit building."
+/>
+
+<SolutionBlock
+  emoji="✋"
+  title="One-Handed Use"
+  problem="Top-aligned controls are hard to reach with one hand."
+  solution="Bottom-aligned toolbars with large tap zones and long-press zoom."
+  outcome="Easier real-world use, especially one-handed in motion."
+  image="/projects/magnifier/solution-one-handed.png"
+  imageCaption="Large dedicated buttons at the bottom ensure more people can use Magnifier one-handed in real-world situations."
+/>
+
+<SolutionBlock
+  emoji="🕯️"
+  title="Discreet Use"
+  problem="Bright screens draw unwanted attention in public."
+  solution="Auto-brightness plus manual flashlight controls, dimmed by default."
+  outcome="Dignified, low-disruption usage in any environment."
+  image="/projects/magnifier/solution-discreet.png"
+  imageCaption="The flashlight, dimmed by default, can be manually controlled for reading in dark environments."
+/>

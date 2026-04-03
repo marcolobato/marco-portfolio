@@ -50,6 +50,7 @@ card:
     ───────────────────────────────────────────────────────────────────────────── */}
 
 import Quote from '../../components/project/Quote.astro';
+import InsightGrid from '../../components/project/InsightGrid.astro';
 
 <Quote
   variant="dark"
@@ -70,6 +71,29 @@ _Content coming soon — copy from Framer._
 ## User Journeys & Key Insights
 
 _Content coming soon._
+
+<InsightGrid insights={[
+  {
+    emoji: "🔄",
+    title: "Friction Blocks Adoption",
+    body: "If switching tools takes too long or resets progress, users default to the camera."
+  },
+  {
+    emoji: "🔧",
+    title: "Cameras Are Built to Snap, Not See",
+    body: "Their controls are photo-first, not real-time assistive."
+  },
+  {
+    emoji: "🔒",
+    title: "Privacy Anxiety Is Real",
+    body: "Users fear gallery clutter, accidental shares, and tracking in third-party apps."
+  },
+  {
+    emoji: "😶‍🌫️",
+    title: "Stigma Shapes Behavior",
+    body: "People avoid using magnifiers in public to avoid drawing attention to themselves."
+  }
+]} />
 
 <Quote
   variant="takeaway"

@@ -1,0 +1,173 @@
+---
+// Quote.astro — Pullquote component for project pages.
+//
+// Three variants, matching the Framer portfolio design:
+//
+//   variant="dark"      Navy background, cream italic text, attribution below.
+//                       Used for: opening hero testimonials.
+//
+//   variant="light"     Light blue (Navy 100) background, navy italic text.
+//                       Used for: mid-page user research quotes.
+//
+//   variant="takeaway"  No background. Optional eyebrow label above ("My takeaway:").
+//                       Royal blue italic text. No attribution.
+//                       Used for: designer's own synthesis/reflection quotes.
+//
+// Usage in MDX:
+//   import Quote from '../../components/project/Quote.astro';
+//
+//   <Quote
+//     variant="dark"
+//     text="Finally, a magnifier that's reliable, private, and doesn't drain my battery."
+//     attribution="Trusted Tester Testimonial, User with Low-Vision"
+//   />
+//
+//   <Quote
+//     variant="takeaway"
+//     eyebrow="My takeaway:"
+//     text="Magnifiers and cameras are not reliable companions during users' most stressful, on-the-go moments."
+//   />
+
+interface Props {
+  text:          string;              // The quote text — include your own curly quotes in the string
+  attribution?:  string;              // Source line (dark + light variants only)
+  eyebrow?:      string;              // Small label above (takeaway variant only), e.g. "My takeaway:"
+  variant?:      'dark' | 'light' | 'takeaway'; // defaults to 'dark'
+}
+
+const {
+  text,
+  attribution,
+  eyebrow,
+  variant = 'dark',
+} = Astro.props;
+---
+
+<figure class="pq-quote" data-variant={variant}>
+
+  {/* Eyebrow label — only for takeaway variant */}
+  {eyebrow && (
+    <p class="pq-eyebrow">{eyebrow}</p>
+  )}
+
+  {/* The quote text — Fraunces italic, large display size */}
+  <blockquote class="pq-text">{text}</blockquote>
+
+  {/* Attribution — only for dark + light variants */}
+  {attribution && (
+    <figcaption class="pq-attribution">{attribution}</figcaption>
+  )}
+
+</figure>
+
+
+<style>
+  /* ── Shared wrapper ─────────────────────────────────────────────────────── */
+
+  .pq-quote {
+    margin: var(--space-3xl) 0;
+    padding: var(--space-3xl) var(--space-2xl);
+    border-radius: 4px;
+
+    /* CSS custom properties let each variant override just what it needs.
+       These are the defaults — used by the takeaway variant. */
+    --pq-bg:          transparent;
+    --pq-text-color:  var(--color-royal-blue);
+    --pq-attr-color:  var(--color-charcoal);
+    --pq-text-size:   var(--text-3xl);
+
+    background-color: var(--pq-bg);
+  }
+
+
+  /* ── Dark variant ───────────────────────────────────────────────────────── */
+  /* Navy background. Text is always near-white regardless of theme —
+     this component has its own dark background so it doesn't inherit the page theme. */
+
+  .pq-quote[data-variant="dark"] {
+    --pq-bg:          var(--color-navy);
+    --pq-text-color:  hsl(216 60% 94%); /* warm near-white — softer than pure white on navy */
+    --pq-attr-color:  hsl(216 30% 75%); /* muted light blue-grey for attribution */
+    --pq-text-size:   var(--text-3xl);
+  }
+
+
+  /* ── Light variant ──────────────────────────────────────────────────────── */
+  /* Navy-100 background (#C0D4F4). Dark navy text. */
+
+  .pq-quote[data-variant="light"] {
+    --pq-bg:          hsl(var(--secondary)); /* Navy 100 — same token used for light bg surfaces */
+    --pq-text-color:  var(--color-navy);
+    --pq-attr-color:  var(--color-charcoal);
+    --pq-text-size:   var(--text-3xl);
+  }
+
+
+  /* ── Takeaway variant ───────────────────────────────────────────────────── */
+  /* No background, less padding, slightly smaller text. */
+
+  .pq-quote[data-variant="takeaway"] {
+    --pq-text-color:  var(--color-royal-blue);
+    --pq-text-size:   var(--text-2xl);
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+
+  /* ── Eyebrow ────────────────────────────────────────────────────────────── */
+  /* Small label above the quote text ("My takeaway:") */
+
+  .pq-eyebrow {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--color-charcoal);
+    margin-bottom: var(--space-md);
+    /* Not italic — acts as a structural label above the display text */
+  }
+
+
+  /* ── Quote text ─────────────────────────────────────────────────────────── */
+  /* Fraunces italic — the display font at a large size.
+     margin: 0 removes the browser's default blockquote indentation. */
+
+  .pq-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: var(--weight-regular); /* Regular italic — not bold italic */
+    font-size: var(--pq-text-size);
+    line-height: var(--leading-tight);
+    color: var(--pq-text-color);
+    margin: 0;
+    padding: 0; /* Remove browser default blockquote padding/border */
+    border: none;
+    background: none;
+  }
+
+
+  /* ── Attribution ────────────────────────────────────────────────────────── */
+
+  .pq-attribution {
+    margin-top: var(--space-lg);
+    font-size: var(--text-sm);
+    color: var(--pq-attr-color);
+    font-style: normal; /* Not italic — grounded contrast to the quote above */
+    line-height: var(--leading-normal);
+  }
+
+
+  /* ── Mobile ─────────────────────────────────────────────────────────────── */
+  /* Scale the text down on narrow screens so long quotes don't overflow. */
+
+  @media (max-width: 600px) {
+    .pq-quote {
+      --pq-text-size: var(--text-2xl);
+      padding: var(--space-2xl) var(--space-lg);
+    }
+
+    .pq-quote[data-variant="takeaway"] {
+      --pq-text-size: var(--text-xl);
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+</style>

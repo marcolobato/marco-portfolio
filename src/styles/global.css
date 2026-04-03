@@ -1881,6 +1881,14 @@ code {
   padding: var(--space-md) var(--space-xl);
 }
 
+/* Linked slide wrapper — resets <a> defaults so the slide looks identical
+   to an unlinked one. The cursor change is the only visible difference. */
+.carousel-slide-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .carousel-slide-title {
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);

@@ -17,7 +17,7 @@
 // To update text: edit the strings here.
 // To swap an image: change the image path to the new filename.
 const slides = [
-  { image: "/carousel/slide-1.png", title: "User-Centric 0 to 1 Product Design",  subtitle: "Google Pixel Magnifier" },
+  { image: "/carousel/slide-1.png", title: "User-Centric 0 to 1 Product Design",  subtitle: "Google Pixel Magnifier",                                                        href: "/work/magnifier" },
   { image: "/carousel/slide-2.png", title: "Assistive Technology",                 subtitle: "Voice Access for Android" },
   { image: "/carousel/slide-3.png", title: "AI-Powered Products",                  subtitle: "Lookout - Assistive Technology App by Google" },
   { image: "/carousel/slide-4.png", title: "UX and Product Design",                subtitle: "My Volkswagen - Web, Mobile, and In-Vehicle Portal" },
@@ -47,21 +47,27 @@ const slides = [
           aria-roledescription="slide"
           aria-label={`${i + 1} of ${slides.length}: ${slide.title}`}
         >
-          <!-- The slide image. alt text describes the image for screen readers.
-               object-fit: cover (in CSS) fills the frame without distorting the image. -->
-          <img
-            src={slide.image}
-            alt={slide.title}
-            class="carousel-slide-image"
-          />
-
-          <!-- Caption — rendered below the image in normal document flow.
-               Title uses heading color for legibility on any background.
-               Subtitle uses charcoal body text. -->
-          <div class="carousel-slide-caption">
-            <h3 class="carousel-slide-title">{slide.title}</h3>
-            <p class="carousel-slide-subtitle">{slide.subtitle}</p>
-          </div>
+          {slide.href ? (
+            /* Linked slide — the whole image + caption is a single <a>.
+               .carousel-slide-link resets link styles so it looks identical
+               to an unlinked slide, just with pointer cursor. */
+            <a href={slide.href} class="carousel-slide-link">
+              <img src={slide.image} alt={slide.title} class="carousel-slide-image" />
+              <div class="carousel-slide-caption">
+                <h3 class="carousel-slide-title">{slide.title}</h3>
+                <p class="carousel-slide-subtitle">{slide.subtitle}</p>
+              </div>
+            </a>
+          ) : (
+            /* Unlinked slide — plain markup, no interaction */
+            <>
+              <img src={slide.image} alt={slide.title} class="carousel-slide-image" />
+              <div class="carousel-slide-caption">
+                <h3 class="carousel-slide-title">{slide.title}</h3>
+                <p class="carousel-slide-subtitle">{slide.subtitle}</p>
+              </div>
+            </>
+          )}
         </div>
       ))}
 

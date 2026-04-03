@@ -1,9 +1,9 @@
 ---
 // ProblemCarousel.astro — Key Problems card carousel for the Design Intent section.
 //
-// Each card has: an image on the left, a bold title + body text on the right.
-// Navigation: dot buttons only (no arrows) — tapping a dot jumps to that card.
-// Swiping left/right also works on touch screens (mobile-first).
+// Each card: image left, bold title + body right.
+// Controls: prev/next arrows on the left, dot pagination centered — same
+// layout as the home page Carousel.astro.
 //
 // Usage in MDX:
 //   import ProblemCarousel from '../../components/project/ProblemCarousel.astro';
@@ -14,15 +14,10 @@
 //       title: "Blurry text",
 //       body: "Camera smoothing at high zoom blurs text details on zoomed-in images of signage."
 //     },
-//     {
-//       image: "/projects/magnifier/problem-glare.png",
-//       title: "Screen glare",
-//       body: "Bright environments wash out the screen, making the live camera view hard to read."
-//     },
 //   ]} />
 
 interface Problem {
-  image: string;  // path to image in /public, e.g. "/projects/magnifier/problem-1.png"
+  image: string;  // path to image in /public
   title: string;  // bold heading on the card
   body:  string;  // one or two sentences of description
 }
@@ -36,11 +31,8 @@ const { problems } = Astro.props;
 
 <div class="pc-carousel" aria-roledescription="carousel" aria-label="Key problems">
 
-  <!-- Viewport — clips everything except the active card -->
+  <!-- Viewport clips everything except the active card -->
   <div class="pc-viewport">
-
-    <!-- Track — all cards sit side-by-side in a single row.
-         Slides left/right via CSS transform when a dot is clicked. -->
     <div class="pc-track">
 
       {problems.map((problem, i) => (
@@ -50,54 +42,65 @@ const { problems } = Astro.props;
           aria-roledescription="slide"
           aria-label={`${i + 1} of ${problems.length}: ${problem.title}`}
         >
-          <!-- Left: image -->
           <div class="pc-card-image-wrap">
-            <img
-              src={problem.image}
-              alt={problem.title}
-              class="pc-card-image"
-            />
+            <img src={problem.image} alt={problem.title} class="pc-card-image" />
           </div>
 
-          <!-- Right: title + body -->
           <div class="pc-card-text">
             <h4 class="pc-card-title">{problem.title}</h4>
             <p class="pc-card-body">{problem.body}</p>
           </div>
-
         </div>
       ))}
 
-    </div><!-- /.pc-track -->
-  </div><!-- /.pc-viewport -->
-
-
-  <!-- Dot navigation — one dot per card, centered below -->
-  <div class="pc-dots" role="tablist" aria-label="Go to slide">
-    {problems.map((problem, i) => (
-      <button
-        class={`pc-dot${i === 0 ? ' pc-dot--active' : ''}`}
-        role="tab"
-        aria-label={`Slide ${i + 1}: ${problem.title}`}
-        aria-selected={i === 0 ? 'true' : 'false'}
-        data-index={String(i)}
-      ></button>
-    ))}
+    </div>
   </div>
 
-</div><!-- /.pc-carousel -->
+
+  <!-- Controls: arrows left, dots centered -->
+  <div class="pc-controls">
+
+    <div class="pc-arrows">
+      <button class="pc-btn pc-btn--prev" aria-label="Previous slide">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+          <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="pc-btn pc-btn--next" aria-label="Next slide">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+          <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="pc-dots" role="tablist" aria-label="Go to slide">
+      {problems.map((problem, i) => (
+        <button
+          class={`pc-dot${i === 0 ? ' pc-dot--active' : ''}`}
+          role="tab"
+          aria-label={`Slide ${i + 1}: ${problem.title}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          data-index={String(i)}
+        ></button>
+      ))}
+    </div>
+
+  </div>
+
+</div>
 
 
 <script>
   document.querySelectorAll('.pc-carousel').forEach((carousel) => {
-    const track = carousel.querySelector('.pc-track') as HTMLElement;
-    const dots  = carousel.querySelectorAll('.pc-dot') as NodeListOf<HTMLButtonElement>;
+    const track   = carousel.querySelector('.pc-track') as HTMLElement;
+    const prevBtn = carousel.querySelector('.pc-btn--prev') as HTMLButtonElement;
+    const nextBtn = carousel.querySelector('.pc-btn--next') as HTMLButtonElement;
+    const dots    = carousel.querySelectorAll('.pc-dot') as NodeListOf<HTMLButtonElement>;
 
     let current = 0;
     const total = dots.length;
 
     function goTo(index: number) {
-      // Wrap around in both directions
       current = ((index % total) + total) % total;
       track.style.transform = `translateX(-${current * 100}%)`;
 
@@ -108,11 +111,11 @@ const { problems } = Astro.props;
       });
     }
 
-    // Dot clicks
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
     dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
 
-    // Touch swipe support — track where the finger started and which direction it moved.
-    // swipeDist > 50px triggers a slide change — short swipes are ignored.
+    // Touch swipe — >50px horizontal drag changes slide
     let touchStartX = 0;
     const viewport = carousel.querySelector('.pc-viewport') as HTMLElement;
 
@@ -125,7 +128,7 @@ const { problems } = Astro.props;
       if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
     }, { passive: true });
 
-    // Keyboard support when the carousel is focused
+    // Keyboard — arrow keys when carousel is focused
     carousel.addEventListener('keydown', (e: Event) => {
       const key = (e as KeyboardEvent).key;
       if (key === 'ArrowLeft')  { goTo(current - 1); (e as KeyboardEvent).preventDefault(); }
@@ -136,40 +139,28 @@ const { problems } = Astro.props;
 
 
 <style>
-  /* ── Outer wrapper ──────────────────────────────────────────────────────── */
-
   .pc-carousel {
     margin: var(--space-xl) 0 var(--space-2xl);
   }
 
-
-  /* ── Viewport ───────────────────────────────────────────────────────────── */
-  /* overflow: hidden clips the off-screen cards so only the active one shows */
+  /* ── Viewport + track ───────────────────────────────────────────────────── */
 
   .pc-viewport {
     overflow: hidden;
     border-radius: 12px;
   }
 
-
-  /* ── Track ──────────────────────────────────────────────────────────────── */
-  /* All cards sit side-by-side. The track moves left via transform.
-     transition gives the sliding animation when goTo() fires. */
-
   .pc-track {
     display: flex;
     transition: transform 0.35s ease;
   }
 
-
   /* ── Card ───────────────────────────────────────────────────────────────── */
-  /* flex-shrink: 0 + width: 100% means each card is exactly one viewport wide.
-     The light blue background matches the Navy 100 surface used in Quote light variant. */
 
   .pc-card {
     flex-shrink: 0;
     width: 100%;
-    background-color: hsl(var(--secondary)); /* Navy 100 — #C0D4F4 in light, Navy 800 in dark */
+    background-color: hsl(var(--secondary)); /* Navy 100 light / Navy 800 dark */
     display: flex;
     align-items: center;
     gap: var(--space-2xl);
@@ -177,9 +168,7 @@ const { problems } = Astro.props;
     box-sizing: border-box;
   }
 
-
-  /* ── Card image ─────────────────────────────────────────────────────────── */
-  /* Fixed-size square, rounded corners — matches the Framer reference screenshot. */
+  /* ── Image ──────────────────────────────────────────────────────────────── */
 
   .pc-card-image-wrap {
     flex-shrink: 0;
@@ -190,13 +179,12 @@ const { problems } = Astro.props;
   .pc-card-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;   /* fills the square without distorting the image */
+    object-fit: cover;
     border-radius: 8px;
     display: block;
   }
 
-
-  /* ── Card text ──────────────────────────────────────────────────────────── */
+  /* ── Text ───────────────────────────────────────────────────────────────── */
 
   .pc-card-text {
     flex: 1;
@@ -221,14 +209,53 @@ const { problems } = Astro.props;
     margin: 0;
   }
 
+  /* ── Controls row ───────────────────────────────────────────────────────── */
+  /* Arrows flush left, dots centered — same layout as the home page carousel */
+
+  .pc-controls {
+    display: flex;
+    align-items: center;
+    margin-top: var(--space-lg);
+    /* Arrows occupy their natural width on the left.
+       Dots use flex:1 + auto margins to center themselves in the remaining space. */
+  }
+
+  /* ── Arrow buttons ──────────────────────────────────────────────────────── */
+
+  .pc-arrows {
+    display: flex;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+  }
+
+  .pc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-slate);
+    color: var(--color-heading);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .pc-btn:hover {
+    background-color: var(--color-lemon);
+    border-color: var(--color-lemon);
+  }
 
   /* ── Dots ───────────────────────────────────────────────────────────────── */
 
   .pc-dots {
+    flex: 1;
     display: flex;
     justify-content: center;
     gap: var(--space-sm);
-    margin-top: var(--space-lg);
+    /* Offset right by the arrows width so dots appear visually centered
+       over the full carousel width, not just the remaining space */
+    padding-right: calc(2 * 36px + var(--space-xs));
   }
 
   .pc-dot {
@@ -242,15 +269,12 @@ const { problems } = Astro.props;
     transition: background-color 0.2s ease, transform 0.2s ease;
   }
 
-  /* Active dot is navy-colored and slightly larger */
   .pc-dot--active {
     background-color: var(--color-navy);
     transform: scale(1.25);
   }
 
-
   /* ── Mobile ─────────────────────────────────────────────────────────────── */
-  /* Stack image above text on narrow screens */
 
   @media (max-width: 560px) {
     .pc-card {
@@ -263,6 +287,15 @@ const { problems } = Astro.props;
     .pc-card-image-wrap {
       width: 100%;
       height: 180px;
+    }
+
+    /* On mobile, center everything in the controls row */
+    .pc-controls {
+      justify-content: center;
+    }
+
+    .pc-dots {
+      padding-right: 0;
     }
   }
 </style>

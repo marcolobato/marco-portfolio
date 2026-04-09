@@ -4,8 +4,9 @@
 // Rendered as one visual unit: the intent statement flows directly into the
 // three-column needs grid below with no visual break between them.
 //
-// Intent styling mirrors the Quote "takeaway" variant (large Fraunces italic,
-// royal blue) but with tighter bottom spacing so the section reads as one piece.
+// Intent uses the Quote "statement" variant — large Fraunces italic, royal blue,
+// full section height, and scroll-reveal animation — matching the rhythm of the
+// other quote blocks on the page.
 //
 // User needs layout: three columns, label + icon above, portrait screenshot below.
 // Images use object-fit: contain so phone screenshots are never cropped.
@@ -53,18 +54,17 @@ interface Props {
   needs:  Need[];  // always 3 items
 }
 
+import Quote from './Quote.astro';
+
 const { intent, needs } = Astro.props;
 ---
 
 <div class="di-section">
 
   <!-- ── Design Intent statement ─────────────────────────────────────────── -->
-  <!-- Styled like the takeaway Quote: Fraunces italic, royal blue, large.
-       Uses a small eyebrow label above to anchor the statement contextually. -->
-  <div class="di-intent">
-    <p class="di-intent-eyebrow">Design Intent</p>
-    <p class="di-intent-text">{intent}</p>
-  </div>
+  <!-- Uses the Quote "statement" variant directly — large Fraunces italic,
+       full section height, and scroll-reveal — matching the page's quote rhythm. -->
+  <Quote variant="statement" eyebrow="Design Intent" text={intent} />
 
 
   <!-- ── User Needs grid ────────────────────────────────────────────────── -->
@@ -109,37 +109,6 @@ const { intent, needs } = Astro.props;
 
   .di-section {
     margin: var(--space-3xl) 0;
-  }
-
-
-  /* ── Design Intent ──────────────────────────────────────────────────────── */
-
-  .di-intent {
-    /* Tight bottom margin — the User Needs grid sits close below,
-       making the two parts feel like one connected section */
-    margin-bottom: var(--space-2xl);
-  }
-
-  /* Small uppercase label above the intent statement */
-  .di-intent-eyebrow {
-    font-size: var(--text-xs);
-    font-weight: var(--weight-bold);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-charcoal);
-    margin-bottom: var(--space-sm);
-  }
-
-  /* The intent statement — mirrors Quote takeaway variant:
-     Fraunces italic, royal blue, display size */
-  .di-intent-text {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-weight: var(--weight-regular);
-    font-size: var(--text-2xl);
-    line-height: var(--leading-tight);
-    color: var(--color-royal-blue);
-    margin: 0;
   }
 
 
@@ -249,14 +218,22 @@ const { intent, needs } = Astro.props;
   @media (max-width: 600px) {
     .di-needs-grid {
       grid-template-columns: 1fr;
-      gap: var(--space-2xl);
+      gap: var(--space-xl);
     }
 
-    /* On mobile, cap image height so a single portrait screenshot
-       doesn't dominate the whole screen */
-    .di-need-image {
-      max-height: 400px;
-      object-fit: cover;
-    }
+    /* On desktop, DOM order is: all 3 labels, then all 3 images — this lets the
+       3-column grid put them in two aligned rows. On mobile with 1 column, that
+       stacks all labels first then all images, which breaks the visual grouping.
+       CSS `order` fixes this by pairing each label with its image:
+       label1(1) → image1(2) → label2(3) → image2(4) → label3(5) → image3(6) */
+    .di-need-tag:nth-child(1)        { order: 1; }
+    .di-need-image-wrap:nth-child(4) { order: 2; }
+    .di-need-tag:nth-child(2)        { order: 3; }
+    .di-need-image-wrap:nth-child(5) { order: 4; }
+    .di-need-tag:nth-child(3)        { order: 5; }
+    .di-need-image-wrap:nth-child(6) { order: 6; }
+
+    /* No image height override — base styles (width: 100%; height: auto; object-fit: contain)
+       handle portrait phone screenshots correctly without cropping. */
   }
 </style>

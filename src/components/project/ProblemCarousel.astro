@@ -162,7 +162,7 @@ const { problems } = Astro.props;
     width: 100%;
     background-color: hsl(var(--secondary)); /* Navy 100 light / Navy 800 dark */
     display: flex;
-    align-items: center;
+    align-items: center; /* both columns centered — equal visual padding top and bottom */
     gap: var(--space-2xl);
     padding: var(--space-2xl);
     box-sizing: border-box;
@@ -173,14 +173,18 @@ const { problems } = Astro.props;
   .pc-card-image-wrap {
     flex-shrink: 0;
     width: 220px;
-    height: 220px;
+    max-height: 280px;    /* caps how tall any image can grow — prevents a portrait
+                             screenshot on slide 2-4 from stretching ALL cards via
+                             the track's default align-items: stretch */
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;        /* makes the image fill the wrap cleanly */
+    align-items: center;  /* centers image vertically inside the capped box */
   }
 
   .pc-card-image {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
+    height: auto;         /* natural aspect ratio — no cropping */
     display: block;
   }
 
@@ -213,11 +217,10 @@ const { problems } = Astro.props;
   /* Arrows flush left, dots centered — same layout as the home page carousel */
 
   .pc-controls {
+    position: relative;   /* anchor for the absolutely-centered dots pill */
     display: flex;
     align-items: center;
     margin-top: var(--space-lg);
-    /* Arrows occupy their natural width on the left.
-       Dots use flex:1 + auto margins to center themselves in the remaining space. */
   }
 
   /* ── Arrow buttons ──────────────────────────────────────────────────────── */
@@ -232,35 +235,62 @@ const { problems } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--color-slate);
-    color: var(--color-heading);
+    width: 44px;
+    height: 44px;
+    border-radius: 100px;
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-slate);
+    color: var(--color-charcoal);
     cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
 
   .pc-btn:hover {
-    background-color: var(--color-lemon);
-    border-color: var(--color-lemon);
+    border-color: var(--color-navy);
+    color: var(--color-navy);
+    background-color: rgba(8, 31, 93, 0.05);
   }
+
+  .pc-btn:focus-visible {
+    outline: 2px solid var(--color-royal-blue);
+    outline-offset: 2px;
+  }
+
+  /* Dark mode — same glass-like treatment as home carousel buttons */
+  :global([data-theme="dark"]) .pc-btn {
+    background-color: rgba(160, 175, 181, 0.1);
+    border-color: var(--color-slate);
+    color: var(--color-heading);
+  }
+
+  :global([data-theme="dark"]) .pc-btn:hover {
+    background-color: rgba(160, 175, 181, 0.2);
+    border-color: var(--color-heading);
+    color: var(--color-heading);
+  }
+
 
   /* ── Dots ───────────────────────────────────────────────────────────────── */
 
   .pc-dots {
-    flex: 1;
+    /* Absolute centering over the full controls row — pill shrinks to fit dots */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
     display: flex;
-    justify-content: center;
-    gap: var(--space-sm);
-    /* Offset right by the arrows width so dots appear visually centered
-       over the full carousel width, not just the remaining space */
-    padding-right: calc(2 * 36px + var(--space-xs));
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-slate);
+    border-radius: 100px;
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-md);
   }
 
   .pc-dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background-color: var(--color-slate);
     border: none;
@@ -269,16 +299,18 @@ const { problems } = Astro.props;
     transition: background-color 0.2s ease, transform 0.2s ease;
   }
 
+  /* Active dot: --color-heading flips automatically:
+     light mode → navy (#081F5D), dark mode → near-white (#E8EDFF) */
   .pc-dot--active {
-    background-color: var(--color-navy);
-    transform: scale(1.25);
+    background-color: var(--color-heading);
+    transform: scale(1.35);
   }
 
   /* ── Mobile ─────────────────────────────────────────────────────────────── */
 
   @media (max-width: 560px) {
     .pc-card {
-      flex-direction: column;
+      flex-direction: column;  /* stack image above text — no overlap */
       align-items: flex-start;
       gap: var(--space-lg);
       padding: var(--space-xl);
@@ -286,16 +318,12 @@ const { problems } = Astro.props;
 
     .pc-card-image-wrap {
       width: 100%;
-      height: 180px;
+      max-height: 260px;
     }
 
-    /* On mobile, center everything in the controls row */
+    /* On mobile, center arrows too — dots are already absolutely centered */
     .pc-controls {
       justify-content: center;
-    }
-
-    .pc-dots {
-      padding-right: 0;
     }
   }
 </style>

@@ -3,15 +3,20 @@
 //
 // Three variants, matching the Framer portfolio design:
 //
-//   variant="dark"      Navy background, cream italic text, attribution below.
-//                       Used for: opening hero testimonials.
+//   variant="dark"       Navy background, cream italic text, attribution below.
+//                        Used for: opening hero testimonials.
 //
-//   variant="light"     Light blue (Navy 100) background, navy italic text.
-//                       Used for: mid-page user research quotes.
+//   variant="light"      Light blue (Navy 100) background, navy italic text.
+//                        Used for: mid-page user research quotes.
 //
-//   variant="takeaway"  No background. Optional eyebrow label above ("My takeaway:").
-//                       Royal blue italic text. No attribution.
-//                       Used for: designer's own synthesis/reflection quotes.
+//   variant="takeaway"   No background. Optional eyebrow label above ("My takeaway:").
+//                        Royal blue italic text. No attribution.
+//                        Used for: designer's own synthesis/reflection quotes.
+//
+//   variant="statement"  No background. Same large display size as dark/light.
+//                        Same section height and scroll-reveal animation.
+//                        Optional eyebrow label, optional attribution.
+//                        Used for: design intent, goals, north star, key takeaways.
 //
 // Usage in MDX:
 //   import Quote from '../../components/project/Quote.astro';
@@ -27,12 +32,18 @@
 //     eyebrow="My takeaway:"
 //     text="Magnifiers and cameras are not reliable companions during users' most stressful, on-the-go moments."
 //   />
+//
+//   <Quote
+//     variant="statement"
+//     eyebrow="Goal"
+//     text="Make switching from the default camera to Magnifier feel like a no-brainer."
+//   />
 
 interface Props {
   text:          string;              // The quote text — include your own curly quotes in the string
   attribution?:  string;              // Source line (dark + light variants only)
   eyebrow?:      string;              // Small label above (takeaway variant only), e.g. "My takeaway:"
-  variant?:      'dark' | 'light' | 'takeaway'; // defaults to 'dark'
+  variant?:      'dark' | 'light' | 'takeaway' | 'statement'; // defaults to 'dark'
 }
 
 const {
@@ -43,8 +54,8 @@ const {
 } = Astro.props;
 ---
 
-<!-- data-reveal is added to dark and light variants — both are full-bleed
-     sections that benefit from the scroll reveal. Takeaway is unaffected. -->
+<!-- data-reveal is added to dark, light, and statement variants.
+     All three benefit from the scroll reveal. Takeaway is unaffected. -->
 <figure class="pq-quote" data-variant={variant} data-reveal={variant !== 'takeaway' ? 'quote' : undefined}>
 
   {/* Eyebrow label — only for takeaway variant */}
@@ -159,6 +170,34 @@ const {
   }
 
 
+  /* ── Statement variant ─────────────────────────────────────────────────── */
+  /* No background. Same large display text and section height as dark/light,
+     so the page keeps a consistent reading rhythm even without a color band.
+     Stays inside the content column (no full-bleed margin tricks).
+     Gets the same scroll-reveal animation as dark/light. */
+
+  .pq-quote[data-variant="statement"] {
+    --pq-text-color:  var(--color-royal-blue); /* Royal blue — matches Framer reference */
+    --pq-text-size:   var(--text-4xl);         /* Same as dark/light — full display weight */
+
+    /* Same section presence as dark/light so the rhythm holds */
+    min-height: clamp(400px, 50vh, 600px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    /* No horizontal padding override — inherits the shared .pq-quote padding.
+       Vertical: same generous block spacing as dark/light variants. */
+    padding-inline: 0;
+    padding-block: var(--space-4xl);
+  }
+
+  /* Dark mode: step up to a lighter ramp stop so the text reads on dark canvas */
+  :global([data-theme="dark"]) .pq-quote[data-variant="statement"] {
+    --pq-text-color: hsl(var(--navy-300)); /* #6090E0 — readable on dark background */
+  }
+
+
   /* ── Takeaway variant ───────────────────────────────────────────────────── */
   /* No background, less padding, slightly smaller text. */
 
@@ -259,6 +298,12 @@ const {
 
     .pq-quote[data-variant="dark"] {
       padding: var(--space-3xl) var(--space-lg);
+    }
+
+    /* Statement: scale text down on mobile, keep section height */
+    .pq-quote[data-variant="statement"] {
+      --pq-text-size: var(--text-2xl);
+      padding-inline: 0;
     }
 
     .pq-quote[data-variant="takeaway"] {

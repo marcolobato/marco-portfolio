@@ -160,10 +160,13 @@ const { Content } = await render(project);
            Paragraphs are split on \n\n so one string can produce multiple <p> tags. -->
       {data.reflection && (
         <section class="project-reflection">
-          <p class="project-reflection-eyebrow">Project Reflection</p>
-          <h2 class="project-reflection-title">{data.reflection.title}</h2>
+          <!-- h2 keeps page hierarchy correct: h1 = project title, h2 = sections.
+               "Project Reflection" is the section label — prominent but still h2. -->
+          <h2 class="project-reflection-label">Project Reflection</h2>
+          <!-- h3 is the sub-heading within this section -->
+          <h3 class="project-reflection-title">{data.reflection.title}</h3>
           {data.reflection.body.split('\n\n').map((paragraph) => (
-            <p class="project-reflection-body">{paragraph}</p>
+            <p class="project-reflection-body" set:html={paragraph}></p>
           ))}
         </section>
       )}
@@ -179,7 +182,8 @@ const { Content } = await render(project);
   /* ── Layout shell ─────────────────────────────────────────────────────── */
 
   .project-main {
-    padding-block: var(--space-3xl);
+    padding-top: var(--space-3xl);
+    padding-bottom: 0; /* reflection section is full-bleed and provides its own bottom padding */
   }
 
   /* Slightly wider than writing posts — gives project pages more room
@@ -200,7 +204,13 @@ const { Content } = await render(project);
     margin-bottom: var(--space-2xl);
     transition: color 0.2s ease;
   }
-  .project-back:hover { color: var(--color-navy); }
+  /* WCAG 1.4.1: underline is the non-color hover cue.
+     --color-heading flips automatically: navy in light, near-white in dark. */
+  .project-back:hover {
+    color: var(--color-heading);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 
 
   /* ── Hero ─────────────────────────────────────────────────────────────── */
@@ -319,14 +329,15 @@ const { Content } = await render(project);
     font-size: var(--text-base);
   }
 
+  /* WCAG 1.4.1: underline must always be visible — color alone is not enough. */
   :global(.project-body a) {
     color: var(--color-royal-blue);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
   :global(.project-body a:hover) {
     color: var(--color-navy);
-    text-decoration: underline;
   }
 
   /* Blockquote — used for the pullquotes until Quote.astro is built in Phase 3 */
@@ -376,26 +387,37 @@ const { Content } = await render(project);
 
   .project-outcomes-inner--split {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch; /* both columns share the same height */
     gap: var(--space-3xl);
   }
 
   /* ── Left column: testimonial quote ─────────────────────────────────── */
 
-  /* Fixed-width quote column — quote doesn't need to grow beyond ~240px */
+  /* Equal 50/50 split with the outcomes list — matches the Framer reference.
+     flex column + justify-content: center vertically centers the quote text
+     within the row height set by the (usually taller) outcomes list. */
   .project-outcomes-quote {
-    flex: 0 0 240px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
-  /* Large Fraunces italic — same editorial feel as the project reflection */
+  /* Fraunces italic at display size — matches our Quote component visual language.
+     Royal blue ties it to the takeaway/statement variant palette. */
   .project-outcomes-quote-text {
     font-family: var(--font-display);
     font-style: italic;
     font-weight: var(--weight-regular);
-    font-size: var(--text-xl);
+    font-size: var(--text-3xl);
     line-height: var(--leading-tight);
-    color: var(--color-heading);
+    color: var(--color-royal-blue);
     margin-bottom: var(--space-md);
+  }
+
+  /* Dark mode: step up to navy-300 so the text reads on a dark canvas */
+  :global([data-theme="dark"]) .project-outcomes-quote-text {
+    color: hsl(var(--navy-300)); /* #6090E0 — same as statement dark mode */
   }
 
   /* Small muted attribution line below the quote */
@@ -443,49 +465,82 @@ const { Content } = await render(project);
     .project-outcomes-inner--split {
       flex-direction: column;
     }
+    /* On mobile, quote stacks above the list at natural height — no centering needed */
     .project-outcomes-quote {
-      flex: none;
+      justify-content: flex-start;
     }
   }
 
 
   /* ── Project Reflection ──────────────────────────────────────────────── */
-  /* Intentionally softer than the other sections — this is personal voice,
-     not a structured data section. No bold UI heading, no divider line. */
+  /* Full-bleed dark band — same steel background as the dark Quote variant.
+     Negative margin-inline + width: 100vw escapes the container's max-width
+     so the background stretches edge-to-edge. The padding-inline calc aligns
+     the text with the content column (860px max, 32px inner padding). */
 
   .project-reflection {
-    /* Extra space above separates it clearly from Outcomes */
-    margin-top: var(--space-4xl);
-    padding-top: var(--space-3xl);
-    border-top: 1px solid rgba(128, 128, 128, 0.25);
+    margin-top: var(--space-3xl);
+    margin-inline: calc(50% - 50vw);
+    width: 100vw;
+    padding-inline: max(var(--space-xl), calc(50vw - 398px));
+    padding-block: var(--space-4xl);
+    background-color: hsl(var(--steel)); /* #2F628C — same as dark Quote */
   }
 
-  /* Small label above the title — "Project Reflection" in muted caps */
-  .project-reflection-eyebrow {
-    font-size: var(--text-xs);
-    font-weight: var(--weight-medium);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-slate);
-    margin-bottom: var(--space-md);
+  /* Dark mode: deeper navy so the band reads as a distinct zone */
+  :global([data-theme="dark"]) .project-reflection {
+    background-color: hsl(var(--steel-dark)); /* #252F52 */
   }
 
-  /* The custom title — display font, lighter weight, not a bold heading.
-     Uses --font-display (Fraunces) so it feels editorial rather than structural. */
+  /* "Project Reflection" — section label styled as a prominent h2.
+     Near-white at display size so it reads clearly on the dark background. */
+  .project-reflection-label {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    color: #ffffff;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-lg);
+    /* Override the shared .project-section-heading border — not needed here */
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* "Future Vision: Multimodal AI Assistants" — sub-heading within the section.
+     Display font (Fraunces) gives it a softer, editorial feel vs. the bold label above. */
   .project-reflection-title {
     font-family: var(--font-display);
     font-size: var(--text-2xl);
-    font-weight: var(--weight-medium);  /* medium, not bold — softer feel */
-    color: var(--color-heading);
+    font-weight: var(--weight-medium);
+    color: #ffffff;
     line-height: var(--leading-tight);
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-2xl);
   }
 
+  /* Body paragraphs — slightly softer than pure white so they don't compete
+     with the headings. navy-100 (#C0D4F4) is the lightest brand ramp step. */
   .project-reflection-body {
     font-size: var(--text-base);
-    color: var(--color-charcoal);
+    color: #ffffff;
     line-height: var(--leading-loose);
     margin-bottom: var(--space-md);
-    max-width: 60ch; /* tighter measure for reflective writing — more intimate */
+    max-width: 60ch;
+  }
+
+  /* Inline links inside the reflection body — matches the writing article pattern:
+     no underline at rest, underline on hover. Adapted for the dark background:
+     navy-100 (#C0D4F4) at rest (same soft blue as Quote attributions on steel),
+     white + underline on hover for clear affordance.
+     :global() is required because set:html-injected elements don't receive
+     Astro's scoping attribute. */
+  /* WCAG 1.4.1: underline must always be visible — color alone is not enough.
+     navy-100 with underline at rest; white on hover adds a second cue. */
+  :global(.project-reflection-body a) {
+    color: hsl(var(--navy-100));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  :global(.project-reflection-body a:hover) {
+    color: #ffffff;
   }
 </style>

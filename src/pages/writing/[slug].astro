@@ -132,7 +132,13 @@ const { Content } = await render(post);
     margin-bottom: var(--space-2xl);
     transition: color 0.2s ease;
   }
-  .post-back:hover { color: var(--color-navy); }
+  /* WCAG 1.4.1: underline is the non-color hover cue.
+     --color-heading flips automatically: navy in light, near-white in dark. */
+  .post-back:hover {
+    color: var(--color-heading);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 
   .post-header {
     margin-bottom: var(--space-2xl);
@@ -172,14 +178,16 @@ const { Content } = await render(post);
   /* Links — mirrors the .text-link component from the design system.
      :global() is needed because <a> tags come from rendered markdown
      and don't receive Astro's scope attribute. */
+  /* WCAG 1.4.1: underline must always be visible — color alone is not enough.
+     Royal blue + underline at rest; heading color on hover adds a second cue. */
   :global(.post-body a) {
     color: var(--color-royal-blue);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
   :global(.post-body a:hover) {
     color: var(--color-heading);
-    text-decoration: underline;
   }
 
   /* Restore bullets and numbers — the global reset strips these from all lists.

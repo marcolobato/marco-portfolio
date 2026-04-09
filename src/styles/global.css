@@ -637,10 +637,15 @@ hr {
   transition: color 0.2s ease;
 }
 
-/* Hover and active page link both use royal-blue */
+/* Hover and active page link both use royal-blue.
+   WCAG 1.4.1: underline on hover is the non-color cue — color alone is not enough.
+   text-decoration-skip-ink: auto keeps the underline from cutting through descenders. */
 .nav-links a:hover,
 .nav-links a[aria-current="page"] {
   color: var(--color-royal-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-skip-ink: auto;
 }
 
 /* Hamburger button — hidden on desktop, visible on mobile */

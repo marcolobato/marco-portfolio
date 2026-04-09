@@ -240,14 +240,24 @@ const { Content } = await render(project);
 
 
   /* ── Shared section heading ───────────────────────────────────────────── */
+  /* --text-2xl (24px) reads clearly as a structural landmark without competing
+     with the h1. The border-bottom is kept here as default but overridden for
+     sections whose content already provides visual separation (Contributions). */
 
   .project-section-heading {
-    font-size: var(--text-lg);
+    font-size: var(--text-2xl);
     font-weight: 600;
     color: var(--color-heading);
     margin-bottom: var(--space-xl);
     padding-bottom: var(--space-sm);
     border-bottom: 1px solid var(--color-slate);
+  }
+
+  /* Contributions cards already provide visual separation — the border-bottom
+     on the heading would create a double boundary. Remove it here only. */
+  .project-contributions .project-section-heading {
+    border-bottom: none;
+    padding-bottom: 0;
   }
 
 
@@ -265,10 +275,9 @@ const { Content } = await render(project);
   }
 
   .project-overview-label {
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     font-weight: 600;
-    color: var(--color-charcoal);
-    letter-spacing: 0.04em;
+    color: var(--color-heading);
     margin-bottom: var(--space-xs);
   }
 
@@ -285,12 +294,6 @@ const { Content } = await render(project);
     margin-bottom: var(--space-3xl);
   }
 
-  /* Tighten the gap between the "Contributions" heading and the first accordion
-     row. The heading's border-bottom already acts as the visual divider, so
-     the default margin-bottom is too generous here. */
-  .project-contributions .project-section-heading {
-    margin-bottom: 0;
-  }
 
 
   /* ── MDX body ─────────────────────────────────────────────────────────── */

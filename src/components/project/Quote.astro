@@ -43,7 +43,9 @@ const {
 } = Astro.props;
 ---
 
-<figure class="pq-quote" data-variant={variant}>
+<!-- data-reveal is added to dark variant quotes so the scroll animation
+     targets only those — light and takeaway variants are unaffected. -->
+<figure class="pq-quote" data-variant={variant} data-reveal={variant === 'dark' ? 'quote' : undefined}>
 
   {/* Eyebrow label — only for takeaway variant */}
   {eyebrow && (
@@ -81,14 +83,31 @@ const {
 
 
   /* ── Dark variant ───────────────────────────────────────────────────────── */
-  /* Navy background. Text is always near-white regardless of theme —
-     this component has its own dark background so it doesn't inherit the page theme. */
+  /* Full-bleed banner treatment: negative margins cancel the container's
+     padding-inline so the navy background stretches edge-to-edge.
+     min-height + flex centering give it a consistent section-like height.
+     navy-100 (#C0D4F4) for the attribution — the lightest brand ramp step,
+     reads as a cool tertiary on the navy background without introducing a new color. */
 
   .pq-quote[data-variant="dark"] {
     --pq-bg:          var(--color-navy);
-    --pq-text-color:  hsl(216 60% 94%); /* warm near-white — softer than pure white on navy */
-    --pq-attr-color:  hsl(216 30% 75%); /* muted light blue-grey for attribution */
+    --pq-text-color:  hsl(216 60% 94%);       /* warm near-white — softer than pure white */
+    --pq-attr-color:  hsl(var(--navy-100));   /* #C0D4F4 — brand tertiary on navy */
     --pq-text-size:   var(--text-3xl);
+
+    /* Break out of the container to fill full width */
+    margin-inline: calc(-1 * var(--space-xl));
+    width: calc(100% + 2 * var(--space-xl));
+    border-radius: 0;
+
+    /* Generous vertical rhythm — feels like a section, not a callout */
+    padding: var(--space-4xl) var(--space-2xl);
+
+    /* Consistent section height, centered content */
+    min-height: clamp(280px, 35vh, 440px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
 
@@ -155,6 +174,43 @@ const {
   }
 
 
+  /* ── Scroll reveal — initial hidden state ───────────────────────────────── */
+  /* Dark variant quotes start invisible and shifted down 24px.
+     The IntersectionObserver below adds .pq-revealed when the quote
+     enters the viewport, triggering the transition.
+     prefers-reduced-motion: skip the transform, just fade. */
+
+  [data-reveal="quote"] .pq-text,
+  [data-reveal="quote"] .pq-attribution {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Attribution cascades in 0.2s after the quote text */
+  [data-reveal="quote"] .pq-attribution {
+    transition-delay: 0.2s;
+  }
+
+  /* Revealed state — added by IntersectionObserver */
+  [data-reveal="quote"].pq-revealed .pq-text,
+  [data-reveal="quote"].pq-revealed .pq-attribution {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Respect reduced motion — fade only, no movement */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal="quote"] .pq-text,
+    [data-reveal="quote"] .pq-attribution {
+      transform: none;
+      transition: opacity 0.5s ease;
+    }
+  }
+
+
   /* ── Mobile ─────────────────────────────────────────────────────────────── */
   /* Scale the text down on narrow screens so long quotes don't overflow. */
 
@@ -164,6 +220,10 @@ const {
       padding: var(--space-2xl) var(--space-lg);
     }
 
+    .pq-quote[data-variant="dark"] {
+      padding: var(--space-3xl) var(--space-lg);
+    }
+
     .pq-quote[data-variant="takeaway"] {
       --pq-text-size: var(--text-xl);
       padding-left: 0;
@@ -171,3 +231,34 @@ const {
     }
   }
 </style>
+
+
+<script>
+  // Scroll reveal for dark variant Quote blocks.
+  //
+  // IntersectionObserver fires when an element enters the viewport.
+  // threshold: 0.2 means 20% of the element must be visible before
+  // the animation triggers — gives the reader time to notice they're
+  // arriving at the quote before the text starts moving.
+  //
+  // Once revealed, the observer disconnects from that element so the
+  // animation only plays once (not every time it scrolls in and out).
+
+  const quotes = document.querySelectorAll('[data-reveal="quote"]');
+
+  if (quotes.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('pq-revealed');
+            observer.unobserve(entry.target); // play once only
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    quotes.forEach((quote) => observer.observe(quote));
+  }
+</script>

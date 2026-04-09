@@ -129,13 +129,33 @@ const {
 
 
   /* ── Light variant ──────────────────────────────────────────────────────── */
-  /* Navy-100 background (#C0D4F4). Dark navy text. */
+  /* Light mode: navy-100 (#C0D4F4) bg, deep navy text — airy and editorial.
+     Same full-bleed + section-height treatment as the dark variant for consistency.
+     Dark mode: slate-blue (#1E2A3A) — warm dark slate, distinct from steel-dark
+     and from the page canvas, so the quote reads as a separate zone. */
 
   .pq-quote[data-variant="light"] {
-    --pq-bg:          hsl(var(--secondary)); /* Navy 100 — same token used for light bg surfaces */
+    --pq-bg:          hsl(var(--navy-100));  /* #C0D4F4 light mode */
     --pq-text-color:  var(--color-navy);
-    --pq-attr-color:  var(--color-charcoal);
-    --pq-text-size:   var(--text-3xl);
+    --pq-attr-color:  hsl(var(--navy-700));  /* #1040A8 — readable attribution on light blue */
+    --pq-text-size:   var(--text-4xl);       /* matches dark variant size */
+
+    /* Same full-bleed layout as dark variant */
+    margin-inline: calc(50% - 50vw);
+    width: 100vw;
+    border-radius: 0;
+    padding-block: var(--space-4xl);
+    padding-inline: max(var(--space-xl), calc(50vw - 398px));
+    min-height: clamp(400px, 50vh, 600px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  :global([data-theme="dark"]) .pq-quote[data-variant="light"] {
+    --pq-bg:         hsl(var(--slate-blue)); /* #1E2A3A — warm dark slate */
+    --pq-text-color: hsl(216 60% 94%);       /* same near-white as dark variant */
+    --pq-attr-color: hsl(var(--navy-100));   /* #C0D4F4 — readable on dark slate */
   }
 
 

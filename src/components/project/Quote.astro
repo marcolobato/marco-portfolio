@@ -43,9 +43,9 @@ const {
 } = Astro.props;
 ---
 
-<!-- data-reveal is added to dark variant quotes so the scroll animation
-     targets only those — light and takeaway variants are unaffected. -->
-<figure class="pq-quote" data-variant={variant} data-reveal={variant === 'dark' ? 'quote' : undefined}>
+<!-- data-reveal is added to dark and light variants — both are full-bleed
+     sections that benefit from the scroll reveal. Takeaway is unaffected. -->
+<figure class="pq-quote" data-variant={variant} data-reveal={variant !== 'takeaway' ? 'quote' : undefined}>
 
   {/* Eyebrow label — only for takeaway variant */}
   {eyebrow && (

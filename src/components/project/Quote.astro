@@ -121,6 +121,13 @@ const {
   }
 
 
+  /* ── Dark variant — dark mode override ─────────────────────────────────── */
+
+  :global([data-theme="dark"]) .pq-quote[data-variant="dark"] {
+    --pq-bg: hsl(var(--steel-dark)); /* #252F52 — dark mode counterpart to steel blue */
+  }
+
+
   /* ── Light variant ──────────────────────────────────────────────────────── */
   /* Navy-100 background (#C0D4F4). Dark navy text. */
 

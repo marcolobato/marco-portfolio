@@ -216,7 +216,8 @@ select {
 
   /* Steel blue — #2F628C — used for editorial sections (dark Quote background).
      Distinct hue (207°) from the navy ramp (221-224°) — more teal, less purple. */
-  --steel: 207 50% 37%;            /* #2F628C — Framer portfolio quote background */
+  --steel:      207 50% 37%;       /* #2F628C — Framer portfolio quote background, light mode */
+  --steel-dark: 227 38% 23%;       /* #252F52 — dark mode counterpart, desaturated navy-purple */
 
   --lemon-900: 60 86.5% 29%;       /* #8A8A0A — accent text on light bg */
   --lemon-700: 60 82.8% 41%;       /* #BFBF12 — accent borders, tags */

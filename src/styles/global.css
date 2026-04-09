@@ -214,6 +214,10 @@ select {
   --navy-100: 216.9 70.3% 85.5%;   /* #C0D4F4 — light backgrounds */
   --navy-50:  216.9 55%   95%;     /* #EBF1FB — barely-there blue tint, cards/surfaces */
 
+  /* Steel blue — #2F628C — used for editorial sections (dark Quote background).
+     Distinct hue (207°) from the navy ramp (221-224°) — more teal, less purple. */
+  --steel: 207 50% 37%;            /* #2F628C — Framer portfolio quote background */
+
   --lemon-900: 60 86.5% 29%;       /* #8A8A0A — accent text on light bg */
   --lemon-700: 60 82.8% 41%;       /* #BFBF12 — accent borders, tags */
   --lemon-500: 60 88.4% 52.7%;     /* #F1F11C — primary accent */

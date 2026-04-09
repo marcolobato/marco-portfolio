@@ -102,8 +102,12 @@ const {
     width: 100vw;
     border-radius: 0;
 
-    /* Generous vertical rhythm — a natural visual break in the page, not a slide */
-    padding: var(--space-4xl) clamp(var(--space-xl), 8vw, 12rem);
+    /* Vertical rhythm — generous top/bottom for section presence.
+       Horizontal: max() picks the larger of the two values.
+       On wide screens calc(50% - 430px) wins — centers text at 860px wide.
+       On narrow screens var(--space-xl) wins — keeps normal breathing room. */
+    padding-block: var(--space-4xl);
+    padding-inline: max(var(--space-xl), calc(50% - 430px));
 
     /* Taller min-height so the section has real presence */
     min-height: clamp(400px, 50vh, 600px);

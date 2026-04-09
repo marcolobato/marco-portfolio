@@ -1,0 +1,118 @@
+---
+// InsightGrid.astro — Key insights card grid for project pages.
+//
+// Renders a 2-column grid of insight cards on desktop, single column on mobile.
+// Each card has: an emoji, a bold title, and a body paragraph.
+//
+// Usage in MDX:
+//   import InsightGrid from '../../components/project/InsightGrid.astro';
+//
+//   <InsightGrid insights={[
+//     {
+//       emoji: "🔄",
+//       title: "Friction Blocks Adoption",
+//       body: "If switching tools takes too long or resets progress, users default to the camera."
+//     },
+//     {
+//       emoji: "🔒",
+//       title: "Privacy Anxiety Is Real",
+//       body: "Users fear gallery clutter, accidental shares, and tracking in third-party apps."
+//     },
+//   ]} />
+//
+// Any number of insights is supported. Odd counts work fine — the last card
+// spans the full width on its own row so it doesn't sit in an awkward half-row.
+
+interface Insight {
+  emoji: string;  // e.g. "🔄" — rendered large above the title
+  title: string;  // bold heading for the insight
+  body:  string;  // one or two sentences of explanation
+}
+
+interface Props {
+  insights: Insight[];
+}
+
+const { insights } = Astro.props;
+---
+
+<div class="ig-grid">
+  {insights.map((insight) => (
+    <div class="ig-card">
+
+      {/* Emoji — large, not selectable, purely decorative */}
+      <span class="ig-emoji" aria-hidden="true">{insight.emoji}</span>
+
+      {/* Title — bold, heading color */}
+      <h4 class="ig-title">{insight.title}</h4>
+
+      {/* Body — body text size, comfortable reading line-height */}
+      <p class="ig-body">{insight.body}</p>
+
+    </div>
+  ))}
+</div>
+
+
+<style>
+  /* ── Grid ───────────────────────────────────────────────────────────────── */
+  /* 2 equal columns on desktop. auto-fit with minmax means the grid
+     collapses to 1 column automatically once each card would be narrower
+     than 260px — no media query needed for the basic responsive behaviour. */
+
+  .ig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-md);
+    margin: var(--space-2xl) 0;
+  }
+
+
+  /* ── Card ───────────────────────────────────────────────────────────────── */
+  /* --color-surface is #F2F2F2 in light mode and flips to a dark navy-grey
+     in dark mode — same token used for alternate section backgrounds on the
+     home page, so cards feel native to the site in both themes. */
+
+  .ig-card {
+    background-color: var(--color-surface);
+    border-radius: 8px;
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+
+  /* ── Emoji ──────────────────────────────────────────────────────────────── */
+  /* Displayed at a large size so it reads as an icon, not inline text.
+     user-select: none prevents accidental selection when clicking around. */
+
+  .ig-emoji {
+    font-size: var(--text-3xl);
+    line-height: 1;
+    user-select: none;
+  }
+
+
+  /* ── Title ──────────────────────────────────────────────────────────────── */
+
+  .ig-title {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    /* Reset margin — the card's gap handles spacing */
+    margin: 0;
+  }
+
+
+  /* ── Body ───────────────────────────────────────────────────────────────── */
+
+  .ig-body {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    margin: 0;
+  }
+</style>

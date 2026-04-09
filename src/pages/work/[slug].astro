@@ -1,0 +1,546 @@
+---
+// work/[slug].astro — Individual project page
+//
+// [slug] is a dynamic route — Astro generates one page per project file.
+// e.g. src/content/projects/magnifier.mdx → /work/magnifier
+//
+// This mirrors the pattern used in writing/[slug].astro.
+// getStaticPaths() runs once at build time and returns one entry per project.
+
+import { getCollection, render } from 'astro:content';
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import ProjectAccordion from '../../components/project/ProjectAccordion.astro';
+import Button from '../../components/Button.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.id },
+    props:  { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+
+// render() converts the MDX body into HTML, same as writing posts.
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${data.title} — Marco Lobato`}>
+
+  <Nav />
+
+  <main class="project-main">
+    <div class="project-container">
+
+      <!-- ── Back link ────────────────────────────────────────────────────── -->
+      <!-- Links back to the #work section on the home page, the same way
+           writing posts link back to /#writing. -->
+      <a href="/#work" class="project-back">← Work</a>
+
+      <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+      <!-- Order: title → brand → app link → image.
+           This matches the visual hierarchy from the Framer reference:
+           the title is the largest element, brand is a soft subtitle below it,
+           the button is a quick action, and the image follows as context. -->
+      <header class="project-hero">
+
+        <h1 class="project-title">{data.title}</h1>
+
+        <!-- "Made by Google" — soft italic subtitle below the title -->
+        {data.brand && <p class="project-brand">{data.brand}</p>}
+
+        <!-- App link button — only shown if appLink is set in frontmatter.
+             Uses the site's shared Button component (secondary variant) so it
+             matches every other button on the site. external=true adds
+             target="_blank" rel="noopener noreferrer" for the Play Store link. -->
+        {data.appLink && (
+          <Button
+            label={data.appLinkLabel ?? 'View Project'}
+            href={data.appLink}
+            variant="secondary"
+            external={true}
+          />
+        )}
+
+        <!-- Hero image sits below the text block -->
+        {data.heroImage && (
+          <img
+            src={data.heroImage}
+            alt={data.title}
+            class="project-hero-image"
+          />
+        )}
+
+      </header>
+
+
+      <!-- ── Project Overview ──────────────────────────────────────────────── -->
+      <section class="project-overview">
+        <h2 class="project-section-heading">Project Overview</h2>
+
+        <div class="project-overview-grid">
+
+          <div class="project-overview-item">
+            <p class="project-overview-label">🚀 What it is</p>
+            <p class="project-overview-body">{data.overview.what}</p>
+          </div>
+
+          <div class="project-overview-item">
+            <p class="project-overview-label">🔍 Objective</p>
+            <p class="project-overview-body">{data.overview.objective}</p>
+          </div>
+
+          <div class="project-overview-item">
+            <p class="project-overview-label">✅ What made it different</p>
+            <p class="project-overview-body">{data.overview.differentiator}</p>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ── Contributions ─────────────────────────────────────────────────── -->
+      <!-- ProjectAccordion renders the contributions array as an exclusive
+           accordion: first item open by default, one open at a time.
+           Items with empty content show as label-only rows (no chevron). -->
+      <section class="project-contributions">
+        <h2 class="project-section-heading">Contributions</h2>
+        <ProjectAccordion contributions={data.contributions} />
+      </section>
+
+
+      <!-- ── MDX body ──────────────────────────────────────────────────────── -->
+      <!-- Content is the rendered MDX from the project file's body.
+           Narrative sections (quotes, user journeys, prototypes, reflection)
+           all live here, written in the .mdx file. -->
+      <div class="project-body">
+        <Content />
+      </div>
+
+
+      <!-- ── Outcomes & Impact ─────────────────────────────────────────────── -->
+      <section class="project-outcomes">
+        <h2 class="project-section-heading">Outcomes & Impact</h2>
+
+        <!-- Two-column layout: quote left, outcomes list right.
+             If no outcomesQuote is set, the list spans full width. -->
+        <div class={`project-outcomes-inner${data.outcomesQuote ? ' project-outcomes-inner--split' : ''}`}>
+
+          {data.outcomesQuote && (
+            <div class="project-outcomes-quote">
+              <p class="project-outcomes-quote-text">{data.outcomesQuote.text}</p>
+              <p class="project-outcomes-quote-attr">{data.outcomesQuote.attribution}</p>
+            </div>
+          )}
+
+          <ul class="project-outcomes-list">
+            {data.outcomes.map((item) => (
+              <li class="project-outcome-item">
+                <span class="project-outcome-emoji" aria-hidden="true">{item.emoji}</span>
+                <span class="project-outcome-text">
+                  <strong class="project-outcome-label">{item.label}</strong>
+                  {' — '}{item.description}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+        </div>
+      </section>
+
+
+      <!-- ── Project Reflection ────────────────────────────────────────────── -->
+      <!-- Only rendered when the reflection field is present in frontmatter.
+           The && operator means "if data.reflection exists, render this block".
+           The title is styled softly — smaller, lighter weight, not a bold UI heading.
+           Paragraphs are split on \n\n so one string can produce multiple <p> tags. -->
+      {data.reflection && (
+        <section class="project-reflection">
+          <!-- h2 keeps page hierarchy correct: h1 = project title, h2 = sections.
+               "Project Reflection" is the section label — prominent but still h2. -->
+          <h2 class="project-reflection-label">Project Reflection</h2>
+          <!-- h3 is the sub-heading within this section -->
+          <h3 class="project-reflection-title">{data.reflection.title}</h3>
+          {data.reflection.body.split('\n\n').map((paragraph) => (
+            <p class="project-reflection-body" set:html={paragraph}></p>
+          ))}
+        </section>
+      )}
+
+
+    </div><!-- /.project-container -->
+  </main>
+
+</BaseLayout>
+
+
+<style>
+  /* ── Layout shell ─────────────────────────────────────────────────────── */
+
+  .project-main {
+    padding-top: var(--space-3xl);
+    padding-bottom: 0; /* reflection section is full-bleed and provides its own bottom padding */
+  }
+
+  /* Slightly wider than writing posts — gives project pages more room
+     for images and two-column layouts while staying readable. */
+  .project-container {
+    max-width: 860px;
+    margin-inline: auto;
+    padding-inline: var(--space-xl);
+  }
+
+
+  /* ── Back link ────────────────────────────────────────────────────────── */
+
+  .project-back {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--color-royal-blue);
+    margin-bottom: var(--space-2xl);
+    transition: color 0.2s ease;
+  }
+  /* WCAG 1.4.1: underline is the non-color hover cue.
+     --color-heading flips automatically: navy in light, near-white in dark. */
+  .project-back:hover {
+    color: var(--color-heading);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+
+  /* ── Hero ─────────────────────────────────────────────────────────────── */
+
+  .project-hero {
+    margin-bottom: var(--space-3xl);
+  }
+
+  /* Hero image sits below the title/brand/button block.
+     Top margin gives breathing room between the button and the image. */
+  .project-hero-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: var(--space-2xl);
+    display: block;
+  }
+
+  /* Title — matches the global h1 size (56px), which is the "hero headline"
+     size in the design system. No need to go larger on project pages. */
+  .project-title {
+    font-size: var(--text-5xl);   /* 3.5rem / 56px — same as global h1 */
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-sm);
+  }
+
+  /* "Made by Google" — soft italic subtitle below the title.
+     32px (--text-3xl) matches the design system's soft section size. */
+  .project-brand {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    font-size: var(--text-3xl);   /* 2rem / 32px */
+    color: var(--color-slate);
+    margin-bottom: var(--space-lg);
+  }
+
+
+
+  /* ── Shared section heading ───────────────────────────────────────────── */
+  /* --text-2xl (24px) reads clearly as a structural landmark without competing
+     with the h1. The border-bottom is kept here as default but overridden for
+     sections whose content already provides visual separation (Contributions). */
+
+  .project-section-heading {
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    color: var(--color-heading);
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  }
+
+  /* Contributions heading gets the same border as Project Overview for consistency. */
+
+
+  /* ── Project Overview ────────────────────────────────────────────────── */
+
+  .project-overview {
+    margin-bottom: var(--space-3xl);
+  }
+
+  /* Stack the three overview fields vertically with a divider between each */
+  .project-overview-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .project-overview-label {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-heading);
+    margin-bottom: var(--space-xs);
+  }
+
+  .project-overview-body {
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+  }
+
+
+  /* ── Contributions ───────────────────────────────────────────────────── */
+  /* Layout only — accordion styles live in ProjectAccordion.astro */
+
+  .project-contributions {
+    margin-bottom: var(--space-3xl);
+  }
+
+
+
+  /* ── MDX body ─────────────────────────────────────────────────────────── */
+
+  .project-body {
+    margin-bottom: var(--space-3xl);
+  }
+
+  /* These :global() rules style elements that come from the rendered MDX.
+     Astro's scoped CSS doesn't reach inside <Content />, so :global() is
+     required — same reason writing posts use it. */
+  :global(.project-body h2) { margin-top: var(--space-2xl); margin-bottom: var(--space-xl); }
+  :global(.project-body h3) { margin-top: var(--space-xl);  margin-bottom: var(--space-lg); }
+  :global(.project-body p)  { line-height: var(--leading-loose); margin-bottom: var(--space-md); }
+
+  /* Bullet and numbered lists — shared base styles */
+  :global(.project-body ul),
+  :global(.project-body ol) {
+    padding-left: var(--space-xl);
+    margin-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  :global(.project-body li) {
+    line-height: var(--leading-loose);
+    color: var(--color-charcoal);
+    font-size: var(--text-base);
+  }
+
+  /* WCAG 1.4.1: underline must always be visible — color alone is not enough. */
+  :global(.project-body a) {
+    color: var(--color-royal-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  :global(.project-body a:hover) {
+    color: var(--color-navy);
+  }
+
+  /* Blockquote — used for the pullquotes until Quote.astro is built in Phase 3 */
+  :global(.project-body blockquote) {
+    border-left: 3px solid var(--color-lemon);
+    margin: var(--space-2xl) 0;
+    padding: var(--space-md) var(--space-xl);
+  }
+  :global(.project-body blockquote p) {
+    font-size: var(--text-lg);
+    color: var(--color-heading);
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+  }
+
+  /* Images in the body — same treatment as writing posts */
+  :global(.project-body img) {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: var(--space-xl);
+    display: block;
+  }
+  :global(.project-body img + em) {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-slate);
+    letter-spacing: 0.08em;
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-xl);
+    line-height: var(--leading-relaxed);
+  }
+
+
+  /* ── Outcomes & Impact ───────────────────────────────────────────────── */
+
+  .project-outcomes {
+    margin-bottom: var(--space-3xl);
+  }
+
+  /* Default: single column. --split enables two-column when a quote is present. */
+  .project-outcomes-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .project-outcomes-inner--split {
+    flex-direction: row;
+    align-items: stretch; /* both columns share the same height */
+    gap: var(--space-3xl);
+  }
+
+  /* ── Left column: testimonial quote ─────────────────────────────────── */
+
+  /* Equal 50/50 split with the outcomes list — matches the Framer reference.
+     flex column + justify-content: center vertically centers the quote text
+     within the row height set by the (usually taller) outcomes list. */
+  .project-outcomes-quote {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Fraunces italic at display size — matches our Quote component visual language.
+     Royal blue ties it to the takeaway/statement variant palette. */
+  .project-outcomes-quote-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    color: var(--color-royal-blue);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Dark mode: step up to navy-300 so the text reads on a dark canvas */
+  :global([data-theme="dark"]) .project-outcomes-quote-text {
+    color: hsl(var(--navy-300)); /* #6090E0 — same as statement dark mode */
+  }
+
+  /* Small muted attribution line below the quote */
+  .project-outcomes-quote-attr {
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* ── Right column (or full width): outcomes list ─────────────────────── */
+
+  .project-outcomes-list {
+    list-style: none;
+    padding: 0;
+    flex: 1;       /* take remaining space when in two-column layout */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  /* Each item: emoji + bold label — description, with lemon left border */
+  .project-outcome-item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    padding-left: var(--space-lg);
+    border-left: 3px solid var(--color-lemon);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    font-size: var(--text-base);
+  }
+
+  /* Emoji doesn't need to shrink — keep it full size */
+  .project-outcome-emoji {
+    flex-shrink: 0;
+  }
+
+  /* Bold label inherits heading color so it stands out from the description */
+  .project-outcome-label {
+    color: var(--color-heading);
+  }
+
+  /* Stack to single column on mobile — 240px quote column is too narrow */
+  @media (max-width: 600px) {
+    .project-outcomes-inner--split {
+      flex-direction: column;
+    }
+    /* On mobile, quote stacks above the list at natural height — no centering needed */
+    .project-outcomes-quote {
+      justify-content: flex-start;
+    }
+  }
+
+
+  /* ── Project Reflection ──────────────────────────────────────────────── */
+  /* Full-bleed dark band — same steel background as the dark Quote variant.
+     Negative margin-inline + width: 100vw escapes the container's max-width
+     so the background stretches edge-to-edge. The padding-inline calc aligns
+     the text with the content column (860px max, 32px inner padding). */
+
+  .project-reflection {
+    margin-top: var(--space-3xl);
+    margin-inline: calc(50% - 50vw);
+    width: 100vw;
+    padding-inline: max(var(--space-xl), calc(50vw - 398px));
+    padding-block: var(--space-4xl);
+    background-color: hsl(var(--steel)); /* #2F628C — same as dark Quote */
+  }
+
+  /* Dark mode: deeper navy so the band reads as a distinct zone */
+  :global([data-theme="dark"]) .project-reflection {
+    background-color: hsl(var(--steel-dark)); /* #252F52 */
+  }
+
+  /* "Project Reflection" — section label styled as a prominent h2.
+     Near-white at display size so it reads clearly on the dark background. */
+  .project-reflection-label {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    color: #ffffff;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-lg);
+    /* Override the shared .project-section-heading border — not needed here */
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  /* "Future Vision: Multimodal AI Assistants" — sub-heading within the section.
+     Display font (Fraunces) gives it a softer, editorial feel vs. the bold label above. */
+  .project-reflection-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);
+    color: #ffffff;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* Body paragraphs — slightly softer than pure white so they don't compete
+     with the headings. navy-100 (#C0D4F4) is the lightest brand ramp step. */
+  .project-reflection-body {
+    font-size: var(--text-base);
+    color: #ffffff;
+    line-height: var(--leading-loose);
+    margin-bottom: var(--space-md);
+    max-width: 60ch;
+  }
+
+  /* Inline links inside the reflection body — matches the writing article pattern:
+     no underline at rest, underline on hover. Adapted for the dark background:
+     navy-100 (#C0D4F4) at rest (same soft blue as Quote attributions on steel),
+     white + underline on hover for clear affordance.
+     :global() is required because set:html-injected elements don't receive
+     Astro's scoping attribute. */
+  /* WCAG 1.4.1: underline must always be visible — color alone is not enough.
+     navy-100 with underline at rest; white on hover adds a second cue. */
+  :global(.project-reflection-body a) {
+    color: hsl(var(--navy-100));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  :global(.project-reflection-body a:hover) {
+    color: #ffffff;
+  }
+</style>

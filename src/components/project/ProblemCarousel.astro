@@ -1,0 +1,329 @@
+---
+// ProblemCarousel.astro — Key Problems card carousel for the Design Intent section.
+//
+// Each card: image left, bold title + body right.
+// Controls: prev/next arrows on the left, dot pagination centered — same
+// layout as the home page Carousel.astro.
+//
+// Usage in MDX:
+//   import ProblemCarousel from '../../components/project/ProblemCarousel.astro';
+//
+//   <ProblemCarousel problems={[
+//     {
+//       image: "/projects/magnifier/problem-blurry-text.png",
+//       title: "Blurry text",
+//       body: "Camera smoothing at high zoom blurs text details on zoomed-in images of signage."
+//     },
+//   ]} />
+
+interface Problem {
+  image: string;  // path to image in /public
+  title: string;  // bold heading on the card
+  body:  string;  // one or two sentences of description
+}
+
+interface Props {
+  problems: Problem[];
+}
+
+const { problems } = Astro.props;
+---
+
+<div class="pc-carousel" aria-roledescription="carousel" aria-label="Key problems">
+
+  <!-- Viewport clips everything except the active card -->
+  <div class="pc-viewport">
+    <div class="pc-track">
+
+      {problems.map((problem, i) => (
+        <div
+          class="pc-card"
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${i + 1} of ${problems.length}: ${problem.title}`}
+        >
+          <div class="pc-card-image-wrap">
+            <img src={problem.image} alt={problem.title} class="pc-card-image" />
+          </div>
+
+          <div class="pc-card-text">
+            <h4 class="pc-card-title">{problem.title}</h4>
+            <p class="pc-card-body">{problem.body}</p>
+          </div>
+        </div>
+      ))}
+
+    </div>
+  </div>
+
+
+  <!-- Controls: arrows left, dots centered -->
+  <div class="pc-controls">
+
+    <div class="pc-arrows">
+      <button class="pc-btn pc-btn--prev" aria-label="Previous slide">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+          <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="pc-btn pc-btn--next" aria-label="Next slide">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+          <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="pc-dots" role="tablist" aria-label="Go to slide">
+      {problems.map((problem, i) => (
+        <button
+          class={`pc-dot${i === 0 ? ' pc-dot--active' : ''}`}
+          role="tab"
+          aria-label={`Slide ${i + 1}: ${problem.title}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          data-index={String(i)}
+        ></button>
+      ))}
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.querySelectorAll('.pc-carousel').forEach((carousel) => {
+    const track   = carousel.querySelector('.pc-track') as HTMLElement;
+    const prevBtn = carousel.querySelector('.pc-btn--prev') as HTMLButtonElement;
+    const nextBtn = carousel.querySelector('.pc-btn--next') as HTMLButtonElement;
+    const dots    = carousel.querySelectorAll('.pc-dot') as NodeListOf<HTMLButtonElement>;
+
+    let current = 0;
+    const total = dots.length;
+
+    function goTo(index: number) {
+      current = ((index % total) + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+
+      dots.forEach((dot, i) => {
+        const active = i === current;
+        dot.classList.toggle('pc-dot--active', active);
+        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+    // Touch swipe — >50px horizontal drag changes slide
+    let touchStartX = 0;
+    const viewport = carousel.querySelector('.pc-viewport') as HTMLElement;
+
+    viewport.addEventListener('touchstart', (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e: TouchEvent) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+    }, { passive: true });
+
+    // Keyboard — arrow keys when carousel is focused
+    carousel.addEventListener('keydown', (e: Event) => {
+      const key = (e as KeyboardEvent).key;
+      if (key === 'ArrowLeft')  { goTo(current - 1); (e as KeyboardEvent).preventDefault(); }
+      if (key === 'ArrowRight') { goTo(current + 1); (e as KeyboardEvent).preventDefault(); }
+    });
+  });
+</script>
+
+
+<style>
+  .pc-carousel {
+    margin: var(--space-xl) 0 var(--space-2xl);
+  }
+
+  /* ── Viewport + track ───────────────────────────────────────────────────── */
+
+  .pc-viewport {
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .pc-track {
+    display: flex;
+    transition: transform 0.35s ease;
+  }
+
+  /* ── Card ───────────────────────────────────────────────────────────────── */
+
+  .pc-card {
+    flex-shrink: 0;
+    width: 100%;
+    background-color: hsl(var(--secondary)); /* Navy 100 light / Navy 800 dark */
+    display: flex;
+    align-items: center; /* both columns centered — equal visual padding top and bottom */
+    gap: var(--space-2xl);
+    padding: var(--space-2xl);
+    box-sizing: border-box;
+  }
+
+  /* ── Image ──────────────────────────────────────────────────────────────── */
+
+  .pc-card-image-wrap {
+    flex-shrink: 0;
+    width: 220px;
+    max-height: 280px;    /* caps how tall any image can grow — prevents a portrait
+                             screenshot on slide 2-4 from stretching ALL cards via
+                             the track's default align-items: stretch */
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;        /* makes the image fill the wrap cleanly */
+    align-items: center;  /* centers image vertically inside the capped box */
+  }
+
+  .pc-card-image {
+    width: 100%;
+    height: auto;         /* natural aspect ratio — no cropping */
+    display: block;
+  }
+
+  /* ── Text ───────────────────────────────────────────────────────────────── */
+
+  .pc-card-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .pc-card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+
+  .pc-card-body {
+    font-size: var(--text-base);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    margin: 0;
+  }
+
+  /* ── Controls row ───────────────────────────────────────────────────────── */
+  /* Arrows flush left, dots centered — same layout as the home page carousel */
+
+  .pc-controls {
+    position: relative;   /* anchor for the absolutely-centered dots pill */
+    display: flex;
+    align-items: center;
+    margin-top: var(--space-lg);
+  }
+
+  /* ── Arrow buttons ──────────────────────────────────────────────────────── */
+
+  .pc-arrows {
+    display: flex;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+  }
+
+  .pc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 100px;
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-slate);
+    color: var(--color-charcoal);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .pc-btn:hover {
+    border-color: var(--color-navy);
+    color: var(--color-navy);
+    background-color: rgba(8, 31, 93, 0.05);
+  }
+
+  .pc-btn:focus-visible {
+    outline: 2px solid var(--color-royal-blue);
+    outline-offset: 2px;
+  }
+
+  /* Dark mode — same glass-like treatment as home carousel buttons */
+  :global([data-theme="dark"]) .pc-btn {
+    background-color: rgba(160, 175, 181, 0.1);
+    border-color: var(--color-slate);
+    color: var(--color-heading);
+  }
+
+  :global([data-theme="dark"]) .pc-btn:hover {
+    background-color: rgba(160, 175, 181, 0.2);
+    border-color: var(--color-heading);
+    color: var(--color-heading);
+  }
+
+
+  /* ── Dots ───────────────────────────────────────────────────────────────── */
+
+  .pc-dots {
+    /* Absolute centering over the full controls row — pill shrinks to fit dots */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: var(--color-surface);
+    border: 1.5px solid var(--color-slate);
+    border-radius: 100px;
+    padding-block: var(--space-xs);
+    padding-inline: var(--space-md);
+  }
+
+  .pc-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-slate);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  /* Active dot: --color-heading flips automatically:
+     light mode → navy (#081F5D), dark mode → near-white (#E8EDFF) */
+  .pc-dot--active {
+    background-color: var(--color-heading);
+    transform: scale(1.35);
+  }
+
+  /* ── Mobile ─────────────────────────────────────────────────────────────── */
+
+  @media (max-width: 560px) {
+    .pc-card {
+      flex-direction: column;  /* stack image above text — no overlap */
+      align-items: flex-start;
+      gap: var(--space-lg);
+      padding: var(--space-xl);
+    }
+
+    .pc-card-image-wrap {
+      width: 100%;
+      max-height: 260px;
+    }
+
+    /* On mobile, center arrows too — dots are already absolutely centered */
+    .pc-controls {
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,0 +1,226 @@
+---
+// SolutionBlock.astro — A single solution entry in the Prototypes & Solutions section.
+//
+// Standard fields:   emoji, title, problem, solution, outcome
+// Optional fields:   question (appears between problem and solution)
+//                    image + imageCaption (appear below the labeled rows)
+//
+// Usage in MDX:
+//
+//   import SolutionBlock from '../../components/project/SolutionBlock.astro';
+//
+//   Standard (no question):
+//   <SolutionBlock
+//     emoji="📲"
+//     title="Quick Access"
+//     problem="Setup friction from settings resetting between sessions."
+//     solution="Multiple native entry points — gesture shortcut, lock screen button, persistent last-used settings."
+//     outcome="Users return to Magnifier faster with no configuration overhead."
+//     image="/projects/magnifier/solution-quick-access.png"
+//     imageCaption="Letting users open Pixel Magnifier with familiar shortcuts encourages new habit building."
+//   />
+//
+//   With question (prototype testing variant):
+//   <SolutionBlock
+//     emoji="🔭"
+//     title="Read Distant Signs"
+//     problem="Reading signs at a distance, like airport departure gates."
+//     question="Do users prefer seeing the zoomed image themselves, or having the app reformat the text and describe it aloud?"
+//     solution="The captured image is enhanced and displayed alongside a readable text version with audio narration and icon descriptions."
+//     outcome="Most users preferred visual confirmation. We prioritised a large view area and focused text post-processing on legibility rather than replacement."
+//     image="/projects/magnifier/solution-distant-signs.png"
+//     imageCaption="Prototype flow for reading signs: low-fidelity mocks tested ways to confirm real-world signage — visually, with audio, or both."
+//   />
+
+interface Props {
+  emoji?:         string;  // optional emoji before the title, e.g. "📲"
+  title:          string;  // bold solution name, e.g. "Quick Access"
+  problem:        string;  // what was the problem?
+  question?:      string;  // optional: what did we want to learn? (prototype testing)
+  solution:       string;  // what did we do?
+  outcome:        string;  // what happened?
+  image?:         string;  // optional image path in /public
+  imageCaption?:  string;  // optional caption shown below the image
+}
+
+const { emoji, title, problem, question, solution, outcome, image, imageCaption } = Astro.props;
+---
+
+<div class="sb-block">
+
+  <!-- Title -->
+  <h3 class="sb-title">
+    {emoji && <span class="sb-emoji" aria-hidden="true">{emoji}</span>}
+    {title}
+  </h3>
+
+  <!-- Labeled rows -->
+  <dl class="sb-rows">
+
+    <div class="sb-row">
+      <dt class="sb-row-label">
+        <span class="sb-row-icon" aria-hidden="true">🎯</span>
+        Problem
+      </dt>
+      <dd class="sb-row-value">{problem}</dd>
+    </div>
+
+    {/* Question row — only rendered when the prop is provided */}
+    {question && (
+      <div class="sb-row">
+        <dt class="sb-row-label">
+          <span class="sb-row-icon" aria-hidden="true">❓</span>
+          Question
+        </dt>
+        <dd class="sb-row-value">{question}</dd>
+      </div>
+    )}
+
+    <div class="sb-row">
+      <dt class="sb-row-label">
+        <span class="sb-row-icon" aria-hidden="true">💡</span>
+        Solution
+      </dt>
+      <dd class="sb-row-value">{solution}</dd>
+    </div>
+
+    <div class="sb-row">
+      <dt class="sb-row-label">
+        <span class="sb-row-icon" aria-hidden="true">👍</span>
+        Outcome
+      </dt>
+      <dd class="sb-row-value">{outcome}</dd>
+    </div>
+
+  </dl>
+
+  {/* Image + caption — only rendered when image prop is provided */}
+  {image && (
+    <figure class="sb-figure">
+      <img src={image} alt={imageCaption ?? title} class="sb-image" />
+      {imageCaption && (
+        <figcaption class="sb-caption">{imageCaption}</figcaption>
+      )}
+    </figure>
+  )}
+
+</div>
+
+
+<style>
+  /* ── Block wrapper ──────────────────────────────────────────────────────── */
+  /* Each solution block is separated by generous vertical space so the page
+     reads as a series of discrete design decisions, not a wall of text. */
+
+  .sb-block {
+    margin: var(--space-3xl) 0;
+    padding-top: var(--space-2xl);
+    border-top: 1px solid rgba(128, 128, 128, 0.25);
+  }
+
+  /* Remove top border from the first block — the section heading above it
+     already provides visual separation */
+  .sb-block:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+
+  /* ── Title ──────────────────────────────────────────────────────────────── */
+
+  .sb-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .sb-emoji {
+    font-size: 1.2em;
+    line-height: 1;
+  }
+
+
+  /* ── Labeled rows (dl/dt/dd) ────────────────────────────────────────────── */
+  /* Using a definition list (<dl>) is semantically correct here — each row
+     is a term (Problem, Solution) paired with its value. */
+
+  .sb-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: 0;
+  }
+
+  .sb-row {
+    display: grid;
+    /* Label column: fixed width so all values left-align consistently.
+       Value column: takes remaining space. */
+    grid-template-columns: 120px 1fr;
+    gap: var(--space-md);
+    align-items: baseline;
+  }
+
+  .sb-row-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    /* dt elements have no default margin in our reset, but be explicit */
+    margin: 0;
+  }
+
+  .sb-row-icon {
+    font-size: 1em;
+    flex-shrink: 0;
+  }
+
+  .sb-row-value {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    /* dd elements have a default left margin in browsers — reset it */
+    margin: 0;
+  }
+
+
+  /* ── Image + caption ────────────────────────────────────────────────────── */
+
+  .sb-figure {
+    margin: var(--space-xl) 0 0;
+  }
+
+  .sb-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .sb-caption {
+    margin-top: var(--space-sm);
+    font-size: var(--text-xs);
+    color: var(--color-slate);
+    letter-spacing: 0.06em;
+    line-height: var(--leading-relaxed);
+  }
+
+
+  /* ── Mobile ─────────────────────────────────────────────────────────────── */
+  /* Stack label above value on narrow screens — the fixed 120px column
+     gets too tight below 480px. */
+
+  @media (max-width: 480px) {
+    .sb-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+    }
+  }
+</style>

@@ -112,7 +112,7 @@ video {
    - .carousel-btn / .carousel-dot → carousel controls
    - .theme-toggle → has its own hover background (pill effect)
    - .ps-nav-btn / .ps-dot → PharmacyScenario storyboard controls */
-button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle):not(.ps-nav-btn):not(.ps-dot),
+button:not([data-slot="button"]):not(.carousel-btn):not(.carousel-dot):not(.theme-toggle):not(.ps-nav-btn):not(.ps-dot):not(.pc-btn):not(.pc-dot):not(.pa-trigger),
 input,
 textarea,
 select {
@@ -212,6 +212,13 @@ select {
   --navy-500: 218.2 73.3% 47.1%;   /* #2060D0 — interactive elements */
   --navy-300: 217.5 67.4% 62.7%;   /* #6090E0 — hover states */
   --navy-100: 216.9 70.3% 85.5%;   /* #C0D4F4 — light backgrounds */
+  --navy-50:  216.9 55%   95%;     /* #EBF1FB — barely-there blue tint, cards/surfaces */
+
+  /* Steel blue — #2F628C — used for editorial sections (dark Quote background).
+     Distinct hue (207°) from the navy ramp (221-224°) — more teal, less purple. */
+  --steel:      207 50% 37%;       /* #2F628C — dark Quote bg, light mode */
+  --steel-dark: 227 38% 23%;       /* #252F52 — dark Quote bg, dark mode */
+  --slate-blue: 214 33% 17%;       /* #1E2A3A — light Quote bg, dark mode — warm dark slate */
 
   --lemon-900: 60 86.5% 29%;       /* #8A8A0A — accent text on light bg */
   --lemon-700: 60 82.8% 41%;       /* #BFBF12 — accent borders, tags */
@@ -630,10 +637,15 @@ hr {
   transition: color 0.2s ease;
 }
 
-/* Hover and active page link both use royal-blue */
+/* Hover and active page link both use royal-blue.
+   WCAG 1.4.1: underline on hover is the non-color cue — color alone is not enough.
+   text-decoration-skip-ink: auto keeps the underline from cutting through descenders. */
 .nav-links a:hover,
 .nav-links a[aria-current="page"] {
   color: var(--color-royal-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-skip-ink: auto;
 }
 
 /* Hamburger button — hidden on desktop, visible on mobile */
@@ -1879,6 +1891,14 @@ code {
 .carousel-slide-caption {
   /* Caption sits below the image in normal document flow — no overlay */
   padding: var(--space-md) var(--space-xl);
+}
+
+/* Linked slide wrapper — resets <a> defaults so the slide looks identical
+   to an unlinked one. The cursor change is the only visible difference. */
+.carousel-slide-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 .carousel-slide-title {

@@ -1,0 +1,267 @@
+---
+title: "Pixel 8 Magnifier"
+client: "Google"
+brand: "Made by Google"
+appLink: "https://play.google.com/store/apps/details?id=com.google.android.apps.accessibility.magnifier"
+appLinkLabel: "Download Magnifier"
+heroImage: "/projects/magnifier/hero.png"
+year: 2023
+locked: false
+
+overview:
+  what: "Use your Pixel's camera to magnify small text, read menus, or zoom in on far-away text like signs behind a service counter or street signs."
+  objective: "Design a magnifier app with and for the low-vision community."
+  differentiator: "Co-designed with users with low vision, we leveraged powerful Pixel hardware and Google technology to deliver a fast, private, and robust experience, elevated to the helpful and premium standards of the Made by Google brand."
+
+contributions:
+  - label: "🤝 Role"
+    content: "UX Design Lead — collaboration with hardware org on accessibility innovation."
+  - label: "🧠 Research"
+    content: "Used insights and participated in ongoing studies to iterate on v1 features."
+  - label: "🎓 Domain Knowledge"
+    content: "Designed for users with low vision and limited dexterity."
+  - label: "⚙️ Process Onboarding"
+    content: "Guided cross-functional teams on best practices (UX, i18n, & a11y)."
+  - label: "📣 Marketing"
+    content: "Developed storytelling for launch campaign."
+  - label: "🎨 Visual Design"
+    content: "Designed instructional Play Store overview images and app iconography."
+
+outcomesQuote:
+  text: "\u201CMagnifier has quickly become one of the tools I use daily.\u201D"
+  attribution: "Pixel 8 Trusted Tester"
+
+outcomes:
+  - emoji: "🚀"
+    label: "Launched with Pixel 8"
+    description: "Met pre-installed quality standards."
+  - emoji: "⭐"
+    label: "4.8★ rating at launch"
+    description: "Users praised clarity, speed, and practical design."
+  - emoji: "🔋"
+    label: "45% less battery usage"
+    description: "Compared to camera hacks, boosting adoption."
+  - emoji: "🤝"
+    label: "Partnership with RNIB"
+    description: "Used real community feedback for continuous improvement, resulting in instructors teaching Magnifier continuing to collaborate on other features."
+
+reflection:
+  title: "Future Vision: Multimodal AI Assistants"
+  body: "The Pixel Magnifier was built on one premise: the camera already sees more than the eye can. The design work was making that capability feel personal, private, and worth trusting.\n\nTools like <a href=\"https://deepmind.google/models/project-astra/\">DeepMind's Project Astra</a> are building what comes next at a different scale: a camera-based assistant that interprets the environment in real time, understands the situation surrounding what it sees, and holds context across sessions. Not a filter. An interpreter. The design challenge is the same one the Magnifier faced: making powerful technology discreet enough not to draw attention to the person using it, and robust enough to trust when it counts.\n\nIf you are co-designing tools like this with people with low vision, I would love to connect."
+
+card:
+  category: "User-Centric 0 to 1 Product Design"
+  thumbnail: "/carousel/slide-1.png"
+  featured: true
+---
+
+{/* ─────────────────────────────────────────────────────────────────────────────
+    MAGNIFIER — MDX body
+    Narrative sections live here. Structured data (hero, overview, contributions,
+    outcomes) is in the frontmatter above and rendered by the page template.
+    ───────────────────────────────────────────────────────────────────────────── */}
+
+import Quote from '../../components/project/Quote.astro';
+import InsightGrid from '../../components/project/InsightGrid.astro';
+import ProblemCarousel from '../../components/project/ProblemCarousel.astro';
+import DesignIntent from '../../components/project/DesignIntent.astro';
+import SolutionBlock from '../../components/project/SolutionBlock.astro';
+
+<Quote
+  variant="dark"
+  text="&ldquo;Finally, a magnifier that&rsquo;s reliable, private, and doesn&rsquo;t drain my battery. It feels like it was built just for me.&rdquo;"
+  attribution="Trusted Tester Testimonial, User with Low-Vision"
+/>
+
+## Problem & Context
+
+### Core Challenge
+
+People with low vision showed us how they already used and relied on their phone cameras to see signs or read the small print. It's fast, familiar, and a strongly formed habit. Pixel Magnifier had to offer enough value to make breaking that habit feel worthwhile.
+
+![Camera vs. Magnifier](/projects/magnifier/core-challenge.png)
+*Camera vs. Magnifier: Magnifier launches with inverted filters already on and all controls at hand — large, easy to reach, accessible, and purpose-built for ease of use.*
+
+### Why it mattered
+
+With hundreds of third-party magnification apps available, there was still a critical gap in assistive tools on Android, especially on Pixel devices. Magnifier filled that gap with a purpose-built, Made by Google experience.
+
+**Strategic Highlights** *(my identified focus areas for strategic framing)*:
+
+- 🚀 Assistive tech is a must for Google's flagship devices
+- 👁 Optimizing for people with low vision serves everyone
+- 💎 Robust tools that work offline and don't break
+- 🔒 Deliver advanced tech while preserving user privacy
+- 📱 Pixel's innovation and quality should include accessible features
+
+<Quote
+  variant="light"
+  text="&ldquo;I already use my camera to read stuff. Why would I need a separate app that also accesses my photos? I don&rsquo;t trust those third-party tools with my privacy.&rdquo;"
+  attribution="Early field study participant quote"
+/>
+
+## User Journeys & Key Insights
+
+Through storyboarding I wove together a meta persona user journey. I used real user quotes to pinpoint exactly where users' default camera use and workarounds fall short across themes and documented key insights.
+
+![User journey: Using the Phone's Camera as a Digital Magnifier](/projects/magnifier/user-journey-table.png)
+*This artifact showcases how I translate user pain points into insights, visualizing scenarios that paint a clear picture to empathize with users and help define project objectives based directly on user problems.*
+
+![Storyboard: Alex needs a better way to read small text with her phone camera](/projects/magnifier/user-journey-storyboard.png)
+*Alex needs a better way to read small text with her phone camera. She struggles with blurry close-ups, screen glare, and decorative fonts, resulting in many unusable photos in her camera roll.*
+
+### Key Insights
+
+<InsightGrid insights={[
+  {
+    emoji: "🔄",
+    title: "Friction Blocks Adoption",
+    body: "If switching tools takes too long or resets progress, users default to the camera."
+  },
+  {
+    emoji: "🔧",
+    title: "Cameras Are Built to Snap, Not See",
+    body: "Their controls are photo-first, not real-time assistive."
+  },
+  {
+    emoji: "🔒",
+    title: "Privacy Anxiety Is Real",
+    body: "Users fear gallery clutter, accidental shares, and tracking in third-party apps."
+  },
+  {
+    emoji: "😶‍🌫️",
+    title: "Stigma Shapes Behavior",
+    body: "People avoid using magnifiers in public to avoid drawing attention to themselves."
+  }
+]} />
+
+<Quote
+  variant="statement"
+  eyebrow="My takeaway:"
+  text="&ldquo;Magnifiers and cameras are not reliable companions during users&rsquo; most stressful, on&#8209;the&#8209;go moments.&rdquo;"
+/>
+
+## Objectives and North Star
+
+<Quote
+  variant="statement"
+  eyebrow="Goal"
+  text="Make switching from the default camera to Magnifier feel like a no-brainer."
+/>
+
+**We set out to design a magnifier that's:**
+
+1. 🔄 **Fast to launch** — Opens instantly and remembers your last settings.
+2. ✋ **Easy to use one-handed** — Big buttons, bottom toolbar, gesture-ready.
+3. 🔒 **Private by default** — No gallery clutter, no cloud upload.
+4. 🌈 **Assistive, not reactive** — Adaptive brightness, text enhanced captures, and clarity tools.
+
+<Quote
+  variant="statement"
+  eyebrow="⭐ North Star Statement:"
+  text="Enable low-vision users to inspect details and read clearly anytime."
+/>
+
+![North Star: Ready at start up and optimize one-handed use](/projects/magnifier/north-star-sketch.png)
+*Designing for instant clarity and real-world ease: Magnifier opens ready to zoom, with large, easy-to-reach controls optimized for one-handed use — minimizing friction and maximizing usability.*
+
+## Design Intent and User Needs
+
+<DesignIntent
+  intent="Make Magnifier feel as familiar as the camera app, but more capable."
+  needs={[
+    {
+      number: 1,
+      icon: "🧭",
+      label: "Frame",
+      description: "Easy zoom helpful for signage",
+      image: "/projects/magnifier/need-frame.png"
+    },
+    {
+      number: 2,
+      icon: "🛠",
+      label: "Adjust",
+      description: "Quick filters for text contrast",
+      image: "/projects/magnifier/need-adjust.png"
+    },
+    {
+      number: 3,
+      icon: "👁",
+      label: "Use",
+      description: "Seamless read / copy / translate",
+      image: "/projects/magnifier/need-use.png"
+    }
+  ]}
+/>
+
+### Key Problems
+
+<ProblemCarousel problems={[
+  {
+    image: "/projects/magnifier/problem-blurry-text.png",
+    title: "Blurry text",
+    body: "Camera smoothing at high zoom blurs text details on zoomed-in images of signage."
+  },
+  {
+    image: "/projects/magnifier/problem-nested-controls.png",
+    title: "Nested setting, image adjustment controls, and primary actions",
+    body: "Modes and quick image adjustments demand navigation and two-handed use."
+  },
+  {
+    image: "/projects/magnifier/problem-interruptions.png",
+    title: "Task interruptions and multitasking",
+    body: "Notifications and screen locks are disruptive, forcing users to restart their tasks."
+  },
+  {
+    image: "/projects/magnifier/problem-stigma.png",
+    title: "Social stigma",
+    body: "Using phone cameras publicly attracts unwanted attention, forcing users to be quick, leading to cluttered photo libraries and accidental sharing."
+  }
+]} />
+
+## Prototypes and Solutions
+
+### Prototype Highlight: Read Distant Signs
+
+<SolutionBlock
+  emoji="🔭"
+  title="Read Distant Signs"
+  problem="Reading signs at a distance — like airport departure gates."
+  question="We wanted to know if users preferred seeing the zoomed image themselves, or having the app reformat the text and icons or describe it aloud."
+  solution="The captured image is enhanced and displayed alongside a readable text version that includes audio narration and icon descriptions."
+  outcome="Most users preferred visual confirmation, using the zoomed image to match signs in context. This quick test helped us prioritise a large view area and focus text post-processing on legibility rather than replacement."
+  image="/projects/magnifier/solution-distant-signs.png"
+  imageCaption="Prototype flow for reading signs: low-fidelity mocks tested ways to confirm real-world signage — visually, with audio, or both."
+/>
+
+### Solutions
+
+<SolutionBlock
+  emoji="📲"
+  title="Quick Access"
+  problem="Setup friction from settings resetting between sessions."
+  solution="Multiple native entry points — gesture shortcut, lock screen button, persistent last-used settings."
+  outcome="Users return to Magnifier faster with no configuration overhead."
+  image="/projects/magnifier/solution-quick-access.png"
+  imageCaption="Letting users open Pixel Magnifier with familiar shortcuts encourages new habit building."
+/>
+
+<SolutionBlock
+  emoji="✋"
+  title="One-Handed Use"
+  problem="Top-aligned controls are hard to reach with one hand."
+  solution="Bottom-aligned toolbars with large tap zones and long-press zoom."
+  outcome="Easier real-world use, especially one-handed in motion."
+  image="/projects/magnifier/solution-one-handed.png"
+  imageCaption="Large dedicated buttons at the bottom ensure more people can use Magnifier one-handed in real-world situations."
+/>
+
+<SolutionBlock
+  emoji="🕯️"
+  title="Discreet Use"
+  problem="Bright screens draw unwanted attention in public."
+  solution="Auto-brightness plus manual flashlight controls, dimmed by default."
+  outcome="Dignified, low-disruption usage in any environment."
+  image="/projects/magnifier/solution-discreet.png"
+  imageCaption="The flashlight, dimmed by default, can be manually controlled for reading in dark environments."
+/>

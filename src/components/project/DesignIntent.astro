@@ -1,0 +1,239 @@
+---
+// DesignIntent.astro — Design Intent statement + User Needs grid.
+//
+// Rendered as one visual unit: the intent statement flows directly into the
+// three-column needs grid below with no visual break between them.
+//
+// Intent uses the Quote "statement" variant — large Fraunces italic, royal blue,
+// full section height, and scroll-reveal animation — matching the rhythm of the
+// other quote blocks on the page.
+//
+// User needs layout: three columns, label + icon above, portrait screenshot below.
+// Images use object-fit: contain so phone screenshots are never cropped.
+//
+// Usage in MDX:
+//   import DesignIntent from '../../components/project/DesignIntent.astro';
+//
+//   <DesignIntent
+//     intent="Make Magnifier feel as familiar as the camera app, but more capable."
+//     needs={[
+//       {
+//         number: 1,
+//         icon: "🧭",
+//         label: "Frame",
+//         description: "Easy zoom helpful for signage",
+//         image: "/projects/magnifier/need-frame.png"
+//       },
+//       {
+//         number: 2,
+//         icon: "🛠",
+//         label: "Adjust",
+//         description: "Quick filters for text contrast",
+//         image: "/projects/magnifier/need-adjust.png"
+//       },
+//       {
+//         number: 3,
+//         icon: "👁",
+//         label: "Use",
+//         description: "Seamless read / copy / translate",
+//         image: "/projects/magnifier/need-use.png"
+//       },
+//     ]}
+//   />
+
+interface Need {
+  number:      number; // 1, 2, 3 — shown as "1."
+  icon:        string; // emoji, e.g. "🧭"
+  label:       string; // short bold name, e.g. "Frame"
+  description: string; // one short phrase, e.g. "Easy zoom helpful for signage"
+  image:       string; // path to screenshot in /public
+}
+
+interface Props {
+  intent: string;  // the design intent statement — displayed as large italic text
+  needs:  Need[];  // always 3 items
+}
+
+import Quote from './Quote.astro';
+
+const { intent, needs } = Astro.props;
+---
+
+<div class="di-section">
+
+  <!-- ── Design Intent statement ─────────────────────────────────────────── -->
+  <!-- Uses the Quote "statement" variant directly — large Fraunces italic,
+       full section height, and scroll-reveal — matching the page's quote rhythm. -->
+  <Quote variant="statement" eyebrow="Design Intent" text={intent} />
+
+
+  <!-- ── User Needs grid ────────────────────────────────────────────────── -->
+  <div class="di-needs-header">
+    <p class="di-needs-label">User Needs</p>
+  </div>
+
+  <div class="di-needs-grid">
+
+    <!-- Row 1: all three labels — rendered together so they share a grid row -->
+    {needs.map((need) => (
+      <p class="di-need-tag">
+        <span class="di-need-number">{need.number}.</span>
+        <span class="di-need-icon" aria-hidden="true">{need.icon}</span>
+        <span class="di-need-label">{need.label}:</span>
+        <span class="di-need-desc">{need.description}</span>
+      </p>
+    ))}
+
+    <!-- Row 2: all three images — rendered together so they share a grid row -->
+    {needs.map((need) => (
+      <div class="di-need-image-wrap">
+        <img
+          src={need.image}
+          alt={`${need.label}: ${need.description}`}
+          class="di-need-image"
+        />
+      </div>
+    ))}
+
+  </div>
+
+  <!-- Closing line — sits below the images, centered -->
+  <p class="di-closing">With these needs in focus, we prototyped and implemented the v1 experience.</p>
+
+</div>
+
+
+<style>
+  /* ── Section wrapper ────────────────────────────────────────────────────── */
+  /* Extra vertical margin so the section breathes within the article flow */
+
+  .di-section {
+    margin: var(--space-3xl) 0;
+  }
+
+
+  /* ── User Needs header ──────────────────────────────────────────────────── */
+
+  .di-needs-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .di-needs-label {
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    margin: 0;
+  }
+
+
+  /* ── Three-column needs grid ────────────────────────────────────────────── */
+  /* Two explicit rows: labels in row 1, images in row 2.
+     display: contents on .di-need makes the wrapper invisible to the grid,
+     so its two children (tag + image-wrap) participate directly in the parent grid.
+     With 3 needs × 2 children = 6 items in a 3-column grid:
+       items 1-3 → all three labels, same row
+       items 4-6 → all three images, same row
+     This means images always align horizontally regardless of label text height. */
+
+  /* Labels fill row 1, images fill row 2 — guaranteed alignment because
+     all three labels are rendered before any image in the DOM. */
+  .di-needs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: var(--space-xl);
+    row-gap: var(--space-md);
+    align-items: start; /* all items anchor to top of their row — labels and images stay aligned */
+  }
+
+
+  /* ── Need label row ─────────────────────────────────────────────────────── */
+  /* "1. 🧭 Frame: Easy zoom helpful for signage" — all on one line,
+     wrapping naturally if the description is long */
+
+  .di-need-tag {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25em;
+  }
+
+  .di-need-number {
+    color: var(--color-slate);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .di-need-icon {
+    /* Slightly larger than the surrounding text */
+    font-size: 1.1em;
+  }
+
+  .di-need-label {
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+  }
+
+  .di-need-desc {
+    color: var(--color-charcoal);
+  }
+
+
+  /* ── Screenshot image ───────────────────────────────────────────────────── */
+  /* object-fit: contain — never crops the screenshot.
+     The image renders at its natural aspect ratio (portrait/phone) scaled
+     to fill the column width. No fixed height so nothing is cut off. */
+
+  .di-need-image-wrap {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .di-need-image {
+    width: 100%;
+    height: auto;       /* natural portrait aspect ratio preserved */
+    display: block;
+    object-fit: contain;
+  }
+
+
+  /* ── Closing line ───────────────────────────────────────────────────────── */
+
+  .di-closing {
+    margin-top: var(--space-2xl);
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+    font-style: italic;
+  }
+
+
+  /* ── Mobile ─────────────────────────────────────────────────────────────── */
+  /* Three portrait images in three columns is too narrow on small screens.
+     Stack to a single column — each need takes full width. */
+
+  @media (max-width: 600px) {
+    .di-needs-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+
+    /* On desktop, DOM order is: all 3 labels, then all 3 images — this lets the
+       3-column grid put them in two aligned rows. On mobile with 1 column, that
+       stacks all labels first then all images, which breaks the visual grouping.
+       CSS `order` fixes this by pairing each label with its image:
+       label1(1) → image1(2) → label2(3) → image2(4) → label3(5) → image3(6) */
+    .di-need-tag:nth-child(1)        { order: 1; }
+    .di-need-image-wrap:nth-child(4) { order: 2; }
+    .di-need-tag:nth-child(2)        { order: 3; }
+    .di-need-image-wrap:nth-child(5) { order: 4; }
+    .di-need-tag:nth-child(3)        { order: 5; }
+    .di-need-image-wrap:nth-child(6) { order: 6; }
+
+    /* No image height override — base styles (width: 100%; height: auto; object-fit: contain)
+       handle portrait phone screenshots correctly without cropping. */
+  }
+</style>

@@ -1,0 +1,231 @@
+---
+// ProjectAccordion.astro — Contributions accordion for project pages.
+//
+// Usage in work/[slug].astro:
+//   import ProjectAccordion from '../../components/project/ProjectAccordion.astro';
+//   <ProjectAccordion contributions={data.contributions} />
+//
+// Behaviour (specified in PRD):
+//   - Exclusive: only one item open at a time.
+//   - First item open by default (open: 0).
+//   - Items with an empty content string are label-only — no chevron, not clickable.
+//
+// Alpine.js is loaded globally via @astrojs/alpinejs — no import needed here.
+// All directives (x-data, x-show, @click, :class) are rendered as plain HTML
+// attributes by Astro at build time and picked up by Alpine at runtime.
+
+interface Contribution {
+  label:   string;
+  content: string;
+}
+
+interface Props {
+  contributions: Contribution[];
+}
+
+const { contributions } = Astro.props;
+---
+
+<!--
+  x-data holds one piece of state: the index of the currently open item.
+  open: 0  →  first item starts open.
+  open: null  →  no item open (happens when the open item is clicked again).
+-->
+<div class="pa-accordion" x-data="{ open: 0 }">
+
+  {contributions.map((item, i) => (
+
+    <div class="pa-item">
+
+      {item.content ? (
+        // ── Expandable item ─────────────────────────────────────────────────
+        // Rendered when the contribution has detail text.
+        // The button opens/closes this item exclusively.
+        //
+        // @click logic:
+        //   If this item IS already open (open === i), close it (set open to null).
+        //   If this item is NOT open, open it (set open to i).
+        //   This is the "toggle" that also acts as "exclusive" accordion.
+        <>
+          <button
+            class="pa-trigger"
+            type="button"
+            @click={`open = (open === ${i}) ? null : ${i}`}
+            :aria-expanded={`open === ${i}`}
+            aria-controls={`pa-content-${i}`}
+          >
+            <span class="pa-label">{item.label}</span>
+
+            <!-- Chevron SVG — rotates 180° when this item is open.
+                 :class adds the pa-chevron--open modifier class when open === i,
+                 which triggers the CSS rotation. -->
+            <svg
+              class="pa-chevron"
+              :class={`{ 'pa-chevron--open': open === ${i} }`}
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+
+          <!-- CSS grid height animation: grid-template-rows goes from 0fr (collapsed)
+               to 1fr (full height). This pushes cards below as it expands — no
+               JavaScript measurement needed, works at any content height.
+               Alpine's :class toggles pa-content-wrap--open to trigger the transition. -->
+          <div
+            class="pa-content-wrap"
+            id={`pa-content-${i}`}
+            :class={`{ 'pa-content-wrap--open': open === ${i} }`}
+          >
+            <div class="pa-content">
+              <p class="pa-content-text">{item.content}</p>
+            </div>
+          </div>
+        </>
+
+      ) : (
+
+        // ── Label-only item ─────────────────────────────────────────────────
+        // Rendered when content is an empty string "".
+        // Not a button — just a styled row showing the contribution category.
+        // No chevron, no click handler.
+        <div class="pa-trigger pa-trigger--static" aria-label={item.label}>
+          <span class="pa-label">{item.label}</span>
+        </div>
+
+      )}
+
+    </div>
+
+  ))}
+
+</div>
+
+
+<style>
+  /* ── Surface token ──────────────────────────────────────────────────────── */
+  /* Defined here so the card color is easy to change in one place.
+     --navy-100 (#C0D4F4) is the lightest step of the navy brand ramp —
+     a subtle blue tint that connects the cards to the brand without being heavy.
+     In dark mode we switch to navy at 25% opacity over the dark canvas,
+     which gives the same "tinted card" feel without the light blue being jarring. */
+
+  .pa-accordion {
+    --pa-surface: hsl(var(--navy-50));   /* light mode: barely-there blue tint */
+  }
+
+  :global([data-theme="dark"]) .pa-accordion {
+    --pa-surface: rgba(8, 31, 93, 0.25); /* dark mode: navy at 25% opacity */
+  }
+
+
+  /* ── Each row — card style ──────────────────────────────────────────────── */
+  /* Each item is now a self-contained card: rounded corners, tinted surface,
+     subtle shadow for lift. Gap between cards replaces the old border-bottom divider. */
+
+  .pa-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-top: var(--space-md);  /* small gap between heading border and first card */
+  }
+
+  .pa-item {
+    background-color: var(--pa-surface);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    overflow: hidden; /* keeps content inside the rounded corners */
+  }
+
+
+  /* ── Trigger (button row) ───────────────────────────────────────────────── */
+
+  .pa-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);  /* horizontal padding inside the card */
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .pa-trigger--static {
+    cursor: default;
+  }
+
+  .pa-trigger:not(.pa-trigger--static):hover .pa-label {
+    color: var(--color-royal-blue);
+  }
+
+
+  /* ── Label text ─────────────────────────────────────────────────────────── */
+
+  .pa-label {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    transition: color 0.15s ease;
+  }
+
+
+  /* ── Chevron icon ───────────────────────────────────────────────────────── */
+
+  .pa-chevron {
+    color: var(--color-slate);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .pa-chevron--open {
+    transform: rotate(180deg);
+  }
+
+
+  /* ── Content panel — CSS grid height animation ──────────────────────────── */
+  /* How this works:
+     - .pa-content-wrap is a grid container with one row.
+     - By default that row is 0fr — zero height, content invisible.
+     - When --open is added, the row becomes 1fr — the content's natural height.
+     - CSS transitions this smoothly, pushing cards below as the height grows.
+     - .pa-content has overflow: hidden so nothing peeks out during the animation.
+     - cubic-bezier(0.4, 0, 0.2, 1) is Material Design's standard easing:
+       fast start, gentle landing — feels natural and intentional. */
+
+  .pa-content-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .pa-content-wrap--open {
+    grid-template-rows: 1fr;
+  }
+
+  /* overflow: hidden clips the content to zero height when the grid row is 0fr.
+     IMPORTANT: no padding here — padding creates a minimum visible height even
+     when the row is 0fr, which causes text to peek out in the collapsed state.
+     Padding lives on the text element instead. */
+  .pa-content {
+    overflow: hidden;
+  }
+
+  .pa-content-text {
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+    line-height: var(--leading-loose);
+    margin: 0;
+    /* Padding is here, not on .pa-content, so collapsing works correctly */
+    padding: 0 var(--space-lg) var(--space-md);
+  }
+</style>

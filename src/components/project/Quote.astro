@@ -107,10 +107,11 @@ const {
        On wide screens calc(50% - 430px) wins — centers text at 860px wide.
        On narrow screens var(--space-xl) wins — keeps normal breathing room. */
     padding-block: var(--space-4xl);
-    /* 50vw = half the viewport (not the parent). On a 1440px screen:
-       calc(50vw - 430px) = 720px - 430px = 290px of padding each side,
-       leaving exactly 860px of text width centered in the viewport. */
-    padding-inline: max(var(--space-xl), calc(50vw - 430px));
+    /* Aligns text with the content inside .project-container.
+       The container is max 860px centered, with 32px (--space-xl) of inner padding.
+       Content left edge = (viewport - 860) / 2 + 32 = 50vw - 430px + 32px = 50vw - 398px.
+       max() falls back to --space-xl when the viewport is narrower than 860px. */
+    padding-inline: max(var(--space-xl), calc(50vw - 398px));
 
     /* Taller min-height so the section has real presence */
     min-height: clamp(400px, 50vh, 600px);

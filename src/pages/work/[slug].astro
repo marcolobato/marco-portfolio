@@ -253,12 +253,7 @@ const { Content } = await render(project);
     border-bottom: 1px solid rgba(128, 128, 128, 0.25);
   }
 
-  /* Contributions cards already provide visual separation — the border-bottom
-     on the heading would create a double boundary. Remove it here only. */
-  .project-contributions .project-section-heading {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
+  /* Contributions heading gets the same border as Project Overview for consistency. */
 
 
   /* ── Project Overview ────────────────────────────────────────────────── */
@@ -462,7 +457,7 @@ const { Content } = await render(project);
     /* Extra space above separates it clearly from Outcomes */
     margin-top: var(--space-4xl);
     padding-top: var(--space-3xl);
-    border-top: 1px solid var(--color-slate);
+    border-top: 1px solid rgba(128, 128, 128, 0.25);
   }
 
   /* Small label above the title — "Project Reflection" in muted caps */

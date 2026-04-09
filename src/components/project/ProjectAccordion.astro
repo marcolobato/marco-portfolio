@@ -212,11 +212,12 @@ const { contributions } = Astro.props;
     grid-template-rows: 1fr;
   }
 
-  /* overflow: hidden is required on the inner div — it's what clips the content
-     to zero height when the grid row is 0fr. Without it, text would still show. */
+  /* overflow: hidden clips the content to zero height when the grid row is 0fr.
+     IMPORTANT: no padding here — padding creates a minimum visible height even
+     when the row is 0fr, which causes text to peek out in the collapsed state.
+     Padding lives on the text element instead. */
   .pa-content {
     overflow: hidden;
-    padding: 0 var(--space-lg) var(--space-md);
   }
 
   .pa-content-text {
@@ -224,5 +225,7 @@ const { contributions } = Astro.props;
     color: var(--color-charcoal);
     line-height: var(--leading-loose);
     margin: 0;
+    /* Padding is here, not on .pa-content, so collapsing works correctly */
+    padding: 0 var(--space-lg) var(--space-md);
   }
 </style>

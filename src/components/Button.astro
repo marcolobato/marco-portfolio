@@ -14,7 +14,10 @@
 //   icon     — optional SVG string rendered on the LEFT of the label.
 //              When provided, the right-side arrow is hidden and the icon appears instead.
 //              Pass a raw SVG string, e.g. icon='<svg ...>...</svg>'
-const { label, href, variant = 'primary', download = false, disabled = false, icon } = Astro.props;
+// external — when true, adds target="_blank" rel="noopener noreferrer" so the
+// link opens in a new tab without giving the destination access to this page.
+// Use this for any button that links outside the site (Play Store, LinkedIn, etc.)
+const { label, href, variant = 'primary', download = false, disabled = false, icon, external = false } = Astro.props;
 ---
 
 <!--
@@ -67,6 +70,8 @@ const { label, href, variant = 'primary', download = false, disabled = false, ic
     href={disabled ? undefined : href}
     class={`btn btn--${variant}${disabled ? ' btn--disabled' : ''}`}
     download={download ? true : undefined}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
     aria-disabled={disabled ? 'true' : undefined}
     tabindex={disabled ? -1 : undefined}
   >

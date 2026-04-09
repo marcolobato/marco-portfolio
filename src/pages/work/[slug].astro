@@ -12,6 +12,7 @@ import '../../styles/global.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import ProjectAccordion from '../../components/project/ProjectAccordion.astro';
+import Button from '../../components/Button.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -52,17 +53,17 @@ const { Content } = await render(project);
         <!-- "Made by Google" — soft italic subtitle below the title -->
         {data.brand && <p class="project-brand">{data.brand}</p>}
 
-        <!-- App link button — only shown if appLink is set in frontmatter -->
+        <!-- App link button — only shown if appLink is set in frontmatter.
+             Uses the site's shared Button component (secondary variant) so it
+             matches every other button on the site. external=true adds
+             target="_blank" rel="noopener noreferrer" for the Play Store link. -->
         {data.appLink && (
-          <a href={data.appLink} class="project-app-link" target="_blank" rel="noopener noreferrer">
-            {data.appLinkLabel ?? 'View Project'}
-            <!-- External link icon -->
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-              <polyline points="15 3 21 3 21 9"/>
-              <line x1="10" y1="14" x2="21" y2="3"/>
-            </svg>
-          </a>
+          <Button
+            label={data.appLinkLabel ?? 'View Project'}
+            href={data.appLink}
+            variant="secondary"
+            external={true}
+          />
         )}
 
         <!-- Hero image sits below the text block -->
@@ -236,23 +237,6 @@ const { Content } = await render(project);
     margin-bottom: var(--space-lg);
   }
 
-  /* App link — styled as a small outlined button */
-  .project-app-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    font-size: var(--text-sm);
-    color: var(--color-royal-blue);
-    border: 1px solid var(--color-royal-blue);
-    border-radius: 4px;
-    padding: var(--space-xs) var(--space-md);
-    text-decoration: none;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-  .project-app-link:hover {
-    background-color: var(--color-royal-blue);
-    color: var(--color-white);
-  }
 
 
   /* ── Shared section heading ───────────────────────────────────────────── */

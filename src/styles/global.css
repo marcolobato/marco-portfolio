@@ -212,6 +212,7 @@ select {
   --navy-500: 218.2 73.3% 47.1%;   /* #2060D0 — interactive elements */
   --navy-300: 217.5 67.4% 62.7%;   /* #6090E0 — hover states */
   --navy-100: 216.9 70.3% 85.5%;   /* #C0D4F4 — light backgrounds */
+  --navy-50:  216.9 55%   95%;     /* #EBF1FB — barely-there blue tint, cards/surfaces */
 
   --lemon-900: 60 86.5% 29%;       /* #8A8A0A — accent text on light bg */
   --lemon-700: 60 82.8% 41%;       /* #BFBF12 — accent borders, tags */

@@ -76,23 +76,18 @@ const { contributions } = Astro.props;
             </svg>
           </button>
 
-          <!-- x-show toggles display based on whether open === this item's index.
-               x-transition adds Alpine's built-in fade in/out (no plugin needed).
-               x-cloak hides the content before Alpine initialises so there's
-               no flash of expanded content on page load. -->
+          <!-- CSS grid height animation: grid-template-rows goes from 0fr (collapsed)
+               to 1fr (full height). This pushes cards below as it expands — no
+               JavaScript measurement needed, works at any content height.
+               Alpine's :class toggles pa-content-wrap--open to trigger the transition. -->
           <div
-            class="pa-content"
+            class="pa-content-wrap"
             id={`pa-content-${i}`}
-            x-show={`open === ${i}`}
-            x-transition:enter="pa-enter"
-            x-transition:enter-start="pa-enter-start"
-            x-transition:enter-end="pa-enter-end"
-            x-transition:leave="pa-leave"
-            x-transition:leave-start="pa-leave-start"
-            x-transition:leave-end="pa-leave-end"
-            x-cloak
+            :class={`{ 'pa-content-wrap--open': open === ${i} }`}
           >
-            <p class="pa-content-text">{item.content}</p>
+            <div class="pa-content">
+              <p class="pa-content-text">{item.content}</p>
+            </div>
           </div>
         </>
 
@@ -116,42 +111,59 @@ const { contributions } = Astro.props;
 
 
 <style>
-  /* ── Accordion wrapper ──────────────────────────────────────────────────── */
-  /* No border-top here — the section heading above already has a border-bottom
-     that acts as the divider. Adding one here would create a double line. */
+  /* ── Surface token ──────────────────────────────────────────────────────── */
+  /* Defined here so the card color is easy to change in one place.
+     --navy-100 (#C0D4F4) is the lightest step of the navy brand ramp —
+     a subtle blue tint that connects the cards to the brand without being heavy.
+     In dark mode we switch to navy at 25% opacity over the dark canvas,
+     which gives the same "tinted card" feel without the light blue being jarring. */
 
-  .pa-accordion {}
+  .pa-accordion {
+    --pa-surface: hsl(var(--navy-50));   /* light mode: barely-there blue tint */
+  }
+
+  :global([data-theme="dark"]) .pa-accordion {
+    --pa-surface: rgba(8, 31, 93, 0.25); /* dark mode: navy at 25% opacity */
+  }
 
 
-  /* ── Each row ───────────────────────────────────────────────────────────── */
+  /* ── Each row — card style ──────────────────────────────────────────────── */
+  /* Each item is now a self-contained card: rounded corners, tinted surface,
+     subtle shadow for lift. Gap between cards replaces the old border-bottom divider. */
+
+  .pa-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-top: var(--space-md);  /* small gap between heading border and first card */
+  }
 
   .pa-item {
-    border-bottom: 1px solid var(--color-slate);
+    background-color: var(--pa-surface);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    overflow: hidden; /* keeps content inside the rounded corners */
   }
 
 
   /* ── Trigger (button row) ───────────────────────────────────────────────── */
 
-  /* Shared styles for both the interactive button and the static label row */
   .pa-trigger {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: var(--space-md) 0;
+    padding: var(--space-md) var(--space-lg);  /* horizontal padding inside the card */
     background: none;
     border: none;
     cursor: pointer;
     text-align: left;
   }
 
-  /* Static rows (label-only) are not interactive — remove pointer cursor */
   .pa-trigger--static {
     cursor: default;
   }
 
-  /* Subtle highlight on hover for interactive rows only.
-     :not(.pa-trigger--static) targets buttons but not the static divs. */
   .pa-trigger:not(.pa-trigger--static):hover .pa-label {
     color: var(--color-royal-blue);
   }
@@ -171,25 +183,40 @@ const { contributions } = Astro.props;
 
   .pa-chevron {
     color: var(--color-slate);
-    flex-shrink: 0;           /* Prevents the icon from shrinking on narrow screens */
+    flex-shrink: 0;
     transition: transform 0.2s ease;
   }
 
-  /* When pa-chevron--open is added by Alpine's :class directive, rotate 180°.
-     This points the chevron upward when the item is expanded. */
   .pa-chevron--open {
     transform: rotate(180deg);
   }
 
 
-  /* ── Content panel ──────────────────────────────────────────────────────── */
+  /* ── Content panel — CSS grid height animation ──────────────────────────── */
+  /* How this works:
+     - .pa-content-wrap is a grid container with one row.
+     - By default that row is 0fr — zero height, content invisible.
+     - When --open is added, the row becomes 1fr — the content's natural height.
+     - CSS transitions this smoothly, pushing cards below as the height grows.
+     - .pa-content has overflow: hidden so nothing peeks out during the animation.
+     - cubic-bezier(0.4, 0, 0.2, 1) is Material Design's standard easing:
+       fast start, gentle landing — feels natural and intentional. */
 
-  /* x-cloak hides the element before Alpine initialises.
-     Without this, content panels flash open on first load. */
-  [x-cloak] { display: none !important; }
+  .pa-content-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
+  .pa-content-wrap--open {
+    grid-template-rows: 1fr;
+  }
+
+  /* overflow: hidden is required on the inner div — it's what clips the content
+     to zero height when the grid row is 0fr. Without it, text would still show. */
   .pa-content {
-    padding-bottom: var(--space-md);
+    overflow: hidden;
+    padding: 0 var(--space-lg) var(--space-md);
   }
 
   .pa-content-text {
@@ -197,25 +224,5 @@ const { contributions } = Astro.props;
     color: var(--color-charcoal);
     line-height: var(--leading-loose);
     margin: 0;
-    /* Indent the content slightly to visually align under the label */
-    padding-right: var(--space-2xl);
   }
-
-
-  /* ── Transition classes (used by x-transition:* directives) ──────────────
-     Alpine's named transition system lets us define enter/leave animations
-     as CSS classes instead of using inline style attributes.
-
-     enter/leave:      applied for the full duration of the animation
-     enter-start:      the initial state (before the animation begins)
-     enter-end:        the final state (after the animation completes)
-     leave-start:      the state at the start of the leave animation
-     leave-end:        the state at the end of the leave animation            */
-
-  :global(.pa-enter)        { transition: opacity 0.15s ease; }
-  :global(.pa-enter-start)  { opacity: 0; }
-  :global(.pa-enter-end)    { opacity: 1; }
-  :global(.pa-leave)        { transition: opacity 0.1s ease; }
-  :global(.pa-leave-start)  { opacity: 1; }
-  :global(.pa-leave-end)    { opacity: 0; }
 </style>

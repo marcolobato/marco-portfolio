@@ -919,6 +919,20 @@ hr {
   margin-top: var(--space-3xl);
 }
 
+/* WorkCard grid — 3-column layout for the flip cards in Selected Work */
+.work-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto 2.5rem;
+}
+
+@media (max-width: 640px) {
+  .work-cards-grid { grid-template-columns: 1fr; }
+}
+
 /* Cards: side by side with equal width. gap adds space between them. */
 .cards {
   display: flex;

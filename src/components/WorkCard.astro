@@ -1,0 +1,448 @@
+---
+/**
+ * WorkCard.astro
+ * 
+ * A flip card component for the Selected Work section.
+ * Card front shows a static image thumbnail with pattern label and title.
+ * Card back shows case detail text, rendered from props.
+ * Expand button opens the lightbox (handled by parent page JS).
+ * 
+ * USAGE:
+ * <WorkCard
+ *   id="setup"
+ *   pattern="Learnable Efficiency"
+ *   title="Android Setup Wizard, Pixel"
+ *   backHeading="Efficient from the first screen"
+ *   backParagraphs={[
+ *     'First paragraph of case detail...',
+ *     'Second paragraph of case detail...'
+ *   ]}
+ *   stats={[
+ *     { value: 'First OS', desc: 'with voice setup' },
+ *     { value: 'Adopted', desc: 'by other Android OEMs' }
+ *   ]}
+ *   image="/images/work/setup-wizard-thumb.png"
+ *   imageAlt="Android Setup Wizard showing numbered Wi-Fi networks"
+ *   channels={[
+ *     { type: 'voice', label: 'voice' },
+ *     { type: 'screen', label: 'screen' }
+ *   ]}
+ *   lightboxDesc="Numbered labels teach efficient voice interaction from the first screen."
+ * />
+ */
+
+interface Stat {
+  value: string;
+  desc: string;
+}
+
+interface Channel {
+  type: string;  // voice | screen | camera | gesture | gaze
+  label: string;
+}
+
+interface Props {
+  id: string;
+  pattern: string;
+  title: string;
+  backHeading: string;
+  backParagraphs: string[];
+  stats: Stat[];
+  image: string;
+  imageAlt?: string;
+  channels: Channel[];
+  lightboxDesc: string;
+}
+
+const {
+  id,
+  pattern,
+  title,
+  backHeading,
+  backParagraphs,
+  stats,
+  image,
+  imageAlt = '',
+  channels,
+  lightboxDesc,
+} = Astro.props;
+---
+
+<div
+  class="work-card"
+  data-card-id={id}
+  data-pattern={pattern}
+  data-title={title}
+  data-lightbox-desc={lightboxDesc}
+  data-channels={JSON.stringify(channels)}
+>
+  <div class="work-card__inner">
+
+    {/* ── FRONT ── */}
+    <div class="work-card__front">
+      <div class="work-card__image-area">
+        {/* Expand button — opens lightbox via parent JS */}
+        <button
+          class="work-card__btn work-card__btn--expand"
+          data-action="expand"
+          aria-label={`Expand ${title}`}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+          </svg>
+        </button>
+
+        {/* Static thumbnail */}
+        <img
+          src={image}
+          alt={imageAlt}
+          class="work-card__thumb"
+          loading="lazy"
+        />
+
+        {/* Channel strip */}
+        <div class="work-card__channels">
+          {channels.map((ch) => (
+            <div class="work-card__channel">
+              <span class={`work-card__channel-dot work-card__channel-dot--${ch.type}`} />
+              <span class="work-card__channel-label">{ch.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="work-card__footer">
+        <div class="work-card__pattern">{pattern}</div>
+        <div class="work-card__title">{title}</div>
+        <div class="work-card__hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+          Tap for details
+        </div>
+      </div>
+    </div>
+
+    {/* ── BACK ── */}
+    <div class="work-card__back">
+      <div class="work-card__back-label">Case Detail</div>
+      <h3 class="work-card__back-heading">{backHeading}</h3>
+      <div class="work-card__back-body">
+        {backParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+      <div class="work-card__back-result">
+        <div class="work-card__result-label">Outcome</div>
+        <div class="work-card__result-stats">
+          {stats.map((s) => (
+            <div class="work-card__stat">
+              <div class="work-card__stat-value">{s.value}</div>
+              <div class="work-card__stat-desc">{s.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="work-card__back-hint">Tap to return</div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* ═══════════════════════════════════════
+     WorkCard — Scoped Styles
+     Uses site CSS variables from global theme:
+       --color-deep-navy
+       --color-lemon-sorbet
+       --color-royal-blue
+       --color-citrine-green
+       --color-slate-gray
+       --color-dark-charcoal
+     
+     Adjust variable names below to match your
+     site's actual CSS variable naming convention.
+     ═══════════════════════════════════════ */
+
+  .work-card {
+    perspective: 1200px;
+    height: 500px;
+    cursor: pointer;
+  }
+
+  .work-card__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .work-card.flipped .work-card__inner {
+    transform: rotateY(180deg);
+  }
+
+  .work-card__front,
+  .work-card__back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* ── Front ── */
+  .work-card__front {
+    background: var(--color-card-bg, #ffffff);
+    border: 1px solid var(--color-card-border, #e2e2dc);
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 1px 3px hsl(var(--deep-navy-hsl, 224 83% 20%) / 0.04),
+      0 4px 16px hsl(var(--deep-navy-hsl, 224 83% 20%) / 0.06);
+  }
+
+  .work-card__image-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--color-card-anim-bg, #f8f8f5);
+    border-bottom: 1px solid var(--color-card-border, #e2e2dc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .work-card__thumb {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  /* ── Buttons ── */
+  .work-card__btn {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: hsl(0 0% 100% / 0.85);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--color-card-border, #e2e2dc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 1px 4px hsl(var(--deep-navy-hsl, 224 83% 20%) / 0.08);
+  }
+
+  .work-card__btn:hover {
+    background: #fff;
+    transform: scale(1.08);
+  }
+
+  .work-card__btn svg {
+    width: 14px;
+    height: 14px;
+    color: var(--color-deep-navy, #081F5D);
+  }
+
+  .work-card__btn--expand {
+    top: 10px;
+    right: 10px;
+  }
+
+  /* ── Channel Strip ── */
+  .work-card__channels {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--color-card-border, #e2e2dc);
+  }
+
+  .work-card__channel {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.45rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .work-card__channel-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+
+  .work-card__channel-dot--voice  { background: var(--color-royal-blue, #1350C5); }
+  .work-card__channel-dot--screen { background: var(--color-citrine-green, #CCD418); }
+  .work-card__channel-dot--camera { background: #8b5cf6; }
+  .work-card__channel-dot--gesture { background: var(--color-dark-charcoal, #3C2F39); }
+  .work-card__channel-dot--gaze   { background: #e07b3a; }
+
+  .work-card__channel-label {
+    color: var(--color-text-muted, #7a8595);
+  }
+
+  /* ── Footer ── */
+  .work-card__footer {
+    padding: 1rem 1.25rem;
+    background: var(--color-card-bg, #ffffff);
+  }
+
+  .work-card__pattern {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-royal-blue, #1350C5);
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+  }
+
+  .work-card__title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-deep-navy, #081F5D);
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+
+  .work-card__hint {
+    font-size: 0.68rem;
+    color: var(--color-text-muted, #7a8595);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .work-card__hint svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+  }
+
+  /* ── Back ── */
+  .work-card__back {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    transform: rotateY(180deg);
+    padding: 1.4rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 1px 3px hsl(var(--navy-900) / 0.04),
+      0 4px 16px hsl(var(--navy-900) / 0.06);
+  }
+
+  .work-card__back-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+  }
+
+  .work-card__back-heading {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.85rem;
+    line-height: 1.3;
+  }
+
+  .work-card__back-body {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary, #4a5568);
+    flex: 1;
+  }
+
+  .work-card__back-body p {
+    margin-bottom: 0.7rem;
+  }
+
+  .work-card__back-result {
+    margin-top: auto;
+    padding-top: 0.8rem;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .work-card__result-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+  }
+
+  .work-card__result-stats {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .work-card__stat-value {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    line-height: 1;
+  }
+
+  .work-card__stat-desc {
+    font-size: 0.65rem;
+    color: var(--color-text-muted, #7a8595);
+    margin-top: 0.2rem;
+  }
+
+  .work-card__back-hint {
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--color-text-muted, #7a8595);
+    margin-top: 0.8rem;
+    opacity: 0.5;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .work-card {
+      height: 470px;
+    }
+  }
+</style>
+
+<script>
+  // Flip on click (but not when expand button is clicked)
+  document.querySelectorAll('.work-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('[data-action="expand"]')) return;
+      card.classList.toggle('flipped');
+    });
+  });
+
+  // Expand button dispatches custom event for parent to handle
+  document.querySelectorAll('[data-action="expand"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = (e.target as HTMLElement).closest('.work-card');
+      const id = card?.getAttribute('data-card-id');
+      if (id) {
+        window.dispatchEvent(new CustomEvent('work-card:expand', { detail: { id } }));
+      }
+    });
+  });
+</script>

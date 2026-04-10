@@ -12,6 +12,8 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import WorkCard from '../components/WorkCard.astro';
+import WorkLightbox from '../components/WorkLightbox.astro';
 import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
 import Badge from '../components/ui/feedback/Badge.astro';
@@ -116,17 +118,92 @@ const posts = (await getCollection('writing')).sort(
 
         <SectionLabel label="Selected Work" />
 
-        <h2 class="area-heading">Beyond the Touchscreen</h2>
+        <h2 class="area-heading">Multimodal Interaction: Beyond the Touchscreen</h2>
 
         <p class="work-desc">
-          The thread across my work is keeping people in their flow. The best interfaces never pull you out of what you are doing. These projects go beyond apps. They shape the platform itself, making it work across every way people interact, not just touch. If you are building something where that is the goal, I would like to work on it with you.
+          I design interfaces people need to use hands-free, across automotive, assistive technology, and consumer electronics. At Google, I worked on Android accessibility at the system level, shaping how millions of people use their phone to interact with the world around them through voice, camera, and physical controls.
         </p>
 
-        <!-- Featured project cards -->
-        <div class="cards">
-          <ProjectCard title="User Onboarding: Setting Up Android Your Way, From the Very First Screen" image="/images/selected-work/selected-work-1.png" />
-          <ProjectCard title="User supervision patterns for AI automated tasks: Using Your Phone Entirely by Voice" image="/images/selected-work/selected-work-2.png" />
+        <p class="work-desc">
+          Three things make this work. Efficient patterns have to be learnable from the first interaction, so people trust a new way before they need it. Automated actions have to stay visible, so people can follow what the system is doing on their behalf and stay in control. And new inputs have to be additive, layering onto methods people already rely on rather than replacing them. The result is that people stay in the flow of what they are doing.
+        </p>
+
+        <p class="work-desc">
+          These three projects show how.
+        </p>
+
+        <!-- Featured flip cards — each card shows a thumbnail on front, case detail on back -->
+        <div class="work-cards-grid">
+          <WorkCard
+            id="setup"
+            pattern="Learnable Efficiency"
+            title="Android Setup Wizard, Pixel"
+            backHeading="Efficient from the first screen"
+            backParagraphs={[
+              'The moment you start a new Android phone, you can set it up by voice. I integrated hands-free setup into the Setup Wizard so people who cannot touch the screen never have to wait for help.',
+              'Numbered labels make it fast. People who already use numbers to navigate stay efficient. People trying voice for the first time learn that saying "two" is easier than spelling out a network name. The system surfaces this hint at the right moment on each screen, teaching a faster pattern exactly when it is useful.'
+            ]}
+            stats={[
+              { value: 'First OS', desc: 'with voice setup' },
+              { value: 'Adopted', desc: 'by other Android OEMs' }
+            ]}
+            image="/images/work/setup-wizard-thumb.png"
+            imageAlt="Android Setup Wizard showing numbered Wi-Fi networks with voice input"
+            channels={[
+              { type: 'voice', label: 'voice' },
+              { type: 'screen', label: 'screen' }
+            ]}
+            lightboxDesc="Numbered labels teach efficient voice interaction from the first screen. Say two instead of spelling out a network name."
+          />
+
+          <WorkCard
+            id="camera"
+            pattern="Additive Input"
+            title="Camera Switch, Android"
+            backHeading="New inputs, same mental model"
+            backParagraphs={[
+              'Camera Switch brought face gestures to Android: raise an eyebrow to scroll, smile to select, open your mouth to go back. My work was integrating this new capability into Switch Access so it felt like part of the same system, not a separate feature.',
+              'I unified the setup experience across external switches and Camera Switch, aligning settings, visuals, and onboarding so people could learn and try both in the same place. The same intent model, the same settings flow. As the input methods grow, the experience stays coherent.'
+            ]}
+            stats={[
+              { value: 'Unified', desc: 'setup and settings across Switch Access' }
+            ]}
+            image="/images/work/camera-switch-thumb.png"
+            imageAlt="Camera Switch settings showing face gesture mappings"
+            channels={[
+              { type: 'camera', label: 'camera' },
+              { type: 'screen', label: 'screen' },
+              { type: 'gesture', label: 'gesture' }
+            ]}
+            lightboxDesc="Camera Switch integrated into the existing Switch Access system. Same settings, same onboarding, same mental model."
+          />
+
+          <WorkCard
+            id="voice"
+            pattern="Supervision Patterns for Automation"
+            title="Voice Access, Android"
+            backHeading="Automated actions you can follow"
+            backParagraphs={[
+              'Voice Access taps, scrolls, and types across any screen on your behalf. When there is no label, computer vision identifies what an icon means and acts on it. The blue supervision circle shows exactly where the system is acting, so people can follow along without losing their place.',
+              'Gaze detection lets the system know when you are not talking to it. If the TV is on or someone nearby is speaking, Voice Access ignores the noise without you having to toggle anything. These came from two separate teams with different technology. I designed the interface that brought them together into how people learn and use Voice Access, so the automation and the awareness of the environment feel like one experience. That is what makes people trust it enough to rely on it.'
+            ]}
+            stats={[
+              { value: 'Context-aware', desc: 'reads the environment' }
+            ]}
+            image="/images/work/voice-access-thumb.png"
+            imageAlt="Voice Access showing supervision circle and search results"
+            channels={[
+              { type: 'voice', label: 'voice' },
+              { type: 'screen', label: 'visual' },
+              { type: 'gaze', label: 'gaze' }
+            ]}
+            lightboxDesc="The supervision circle shows where Voice Access is acting. Gaze detection filters out background noise so only intentional commands go through."
+          />
         </div>
+
+        <p class="work-desc">
+          Just as AI, computer vision, and better speech technology made voice interaction smarter, large language models continue making every product better. My experience is helping people adapt, evolve, and adopt, especially when reliability is non-negotiable.
+        </p>
 
         <!-- More projects — carousel shows broader range -->
         <p class="about-role">More Projects</p>
@@ -205,6 +282,9 @@ const posts = (await getCollection('writing')).sort(
     <div class="footer-spacer">
       <Footer />
     </div>
+
+    <!-- Lightbox overlay — rendered once, shared by all WorkCards on the page -->
+    <WorkLightbox />
 
     <!-- Accessibility: respect the user's system "Reduce Motion" setting.
          If enabled, the about video is paused instead of autoplaying.

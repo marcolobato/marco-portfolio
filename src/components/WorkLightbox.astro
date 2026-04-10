@@ -1,0 +1,278 @@
+---
+/**
+ * WorkLightbox.astro
+ *
+ * Full-screen overlay that opens when a WorkCard expand button is clicked.
+ * Listens for the 'work-card:expand' custom event dispatched by WorkCard.astro.
+ * Reads card data from data-* attributes on the card element.
+ *
+ * USAGE: Place once on any page that uses <WorkCard />.
+ *   <WorkLightbox />
+ *
+ * Phase 2: Shows the static thumbnail at larger scale.
+ * Phase 3: Replace the <img> with an animation component.
+ */
+---
+
+<!-- The overlay covers the whole viewport and starts hidden (opacity: 0, pointer-events: none) -->
+<div class="wlb-overlay" id="work-lightbox" role="dialog" aria-modal="true" aria-label="Project detail">
+
+  <!-- The panel is the white card in the center -->
+  <div class="wlb-panel" id="wlb-panel">
+
+    <!-- Top area: large image + channel strip + close button -->
+    <div class="wlb-image-area">
+
+      <img src="" alt="" class="wlb-image" id="wlb-image" />
+
+      <!-- Channel strip — same as card front but taller, populated by JS -->
+      <div class="wlb-channels" id="wlb-channels"></div>
+
+      <!-- Close button in top-right corner of image area -->
+      <button class="wlb-close-btn" id="wlb-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- Footer: pattern label, title, one-line description -->
+    <div class="wlb-footer">
+      <div class="wlb-pattern" id="wlb-pattern"></div>
+      <div class="wlb-title"   id="wlb-title"></div>
+      <div class="wlb-desc"    id="wlb-desc"></div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* ── Overlay backdrop ── */
+  .wlb-overlay {
+    position: fixed;
+    inset: 0;
+    /* Navy tint using the site's navy-900 token */
+    background: hsl(var(--navy-900) / 0.55);
+    backdrop-filter: blur(12px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Hidden by default — JS adds .active to show it */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .wlb-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Panel (the white card) ── */
+  .wlb-panel {
+    background: hsl(var(--card));
+    border-radius: 20px;
+    border: 1px solid hsl(var(--border));
+    box-shadow:
+      0 12px 60px hsl(var(--navy-900) / 0.2),
+      0 2px 8px hsl(var(--navy-900) / 0.06);
+    max-width: 860px;
+    width: 95vw;
+    max-height: 92vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Starts slightly scaled down and offset — animates in when .active is added */
+    transform: scale(0.92) translateY(12px);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .wlb-overlay.active .wlb-panel {
+    transform: scale(1) translateY(0);
+  }
+
+  /* ── Image area ── */
+  .wlb-image-area {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: hsl(var(--muted));
+    border-bottom: 1px solid hsl(var(--border));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .wlb-image {
+    max-width: 75%;
+    max-height: 82%; /* leaves room for the channel strip at bottom */
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  /* ── Close button ── */
+  .wlb-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: hsl(0 0% 100% / 0.88);
+    backdrop-filter: blur(4px);
+    border: 1px solid hsl(var(--border));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px hsl(var(--navy-900) / 0.1);
+  }
+
+  .wlb-close-btn:hover {
+    background: hsl(0 0% 100%);
+    transform: scale(1.08);
+  }
+
+  .wlb-close-btn svg {
+    width: 16px;
+    height: 16px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ── Channel strip ── */
+  .wlb-channels {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    background: hsl(0 0% 100% / 0.75);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .wlb-channel {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .wlb-channel-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* These are brand-specific channel colors — not in the site token system */
+  .wlb-channel-dot--voice   { background: hsl(var(--navy-700)); }
+  .wlb-channel-dot--screen  { background: #CCD418; }
+  .wlb-channel-dot--camera  { background: #8b5cf6; }
+  .wlb-channel-dot--gesture { background: #3C2F39; }
+  .wlb-channel-dot--gaze    { background: #e07b3a; }
+
+  /* ── Footer ── */
+  .wlb-footer {
+    padding: 1.5rem 2rem;
+  }
+
+  .wlb-pattern {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: hsl(var(--navy-700));
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .wlb-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: hsl(var(--primary));
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+  }
+
+  .wlb-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 640px) {
+    .wlb-image-area { height: 300px; }
+    .wlb-footer { padding: 1rem 1.25rem; }
+    .wlb-title { font-size: 1.1rem; }
+    .wlb-desc { font-size: 0.85rem; }
+  }
+</style>
+
+<script>
+  // Grab the elements we'll populate when a card is expanded
+  const overlay  = document.getElementById('work-lightbox') as HTMLElement;
+  const imgEl    = document.getElementById('wlb-image')    as HTMLImageElement;
+  const patternEl = document.getElementById('wlb-pattern') as HTMLElement;
+  const titleEl  = document.getElementById('wlb-title')    as HTMLElement;
+  const descEl   = document.getElementById('wlb-desc')     as HTMLElement;
+  const channelsEl = document.getElementById('wlb-channels') as HTMLElement;
+  const closeBtn = document.getElementById('wlb-close')    as HTMLButtonElement;
+
+  // Listen for the custom event WorkCard fires when the expand button is clicked
+  window.addEventListener('work-card:expand', (e: Event) => {
+    const { id } = (e as CustomEvent<{ id: string }>).detail;
+
+    // Find the card in the DOM and read its data attributes
+    const card = document.querySelector(`.work-card[data-card-id="${id}"]`) as HTMLElement;
+    if (!card) return;
+
+    // Populate the image (reads the src/alt already on the card's <img>)
+    const thumb = card.querySelector('.work-card__thumb') as HTMLImageElement;
+    imgEl.src = thumb?.src ?? '';
+    imgEl.alt = thumb?.alt ?? '';
+
+    // Populate text from data attributes
+    patternEl.textContent = card.dataset.pattern ?? '';
+    titleEl.textContent   = card.dataset.title ?? '';
+    descEl.textContent    = card.dataset.lightboxDesc ?? '';
+
+    // Build the channel strip from the JSON stored on the card
+    type Channel = { type: string; label: string };
+    const channelData: Channel[] = JSON.parse(card.dataset.channels ?? '[]');
+    channelsEl.innerHTML = channelData.map(ch => `
+      <div class="wlb-channel">
+        <span class="wlb-channel-dot wlb-channel-dot--${ch.type}"></span>
+        ${ch.label}
+      </div>
+    `).join('');
+
+    // Show the lightbox
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // prevent page scroll behind overlay
+  });
+
+  function closeLightbox() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Three ways to close: button, backdrop click, Escape key
+  closeBtn.addEventListener('click', closeLightbox);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+</script>

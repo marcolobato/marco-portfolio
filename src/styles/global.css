@@ -315,8 +315,9 @@ select {
    --------------------------------------------------------------------------- */
 :root {
   /* Font families */
-  --font-display: 'Fraunces', Georgia, serif;  /* Headings and display text */
-  --font-body:    'Geist Variable', system-ui, sans-serif;  /* Body copy and UI text */
+  --font-display: 'Fraunces', Georgia, serif;           /* Headings and display text */
+  --font-body:    'Geist Variable', system-ui, sans-serif; /* Body copy and UI text */
+  --font-mono:    'Geist Mono', monospace;               /* Labels, tags, code */
 
   /* Type scale */
   --text-xs:   0.75rem;   /* 12px — fine print, captions */

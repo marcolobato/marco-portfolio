@@ -125,6 +125,15 @@ const {
 
     {/* ── BACK ── */}
     <div class="work-card__back">
+      <button
+        class="work-card__btn work-card__btn--expand work-card__btn--back"
+        data-action="expand"
+        aria-label={`Expand ${title}`}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+        </svg>
+      </button>
       <div class="work-card__back-label">Case Detail</div>
       <h3 class="work-card__back-heading">{backHeading}</h3>
       <div class="work-card__back-body">
@@ -248,6 +257,13 @@ const {
   }
 
   .work-card__btn--expand {
+    top: 10px;
+    right: 10px;
+  }
+
+  /* Back face expand button — positioned relative to the back panel */
+  .work-card__btn--back {
+    position: absolute;
     top: 10px;
     right: 10px;
   }

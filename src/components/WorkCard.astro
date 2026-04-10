@@ -104,6 +104,7 @@ const {
 
         {/* Channel strip */}
         <div class="work-card__channels">
+          <span class="work-card__channels-label">Channels:</span>
           {channels.map((ch) => (
             <div class="work-card__channel">
               <span class={`work-card__channel-dot work-card__channel-dot--${ch.type}`} />
@@ -311,6 +312,16 @@ const {
 
   .work-card__channel-label {
     color: var(--color-slate);
+  }
+
+  .work-card__channels-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-slate);
+    margin-right: 0.4rem;
+    padding-right: 0.6rem;
+    border-right: 1px solid var(--color-surface);
   }
 
   /* ── Footer ── */

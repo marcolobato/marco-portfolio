@@ -52,6 +52,7 @@ interface Props {
   imageAlt?: string;
   channels: Channel[];
   lightboxDesc: string;
+  eager?: boolean;
 }
 
 const {
@@ -65,6 +66,7 @@ const {
   imageAlt = '',
   channels,
   lightboxDesc,
+  eager = false,
 } = Astro.props;
 ---
 
@@ -97,7 +99,7 @@ const {
           src={image}
           alt={imageAlt}
           class="work-card__thumb"
-          loading="lazy"
+          loading={eager ? 'eager' : 'lazy'}
         />
 
         {/* Channel strip */}

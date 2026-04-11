@@ -178,6 +178,13 @@ const {
     perspective: 1200px;
     height: 500px;
     cursor: pointer;
+    /* Lift transition — mirrors the writing-card hover behavior */
+    transition: transform 0.2s ease;
+  }
+
+  /* Subtle lift on hover — same as writing cards */
+  .work-card:hover {
+    transform: translateY(-2px);
   }
 
   .work-card__inner {
@@ -207,9 +214,14 @@ const {
     border: 1px solid var(--color-surface);
     display: flex;
     flex-direction: column;
-    box-shadow:
-      0 1px 3px hsl(var(--deep-navy-hsl, 224 83% 20%) / 0.04),
-      0 4px 16px hsl(var(--deep-navy-hsl, 224 83% 20%) / 0.06);
+    box-shadow: none;
+    /* Shadow transition — shadow appears on hover, same as writing cards */
+    transition: box-shadow 0.2s ease;
+  }
+
+  /* Shadow appears on hover — same navy-tinted value as .writing-card:hover */
+  .work-card:hover .work-card__front {
+    box-shadow: 0 4px 24px rgba(8, 31, 93, 0.08);
   }
 
   .work-card__image-area {
@@ -370,9 +382,13 @@ const {
     padding: 1.4rem 1.25rem;
     display: flex;
     flex-direction: column;
-    box-shadow:
-      0 1px 3px hsl(var(--navy-900) / 0.04),
-      0 4px 16px hsl(var(--navy-900) / 0.06);
+    box-shadow: none;
+    transition: box-shadow 0.2s ease;
+  }
+
+  /* Shadow on hover — matches front face and writing cards */
+  .work-card:hover .work-card__back {
+    box-shadow: 0 4px 24px rgba(8, 31, 93, 0.08);
   }
 
   .work-card__back-label {
@@ -453,6 +469,14 @@ const {
     .work-card {
       height: 470px;
     }
+  }
+
+  /* ── Dark mode ── */
+  /* Navy shadow disappears on dark backgrounds — swap to a soft off-white glow,
+     same approach as [data-theme="dark"] .writing-card:hover in global.css */
+  :global([data-theme="dark"]) .work-card:hover .work-card__front,
+  :global([data-theme="dark"]) .work-card:hover .work-card__back {
+    box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06);
   }
 </style>
 

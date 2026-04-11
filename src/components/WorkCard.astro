@@ -193,6 +193,8 @@ const {
     height: 100%;
     transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
+    /* Safari requires the -webkit- prefix for 3D transforms to work correctly */
+    -webkit-transform-style: preserve-3d;
   }
 
   .work-card.flipped .work-card__inner {
@@ -204,8 +206,12 @@ const {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: 14px;
-    overflow: hidden;
+    /* overflow: hidden removed — combining overflow:hidden with backface-visibility:hidden
+       is a known Safari/WebKit bug that causes the back face to bleed through.
+       Child elements handle their own overflow/clipping instead. */
+    will-change: transform; /* Forces a GPU compositing layer — helps Safari hide the backface properly */
   }
 
   /* ── Front ── */
@@ -233,6 +239,9 @@ const {
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Top corners match the card's border-radius — needed because the face
+       no longer has overflow:hidden to do this clipping automatically */
+    border-radius: 14px 14px 0 0;
   }
 
   .work-card__thumb {
@@ -268,7 +277,8 @@ const {
   .work-card__btn svg {
     width: 14px;
     height: 14px;
-    color: var(--color-deep-navy, #081F5D);
+    /* Always dark navy — readable against the white/frosted button in both modes */
+    color: #081F5D;
   }
 
   .work-card__btn--expand {
@@ -276,7 +286,8 @@ const {
     right: 10px;
   }
 
-  /* Back face expand button — positioned relative to the back panel */
+  /* Back face expand button — inner+back combined = 360deg = normal orientation.
+     right: 10px here correctly lands on the visual right side when flipped. */
   .work-card__btn--back {
     position: absolute;
     top: 10px;
@@ -340,6 +351,8 @@ const {
   .work-card__footer {
     padding: 1rem 1.25rem;
     background: hsl(var(--card));
+    /* Bottom corners match the card — needed because the face no longer clips children */
+    border-radius: 0 0 14px 14px;
   }
 
   .work-card__pattern {

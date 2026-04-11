@@ -208,10 +208,8 @@ const {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: 14px;
-    /* overflow: hidden removed — combining overflow:hidden with backface-visibility:hidden
-       is a known Safari/WebKit bug that causes the back face to bleed through.
-       Child elements handle their own overflow/clipping instead. */
-    will-change: transform; /* Forces a GPU compositing layer — helps Safari hide the backface properly */
+    overflow: hidden;
+    will-change: transform;
   }
 
   /* ── Front ── */
@@ -239,9 +237,6 @@ const {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Top corners match the card's border-radius — needed because the face
-       no longer has overflow:hidden to do this clipping automatically */
-    border-radius: 14px 14px 0 0;
   }
 
   .work-card__thumb {
@@ -351,8 +346,6 @@ const {
   .work-card__footer {
     padding: 1rem 1.25rem;
     background: hsl(var(--card));
-    /* Bottom corners match the card — needed because the face no longer clips children */
-    border-radius: 0 0 14px 14px;
   }
 
   .work-card__pattern {

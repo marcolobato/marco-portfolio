@@ -2095,9 +2095,10 @@ code {
   color: hsl(0 0% 75%);
 }
 
-/* Hover shadow — navy glow disappears on dark bg; use off-white tint */
-[data-theme="dark"] .work-card:hover .work-card__front,
-[data-theme="dark"] .work-card:hover .work-card__back {
+/* Hover shadow — navy glow disappears on dark bg; use off-white tint.
+   Needs .work-card__inner to beat Astro double-scoped hover shadow. */
+[data-theme="dark"] .work-card:hover .work-card__inner .work-card__front,
+[data-theme="dark"] .work-card:hover .work-card__inner .work-card__back {
   box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06);
 }
 

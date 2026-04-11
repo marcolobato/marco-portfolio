@@ -478,15 +478,15 @@ const {
   }
 
   /* ── Dark mode ── */
-  /* --color-surface becomes near-white in dark mode, creating a visible border outline
-     at the card corners. Match the writing-card fix: slate at low opacity. */
-  :global([data-theme="dark"]) .work-card__front,
-  :global([data-theme="dark"]) .work-card__back {
-    border-color: rgba(160, 175, 181, 0.2);
+  /* Redefine --color-surface on the .work-card parent so every child element
+     that uses var(--color-surface) for a border inherits the right value.
+     CSS custom properties cascade, so this covers front, back, image-area,
+     and channel strip borders all at once — same value as writing cards. */
+  :global([data-theme="dark"]) .work-card {
+    --color-surface: rgba(160, 175, 181, 0.2);
   }
 
-  /* Navy shadow disappears on dark backgrounds — swap to a soft off-white glow,
-     same approach as [data-theme="dark"] .writing-card:hover in global.css */
+  /* Navy hover shadow disappears on dark backgrounds — swap to a soft off-white glow */
   :global([data-theme="dark"]) .work-card:hover .work-card__front,
   :global([data-theme="dark"]) .work-card:hover .work-card__back {
     box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06);

@@ -2095,13 +2095,6 @@ code {
   color: hsl(0 0% 75%);
 }
 
-/* Hover shadow — on the front/back faces so it rotates with the card.
-   Needs .work-card__inner in chain to beat Astro double-scoped selectors. */
-[data-theme="dark"] .work-card:hover .work-card__inner .work-card__front,
-[data-theme="dark"] .work-card:hover .work-card__inner .work-card__back {
-  box-shadow: 0 4px 24px rgba(232, 237, 255, 0.12);
-}
-
 /* ── WorkLightbox dark mode ── */
 
 /* Channel strip — same dark frosted treatment as the card */

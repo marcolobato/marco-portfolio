@@ -397,6 +397,10 @@ const {
     line-height: var(--leading-relaxed);
     color: var(--color-charcoal);
     flex: 1;
+    overflow-y: auto;
+    /* Prevent scrollbar from causing layout shift */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-surface) transparent;
   }
 
   .work-card__back-body p {

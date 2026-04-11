@@ -172,6 +172,17 @@
     color: hsl(var(--muted-foreground));
   }
 
+  .wlb-channels-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: hsl(var(--muted-foreground));
+    padding-right: 0.6rem;
+    margin-right: 0.4rem;
+    border-right: 1px solid hsl(var(--border));
+  }
+
   .wlb-channel-dot {
     width: 7px;
     height: 7px;
@@ -254,12 +265,14 @@
     // Build the channel strip from the JSON stored on the card
     type Channel = { type: string; label: string };
     const channelData: Channel[] = JSON.parse(card.dataset.channels ?? '[]');
-    channelsEl.innerHTML = channelData.map(ch => `
-      <div class="wlb-channel">
-        <span class="wlb-channel-dot wlb-channel-dot--${ch.type}"></span>
-        ${ch.label}
-      </div>
-    `).join('');
+    channelsEl.innerHTML =
+      `<span class="wlb-channels-label">Channels:</span>` +
+      channelData.map(ch => `
+        <div class="wlb-channel">
+          <span class="wlb-channel-dot wlb-channel-dot--${ch.type}"></span>
+          ${ch.label}
+        </div>
+      `).join('');
 
     // Show the lightbox
     overlay.classList.add('active');

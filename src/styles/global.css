@@ -2069,18 +2069,18 @@ code {
 }
 
 /* Expand button — frosted glass on dark bg.
-   Semi-transparent white + existing backdrop-filter blur = visible tinted rectangle.
-   .work-card ancestor is critical — without it the scoped white bg wins. */
-[data-theme="dark"] .work-card .work-card__btn {
-  background: hsl(0 0% 100% / 0.15);
-  border-color: hsl(0 0% 100% / 0.3);
-  box-shadow: 0 1px 4px hsl(0 0% 0% / 0.3);
+   Astro double-scopes elements (both parent + child get data-astro-cid),
+   so we need .work-card__inner in the chain to reach (0,4,x) specificity. */
+[data-theme="dark"] .work-card .work-card__inner .work-card__btn {
+  background: hsl(0 0% 100% / 0.12);
+  border-color: hsl(0 0% 100% / 0.25);
+  box-shadow: 0 1px 6px hsl(0 0% 0% / 0.4);
 }
-[data-theme="dark"] .work-card .work-card__btn:hover {
-  background: hsl(0 0% 100% / 0.25);
+[data-theme="dark"] .work-card .work-card__inner .work-card__btn:hover {
+  background: hsl(0 0% 100% / 0.22);
 }
-[data-theme="dark"] .work-card .work-card__btn svg {
-  color: #E8EDFF; /* near-white, matches --color-heading in dark */
+[data-theme="dark"] .work-card .work-card__inner .work-card__btn svg {
+  color: hsl(var(--navy-300)); /* #6090E0 — lighter blue, clearly visible on dark */
 }
 
 /* Channel strip — flip from white frosted to dark frosted */

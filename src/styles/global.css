@@ -727,9 +727,11 @@ hr {
    Used via <Footer /> — see src/components/Footer.astro
    --------------------------------------------------------------------------- */
 
-/* Desktop footer */
+/* Desktop footer — Deep Navy (#081F5D) background.
+   !important needed because Tailwind's @layer cascade can deprioritize
+   unlayered CSS. Dark mode override lives in section 15. */
 .footer {
-  background-color: var(--color-navy);
+  background-color: #081F5D !important;
   padding-block: var(--space-2xl);
 }
 
@@ -746,13 +748,26 @@ hr {
   gap: var(--space-xs);
 }
 
+/* Footer name — Fraunces in sentence case to echo the hero heading.
+   White on navy-800 keeps it in the primary color family. */
 .footer-name {
-  font-size: var(--text-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: var(--text-base);
   font-weight: var(--weight-bold);
-  color: var(--color-lemon);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: #FFFFFF;
 }
+
+/* The lobo wolf icon next to the name — a small personality detail.
+   Sized to sit comfortably alongside 16px Fraunces text. */
+.footer-lobo {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+
 
 .footer-role {
   font-size: var(--text-sm);
@@ -772,7 +787,7 @@ hr {
 }
 
 .footer-links a:hover {
-  color: var(--color-lemon);
+  color: hsl(var(--navy-100));
 }
 
 .footer-divider {
@@ -801,7 +816,7 @@ hr {
 }
 
 .footer-top-link:hover {
-  color: var(--color-lemon);
+  color: hsl(var(--navy-100));
 }
 
 /* Mobile footer — screens 768px wide and smaller */
@@ -2068,6 +2083,24 @@ code {
 [data-theme="dark"] .work,
 [data-theme="dark"] .writing {
   background-color: #111A36;
+}
+
+/* Footer: in dark mode use the darkest navy (#08122C) to sit below
+   the neutral-950 (#1A1A1A) page background. */
+[data-theme="dark"] .footer {
+  background-color: #08122C !important;
+}
+
+/* Footer text in dark mode: name shifts from white to navy-100 (a soft
+   primary blue), and hover states use navy-300 for readable contrast. */
+[data-theme="dark"] .footer-name {
+  color: hsl(var(--navy-100));
+}
+[data-theme="dark"] .footer-links a:hover {
+  color: hsl(var(--navy-300));
+}
+[data-theme="dark"] .footer-top-link:hover {
+  color: hsl(var(--navy-300));
 }
 
 /* Writing cards: the border uses --color-surface which becomes very close to

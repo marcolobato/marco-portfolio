@@ -478,35 +478,8 @@ const {
   }
 
   /* ── Dark mode ──
-     Uses .work-card as a descendant step to reach specificity (0,4,0+),
-     which beats the scoped base rule at (0,2,0). Pure :global() without
-     the extra ancestor step ends up tied or losing on specificity. */
-
-  /* Border: match writing-card dark mode value — subtle slate at low opacity */
-  :global([data-theme="dark"]) .work-card .work-card__front,
-  :global([data-theme="dark"]) .work-card .work-card__back {
-    border-color: rgba(160, 175, 181, 0.2);
-  }
-
-  /* Image area background: --color-card-anim-bg has no dark-mode value so it
-     falls back to #f8f8f5 (off-white), making the expand button nearly invisible.
-     Override to a dark surface that matches the card tone. */
-  :global([data-theme="dark"]) .work-card .work-card__image-area {
-    background: hsl(0 0% 12%);
-  }
-
-  /* Expand button: solid white so the dark navy icon is always legible,
-     regardless of whether it sits on the image area or the back face. */
-  :global([data-theme="dark"]) .work-card .work-card__btn {
-    background: hsl(0 0% 100%);
-    border-color: rgba(8, 31, 93, 0.12);
-  }
-
-  /* Hover shadow: navy glow disappears on dark bg — swap to off-white tint */
-  :global([data-theme="dark"]) .work-card:hover .work-card__front,
-  :global([data-theme="dark"]) .work-card:hover .work-card__back {
-    box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06);
-  }
+     All dark mode overrides live in global.css (not here) to avoid
+     Astro scoped-style specificity issues with [data-theme="dark"]. */
 </style>
 
 <script>

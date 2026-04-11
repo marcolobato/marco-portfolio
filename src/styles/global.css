@@ -2055,35 +2055,38 @@ code {
    1. Astro scoped styles add data-astro-cid-* that conflicts with [data-theme] specificity
    2. Keeping them together with writing-card overrides is easier to maintain */
 
-/* Card border — raised opacity so the edge is visible against #242424 card bg */
+/* Card border — subtle edge, just enough to separate from the page bg.
+   .work-card ancestor bumps specificity to (0,3,0), beating scoped (0,2,0). */
 [data-theme="dark"] .work-card .work-card__front,
 [data-theme="dark"] .work-card .work-card__back {
-  border-color: rgba(160, 175, 181, 0.35);
+  border-color: hsl(0 0% 22%);
 }
 
-/* Image area — fallback #f8f8f5 is invisible in dark; use a dark surface */
-[data-theme="dark"] .work-card__image-area {
+/* Image area — fallback #f8f8f5 is invisible in dark; use a dark surface.
+   Needs .work-card ancestor to beat the scoped rule. */
+[data-theme="dark"] .work-card .work-card__image-area {
   background: hsl(0 0% 12%);
 }
 
-/* Expand button — dark frosted bg with visible border instead of bright white */
-[data-theme="dark"] .work-card__btn {
-  background: hsl(0 0% 20% / 0.85);
-  border-color: hsl(0 0% 40%);
+/* Expand button — dark frosted bg with visible border.
+   .work-card ancestor is critical here — without it the scoped white bg wins. */
+[data-theme="dark"] .work-card .work-card__btn {
+  background: hsl(0 0% 22% / 0.9);
+  border-color: hsl(0 0% 38%);
 }
-[data-theme="dark"] .work-card__btn svg {
+[data-theme="dark"] .work-card .work-card__btn svg {
   color: #E8EDFF; /* near-white, matches --color-heading in dark */
 }
 
 /* Channel strip — flip from white frosted to dark frosted */
-[data-theme="dark"] .work-card__channels {
+[data-theme="dark"] .work-card .work-card__channels {
   background: hsl(0 0% 10% / 0.7);
   border-top-color: hsl(0 0% 30%);
 }
 
 /* Channel text — lighten so it reads on the dark strip */
-[data-theme="dark"] .work-card__channel-label,
-[data-theme="dark"] .work-card__channels-label {
+[data-theme="dark"] .work-card .work-card__channel-label,
+[data-theme="dark"] .work-card .work-card__channels-label {
   color: hsl(0 0% 75%);
 }
 

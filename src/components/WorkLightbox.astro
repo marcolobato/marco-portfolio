@@ -265,12 +265,16 @@
     // Build the channel strip from the JSON stored on the card
     type Channel = { type: string; label: string };
     const channelData: Channel[] = JSON.parse(card.dataset.channels ?? '[]');
+    // Capitalize the first letter in JS — CSS text-transform won't apply
+    // to dynamically created elements because Astro's scoped styles only
+    // target elements that exist in the template at build time.
+    const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
     channelsEl.innerHTML =
       `<span class="wlb-channels-label">Channels:</span>` +
       channelData.map(ch => `
         <div class="wlb-channel">
           <span class="wlb-channel-dot wlb-channel-dot--${ch.type}"></span>
-          ${ch.label}
+          ${capitalize(ch.label)}
         </div>
       `).join('');
 

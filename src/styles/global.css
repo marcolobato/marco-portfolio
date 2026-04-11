@@ -2068,11 +2068,16 @@ code {
   background: hsl(0 0% 12%);
 }
 
-/* Expand button — dark frosted bg with visible border.
-   .work-card ancestor is critical here — without it the scoped white bg wins. */
+/* Expand button — frosted glass on dark bg.
+   Semi-transparent white + existing backdrop-filter blur = visible tinted rectangle.
+   .work-card ancestor is critical — without it the scoped white bg wins. */
 [data-theme="dark"] .work-card .work-card__btn {
-  background: hsl(0 0% 22% / 0.9);
-  border-color: hsl(0 0% 38%);
+  background: hsl(0 0% 100% / 0.15);
+  border-color: hsl(0 0% 100% / 0.3);
+  box-shadow: 0 1px 4px hsl(0 0% 0% / 0.3);
+}
+[data-theme="dark"] .work-card .work-card__btn:hover {
+  background: hsl(0 0% 100% / 0.25);
 }
 [data-theme="dark"] .work-card .work-card__btn svg {
   color: #E8EDFF; /* near-white, matches --color-heading in dark */
@@ -2115,10 +2120,14 @@ code {
   border-right-color: hsl(0 0% 40%);
 }
 
-/* Close button — match the expand button: dark bg, visible border, light icon */
+/* Close button — same frosted glass as the expand button */
 [data-theme="dark"] .wlb-close-btn {
-  background: hsl(0 0% 20% / 0.88);
-  border-color: hsl(0 0% 40%);
+  background: hsl(0 0% 100% / 0.15);
+  border-color: hsl(0 0% 100% / 0.3);
+  box-shadow: 0 1px 4px hsl(0 0% 0% / 0.3);
+}
+[data-theme="dark"] .wlb-close-btn:hover {
+  background: hsl(0 0% 100% / 0.25);
 }
 [data-theme="dark"] .wlb-close-btn svg {
   color: #E8EDFF;

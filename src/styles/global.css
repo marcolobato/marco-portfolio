@@ -2212,6 +2212,12 @@ code {
   color: var(--color-heading);
 }
 
+/* "View case study" hover in dark mode — navy 700 is too dark to read,
+   so swap to navy 300 (the same blue --color-royal-blue resolves to in dark). */
+[data-theme="dark"] .carousel-slide-link:hover .carousel-slide-cta {
+  color: hsl(var(--navy-300));
+}
+
 /* --- 18. Page layout — About section ---------------------------------------
    Two-column layout: text on the left, video on the right.
    On mobile (≤ 768px) they stack vertically, text first, video below.

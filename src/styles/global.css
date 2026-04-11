@@ -2095,6 +2095,29 @@ code {
   color: hsl(0 0% 75%);
 }
 
+/* Hover glow — can't use box-shadow on preserve-3d children (gets flattened).
+   Instead, use a ::after pseudo on the outer .work-card wrapper. It sits behind
+   the card via z-index:-1, same size, same border-radius, and carries the glow.
+   Doesn't rotate with the flip, but since it matches the card's footprint
+   it looks correct on both faces. */
+[data-theme="dark"] .work-card {
+  position: relative;
+}
+[data-theme="dark"] .work-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  z-index: -1;
+  box-shadow: 0 4px 24px rgba(232, 237, 255, 0.12);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+[data-theme="dark"] .work-card:hover::after {
+  opacity: 1;
+}
+
 /* ── WorkLightbox dark mode ── */
 
 /* Channel strip — same dark frosted treatment as the card */

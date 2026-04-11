@@ -2095,11 +2095,17 @@ code {
   color: hsl(0 0% 75%);
 }
 
-/* Hover shadow — navy glow disappears on dark bg; use off-white tint.
-   Needs .work-card__inner to beat Astro double-scoped hover shadow. */
+/* Hover shadow — apply to .work-card itself, not the front/back faces.
+   box-shadow on children inside preserve-3d renders in the 3D plane and
+   becomes invisible. Putting it on the outer wrapper avoids this. */
+[data-theme="dark"] .work-card:hover {
+  box-shadow: 0 4px 24px rgba(232, 237, 255, 0.1);
+}
+/* Cancel the scoped light-mode shadow on the inner faces so it doesn't
+   show a navy glow underneath the outer wrapper shadow. */
 [data-theme="dark"] .work-card:hover .work-card__inner .work-card__front,
 [data-theme="dark"] .work-card:hover .work-card__inner .work-card__back {
-  box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06);
+  box-shadow: none;
 }
 
 /* ── WorkLightbox dark mode ── */

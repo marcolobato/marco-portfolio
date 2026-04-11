@@ -56,13 +56,14 @@ const posts = (await getCollection('writing')).sort(
           My favorite design work is turning powerful technology into something delightfully ordinary that people can trust when it matters most. Getting there takes a lot of scratching beneath the surface.
         </p>
 
-        <!-- Calls to action — rendered as <a> tags since all three navigate somewhere. -->
+        <!-- Calls to action — rendered as <a> tags since all three navigate somewhere.
+             "See my work" is primary — it scrolls the visitor down to the work section
+             instead of sending them off-site. LinkedIn and Resume open in new tabs
+             so the visitor never fully leaves the page. -->
         <div class="hero-actions">
-          <Button label="LinkedIn" href="https://www.linkedin.com/in/marcolobato/" variant="primary" />
-          <Button label="Portfolio" href="https://lobato.framer.website/" variant="secondary" />
-          <Button label="Resume" href="https://drive.google.com/file/d/1gxDuCKQX9OXovijZ_RIB1wvECJE6n68K/view?usp=sharing" variant="secondary" />
-          <!-- Uncomment when the portfolio repo is public and the Playground has at least one prototype -->
-          <!-- <Button label="GitHub" href="https://github.com/marcolobato" variant="secondary" /> -->
+          <Button label="See my work" href="#work" variant="primary" />
+          <Button label="LinkedIn" href="https://www.linkedin.com/in/marcolobato/" variant="secondary" external={true} />
+          <Button label="Resume" href="https://drive.google.com/file/d/1gxDuCKQX9OXovijZ_RIB1wvECJE6n68K/view?usp=sharing" variant="secondary" external={true} />
         </div>
       </div>
     </section>
@@ -203,13 +204,13 @@ const posts = (await getCollection('writing')).sort(
         </div>
 
         <p class="work-desc">
-          Just as AI, computer vision, and better speech technology made voice interaction smarter, large language models continue making every product better. My experience is helping people adapt, evolve, and adopt, especially when reliability is non-negotiable.
+          Just as AI, computer vision, and better speech technology made voice interaction smarter, large language models continue making every product better. My experience is helping people adapt, evolve, and adopt, especially when reliability is non-negotiable. These three projects are a sample. Here is more of what I have worked on.
         </p>
 
         <!-- More projects — carousel shows broader range -->
         <p class="about-role">More Projects</p>
         <p class="work-desc">
-          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored.
+          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored. Click any project below to see the full case study.
         </p>
         <Carousel />
 

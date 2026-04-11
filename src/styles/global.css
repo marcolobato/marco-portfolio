@@ -449,6 +449,7 @@ hr {
   font-weight: var(--weight-medium);
   line-height: 1;                 /* Prevents the text height from adding unwanted spacing */
   text-decoration: none;          /* Removes the underline from <a> tag version */
+  text-transform: none;           /* Buttons always render in sentence case as written */
   cursor: pointer;
   /* Smooth color transitions on background, border, and text when hovering */
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
@@ -901,6 +902,10 @@ hr {
 .work {
   padding-block: var(--space-3xl);
   background-color: var(--color-surface);
+
+  /* When "See My Work" scrolls here, offset the landing point so the
+     section heading has breathing room and doesn't hit the viewport edge. */
+  scroll-margin-top: 24px;
 }
 
 .area-heading {
@@ -1929,6 +1934,27 @@ code {
   color: var(--color-charcoal);
   margin-bottom: 0;
   max-width: none;
+}
+
+/* "View case study" label — only appears on linked carousel slides.
+   Regular weight charcoal text at 14px. On hover, underlines and shifts
+   to navy 700 to signal the slide is clickable (WCAG 1.4.1: non-color cue). */
+.carousel-slide-cta {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-charcoal);
+  margin-top: var(--space-xs);
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* The CTA lives inside .carousel-slide-link (the <a> wrapper), so the
+   hover target is the whole slide — when the slide is hovered, underline
+   and shift color to navy 700. */
+.carousel-slide-link:hover .carousel-slide-cta {
+  text-decoration: underline;
+  text-decoration-skip-ink: auto;
+  color: hsl(var(--navy-700));
 }
 
 /* Controls row — 3-column grid: arrows left | dots centered | empty right.

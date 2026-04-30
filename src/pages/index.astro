@@ -1,6 +1,6 @@
 ---
 // index.astro — Marco Lobato Portfolio
-// Single-page layout: Hero, Work, Now, Footer
+// Single-page layout: Hero, About, Work, Field Notes, Footer
 // All colors via tokens.css. Typography and reset from global.css.
 
 // In Astro, CSS files in src/ must be imported here in the frontmatter,
@@ -16,14 +16,17 @@ import WorkCard from '../components/WorkCard.astro';
 import WorkLightbox from '../components/WorkLightbox.astro';
 import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
-import Badge from '../components/ui/feedback/Badge.astro';
 import AvatarScratcher from '../components/AvatarScratcher.astro';
 
-// Fetch all writing posts and sort them newest first.
-// post.data.date is the date field from each post's frontmatter.
-const posts = (await getCollection('writing')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+// Featured Field Notes — three specific posts shown on the homepage.
+// To change which posts appear, edit this list of ids (an id is the filename
+// without the .md/.mdx extension). Cards still pull title, description, and
+// image straight from each post's frontmatter, so the post is the source of truth.
+// The full archive lives on the /experiments page.
+const featuredIds = ['privacysim', 'pharmassist', 'ai-broken-in-denim'];
+const fieldNotes = (await getCollection('writing'))
+  .filter(post => featuredIds.includes(post.id))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout title="Marco Lobato — The Tech Weaver">
@@ -219,44 +222,24 @@ const posts = (await getCollection('writing')).sort(
 
 
     <!-- =====================================================================
-         CURRENTLY BUILDING
-         A section label, heading, and paragraph about active work.
+         FIELD NOTES
+         A running log of work and curiosity. Three featured posts are pulled
+         from the writing collection by id (see frontmatter at the top of this
+         file). Reuses the existing .writing-cards grid and .writing-card style
+         so the cards match the rest of the site.
+         The "View all field notes" link points to /experiments — the full
+         archive page where every Field Note lives.
          ===================================================================== -->
-    <section class="now" id="now">
+    <section class="writing" id="field-notes">
       <div class="container">
-        <div style="display: flex; align-items: baseline; gap: var(--space-sm);">
-          <SectionLabel label="Currently Building" />
-          <Badge>New</Badge>
-        </div>
-        <h2 class="now-heading">Playground</h2>
-        <p class="now-text">
-          I am building in public here. If you are working on the future of
-          consumer electronic interfaces or AI-powered products, let's talk.
-          This playground grows over time, starting with the design system
-          behind this site and expanding into experiments and prototypes as they take shape.
+        <SectionLabel label="What I'm building" />
+        <h2 class="writing-heading">Field Notes</h2>
+        <p class="work-desc">
+          A running log of how I work and what I'm curious about. Rough edges included.
         </p>
-        <div class="now-actions">
-          <!-- Primary destination: the design system reference page -->
-          <Button label="Design System" href="/playground" variant="primary" />
-          <!-- Secondary destination: the experiments and prototypes index -->
-          <Button label="Experiments" href="/experiments" variant="secondary" />
-        </div>
-      </div>
-    </section>
-
-
-    <!-- =====================================================================
-         WRITING
-         One card per post. Posts come from src/content/writing/*.md
-         Sorted newest first by the date field in each post's frontmatter.
-         ===================================================================== -->
-    <section class="writing" id="writing">
-      <div class="container">
-        <SectionLabel label="Writing" />
-        <h2 class="writing-heading">Learning in Public</h2>
 
         <div class="writing-cards">
-          {posts.map(post => (
+          {fieldNotes.map(post => (
             <a href={`/writing/${post.id}`} class="writing-card">
               <div class="writing-card-image">
                 {post.data.image
@@ -270,6 +253,10 @@ const posts = (await getCollection('writing')).sort(
               </div>
             </a>
           ))}
+        </div>
+
+        <div style="margin-top: var(--space-xl);">
+          <Button label="View all field notes" href="/experiments" variant="secondary" />
         </div>
       </div>
     </section>

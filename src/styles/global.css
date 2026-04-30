@@ -997,10 +997,12 @@ hr {
   margin-top: 0;
 }
 
-/* WRITING SECTION */
+/* FIELD NOTES SECTION (class kept as .writing for now; renaming is a future cleanup).
+   No background-color: the section falls through to the page background
+   (--color-white in both modes, via the body), which alternates with the
+   Work section above (which uses --color-surface). */
 .writing {
   padding-block: var(--space-3xl);
-  background-color: var(--color-surface);
 }
 
 .writing-heading {

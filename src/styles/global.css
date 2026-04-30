@@ -2216,6 +2216,13 @@ code {
   box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06); /* off-white tinted glow */
 }
 
+/* About video uses the same shadow style as cards. Same fix in dark mode:
+   the navy-tinted shadow disappears on a dark background, so use the off-white
+   glow instead. */
+[data-theme="dark"] .about-video {
+  box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06);
+}
+
 /* Buttons: the primary variant uses --color-white for text, which flips to
    near-black (#0B1229) in dark mode — invisible on the dark navy background.
    Fix: swap the primary to a light blue fill (--color-royal-blue = #6B9EFF in
@@ -2318,11 +2325,12 @@ code {
   /* Fill the entire grid column — video stretches to match the column width */
   width: 100%;
 
-  /* Soft rounded corners to match the card style in the rest of the site */
-  border-radius: 8px;
-
-  /* Royal blue border — gives the video a frame and adds brand color */
-  border: 3px solid var(--color-royal-blue);
+  /* Match the .writing-card radius (12px) and the same subtle navy-tinted shadow
+     the cards use on hover. The video isn't interactive, so the shadow sits at
+     rest — same depth, no hover state. Dark mode override below switches to an
+     off-white glow so the shadow stays visible on a dark background. */
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(8, 31, 93, 0.08);
 
   /* block removes the tiny gap browsers add below inline video elements */
   display: block;

@@ -1,14 +1,25 @@
 ---
-// experiments.astro — Marco Lobato Experiments Index
-// This page is an index of interaction design explorations and prototypes.
-// Each accordion item is one experiment: name as trigger, full detail in the body.
+// experiments.astro — Field Notes archive page
+// The /experiments URL is preserved for backwards compatibility, but the page
+// is titled "Field Notes" — see the BaseLayout title and h1 below.
+//
+// Sections, top to bottom:
+//   1. Header (page title + description)
+//   2. Multimodal work — featured cards (3 entries, pulled from writing collection)
+//   3. Past entries — older Medium articles (added in a follow-up commit)
+//   4. Design concept glossary — terms + one-line definitions (added in a follow-up commit)
 import '../styles/global.css';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
-import Accordion from '@/components/ui/display/accordion/Accordion.astro';
-import AccordionItem from '@/components/ui/display/accordion/AccordionItem.astro';
-import AccordionTrigger from '@/components/ui/display/accordion/AccordionTrigger.astro';
-import AccordionContent from '@/components/ui/display/accordion/AccordionContent.astro';
+
+// Multimodal work — three featured experiments. Same ids as the homepage
+// Field Notes section, duplicated here intentionally so each page can pick
+// its own featured set if they ever diverge.
+const multimodalIds = ['privacysim', 'pharmassist', 'ai-broken-in-denim'];
+const multimodalEntries = (await getCollection('writing'))
+  .filter(post => multimodalIds.includes(post.id))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout title="Field Notes — Marco Lobato">
@@ -33,73 +44,41 @@ import AccordionContent from '@/components/ui/display/accordion/AccordionContent
 
 
     <!-- ===================================================================
-         SECTION: EXPERIMENTS INDEX
-         Each accordion item is one experiment.
+         SECTION: MULTIMODAL WORK
+         Three featured experiments shown as cards. Reuses the .writing-cards
+         grid and .writing-card styles from the homepage Field Notes section.
+         Cards link to each post's article page at /writing/{id}.
          =================================================================== -->
-    <section class="sg-section" id="experiments-index" style="padding-top: 0">
+    <section class="sg-section" id="multimodal-work" style="padding-top: 0;">
 
-      <!-- Accordion: each experiment is one item. Trigger = name, body = full detail. -->
-      <Accordion maxWidth="full" centered={false} x-data="{ activeAccordion: 'accordion-1', setActiveAccordion(id) { this.activeAccordion = id; } }">
+      <h2 style="margin-bottom: var(--space-md);">Multimodal work</h2>
 
-        <!-- ── PharmAssist: Show, Don't Speak ── -->
-        <AccordionItem>
-          <AccordionTrigger>PharmAssist: Show, Don't Speak.</AccordionTrigger>
-          <AccordionContent class="px-6 pb-6 pt-4">
+      <p class="sg-header-desc" style="max-width: 72ch; margin-bottom: var(--space-xl);">
+        I am evaluating tools to create AI agents and virtual humans powered by the latest AI models, with a focus on designing multimodal communication patterns. I'm interested in how these tools can facilitate more natural interactions between humans and technology.
+      </p>
 
-            <!-- Description — full width, sits above the detail grid -->
-            <p style="margin: 0 0 1.25em; line-height: 1.7;">
-              A Voiceflow prototype exploring privacy-first prescription pickup.
-              The system helps patients share personal details on screen instead of speaking them aloud,
-              splitting voice, screen, and text into three channels based on who can perceive them.
-              Built to test whether "default-private" can work as a design principle, not just a toggle.
-            </p>
+      <!-- Tagline directly above the card grid — labels the cards as the
+           "tiny experiments" referenced in the description above. -->
+      <p class="sg-header-section-title" style="margin-bottom: var(--space-md);">
+        Tiny experiments in multimodal AI interaction design
+      </p>
 
-            <!-- 2-column grid: What I learned / Notes on top row, Tools / Links on bottom -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
-
-              <!-- What I learned -->
-              <div>
-                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">What I learned</p>
-                <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
-                  <li>How to design a conversation where the most important moment is silence.</li>
-                  <li>How Voiceflow Workflows handle deterministic medical flows while leaving room for open-ended questions.</li>
-                  <li>How Cards and Messages map to "screen" and "voice" channels.</li>
-                  <li>How a follow-up text becomes the first private moment in a public interaction.</li>
-                </ul>
-              </div>
-
-              <!-- Notes -->
-              <div>
-                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Notes</p>
-                <p style="margin: 0 0 0.4em; font-weight: 500;">Design concepts explored:</p>
-                <ul style="margin: 0; padding-left: 1.2em; line-height: 1.7;">
-                  <li>Default-private (the "broken-in" principle)</li>
-                  <li>Channel splitting (screen / voice / text)</li>
-                  <li>Vague grammar as a social protocol</li>
-                  <li>Context-released information</li>
-                  <li>Cooperative recording (patient + pharmacist + system)</li>
-                </ul>
-              </div>
-
-              <!-- Tools -->
-              <div>
-                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Tools</p>
-                <p style="margin: 0; line-height: 1.7;">Voiceflow (Workflow, Cards, Buttons, Variables, Conditions)</p>
-              </div>
-
-              <!-- Links -->
-              <div>
-                <p style="margin: 0 0 0.4em; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground);">Links</p>
-                <a href="https://creator.voiceflow.com/share/69c42fb2bfd66a6ff39d6c1a/development" target="_blank" rel="noopener noreferrer" class="text-link" style="display: block; margin-bottom: 0.4em;">Try the prototype →</a>
-                <a href="/writing/pharmassist/" class="text-link" style="display: block; margin-bottom: 0.4em;">Read the case study →</a>
-                <a href="/writing/ai-broken-in-denim/" class="text-link" style="display: block;">Read the essay that inspired it →</a>
-              </div>
-
-            </div><!-- /.grid -->
-          </AccordionContent>
-        </AccordionItem>
-
-      </Accordion>
+      <div class="writing-cards">
+        {multimodalEntries.map(post => (
+          <a href={`/writing/${post.id}`} class="writing-card">
+            <div class="writing-card-image">
+              {post.data.image
+                ? <img src={post.data.image} alt={post.data.title} class="writing-card-img" />
+                : <span class="writing-card-image-label">[ image ]</span>
+              }
+            </div>
+            <div class="writing-card-body">
+              <h3 class="writing-card-title">{post.data.title}</h3>
+              <p class="writing-card-desc">{post.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
 
     </section>
 

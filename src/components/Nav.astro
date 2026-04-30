@@ -15,13 +15,13 @@ import ThemeToggle from './ThemeToggle.astro';
   <a href="/" class="nav-name">Marco Lobato</a>
 
   <ul class="nav-links">
+    <!-- All nav links use /#section anchors for consistent behavior:
+         from any page, clicking navigates to the home page and scrolls to
+         the matching section. The full Field Notes archive is reached via
+         the "View all field notes" button inside the home page section,
+         not from the nav. -->
     <li><a href="/#work">Work</a></li>
-    <li>
-      <!-- /#now scrolls to the "Currently Building" section on the home page.
-           Works from any page — same pattern as /#work above. -->
-      <a href="/#now">Playground</a>
-    </li>
-    <li><a href="/#writing">Writing</a></li>
+    <li><a href="/#field-notes">Field Notes</a></li>
     <li><a href="mailto:marcolobato.ux@gmail.com">Contact</a></li>
   </ul>
 

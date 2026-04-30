@@ -91,6 +91,36 @@ const pastEntries = allPosts
         ))}
       </div>
 
+      <!-- Sub-section of Multimodal work: a glossary of patterns surfaced
+           across the experiments above. Uses h3 (one level under the section's
+           h2) to signal this is part of Multimodal work, not a peer section.
+           Styled by the scoped <style> block at the bottom of the file. -->
+      <div class="glossary" style="margin-top: var(--space-2xl);">
+        <h3 style="margin-bottom: var(--space-md);">Design concept glossary</h3>
+        <p class="sg-header-desc" style="max-width: 72ch; margin-bottom: var(--space-lg);">
+          Concepts named across the experiments above.
+        </p>
+        <dl>
+          <dt>Deictic privacy</dt>
+          <dd>Speaking in words that only resolve with shared context, using pronouns and spatial references ("that," "there," "it") instead of explicit details.</dd>
+
+          <dt>Default-private</dt>
+          <dd>Ensuring that sensitive details and personally identifiable information remain protected by making non-disclosure the standard setting.</dd>
+
+          <dt>Channel splitting</dt>
+          <dd>Strategically utilizing diverse communication paths to time and tailor content delivery, ensuring messages are optimized for the specific situation and audience.</dd>
+
+          <dt>Show, don't speak</dt>
+          <dd>In the context of conversation design, the "show, don't speak" principle utilizes visual aids to convey information. This approach keeps details private or provides necessary context by displaying the specific items or concepts under discussion, rather than relying solely on verbal explanation.</dd>
+
+          <dt>Context-released information</dt>
+          <dd>The strategic practice of timing the delivery of information based on an AI's real-time understanding of the user's immediate social or physical environment.</dd>
+
+          <dt>Cooperative recording</dt>
+          <dd>A mutual agreement to record and transcribe a dialogue so participants can capture complex spoken details, particularly during consultations with specialists like doctors or pharmacists.</dd>
+        </dl>
+      </div>
+
     </section>
 
 
@@ -125,3 +155,32 @@ const pastEntries = allPosts
   </main>
 
 </BaseLayout>
+
+
+<!-- Scoped styles for the Design concept glossary inside the Multimodal work
+     section. Astro auto-scopes <style> blocks to this component, so these
+     selectors don't leak to other pages. -->
+<style>
+  .glossary dl {
+    margin: 0;
+    max-width: 72ch;
+  }
+
+  .glossary dt {
+    font-weight: 500;
+    margin-bottom: var(--space-xs);
+  }
+
+  /* Reset the browser default 40px indent on <dd>; add comfortable spacing
+     between entries and a relaxed line-height so longer definitions read well. */
+  .glossary dd {
+    margin: 0 0 var(--space-md);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Last entry: no bottom margin, so the section padding controls spacing
+     into Past entries below. */
+  .glossary dd:last-of-type {
+    margin-bottom: 0;
+  }
+</style>

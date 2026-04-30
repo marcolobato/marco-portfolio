@@ -66,8 +66,11 @@ const { Content } = await render(post);
     <main class="post-main">
       <div class="post-container">
 
-        <!-- Back link -->
-        <a href="/#writing" class="post-back">← Notes</a>
+        <!-- Back link to the Field Notes archive at /experiments.
+             "All field notes" (not just "Field Notes") matches the homepage
+             "View all field notes" button and disambiguates from the homepage
+             section's nav anchor (/#field-notes). -->
+        <a href="/experiments" class="post-back">← All field notes</a>
 
         <!-- Post header -->
         <header class="post-header">

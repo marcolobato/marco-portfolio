@@ -780,9 +780,13 @@ hr {
   list-style: none;
 }
 
+/* All resting text and the divider use plain white for max contrast on the
+   navy footer background. Hardcoded #FFFFFF (not var(--color-white)) because
+   the footer stays navy in both light and dark modes — a flipping white token
+   would become dark in dark mode and disappear here. */
 .footer-links a {
   font-size: var(--text-sm);
-  color: var(--color-slate);
+  color: #FFFFFF;
   transition: color 0.2s ease;
 }
 
@@ -792,7 +796,7 @@ hr {
 
 .footer-divider {
   border: none;
-  border-top: 1px solid var(--color-slate);
+  border-top: 1px solid #FFFFFF;
   opacity: 0.3;
   margin-block: var(--space-xl);
 }
@@ -806,12 +810,12 @@ hr {
 
 .footer-copyright {
   font-size: var(--text-sm);
-  color: var(--color-slate);
+  color: #FFFFFF;
 }
 
 .footer-top-link {
   font-size: var(--text-sm);
-  color: var(--color-slate);
+  color: #FFFFFF;
   transition: color 0.2s ease;
 }
 

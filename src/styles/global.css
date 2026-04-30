@@ -823,6 +823,22 @@ hr {
   color: hsl(var(--navy-100));
 }
 
+/* Wraps copyright + the easter-egg "Design system" link as a single group
+   so flex space-between still pushes them away from "Back to top". */
+.footer-bottom-info {
+  display: flex;
+  align-items: center;
+}
+
+/* The "·" before the easter-egg link is a CSS pseudo-element, not extra
+   HTML. Half opacity makes the bullet feel subordinate to both the
+   copyright and the link itself, sitemap-style. */
+.footer-easter-egg::before {
+  content: "·";
+  opacity: 0.5;
+  margin-inline: var(--space-xs);
+}
+
 /* Mobile footer — screens 768px wide and smaller */
 @media (max-width: 768px) {
 

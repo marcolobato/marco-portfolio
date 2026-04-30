@@ -18,12 +18,12 @@ import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
 import AvatarScratcher from '../components/AvatarScratcher.astro';
 
-// Featured Field Notes — three specific posts shown on the homepage.
+// Featured Field Notes — two specific posts shown on the homepage as a tease.
+// The full archive at /experiments shows more, so the homepage stays curated.
 // To change which posts appear, edit this list of ids (an id is the filename
 // without the .md/.mdx extension). Cards still pull title, description, and
 // image straight from each post's frontmatter, so the post is the source of truth.
-// The full archive lives on the /experiments page.
-const featuredIds = ['privacysim', 'pharmassist', 'ai-broken-in-denim'];
+const featuredIds = ['privacysim', 'digitizing-physical-spaces'];
 const fieldNotes = (await getCollection('writing'))
   .filter(post => featuredIds.includes(post.id))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());

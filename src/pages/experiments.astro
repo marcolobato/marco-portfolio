@@ -13,12 +13,23 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 
+// All writing posts — fetched once, reused across both sections below.
+const allPosts = await getCollection('writing');
+
 // Multimodal work — three featured experiments. Same ids as the homepage
 // Field Notes section, duplicated here intentionally so each page can pick
 // its own featured set if they ever diverge.
 const multimodalIds = ['privacysim', 'pharmassist', 'ai-broken-in-denim'];
-const multimodalEntries = (await getCollection('writing'))
+const multimodalEntries = allPosts
   .filter(post => multimodalIds.includes(post.id))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Past entries — earlier writing on AI, design, and physical spaces.
+// These are Medium articles ported into the writing collection; they live
+// in Past entries (not Multimodal work) to keep the focus on current work.
+const pastIds = ['ai-and-design-theory', 'digitizing-physical-spaces', 'learning-in-public'];
+const pastEntries = allPosts
+  .filter(post => pastIds.includes(post.id))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
@@ -65,6 +76,35 @@ const multimodalEntries = (await getCollection('writing'))
 
       <div class="writing-cards">
         {multimodalEntries.map(post => (
+          <a href={`/writing/${post.id}`} class="writing-card">
+            <div class="writing-card-image">
+              {post.data.image
+                ? <img src={post.data.image} alt={post.data.title} class="writing-card-img" />
+                : <span class="writing-card-image-label">[ image ]</span>
+              }
+            </div>
+            <div class="writing-card-body">
+              <h3 class="writing-card-title">{post.data.title}</h3>
+              <p class="writing-card-desc">{post.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION: PAST ENTRIES
+         Earlier writing surfaced as cards. Same style as Multimodal work
+         and the homepage Field Notes section.
+         =================================================================== -->
+    <section class="sg-section" id="past-entries">
+
+      <h2 style="margin-bottom: var(--space-md);">Past entries</h2>
+
+      <div class="writing-cards">
+        {pastEntries.map(post => (
           <a href={`/writing/${post.id}`} class="writing-card">
             <div class="writing-card-image">
               {post.data.image

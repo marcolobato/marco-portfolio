@@ -9,9 +9,14 @@
 
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+// description is optional — if a page doesn't pass one, no meta description
+// tag is rendered and Google falls back to auto-generating from page content.
+// Pass a per-page description from each .astro page to control what appears
+// in search results and social link previews.
+const { title, description } = Astro.props;
 ---
 
 <html lang="en">
@@ -19,6 +24,7 @@ const { title } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    {description && <meta name="description" content={description} />}
     <link rel="icon" type="image/svg+xml" href="/mlobato-favicon.svg" />
 
     <!-- Fraunces + Geist Mono from Google Fonts -->

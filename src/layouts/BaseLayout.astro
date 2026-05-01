@@ -7,16 +7,33 @@
 //     <!-- your page body content here -->
 //   </BaseLayout>
 
+// Site-wide metadata constants. Edit these here once instead of repeating
+// strings across every page or every meta tag.
+const SITE_URL = 'https://marcolobato.info';
+const SITE_NAME = 'Marco Lobato';
+const DEFAULT_OG_IMAGE = '/og-image.png';
+const THEME_COLOR = '#081F5D'; // deep navy — same as the footer background
+
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;          // path to a 1200x630 image, defaults to DEFAULT_OG_IMAGE
+  ogType?: 'website' | 'article'; // 'article' for blog posts and case studies
+  noindex?: boolean;         // set true on pages you don't want Google to index
 }
 
-// description is optional — if a page doesn't pass one, no meta description
-// tag is rendered and Google falls back to auto-generating from page content.
-// Pass a per-page description from each .astro page to control what appears
-// in search results and social link previews.
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+// Social platforms reject relative URLs in og:url, og:image, etc. Build
+// absolute URLs from the current page path using new URL(path, base).
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL).href;
+const ogImageURL   = new URL(ogImage, SITE_URL).href;
 ---
 
 <html lang="en">
@@ -25,6 +42,39 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+
+    {/* Robots — only emit when a page opts into noindex. Pages without this
+        tag default to index, follow (Google's normal behavior). */}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    {/* Canonical URL — declares the official URL of this page so search
+        engines don't treat trailing-slash or query-string variants as
+        duplicate content. */}
+    <link rel="canonical" href={canonicalURL} />
+
+    {/* Site identity */}
+    <meta name="author" content="Marco Lobato" />
+    <meta name="theme-color" content={THEME_COLOR} />
+
+    {/* Open Graph — controls link preview cards on LinkedIn, iMessage, Slack,
+        Discord, WhatsApp, Bluesky, and most other platforms. */}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="en_US" />
+
+    {/* Twitter Card — Twitter falls back to og:* tags for missing fields, but
+        emitting these explicitly keeps older Twitter clients and platforms
+        that mimic Twitter Cards rendering correctly. summary_large_image
+        gives the big-image layout. */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageURL} />
+
     <link rel="icon" type="image/svg+xml" href="/mlobato-favicon.svg" />
 
     <!-- Fraunces + Geist Mono from Google Fonts -->

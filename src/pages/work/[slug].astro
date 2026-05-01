@@ -29,7 +29,11 @@ const { data } = project;
 const { Content } = await render(project);
 ---
 
-<BaseLayout title={`${data.title} — Marco Lobato`}>
+<BaseLayout
+  title={`${data.title} — Marco Lobato`}
+  description={data.overview.what}
+  ogType="article"
+>
 
   <Nav />
 

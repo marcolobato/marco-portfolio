@@ -27,7 +27,11 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BaseLayout title={`${post.data.title} — Marco Lobato`}>
+<BaseLayout
+  title={`${post.data.title} — Marco Lobato`}
+  description={post.data.description}
+  ogType="article"
+>
 
   <!-- x-data holds lightbox state: open/closed, current image src, current caption.
        @open-lightbox.window listens for the custom event fired by the script below.

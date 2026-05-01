@@ -157,7 +157,7 @@ That's what this prototype tries to get right.
 
 **The essay that inspired this:** [Multimodal AI should fit like broken-in denim](/writing/ai-broken-in-denim)
 
-**My experiments page:** [Field Notes](https://marcolobato.info/field-notes/)
+**My Field Notes page:** [Field Notes](https://marcolobato.info/field-notes/)
 
 ---
 

@@ -1,14 +1,14 @@
 # Experiment template
 
-A working document for drafting new Field Notes experiments before they appear on /experiments. Keep this file at the project root so it stays close at hand. It does not ship to the live site (Astro's build pipeline ignores files at the project root that aren't in `src/` or `public/`).
+A working document for drafting new Field Notes experiments before they appear on /field-notes. Keep this file at the project root so it stays close at hand. It does not ship to the live site (Astro's build pipeline ignores files at the project root that aren't in `src/` or `public/`).
 
-When you're ready to surface an experiment publicly, copy the structured content into a writing post (a markdown file in `src/content/writing/`) or into a richer entry on the /experiments page. This template is just the scratchpad.
+When you're ready to surface an experiment publicly, copy the structured content into a writing post (a markdown file in `src/content/writing/`) or into a richer entry on the /field-notes page. This template is just the scratchpad.
 
 ---
 
 ## Template structure
 
-Fill in any combination of the fields below for each new experiment. Skip anything you don't have content for yet. Field names mirror the original PharmAssist accordion structure that was removed from /experiments in commit `d05106d`.
+Fill in any combination of the fields below for each new experiment. Skip anything you don't have content for yet. Field names mirror the original PharmAssist accordion structure that was removed from /field-notes in commit `d05106d`.
 
 ### Title
 The name of the experiment. e.g. "PharmAssist: Show, Don't Speak"
@@ -20,7 +20,7 @@ What the experiment is, what it explores, and what was being tested. Treat it li
 One sentence per learning, focused on insight rather than summary. Things you didn't expect, patterns that surprised you, or design decisions that turned out to matter more than you thought.
 
 ### Notes
-A paragraph or two of context. Optionally followed by a bulleted list of design concepts the experiment explored (these can map to entries in the Design concept glossary on /experiments).
+A paragraph or two of context. Optionally followed by a bulleted list of design concepts the experiment explored (these can map to entries in the Design concept glossary on /field-notes).
 
 ### Tools
 The platforms, libraries, prototyping tools, or hardware used. Worth listing even if a tool was just tried and discarded.
@@ -34,7 +34,7 @@ The platforms, libraries, prototyping tools, or hardware used. Worth listing eve
 
 ## Worked example: PharmAssist
 
-Preserved verbatim from the original /experiments accordion before it was replaced with the cards layout in commit `d05106d`. Keeping the content here so the notes and learnings are not lost.
+Preserved verbatim from the original /field-notes accordion before it was replaced with the cards layout in commit `d05106d`. Keeping the content here so the notes and learnings are not lost.
 
 ### Title
 PharmAssist: Show, Don't Speak

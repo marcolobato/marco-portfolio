@@ -19,7 +19,7 @@ import Carousel from '../components/Carousel.astro';
 import AvatarScratcher from '../components/AvatarScratcher.astro';
 
 // Featured Field Notes — two specific posts shown on the homepage as a tease.
-// The full archive at /experiments shows more, so the homepage stays curated.
+// The full archive at /field-notes shows more, so the homepage stays curated.
 // To change which posts appear, edit this list of ids (an id is the filename
 // without the .md/.mdx extension). Cards still pull title, description, and
 // image straight from each post's frontmatter, so the post is the source of truth.
@@ -232,7 +232,7 @@ const fieldNotes = (await getCollection('writing'))
          from the writing collection by id (see frontmatter at the top of this
          file). Reuses the existing .writing-cards grid and .writing-card style
          so the cards match the rest of the site.
-         The "View all field notes" link points to /experiments — the full
+         The "View all field notes" link points to /field-notes — the full
          archive page where every Field Note lives.
          ===================================================================== -->
     <section class="writing" id="field-notes">
@@ -261,7 +261,7 @@ const fieldNotes = (await getCollection('writing'))
         </div>
 
         <div style="margin-top: var(--space-xl);">
-          <Button label="View all field notes" href="/experiments" variant="secondary" />
+          <Button label="View all field notes" href="/field-notes" variant="secondary" />
         </div>
       </div>
     </section>

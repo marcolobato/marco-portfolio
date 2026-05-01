@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects file.
+# Format: <source path>  <destination path>  <status code>
+#
+# Permanent redirect from the old /experiments URL to the renamed /field-notes
+# page. 301 tells search engines this move is permanent so any accumulated
+# SEO weight transfers to the new URL.
+/experiments  /field-notes  301

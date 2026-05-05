@@ -216,12 +216,24 @@ const { Content } = await render(post);
     margin-bottom: var(--space-xs);
   }
 
-  /* Cover image — full width, rounded, sits between the header and the body */
+  /* Cover image — "breakout" pattern: extends wider than the 680px text column
+     so the hero feels prominent, while text stays at a comfortable reading width.
+     - min(920px, calc(100vw - 2 * var(--space-xl))): caps the image at 920px on
+       desktop, but never wider than the viewport minus the page's side padding —
+       so on mobile it shrinks naturally and never causes horizontal scroll.
+     - margin-left: 50% + transform: translateX(-50%): centers the image on the
+       container's horizontal axis while letting it extend beyond the container. */
   .post-cover {
-    width: 100%;
+    width: min(920px, calc(100vw - 2 * var(--space-xl)));
+    /* Override the global `img { max-width: 100% }` rule from global.css.
+       Without this, max-width caps the image at the parent container's width
+       (680px), overriding our explicit 920px width. max-width always beats width. */
+    max-width: none;
     height: auto;
     border-radius: 8px;
     margin-bottom: var(--space-2xl);
+    margin-left: 50%;
+    transform: translateX(-50%);
     display: block;
   }
 

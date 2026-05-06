@@ -1,8 +1,18 @@
 ---
-title: "PrivacySim: Practice at the Counter"
+title: "PrivacySim: Virtual AI Coach"
 date: 2026-03-30
 description: "A virtual human that coaches pharmacists to protect personal information at the counter. Prototyped with Tavus to test my privacy patterns."
 image: "/images/writing/privacysim/cover.png"
+cardSummary: |-
+  A virtual human that coaches pharmacists to protect personal information at the counter prototyped with Tavus.io
+
+  I built a virtual human that trains pharmacists on protecting personal identifiable information. I learned to shift from linear conversation flows to designing a system prompt and context that enables natural, non-repetitive coaching. The virtual human gives real-time feedback, can be interrupted, and responds to the trainee's pace.
+tools:
+  - label: "Tavus.io"
+    href: "https://www.tavus.io"
+artifact:
+  image: "/images/field-notes/privacysim-artifact.png"
+  caption: "Simulator recording"
 ---
 
 Can a virtual human teach a pharmacist to stop saying private information out loud? I built one on Tavus to find out. The virtual human on screen plays a customer picking up a prescription. I play the pharmacist. When I say the medication name where everyone can hear, the face tells me what I just gave away. When I keep things vague and use the screen instead, the virtual human lets me know nobody in line learned a thing.
@@ -15,6 +25,8 @@ This is another prototype in my ongoing exploration of multimodal AI interaction
     controls: shows the native play/pause/scrub bar.
     preload="metadata": loads only the first frame and duration — keeps page load fast.
     playsinline: prevents iOS from going full-screen automatically. */}
+<div id="artifact"></div>
+
 <video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; margin-top: var(--space-xl); margin-bottom: var(--space-xs); display: block;">
   <source src="/privacysim-session.mp4" type="video/mp4" />
   Your browser does not support the video tag.
@@ -104,7 +116,7 @@ My earlier essay argued that multimodal AI should feel like peripheral vision: p
 
 **The essay that started this:** [Multimodal AI should fit like broken-in denim](/writing/ai-broken-in-denim)
 
-**The prototype that explored the patient side:** [PharmAssist: Show, Don't Speak](/writing/pharmassist)
+**The prototype that explored the patient side:** [PharmAssist: Default privacy patterns](/writing/pharmassist)
 
 {/* **My Field Notes page:** [Field Notes](/field-notes/) */}
 

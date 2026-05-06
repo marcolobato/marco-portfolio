@@ -18,6 +18,19 @@ const writing = defineCollection({
     date:        z.date(),              // used for sorting posts chronologically
     description: z.string(),            // shown on the card as a subtitle
     image:       z.string().optional(), // path to a cover image — optional for now
+
+    // ── Field Notes "Multimodal work" card fields ──────────────────────────
+    // Used only by the FieldNoteCard component on /field-notes. All optional
+    // so existing posts (Past entries) validate without changes.
+    cardSummary: z.string().optional(), // longer body shown on the FieldNoteCard
+    tools:       z.array(z.object({
+                   label: z.string(),   // text shown inside the badge
+                   href:  z.string().optional(), // omit → badge is plain text
+                 })).optional(),
+    artifact:    z.object({
+                   image:   z.string(), // /images/field-notes/{slug}-artifact.png
+                   caption: z.string(), // e.g. "Storyboard"
+                 }).optional(),
   }),
 });
 

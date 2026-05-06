@@ -1,8 +1,18 @@
 ---
-title: "PharmAssist: Show, Don't Speak"
+title: "PharmAssist: Default privacy patterns"
 date: 2026-03-25
 description: "Designing privacy for the pharmacy counter. Learning Voiceflow along the way."
 image: "/images/writing/pharm-assist-storyboard.png"
+cardSummary: |-
+  Designing privacy for a pharmacy counter kiosk. Learning Voiceflow along the way.
+
+  I built a Voiceflow prototype that includes both the conversation flow and the screen the person sees, side by side on the same canvas. I learned how to use Voiceflow and discovered scenarios where splitting information across voice and screen made sense for privacy. Cards represent what appears on the phone screen. A single privacy variable controls the entire flow.
+tools:
+  - label: "Voiceflow"
+    href: "https://www.voiceflow.com"
+artifact:
+  image: "/images/field-notes/pharmassist-artifact.png"
+  caption: "Voiceflow prototype"
 ---
 
 The pharmacist says "last name?" and you feel the person behind you lean in. Not deliberately. They're just close. The counter is narrow. You say your name. Then your date of birth. Then you spell your insurance ID, letter by letter, loud enough for the pharmacist, loud enough for everyone.
@@ -78,6 +88,8 @@ The system doesn't replace the pharmacist. It makes the human conversation more 
 ## What I learned building this in Voiceflow
 
 This was my first time using Voiceflow. I built alongside Gemini, which could see my screen and point me to functions while I was learning the interface. Here's what I found and the design decisions I made along the way.
+
+<div id="artifact"></div>
 
 ![Full Voiceflow canvas zoomed out showing the complete flow with the test chat panel open](/images/writing/pharmassist/05-voiceflow-canvas-full.png)
 *The complete PharmAssist flow in Voiceflow, with the test chat running alongside.*

@@ -5,28 +5,73 @@
 //
 // Sections, top to bottom:
 //   1. Header (page title + description)
-//   2. Multimodal work — featured cards (3 entries, pulled from writing collection)
-//   3. Past entries — older Medium articles (added in a follow-up commit)
-//   4. Design concept glossary — terms + one-line definitions (added in a follow-up commit)
+//   2. Multimodal work — featured experiments shown with FieldNoteCard
+//   3. Past entries — older Medium articles
+//   4. Design concept glossary — terms + one-line definitions
 import '../styles/global.css';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
+import FieldNoteCard from '../components/FieldNoteCard.astro';
 
 // All writing posts — fetched once, reused across both sections below.
 const allPosts = await getCollection('writing');
 
-// Multimodal work — three featured experiments. Same ids as the homepage
-// Field Notes section, duplicated here intentionally so each page can pick
-// its own featured set if they ever diverge.
-const multimodalIds = ['privacysim', 'pharmassist', 'ai-broken-in-denim'];
-const multimodalEntries = allPosts
-  .filter(post => multimodalIds.includes(post.id))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+// ── Multimodal work — featured experiments ────────────────────────────────
+// Order is MANUAL (no date sort). Whatever order is in this array is the
+// order the cards appear on the page. To reorder cards, just rearrange the
+// strings below (or move/insert the inline `briefcase` entry further down).
+const multimodalIds = ['ai-broken-in-denim', 'pharmassist', 'privacysim'];
 
-// Past entries — earlier writing on AI, design, and physical spaces.
-// These are Medium articles ported into the writing collection; they live
-// in Past entries (not Multimodal work) to keep the focus on current work.
+// Helper — convert a writing collection entry into props for FieldNoteCard.
+// Falls back to safe empty values if the optional frontmatter fields are
+// missing, so a half-filled article still renders without erroring out.
+const toCardProps = (post: any) => ({
+  title: post.data.title,
+  body: post.data.cardSummary ?? post.data.description ?? '',
+  tools: post.data.tools ?? [],
+  exploreHref: `/writing/${post.id}`,
+  artifact: {
+    image:   post.data.artifact?.image   ?? '',
+    alt:     '', // decorative for now (PRD)
+    caption: post.data.artifact?.caption ?? '',
+    href:    `/writing/${post.id}#artifact`,
+  },
+});
+
+// Walk the ordered ids and pull the matching post for each. .filter(Boolean)
+// drops any id that didn't match a real post (defensive — stops the page
+// from crashing if an id is misspelled).
+const collectionCards = multimodalIds
+  .map(id => allPosts.find(p => p.id === id))
+  .filter(Boolean)
+  .map(toCardProps);
+
+// Marco's Briefcase — card 4. No article exists yet, so its data lives
+// here inline. When the article is written, move this into the writing
+// collection, add the slug to multimodalIds above, and delete this object.
+// Until then, exploreHref and artifact.href are undefined so the card
+// hides "Explore experiment" and renders the caption as plain text.
+const briefcase = {
+  title: "Marco's Briefcase: My WhatsApp Superagent",
+  body: "I built a Base44 Superagent on WhatsApp that pulls my resume, work samples, and talking points based on a specific audience I define before a meeting. I learned how to build a Superagent and how to structure audience profiles as a filter for surfacing the right information in conversation.",
+  tools: [{ label: 'Base44' }],
+  exploreHref: undefined,
+  artifact: {
+    image:   '/images/field-notes/marcos-briefcase-artifact.png',
+    alt:     '',
+    caption: 'Screenshot of live agent on WhatsApp retrieving info at AI Builders Meetup',
+    href:    undefined,
+  },
+};
+
+// Final list rendered in the section. Collection cards first, briefcase last.
+const multimodalCards = [...collectionCards, briefcase];
+
+// ── Past entries ──────────────────────────────────────────────────────────
+// Earlier writing on AI, design, and physical spaces. These are Medium
+// articles ported into the writing collection; they live in Past entries
+// (not Multimodal work) to keep the focus on current work.
 const pastIds = ['ai-and-design-theory', 'digitizing-physical-spaces', 'learning-in-public'];
 const pastEntries = allPosts
   .filter(post => pastIds.includes(post.id))
@@ -59,9 +104,10 @@ const pastEntries = allPosts
 
     <!-- ===================================================================
          SECTION: MULTIMODAL WORK
-         Three featured experiments shown as cards. Reuses the .writing-cards
-         grid and .writing-card styles from the homepage Field Notes section.
-         Cards link to each post's article page at /writing/{id}.
+         Featured experiments rendered with the FieldNoteCard component.
+         Order is manual (see multimodalIds in the frontmatter above).
+         Each card links to the article at /writing/{id} and to the
+         #artifact anchor inside that article.
          =================================================================== -->
     <section class="sg-section" id="multimodal-work" style="padding-top: 0;">
 
@@ -77,20 +123,19 @@ const pastEntries = allPosts
         Interaction design experiments in multimodal AI
       </p>
 
-      <div class="writing-cards">
-        {multimodalEntries.map(post => (
-          <a href={`/writing/${post.id}`} class="writing-card">
-            <div class="writing-card-image">
-              {post.data.image
-                ? <img src={post.data.image} alt={post.data.title} class="writing-card-img" />
-                : <span class="writing-card-image-label">[ image ]</span>
-              }
-            </div>
-            <div class="writing-card-body">
-              <h3 class="writing-card-title">{post.data.title}</h3>
-              <p class="writing-card-desc">{post.data.description}</p>
-            </div>
-          </a>
+      {/* Stack of FieldNoteCards — one per experiment. Each card is two
+          columns wide (title + body on the left, image + caption on the
+          right) and full-width within the section grid. See the scoped
+          <style> block at the bottom of this file for the stack layout. */}
+      <div class="multimodal-cards">
+        {multimodalCards.map(card => (
+          <FieldNoteCard
+            title={card.title}
+            body={card.body}
+            tools={card.tools}
+            exploreHref={card.exploreHref}
+            artifact={card.artifact}
+          />
         ))}
       </div>
 
@@ -160,10 +205,18 @@ const pastEntries = allPosts
 </BaseLayout>
 
 
-<!-- Scoped styles for the Design concept glossary inside the Multimodal work
-     section. Astro auto-scopes <style> blocks to this component, so these
-     selectors don't leak to other pages. -->
+<!-- Scoped styles for the Multimodal work cards stack and the Design concept
+     glossary that follows it. Astro auto-scopes <style> blocks to this
+     component, so these selectors don't leak to other pages. -->
 <style>
+  /* Vertical stack of FieldNoteCards. Each card is full-width; gap is the
+     space between cards. */
+  .multimodal-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
   .glossary dl {
     margin: 0;
     max-width: 72ch;

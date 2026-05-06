@@ -2237,6 +2237,26 @@ code {
   box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06); /* off-white tinted glow */
 }
 
+/* ── FieldNoteCard (Multimodal work cards on /field-notes) ──
+   Same dark-mode fixes as .writing-card: the --color-surface border becomes
+   nearly invisible in dark mode, and the navy hover shadow vanishes on a dark
+   background. Mirror the writing-card overrides here so both card types feel
+   the same in both themes. */
+[data-theme="dark"] .fnc {
+  border-color: rgba(160, 175, 181, 0.2); /* slate at low opacity — subtle but present */
+}
+
+[data-theme="dark"] .fnc:hover {
+  box-shadow: 0 4px 24px rgba(232, 237, 255, 0.06); /* off-white tinted glow */
+}
+
+/* Inline link hover inside FieldNoteCard — mirror the article link hover
+   (.prose-article a:hover): in dark mode, navy-300 → navy-100 (lighter blue). */
+[data-theme="dark"] .fnc-explore:hover,
+[data-theme="dark"] .fnc-artifact-caption--link:hover {
+  color: hsl(var(--navy-100));
+}
+
 /* About video uses the same shadow style as cards. Same fix in dark mode:
    the navy-tinted shadow disappears on a dark background, so use the off-white
    glow instead. */

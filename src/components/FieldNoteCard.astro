@@ -1,0 +1,313 @@
+---
+// FieldNoteCard.astro
+// -----------------------------------------------------------------------------
+// A two-column card used in the "Multimodal work" section of /field-notes.
+//
+// Layout (desktop): body on the left (~45%), artifact image on the right (~55%).
+// Layout (mobile):  single column. Body first, image after — same content order
+// as the desktop card, just stacked.
+//
+// Visual language matches the existing .writing-card style (rounded corners,
+// light surface bg, subtle border, soft hover shadow). All colors come from
+// global tokens so light/dark mode flip automatically.
+//
+// The card is NOT a single big link — it has multiple interactive elements
+// inside (Explore experiment link, optional tool badge link, optional artifact
+// caption link). Wrapping the whole thing in <a> would create nested anchors.
+//
+// See PRD: ~/Desktop/prd-field-notes-multimodal-cards.md
+// -----------------------------------------------------------------------------
+
+import Badge from '@/components/ui/feedback/Badge.astro';
+
+// One tool entry: a label always, an optional href turns the badge into a link.
+interface Tool {
+  label: string;
+  href?: string;
+}
+
+// The artifact preview shown in the right column.
+interface Artifact {
+  image:    string; // path under /public, e.g. /images/field-notes/x-artifact.png
+  alt:      string; // empty string "" marks the image as decorative (PRD-approved for now)
+  caption:  string; // text under the image
+  href?:    string; // omit → caption renders as plain text instead of a link
+}
+
+interface Props {
+  title:        string;
+  body:         string;     // long copy. Paragraphs separated by blank line (\n\n)
+  tools:        Tool[];     // can be empty
+  exploreHref?: string;     // omit → "Explore experiment" link is hidden (card 4)
+  artifact:     Artifact;
+}
+
+const {
+  title,
+  body,
+  tools,
+  exploreHref,
+  artifact,
+} = Astro.props;
+
+// Split the long copy into paragraphs on blank lines.
+// .filter(Boolean) drops any empty string from leading/trailing whitespace.
+const paragraphs = body.split(/\n\n+/).filter(Boolean);
+---
+
+<article class="fnc">
+
+  {/* Title — its own grid item in row 1, col 1. The grid intentionally leaves
+      row 1, col 2 empty so the right column (image) starts at row 2 — vertically
+      aligned with where the body text begins on the left. */}
+  <h3 class="fnc-title">{title}</h3>
+
+  {/* Left column, row 2 — body + tools + Explore link. */}
+  <div class="fnc-content">
+
+    <div class="fnc-body">
+      {paragraphs.map(p => <p>{p}</p>)}
+    </div>
+
+    {/* Tools row: label + one or more outline badges. Badges become links when
+        the tool entry has an href; external links open in a new tab. */}
+    {tools.length > 0 && (
+      <div class="fnc-tools">
+        <span class="fnc-tools-label">Tools:</span>
+        <div class="fnc-tools-list">
+          {tools.map(tool => tool.href
+            ? (
+              <a
+                href={tool.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="fnc-tool-link"
+              >
+                <Badge variant="outline">{tool.label}</Badge>
+              </a>
+            )
+            : <Badge variant="outline">{tool.label}</Badge>
+          )}
+        </div>
+      </div>
+    )}
+
+    {/* Explore experiment link — hidden entirely when there's no article yet. */}
+    {exploreHref && (
+      <a href={exploreHref} class="fnc-explore">Explore experiment</a>
+    )}
+
+  </div>
+
+  {/* Right column, row 2 — artifact image + caption. Caption is a link when
+      href is provided, plain text otherwise (card 4 case). */}
+  <div class="fnc-artifact">
+    <div class="fnc-artifact-image">
+      <img src={artifact.image} alt={artifact.alt} />
+    </div>
+    {artifact.href
+      ? (
+        <a href={artifact.href} class="fnc-artifact-caption fnc-artifact-caption--link">
+          {artifact.caption}
+        </a>
+      )
+      : <span class="fnc-artifact-caption">{artifact.caption}</span>
+    }
+  </div>
+
+</article>
+
+<style>
+  /* Outer card — 2-column × 2-row grid.
+     - Columns: ~45% / ~55% so the image gets a touch more room.
+     - minmax(0, …) lets columns shrink without overflowing — guards against
+       long words pushing the layout wider than the parent.
+     - Rows: row 1 holds only the title (in col 1). The grid intentionally
+       leaves the cell at row 1, col 2 empty so the image (placed in row 2)
+       lines up vertically with where the body starts on the left.
+     - Row gap is the spacing between title and body; column gap is the
+       spacing between the two columns.
+     - Same border, radius, and padding feel as .writing-card so the cards
+       belong to the same visual family. */
+  .fnc {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto 1fr;
+    column-gap: var(--space-xl);
+    row-gap: var(--space-md);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-surface);
+    border-radius: 12px;
+    padding: var(--space-lg);
+    transition: box-shadow 0.2s ease;
+  }
+
+  /* Soft hover shadow — same navy-tinted treatment as .writing-card. No vertical
+     translate here because the card has multiple links inside; lifting the whole
+     container would feel odd when you're hovering a single link. */
+  .fnc:hover {
+    box-shadow: 0 4px 24px rgba(8, 31, 93, 0.08);
+  }
+
+  /* Title — placed at row 1 / col 1. Row 1 / col 2 is intentionally empty.
+     Uses the global h3 element so it inherits Fraunces. We override size +
+     leading here for the card context. */
+  .fnc-title {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    line-height: var(--leading-tight);
+    margin: 0;
+  }
+
+  /* Left column, row 2 — vertical stack with comfortable gaps between sections. */
+  .fnc-content {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    min-width: 0; /* allows children to shrink inside the grid track */
+  }
+
+  /* Body paragraphs: comfortable reading line-height, charcoal body color. */
+  .fnc-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    flex: 1; /* pushes Tools + Explore down so they sit at the bottom of the column */
+  }
+
+  .fnc-body p {
+    font-size: var(--text-base);
+    color: var(--color-charcoal);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+    max-width: none;
+  }
+
+  /* "Tools:" row — small label + badges, wraps if there are many badges. */
+  .fnc-tools {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    font-size: var(--text-sm);
+    color: var(--color-slate);
+  }
+
+  .fnc-tools-label {
+    font-weight: var(--weight-medium);
+  }
+
+  .fnc-tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  /* Wrapper around a Badge when the tool has an href.
+     Removes the default underline so the badge looks like a badge, not a link. */
+  .fnc-tool-link {
+    text-decoration: none;
+  }
+
+  /* Explore experiment link — body-text size, regular weight, royal blue,
+     underlined. Matches the inline link style used in articles so all the
+     links across the site feel like one family.
+     Hover: same treatment as .prose-article a (article body links) —
+     keep underline, shift color a step lighter via navy-500. */
+  .fnc-explore {
+    align-self: flex-start;
+    font-size: var(--text-base);
+    font-weight: var(--weight-regular);
+    color: var(--color-royal-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+
+  .fnc-explore:hover {
+    color: hsl(var(--navy-500));
+  }
+
+  /* Right column, row 2 — image + caption. */
+  .fnc-artifact {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    min-width: 0;
+  }
+
+  /* Image container — locked to 16:9 to match the source images (1080×608)
+     so nothing gets cropped. The image sits at the top of the right column;
+     the caption is pushed to the bottom of the column via margin-top: auto
+     (see .fnc-artifact-caption below) so it aligns with the Explore link
+     on the left. Any space between image and caption shows the surface color. */
+  .fnc-artifact-image {
+    background-color: var(--color-surface);
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+  }
+
+  .fnc-artifact-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* crops to fill — no stretching */
+    display: block;    /* removes the small inline-image gap */
+  }
+
+  /* Caption — body-text size so it visually matches the Explore link.
+     margin-top: auto pushes the caption to the bottom of its flex column,
+     making it sit on the same horizontal line as the Explore link in the
+     left column (the column heights match because grid stretches the row). */
+  .fnc-artifact-caption {
+    margin-top: auto;
+    font-size: var(--text-base);
+    color: var(--color-charcoal);
+  }
+
+  .fnc-artifact-caption--link {
+    font-weight: var(--weight-regular);
+    color: var(--color-royal-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+
+  .fnc-artifact-caption--link:hover {
+    color: hsl(var(--navy-500));
+  }
+
+  /* Mobile: stack to a single column. The two-row grid collapses to three
+     rows (title, content, artifact) all in col 1. Resetting the explicit
+     grid-column/grid-row on each child lets the grid auto-place them in
+     source order. */
+  @media (max-width: 768px) {
+    .fnc {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      row-gap: var(--space-lg);
+    }
+    .fnc-title,
+    .fnc-content,
+    .fnc-artifact {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .fnc-title {
+      font-size: var(--text-xl);
+    }
+    /* On mobile the cards stack vertically, so there's no left-column to
+       align the caption with. Undo margin-top: auto so the caption sits
+       directly under the image. */
+    .fnc-artifact-caption {
+      margin-top: 0;
+    }
+  }
+</style>

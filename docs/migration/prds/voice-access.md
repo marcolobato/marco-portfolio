@@ -47,7 +47,7 @@ To be filled in during the section-by-section walkthrough. Each row maps a secti
 | 5 | User Interface Redesign | Plain markdown + inline `<video>` + composite image | `va-searchforcutepuppies.mp4`, `va-overview-ui-redesign.png` | ✅ Done |
 | 6 | Five-feature composite | Plain markdown image + caption | `va-overview-features.png` | Pending |
 | 6 | "Blue circle" pullquote | `<Quote variant="dark">` | (none) | ✅ Done |
-| 8 | Solutions (intro + 4 sub-features + outro) | Plain markdown sections | `va-solution-basic-commands.png`, `va-solution-contextual-help.png`, `va-solution-timely-learning.png`, `va-solution-preventing-errors.png` | Pending |
+| 7 | Solutions (intro + 4 sub-features + outro) | Plain markdown sections | `va-solution-basic-commands.png`, `va-solution-contextual-help.png`, `va-solution-timely-learning.png`, `va-solution-preventing-errors.png` | 🟡 Partial: intro + sub 1-2 in, sub 3-4 + outro pending |
 
 Image filenames above are proposals based on each section's role. Adjust at export time if a different name is clearer.
 

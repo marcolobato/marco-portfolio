@@ -43,7 +43,7 @@ const { Content } = await render(project);
       <!-- ── Back link ────────────────────────────────────────────────────── -->
       <!-- Links back to the #work section on the home page, the same way
            writing posts link back to /#writing. -->
-      <a href="/#work" class="project-back">← Work</a>
+      <a href="/#more-projects" class="project-back">← Work</a>
 
       <!-- ── Hero ─────────────────────────────────────────────────────────── -->
       <!-- Order: title → brand → app link → image.
@@ -175,6 +175,14 @@ const { Content } = await render(project);
         </section>
       )}
 
+      <!-- Back to top — provides a return path at the end of the article.
+           Reuses the existing .footer-top-link visual treatment from the
+           global footer's own back-to-top so it reads as a familiar
+           pattern. Future use: this slot will become a "next case study"
+           link once we have multiple projects to chain. -->
+      <div class="project-bottom-actions">
+        <a href="#">Back to top ↑</a>
+      </div>
 
     </div><!-- /.project-container -->
   </main>
@@ -223,13 +231,22 @@ const { Content } = await render(project);
     margin-bottom: var(--space-3xl);
   }
 
-  /* Hero image sits below the title/brand/button block.
-     Top margin gives breathing room between the button and the image. */
+  /* Hero image breakout: extends past the 860px container so the hero
+     reads larger and more prominent, while body text stays at the
+     comfortable 860px reading width. min(1100px, calc(100vw - 2 * xl))
+     caps the width on desktop but never exceeds the viewport minus the
+     page's side padding, so it shrinks naturally on mobile.
+     margin-left: 50% + transform: translateX(-50%) centers the image
+     on the container's axis while letting it extend beyond it.
+     Same breakout pattern .post-cover uses in writing/[slug].astro. */
   .project-hero-image {
-    width: 100%;
+    width: min(1100px, calc(100vw - 2 * var(--space-xl)));
+    max-width: none;
     height: auto;
     border-radius: 8px;
     margin-top: var(--space-2xl);
+    margin-left: 50%;
+    transform: translateX(-50%);
     display: block;
   }
 
@@ -386,11 +403,14 @@ const { Content } = await render(project);
     margin-top: var(--space-xl);
     display: block;
   }
+  /* WCAG AA accessibility: --color-slate (#808080) fails contrast in
+     dark mode (~2.83:1 on the dark navy background). --color-charcoal
+     auto-flips and passes AA easily in both light and dark themes. */
   :global(.project-body img + em),
   :global(.project-body video + em) {
     display: block;
     font-size: var(--text-xs);
-    color: var(--color-slate);
+    color: var(--color-charcoal);
     letter-spacing: 0.08em;
     margin-top: var(--space-xs);
     margin-bottom: var(--space-xl);
@@ -568,5 +588,30 @@ const { Content } = await render(project);
   }
   :global(.project-reflection-body a:hover) {
     color: #ffffff;
+  }
+
+
+  /* ── Bottom actions ──────────────────────────────────────────────────── */
+  /* Right-aligned link at the end of the article. Currently holds a
+     "Back to top" link; future use will swap in a "next case study"
+     link. Sits on the article's light background, so the link uses the
+     same royal-blue + heading-on-hover treatment as other in-article
+     links (matches .project-back at the top of the page). */
+  .project-bottom-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-block: var(--space-2xl);
+  }
+  /* WCAG 1.4.1: underline must always be visible. Royal blue + underline
+     at rest; heading color on hover adds a second cue. */
+  .project-bottom-actions a {
+    font-size: var(--text-sm);
+    color: var(--color-royal-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+  .project-bottom-actions a:hover {
+    color: var(--color-heading);
   }
 </style>

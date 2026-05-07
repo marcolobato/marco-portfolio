@@ -110,17 +110,23 @@ Place all files into `public/projects/{slug}/`. The `public/` folder is served a
 
 ## Step 3. Video and GIF support
 
-Inline `<video>` is **not** a first-class component on this site yet. If your article has demo videos:
+Inline `<video>` is supported by the work template. The `.project-body video` rule shares the same width, rounded corners, and `+ em` caption styling as inline images, so a plain `<video>` tag wrapped in a `<p>` Just Works. If your article has demo videos:
 
 1. **First, ask if a still image plus caption would do the job.** Often it does, and it loads faster.
-2. If video is essential, you have two options:
-   - **Plain `<video>` tag inline in the MDX.** Quick, no new component. Looks like:
-     ```
-     <video src="/projects/voice-access/va-demo-voice-shortcut.mp4" autoplay muted loop playsinline />
-     ```
-     Caveat: no lightbox, no caption styling, no rounded corners by default. Fine for a small demo.
-   - **Build a `<VideoEmbed>` component.** Consistent styling, caption support, can match `<SolutionBlock>` aesthetics. Per `CLAUDE.md`, flag this as a missing component first and review before building.
+2. **For inline demos**, use a plain `<video>` tag wrapped in a `<p>` so the caption styling activates:
+
+   ```
+   <p>
+   <video src="/projects/voice-access/va-demo-shortcut.mp4" autoplay muted loop playsinline></video>
+   <em>Caption text describing the demo.</em>
+   </p>
+   ```
+
+   Notes:
+   - The `<p>` wrapper mirrors what markdown produces for `![alt](path)\n*caption*`, so the existing `:global(.project-body video + em)` caption rule applies.
+   - For phone-sized demos, constrain the wrapper: `<p style="max-width: 360px; margin-inline: auto;">`. The video and its caption shrink together and stay centered.
 3. **For long videos** (over ~30 seconds), prefer a YouTube or Vimeo embed. Keeps the build small and gives the user playback control.
+4. **For richer video needs** (custom controls, caption overlay, multiple sources): build a `<VideoEmbed>` component. Per `CLAUDE.md`, flag as a missing component first and review before building. Skip this until 3+ articles actually need it.
 
 ## Step 4. Content scaffolding
 
@@ -167,14 +173,24 @@ Walk the Google doc section by section. For each section, pick the best-fitting 
 | Sequenced problem statements with images            | `<ProblemCarousel>`   |
 | Design intent + 2 to 4 numbered user needs          | `<DesignIntent>`      |
 | Single solution: problem, solution, outcome         | `<SolutionBlock>`     |
+| Two columns of mixed content (text + image, text + text, etc.) | `<TwoColumn>` with named slots `left` and `right` (see Voice Access Sections 3 and 4) |
 | Plain heading + paragraph                           | Markdown `##` and prose |
 | Inline image with caption                           | `![alt](path)\n*caption*` (no blank line between image and caption) |
+| Inline MP4 demo with caption                        | `<p><video src="…" autoplay muted loop playsinline></video><em>caption</em></p>` (see Step 3) |
 
 If a section doesn't fit any of these and isn't plain prose: **stop and flag a missing component** per `CLAUDE.md`. Either build the new component (review together first) or restructure the content to fit existing ones.
 
 ### 4c. Section-by-section walkthrough
 
 The first time, walk every section together (Marco + Claude). Don't batch all sections at once. Review one, commit it, then move to the next. Small commits make it easy to revert just one section if it doesn't land.
+
+**Per-section commit checklist** (lessons from the Voice Access pilot):
+
+- [ ] Image or video asset(s) for this section are dropped into `public/projects/{slug}/`
+- [ ] File sizes are reasonable BEFORE committing. Targets: PNG under ~500 KB, JPG under ~400 KB, MP4 under ~1 MB, GIF under 1 MB (and prefer MP4 instead, see Step 2c). Re-optimizing after the fact creates churn commits.
+- [ ] `git add` includes BOTH the `.mdx` change AND the new asset files, named explicitly. The `public/` folder is untracked by default, so each new image must be staged by name. If you forget, the page works locally (Astro reads from disk) but breaks on the deployed site because git never picked up the asset.
+- [ ] Commit message names the section (e.g. `Add Voice Access Section 3: Why it mattered`).
+- [ ] Update the section mapping table in `docs/migration/prds/{slug}.md` so the PRD stays current.
 
 ## Step 5. Carousel link swap
 
@@ -240,6 +256,7 @@ When all 8 are migrated:
 
 These are things this playbook can't fully handle yet. Update this list as new ones are found.
 
-- **No `<VideoEmbed>` component.** Articles needing inline MP4 demos use a plain `<video>` tag for now (Step 3). Build the component if 3+ articles end up needing it.
-- **No automated image optimization.** Manual TinyPNG or Squoosh step. If we port many more articles after the initial 8, this is the first thing to automate.
+- **No `<VideoEmbed>` component yet.** Inline `<video>` tags wrapped in `<p>` now work with the existing styles for basic demos (see Step 3). If 3+ articles need richer features (custom controls, caption overlay, multiple sources), build the component then.
+- **No lightbox on `/work/*` pages.** The writing template has click-to-zoom on inline images, but the work template does not. Project page images render inline only. Consider adding it if articles increasingly rely on detail-rich screenshots.
+- **No automated image optimization.** Manual TinyPNG or Squoosh step before each commit. If we port many more articles after the initial 8, this is the first thing to automate.
 - **No section template generator.** The `.mdx` is hand-written. Could be a script that scaffolds frontmatter from a YAML config, but probably overkill for 8 articles.

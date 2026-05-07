@@ -37,11 +37,19 @@ Port the Voice Access for Android case study from the legacy Framer site (`lobat
 
 To be filled in during the section-by-section walkthrough. Each row maps a section in the Google doc to a component on the Astro page.
 
-| # | Doc section | Proposed component | Image filename(s) | Notes |
-|---|-------------|--------------------|-------------------|-------|
-| 1 | (TBD)       | (TBD)              | `va-…`            |       |
-| 2 |             |                    |                   |       |
-| 3 |             |                    |                   |       |
+| # | Doc section | Component | Image filename(s) | Status |
+|---|-------------|-----------|-------------------|--------|
+| 0 | Frontmatter (header, overview, contributions, outcomes, reflection) | Schema-driven, no MDX body | `va-hero.png` | ✅ Done |
+| 1 | The opportunity | Plain `##` + paragraph + image | `va-overview-item-recognition.png` | Pending |
+| 2 | Problem | Plain markdown + 2 images | `va-problem-comparison.png`, `va-problem-dictation.png` | Pending |
+| 3 | Why it mattered | Plain `##` + paragraph + image | `va-why-dictation.png` | Pending |
+| 4 | Understanding user needs (Sarah) | Plain markdown + `<Quote variant="light">` | `va-overview-sarah.png` | Pending |
+| 5 | User Interface Redesign | Plain markdown + composite image | `va-overview-ui-redesign.png` | Pending |
+| 6 | Five-feature composite | Plain markdown image + caption | `va-overview-features.png` | Pending |
+| 7 | "Blue circle" pullquote | `<Quote variant="dark">` | (none) | Pending |
+| 8 | Solutions (intro + 4 sub-features + outro) | Plain markdown sections | `va-solution-basic-commands.png`, `va-solution-contextual-help.png`, `va-solution-timely-learning.png`, `va-solution-preventing-errors.png` | Pending |
+
+Image filenames above are proposals based on each section's role. Adjust at export time if a different name is clearer.
 
 ## Success criteria
 

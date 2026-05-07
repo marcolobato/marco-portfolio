@@ -41,7 +41,7 @@ To be filled in during the section-by-section walkthrough. Each row maps a secti
 |---|-------------|-----------|-------------------|--------|
 | 0 | Frontmatter (header, hero + caption, overview, contributions, outcomes, card) | Schema-driven, no MDX body | `lo-hero.png` | ✅ Done |
 | 1 | Opening pullquote (US Vision) | `<Quote variant="dark">` | (none) | Pending |
-| 2 | Design process (with sub-sections: Problem, Research, Ideation) | `## H2` + `### H3` sub-sections | `lo-design-*.png` | Pending |
+| 2 | Design process (with sub-sections: Problem, Research, Ideation) | `## H2` + `### H3` sub-sections | `lo-design-problem.png`, `lo-design-ideation.png`, `lo-design-tasks.png` | ✅ Done |
 | 3 | Features (4 sub-features, each with Problem + Solution structure) | `## H2` + `### H3` sub-sections; consider `<SolutionBlock>` if it fits | `lo-feature-*.png` | Pending |
 | 3.1 | Sort mail | TBD | `lo-feature-sortmail-*.png` | Pending |
 | 3.2 | Packed and canned goods | TBD | `lo-feature-canned-*.png` | Pending |

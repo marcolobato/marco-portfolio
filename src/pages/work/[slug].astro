@@ -639,6 +639,43 @@ const { Content } = await render(project);
   }
 
 
+  /* ── Full-bleed muted block ──────────────────────────────────────────── */
+  /* Wraps a group of related sub-sections in a subtle background that
+     extends past the 860px container to the viewport edges, visually
+     grouping the sub-sections as one section.
+
+     Light mode uses --color-muted (a soft gray). Dark mode switches to
+     Navy 800 from the brand ramp, which reads as a deeper, on-brand
+     surface tint and fits the dark canvas better than a neutral gray.
+
+     Inner content is constrained to 860px via `padding-inline: max(...)`
+     rather than a `> *` max-width rule. This way children (including
+     paragraphs containing images, which the :has(img) override frees
+     from the default 65ch cap) naturally fit the column without
+     overflowing to viewport edges. */
+  :global(.project-bleed-muted) {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-muted);
+    padding-block: var(--space-3xl);
+    padding-inline: max(var(--space-xl), calc((100vw - 860px) / 2));
+    margin-block: var(--space-3xl);
+  }
+  :global([data-theme="dark"] .project-bleed-muted) {
+    background: hsl(var(--background));
+  }
+
+  /* Inside the bleed section, tighten bullet indent so list items align
+     more closely with surrounding bold labels (Problem, Solution). The
+     default .project-body ul padding (--space-xl) creates a wide indent
+     that floats the bullets visually away from their adjacent labels. */
+  :global(.project-bleed-muted ul),
+  :global(.project-bleed-muted ol) {
+    padding-left: 1.25em;
+  }
+
+
   /* ── Bottom actions ──────────────────────────────────────────────────── */
   /* Right-aligned link at the end of the article. Currently holds a
      "Back to top" link; future use will swap in a "next case study"

@@ -364,15 +364,20 @@ const { Content } = await render(project);
     margin-bottom: var(--space-sm);
   }
 
-  /* Images in the body — same treatment as writing posts */
-  :global(.project-body img) {
+  /* Images and videos in the body — same treatment as writing posts.
+     Video shares the image styling so inline <video> tags in MDX get
+     matching width, rounded corners, and block flow without needing a
+     dedicated component. */
+  :global(.project-body img),
+  :global(.project-body video) {
     width: 100%;
     height: auto;
     border-radius: 8px;
     margin-top: var(--space-xl);
     display: block;
   }
-  :global(.project-body img + em) {
+  :global(.project-body img + em),
+  :global(.project-body video + em) {
     display: block;
     font-size: var(--text-xs);
     color: var(--color-slate);

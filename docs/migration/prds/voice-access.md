@@ -40,7 +40,7 @@ To be filled in during the section-by-section walkthrough. Each row maps a secti
 | # | Doc section | Component | Image filename(s) | Status |
 |---|-------------|-----------|-------------------|--------|
 | 0 | Frontmatter (header, overview, contributions, outcomes, reflection) | Schema-driven, no MDX body | `va-hero.png` | ✅ Done |
-| 1 | The opportunity | Plain `##` + paragraph + image | `va-overview-item-recognition.png` | Pending |
+| 1 | The opportunity | Plain `##` + paragraph + image | `va-overview-item-recognition.png` | ✅ Done |
 | 2 | Problem | Plain markdown + 2 images | `va-problem-comparison.png`, `va-problem-dictation.png` | Pending |
 | 3 | Why it mattered | Plain `##` + paragraph + image | `va-why-dictation.png` | Pending |
 | 4 | Understanding user needs (Sarah) | Plain markdown + `<Quote variant="light">` | `va-overview-sarah.png` | Pending |

@@ -1,0 +1,93 @@
+---
+// TwoColumn.astro — Two-column layout primitive.
+//
+// Both columns hold arbitrary markdown content via named slots. Each
+// column can contain headings, paragraphs, lists, images, or other
+// MDX components. Use this for any case study section that benefits
+// from a side-by-side reading rhythm.
+//
+// Behavior:
+//   Desktop (>= 768px): two equal columns side by side, top-aligned.
+//   Mobile (< 768px): stacks to single column. `left` first, `right` second.
+//
+// Usage in MDX:
+//
+//   import TwoColumn from '../../components/project/TwoColumn.astro';
+//
+//   <TwoColumn>
+//     <div slot="left">
+//
+//     ### A subheading
+//
+//     Body paragraph with markdown.
+//
+//     ![alt](path)
+//     *caption*
+//
+//     </div>
+//     <div slot="right">
+//
+//     ### Another subheading
+//
+//     - bullet
+//     - bullet
+//
+//     </div>
+//   </TwoColumn>
+//
+// Notes:
+//   - The blank lines around markdown inside the slotted div are required
+//     so MDX processes the content as markdown (otherwise it renders as
+//     raw text or wraps in extra tags).
+//   - For the simpler case of "text + image", put the image markdown in
+//     either slot as you like — no special prop needed.
+---
+
+<section class="tc">
+  <div class="tc-col">
+    <slot name="left" />
+  </div>
+  <div class="tc-col">
+    <slot name="right" />
+  </div>
+</section>
+
+<style>
+  .tc {
+    display: grid;
+    gap: var(--space-xl);
+    margin-block: var(--space-2xl);
+    align-items: start;
+  }
+
+  /* Desktop: two equal columns. */
+  @media (min-width: 768px) {
+    .tc {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3xl);
+    }
+  }
+
+  /* Strip default top/bottom margins on column-edge children so each
+     column aligns flush with the grid edges. The image rule from the
+     page template adds a top margin to images, so reset that too on
+     any image at the top of a column. */
+  .tc-col :global(> :first-child),
+  .tc-col :global(> :first-child img) {
+    margin-top: 0;
+  }
+  .tc-col :global(> :last-child),
+  .tc-col :global(> :last-child em) {
+    margin-bottom: 0;
+  }
+
+  /* Sub-headings inside a column use the body sans (Geist) at 24px
+     medium, distinct from the default Fraunces bold treatment from
+     global.css. Gives the two-column layout a quieter typographic
+     hierarchy that pairs well with adjacent images, lists, and quotes. */
+  .tc-col :global(h3) {
+    font-family: var(--font-body);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);
+  }
+</style>

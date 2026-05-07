@@ -311,10 +311,13 @@ const { Content } = await render(post);
      between them, so the <em> is a direct sibling of <img>, not a child of
      a separate <p>. :global() is required because <img> and <em> come from
      rendered markdown and don't receive Astro's scope attribute. */
+  /* WCAG AA accessibility: --color-slate (#808080) fails contrast in
+     dark mode (~2.83:1 on the dark navy background). --color-charcoal
+     auto-flips and passes AA easily in both light and dark themes. */
   :global(.post-body img + em) {
     display: block;
     font-size: var(--text-xs);
-    color: var(--color-slate);
+    color: var(--color-charcoal);
     letter-spacing: 0.08em;
     margin-top: var(--space-xs);
     margin-bottom: var(--space-xl);

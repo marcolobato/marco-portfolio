@@ -58,6 +58,7 @@ card:
     ───────────────────────────────────────────────────────────────────────────── */}
 
 import TwoColumn from '../../components/project/TwoColumn.astro';
+import Quote from '../../components/project/Quote.astro';
 
 ## The opportunity
 
@@ -80,13 +81,53 @@ For many users, that wasn't an option. They had relied on desktop dictation syst
 
 ## Why it mattered
 
-<TwoColumn
-  image="/projects/voice-access/va-why-dictation.png"
-  imageAlt="Dictation on phone keyboard"
-  imageCaption="Dictation of emails or passwords was possible with dictation alone, saving users the significant time involved in speaking the number above each letter on the keyboard one at a time."
-  imagePosition="right"
->
+<TwoColumn>
+  <div slot="left">
+
   The challenge was to rebuild trust in voice as a reliable way to use a phone, especially at a time when voice systems didn't have the best reputation. In contrast, we were observing Voice Access text to speech and navigation tasks performed with accuracy never seen before.
 
   We wanted to show users that a small set of clear, powerful commands could go a long way. At the same time, everything had to work alongside Google Assistant, which already handled many everyday tasks through conversation. That style felt easier for some because it required remembering fewer commands.
+
+  </div>
+  <div slot="right">
+
+  ![Dictation on phone keyboard](/projects/voice-access/va-why-dictation.png)
+  *Dictation of emails or passwords was possible with dictation alone, saving users the significant time involved in speaking the number above each letter on the keyboard one at a time.*
+
+  </div>
 </TwoColumn>
+
+## Understanding user needs
+
+These insights come from a series of interviews led by our UX researcher. To make the patterns tangible, I synthesized them into a single persona: Sarah.
+
+<TwoColumn>
+  <div slot="left">
+
+  ### Meet Sarah
+
+  She's a stand-up comedian who riffs on ideas fast. With limited dexterity, she depends on voice to search YouTube for clips and references without losing her flow.
+
+  ![Sarah holding her phone with a robotic arm](/projects/voice-access/va-overview-sarah.png)
+  *Sarah's robotic arm holds her phone so she can take a selfie with a friend.*
+
+  </div>
+  <div slot="right">
+
+  ### What Sarah needs from voice control
+
+  - Stay in flow: less interruptions
+  - Spend less energy: fewer corrections
+  - Think less about the interface: clear system status and feedback
+
+  </div>
+</TwoColumn>
+
+Sarah's user journey shows how critical it is to minimize effort, reduce errors, and streamline multi-step tasks so voice can truly be the primary way to use a phone.
+
+**My role:** I distilled interview findings into these three problems and mapped Sarah's journey to guide and implement into the design.
+
+<Quote
+  variant="light"
+  text="&ldquo;Having to correct errors often while dictating breaks your train of thought&rdquo;"
+/>

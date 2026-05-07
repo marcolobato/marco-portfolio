@@ -43,7 +43,7 @@ To be filled in during the section-by-section walkthrough. Each row maps a secti
 | 1 | The opportunity | Plain `##` + paragraph + image | `va-overview-item-recognition.png` | ✅ Done |
 | 2 | Problem | Plain markdown + 2 images | `va-problem-comparison.png`, `va-problem-dictation.png` | ✅ Done |
 | 3 | Why it mattered | `<TwoColumn imagePosition="right">` | `va-why-dictation.png` | ✅ Done (two-column) |
-| 4 | Understanding user needs (Sarah) | Plain markdown + `<Quote variant="light">` | `va-overview-sarah.png` | Pending |
+| 4 | Understanding user needs (Sarah) | `<TwoColumn imagePosition="left">` then full-width `<Quote variant="light">` below | `va-overview-sarah.png` | ✅ Done |
 | 5 | User Interface Redesign | Plain markdown + composite image | `va-overview-ui-redesign.png` | Pending |
 | 6 | Five-feature composite | Plain markdown image + caption | `va-overview-features.png` | Pending |
 | 7 | "Blue circle" pullquote | `<Quote variant="dark">` | (none) | Pending |

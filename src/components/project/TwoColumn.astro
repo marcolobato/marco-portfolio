@@ -1,56 +1,55 @@
 ---
-// TwoColumn.astro — Two-column layout pairing prose with a single image.
+// TwoColumn.astro — Two-column layout primitive.
 //
-// Used for case study sections that benefit from a side-by-side reading
-// rhythm: text on one side, supporting image on the other.
+// Both columns hold arbitrary markdown content via named slots. Each
+// column can contain headings, paragraphs, lists, images, or other
+// MDX components. Use this for any case study section that benefits
+// from a side-by-side reading rhythm.
 //
 // Behavior:
-//   Desktop (>= 768px): two equal columns. Image on the side specified by
-//     `imagePosition`. Default is "right".
-//   Mobile (< 768px): stacks to a single column. Text first, image second
-//     (regardless of imagePosition).
-//
-// The image and caption use the same <img> + <em> markup pattern that
-// markdown produces for `![alt](src)\n*caption*`, so the existing
-// `.project-body img + em` rules in src/pages/work/[slug].astro give
-// the caption identical styling to inline images elsewhere on the page.
+//   Desktop (>= 768px): two equal columns side by side, top-aligned.
+//   Mobile (< 768px): stacks to single column. `left` first, `right` second.
 //
 // Usage in MDX:
 //
 //   import TwoColumn from '../../components/project/TwoColumn.astro';
 //
-//   <TwoColumn
-//     image="/projects/voice-access/va-why-dictation.png"
-//     imageAlt="Dictation on phone keyboard"
-//     imageCaption="Caption text..."
-//     imagePosition="right"
-//   >
-//     Markdown body content goes here as children.
+//   <TwoColumn>
+//     <div slot="left">
+//
+//     ### A subheading
+//
+//     Body paragraph with markdown.
+//
+//     ![alt](path)
+//     *caption*
+//
+//     </div>
+//     <div slot="right">
+//
+//     ### Another subheading
+//
+//     - bullet
+//     - bullet
+//
+//     </div>
 //   </TwoColumn>
-
-interface Props {
-  image:          string;
-  imageAlt:       string;
-  imageCaption?:  string;
-  imagePosition?: 'left' | 'right';
-}
-
-const {
-  image,
-  imageAlt,
-  imageCaption,
-  imagePosition = 'right',
-} = Astro.props;
+//
+// Notes:
+//   - The blank lines around markdown inside the slotted div are required
+//     so MDX processes the content as markdown (otherwise it renders as
+//     raw text or wraps in extra tags).
+//   - For the simpler case of "text + image", put the image markdown in
+//     either slot as you like — no special prop needed.
 ---
 
-<section class={`tc tc--image-${imagePosition}`}>
-  <div class="tc-text">
-    <slot />
+<section class="tc">
+  <div class="tc-col">
+    <slot name="left" />
   </div>
-  <p class="tc-figure">
-    <img src={image} alt={imageAlt} />
-    {imageCaption && <em>{imageCaption}</em>}
-  </p>
+  <div class="tc-col">
+    <slot name="right" />
+  </div>
 </section>
 
 <style>
@@ -67,34 +66,28 @@ const {
       grid-template-columns: 1fr 1fr;
       gap: var(--space-3xl);
     }
-    /* Reverse visual order so image lands on the left when requested.
-       Mobile order stays text-first regardless of imagePosition. */
-    .tc--image-left .tc-figure {
-      order: -1;
-    }
   }
 
-  /* The default `.project-body img` rule (in work/[slug].astro) adds a top
-     margin between stacked body elements. Inside the column the grid gap
-     already handles separation, so reset to 0. */
-  .tc-figure {
-    margin: 0;
-  }
-  .tc-figure :global(img) {
+  /* Strip default top/bottom margins on column-edge children so each
+     column aligns flush with the grid edges. The image rule from the
+     page template adds a top margin to images, so reset that too on
+     any image at the top of a column. */
+  .tc-col :global(> :first-child),
+  .tc-col :global(> :first-child img) {
     margin-top: 0;
   }
-
-  /* `.project-body img + em` from the page template adds a bottom margin
-     after captions to space them from the next paragraph. Inside this
-     column there is no following paragraph, so reset to 0. */
-  .tc-figure :global(em) {
+  .tc-col :global(> :last-child),
+  .tc-col :global(> :last-child em) {
     margin-bottom: 0;
   }
 
-  /* Strip the top margin on the first child of the text column so the
-     prose starts flush with the top of the image, not pushed down by a
-     default heading or paragraph margin. */
-  .tc-text :global(> :first-child) {
-    margin-top: 0;
+  /* Sub-headings inside a column use the body sans (Geist) at 24px
+     medium, distinct from the default Fraunces bold treatment from
+     global.css. Gives the two-column layout a quieter typographic
+     hierarchy that pairs well with adjacent images, lists, and quotes. */
+  .tc-col :global(h3) {
+    font-family: var(--font-body);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);
   }
 </style>

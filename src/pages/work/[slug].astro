@@ -364,6 +364,16 @@ const { Content } = await render(project);
     margin-bottom: var(--space-sm);
   }
 
+  /* Markdown wraps inline images in a <p>, and the global `p` rule from
+     global.css caps every paragraph at 65ch for readable prose. That
+     also caps the image inside, which is not what we want. Reset
+     max-width on any paragraph that holds an image or video so they
+     fill the project container; prose paragraphs keep the 65ch limit. */
+  :global(.project-body p:has(> img)),
+  :global(.project-body p:has(> video)) {
+    max-width: none;
+  }
+
   /* Images and videos in the body — same treatment as writing posts.
      Video shares the image styling so inline <video> tags in MDX get
      matching width, rounded corners, and block flow without needing a

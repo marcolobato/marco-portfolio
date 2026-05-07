@@ -51,8 +51,9 @@ const projects = defineCollection({
     brand:     z.string().optional(),   // e.g. "Made by Google" — shown below title
     appLink:   z.string().optional(),   // URL for the "Download / View" CTA button
     appLinkLabel: z.string().optional(), // label for the CTA button, e.g. "Download Magnifier"
-    heroImage: z.string().optional(),   // path to the hero image in /public
-    year:      z.number(),              // e.g. 2023 — shown in the hero
+    heroImage:   z.string().optional(),   // path to the hero image in /public
+    heroCaption: z.string().optional(),   // optional italic line shown below the hero image
+    year:        z.number(),              // e.g. 2023 — shown in the hero
 
     // ── Access ──────────────────────────────────────────────────────────────
     // locked: true hides the page content behind a password gate.
@@ -60,10 +61,17 @@ const projects = defineCollection({
     locked:    z.boolean().optional().default(false),
 
     // ── Project Overview ────────────────────────────────────────────────────
+    // Project overview cards. Only `what` is required; every other field is
+    // optional so each project can pick the framing that fits its narrative.
+    // The work template renders fields in this order (and skips any that
+    // are missing), so the on-page sequence stays consistent across projects.
     overview: z.object({
-      what:           z.string(), // one sentence: what is this product?
-      objective:      z.string(), // what were you trying to achieve?
-      differentiator: z.string(), // what made it different?
+      what:           z.string(),               // required: brief description of the product
+      howItWorks:     z.string().optional(),    // optional: technical mechanism / how it operates
+      objective:      z.string().optional(),    // optional: what you were trying to achieve
+      differentiator: z.string().optional(),    // optional: what made the project different
+      teamSetup:      z.string().optional(),    // optional: team composition and your role's context
+      duration:       z.string().optional(),    // optional: project duration / time commitment
     }),
 
     // ── Contributions accordion ──────────────────────────────────────────────

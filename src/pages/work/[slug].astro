@@ -79,6 +79,12 @@ const { Content } = await render(project);
           />
         )}
 
+        {/* Optional italic caption below the hero image. Centered, narrower
+            than the hero so it reads as a single readable line of context. */}
+        {data.heroCaption && (
+          <p class="project-hero-caption">{data.heroCaption}</p>
+        )}
+
       </header>
 
 
@@ -86,6 +92,10 @@ const { Content } = await render(project);
       <section class="project-overview">
         <h2 class="project-section-heading">Project Overview</h2>
 
+        {/* Each overview item renders only when its field is present in the
+            frontmatter. `what` is the only required field; the rest are
+            optional so each project picks the framing that fits its
+            narrative. Order matches the schema definition for consistency. */}
         <div class="project-overview-grid">
 
           <div class="project-overview-item">
@@ -93,15 +103,40 @@ const { Content } = await render(project);
             <p class="project-overview-body">{data.overview.what}</p>
           </div>
 
-          <div class="project-overview-item">
-            <p class="project-overview-label">🔍 Objective</p>
-            <p class="project-overview-body">{data.overview.objective}</p>
-          </div>
+          {data.overview.howItWorks && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">🔧 How it works</p>
+              <p class="project-overview-body">{data.overview.howItWorks}</p>
+            </div>
+          )}
 
-          <div class="project-overview-item">
-            <p class="project-overview-label">✅ What made it different</p>
-            <p class="project-overview-body">{data.overview.differentiator}</p>
-          </div>
+          {data.overview.objective && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">🔍 Objective</p>
+              <p class="project-overview-body">{data.overview.objective}</p>
+            </div>
+          )}
+
+          {data.overview.differentiator && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">✅ What made it different</p>
+              <p class="project-overview-body">{data.overview.differentiator}</p>
+            </div>
+          )}
+
+          {data.overview.teamSetup && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">👥 Team setup</p>
+              <p class="project-overview-body">{data.overview.teamSetup}</p>
+            </div>
+          )}
+
+          {data.overview.duration && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">⏱ Project duration</p>
+              <p class="project-overview-body">{data.overview.duration}</p>
+            </div>
+          )}
 
         </div>
       </section>
@@ -248,6 +283,19 @@ const { Content } = await render(project);
     margin-left: 50%;
     transform: translateX(-50%);
     display: block;
+  }
+
+  /* Optional caption below the hero. Italic, centered, capped at a
+     readable line length even though the image above breaks out wider. */
+  .project-hero-caption {
+    display: block;
+    max-width: 65ch;
+    margin: var(--space-md) auto 0;
+    text-align: center;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-charcoal);
+    line-height: var(--leading-relaxed);
   }
 
   /* Title — matches the global h1 size (56px), which is the "hero headline"

@@ -57,6 +57,8 @@ card:
     See docs/migration/playbook.md Step 4c.
     ───────────────────────────────────────────────────────────────────────────── */}
 
+import TwoColumn from '../../components/project/TwoColumn.astro';
+
 ## The opportunity
 
 Access to advanced technologies like screen understanding and automation offered new possibilities to tap or gesture on any icon, button or screen location even on elements without visible or accessibility labels, offering precise control on any app or website.
@@ -78,9 +80,13 @@ For many users, that wasn't an option. They had relied on desktop dictation syst
 
 ## Why it mattered
 
-The challenge was to rebuild trust in voice as a reliable way to use a phone, especially at a time when voice systems didn't have the best reputation. In contrast, we were observing Voice Access text to speech and navigation tasks performed with accuracy never seen before.
+<TwoColumn
+  image="/projects/voice-access/va-why-dictation.png"
+  imageAlt="Dictation on phone keyboard"
+  imageCaption="Dictation of emails or passwords was possible with dictation alone, saving users the significant time involved in speaking the number above each letter on the keyboard one at a time."
+  imagePosition="right"
+>
+  The challenge was to rebuild trust in voice as a reliable way to use a phone, especially at a time when voice systems didn't have the best reputation. In contrast, we were observing Voice Access text to speech and navigation tasks performed with accuracy never seen before.
 
-We wanted to show users that a small set of clear, powerful commands could go a long way. At the same time, everything had to work alongside Google Assistant, which already handled many everyday tasks through conversation. That style felt easier for some because it required remembering fewer commands.
-
-![Dictation on phone keyboard](/projects/voice-access/va-why-dictation.png)
-*Dictation of emails or passwords was possible with dictation alone, saving users the significant time involved in speaking the number above each letter on the keyboard one at a time.*
+  We wanted to show users that a small set of clear, powerful commands could go a long way. At the same time, everything had to work alongside Google Assistant, which already handled many everyday tasks through conversation. That style felt easier for some because it required remembering fewer commands.
+</TwoColumn>

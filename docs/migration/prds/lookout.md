@@ -46,7 +46,7 @@ To be filled in during the section-by-section walkthrough. Each row maps a secti
 | 3.1 | Sort mail and read text | Plain markdown inside `<section class="project-bleed-muted">` | `lo-feature-sortmail.png` | ✅ Done |
 | 3.2 | Identify packaged and canned foods | Plain markdown inside `<section class="project-bleed-muted">`; intro prose with Light House SF link, two problem images, Solution bullets | `lo-feature-packages.png`, `lo-feature-unstable.png` | ✅ Done |
 | 3.3 | Describe items of importance | Plain markdown inside `<section class="project-bleed-muted">`; Learn Places intro, Problem/Solutions bullets, two h5 sub-concepts (Proximity hierarchy + Auditory depth of field) each with image | `lo-proximity.png`, `lo-depth.png` | ✅ Done |
-| 3.4 | Hands-free gesture control (Interface interoperability + Validation results) | TBD | `lo-feature-handsfree-*.png` | Pending |
+| 3.4 | Hands-free and gesture controls | Plain markdown inside the bleed; Multimodal Controls overview bullets, two-column knock/cane block via `<TwoColumn>`, single-column gestural interface and interoperability blocks, Validation results h5 with bullets | `lo-feature-handsfree1.png`, `lo-feature-handsfree2.png`, `lo-gestures-1.png`, `lo-gestures-2.png` | ✅ Done |
 | 4 | Visual design and illustrations | TBD | `lo-visual-*.png` | Pending |
 
 ## Success criteria

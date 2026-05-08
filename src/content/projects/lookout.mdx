@@ -170,4 +170,59 @@ Videos from the users point of view helped understand what went wrong when users
   </div>
 </TwoColumn>
 
+### 4. Hands-free and gesture controls
+
+##### Lookout's Multimodal Controls Overview. 
+
+- Interface with Physical Auditory and Digital components.
+- Designed hands-free interactions to support users in accomplishing daily tasks that involve detecting text, objects, US currency, and barcodes.
+- I experimented with novel interaction design patterns leveraging the device hardware sensors to assist users in aiming the camera.
+- Physical interaction pattern for wearable experience: knock the device to start, cover the camera to stop the app for a hands-free experience.
+- Explored conversational experiences to help people understand places.
+- Reconciled novel gestures with familiar patterns used in Talkback (Android's screenreader).
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Knock twice to pause](/projects/lookout/lo-feature-handsfree1.png)
+
+  ##### A. Knock twice to pause
+
+  Close-up picture of a person's hand knocking on the camera hanging from the lanyard to pause the app.
+
+  </div>
+  <div slot="right">
+
+  ![Physical cane remote](/projects/lookout/lo-feature-handsfree2.png)
+
+  ##### B. Physical cane remote
+
+  Lookout support for external Bluetooth devices.
+
+  </div>
+</TwoColumn>
+
+![Gestural interface](/projects/lookout/lo-gestures-1.png)
+
+##### C. Gestural interface
+
+Designed gestures that would be consistent regardless of the input method used to control Lookout. These include visual gestures on the touchscreen, screenreader gestures, the fingerprint sensor in the back of Pixel devices, and external Bluetooth controllers.
+
+Used gestural UI patterns that responded to hardware input. Swiping up on the screen will tell more about an object. The physical up gesture functionality in the back of the phone was consistent.
+
+![Interoperability of digital and physical controls](/projects/lookout/lo-gestures-2.png)
+
+##### D. Interoperability of digital and physical controls
+
+Interoperability exercise to understand the mapping of actions across inputs like the phone's proximity sensor and other external hardware.
+
+##### Validation results
+
+Hypothesis: Hands-free operation will increase users confidence.
+
+- Lookout's form factor is also not ideal for the app's most exciting use cases. Despite receiving a lanyard, few testers used it regularly; they felt more comfortable holding their phones. Users preferred to manipulate the phone with their hands, which provided them with a greater sense of control.
+- Users needed to intervene a lot and could not rely on the app verbalizing what is important or relevant only. Lookout at the time was more useful when descriptions of objects happened on demand versus users placing objects in front of the camera worn.
+- After competitive analysis, it is recommended to focus on identifying objects, reading text, and operating home appliances.
+- Recommendation to create a way for users to have feedback easily repeated.
+
 </section>

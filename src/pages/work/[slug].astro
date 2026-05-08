@@ -412,8 +412,12 @@ const { Content } = await render(project);
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
+  /* WCAG 1.4.3 contrast: --color-navy collapses against the dark-navy
+     page background in dark mode (near-zero contrast). --color-heading
+     auto-flips and stays readable in both themes. Same pattern used by
+     .project-bottom-actions a:hover. */
   :global(.project-body a:hover) {
-    color: var(--color-navy);
+    color: var(--color-heading);
   }
 
   /* Blockquote — used for the pullquotes until Quote.astro is built in Phase 3 */

@@ -43,6 +43,7 @@ card:
     ───────────────────────────────────────────────────────────────────────────── */}
 
 import Quote from '../../components/project/Quote.astro';
+import TwoColumn from '../../components/project/TwoColumn.astro';
 
 <Quote
   variant="dark"
@@ -132,5 +133,41 @@ Videos from the users point of view helped understand what went wrong when users
 
 - Instructions and auditory feedback to help users aim.
 - Recommendations to explore reading barcodes live.
+
+### 3. Describe items of importance
+
+**Learn Places**: Describe what the camera sees in a way that is useful and relevant for a person to understand a new place.
+
+**Problem**
+
+- The app also verbalizes things in the environment.
+- People hear a continuous stream of objects recognized without hierarchy or learn of irrelevant objects. Knowing what is relevant or important to users in the moment.
+
+**Solutions**
+
+- Developed a hierarchy framework based on distance and placement to prioritize speaking objects in surfaces within reach first.
+- Explored a conversational experience.
+- Collaborated with soft goods designer to design lanyards to hold devices for a passive auditory interface featured at the booth at Google I/O.
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Proximity hierarchy illustration](/projects/lookout/lo-proximity.png)
+
+  ##### Proximity hierarchy
+
+  Developed auditory experience and explored conversational interfaces resulting in a hierarchy framework based on distance and placement of objects to weigh object importance based on factors like position on a surface versus objects at a distance in the room.
+
+  </div>
+  <div slot="right">
+
+  ![Auditory depth of field illustration](/projects/lookout/lo-depth.png)
+
+  ##### Auditory depth of field
+
+  Lookout's auditory experience prioritizes objects of importance within reach, similar to a photograph using shallow depth of field where selective focus helps draw the viewer's attention to the objects that matter.
+
+  </div>
+</TwoColumn>
 
 </section>

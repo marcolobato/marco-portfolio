@@ -79,6 +79,12 @@ const { Content } = await render(project);
           />
         )}
 
+        {/* Optional italic caption below the hero image. Centered, narrower
+            than the hero so it reads as a single readable line of context. */}
+        {data.heroCaption && (
+          <p class="project-hero-caption">{data.heroCaption}</p>
+        )}
+
       </header>
 
 
@@ -86,6 +92,10 @@ const { Content } = await render(project);
       <section class="project-overview">
         <h2 class="project-section-heading">Project Overview</h2>
 
+        {/* Each overview item renders only when its field is present in the
+            frontmatter. `what` is the only required field; the rest are
+            optional so each project picks the framing that fits its
+            narrative. Order matches the schema definition for consistency. */}
         <div class="project-overview-grid">
 
           <div class="project-overview-item">
@@ -93,15 +103,40 @@ const { Content } = await render(project);
             <p class="project-overview-body">{data.overview.what}</p>
           </div>
 
-          <div class="project-overview-item">
-            <p class="project-overview-label">🔍 Objective</p>
-            <p class="project-overview-body">{data.overview.objective}</p>
-          </div>
+          {data.overview.howItWorks && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">🔧 How it works</p>
+              <p class="project-overview-body">{data.overview.howItWorks}</p>
+            </div>
+          )}
 
-          <div class="project-overview-item">
-            <p class="project-overview-label">✅ What made it different</p>
-            <p class="project-overview-body">{data.overview.differentiator}</p>
-          </div>
+          {data.overview.objective && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">🔍 Objective</p>
+              <p class="project-overview-body">{data.overview.objective}</p>
+            </div>
+          )}
+
+          {data.overview.differentiator && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">✅ What made it different</p>
+              <p class="project-overview-body">{data.overview.differentiator}</p>
+            </div>
+          )}
+
+          {data.overview.teamSetup && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">👥 Team setup</p>
+              <p class="project-overview-body">{data.overview.teamSetup}</p>
+            </div>
+          )}
+
+          {data.overview.duration && (
+            <div class="project-overview-item">
+              <p class="project-overview-label">⏱ Project duration</p>
+              <p class="project-overview-body">{data.overview.duration}</p>
+            </div>
+          )}
 
         </div>
       </section>
@@ -250,6 +285,19 @@ const { Content } = await render(project);
     display: block;
   }
 
+  /* Optional caption below the hero. Italic, centered, capped at a
+     readable line length even though the image above breaks out wider. */
+  .project-hero-caption {
+    display: block;
+    max-width: 65ch;
+    margin: var(--space-md) auto 0;
+    text-align: center;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-charcoal);
+    line-height: var(--leading-relaxed);
+  }
+
   /* Title — matches the global h1 size (56px), which is the "hero headline"
      size in the design system. No need to go larger on project pages. */
   .project-title {
@@ -364,8 +412,12 @@ const { Content } = await render(project);
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
+  /* WCAG 1.4.3 contrast: --color-navy collapses against the dark-navy
+     page background in dark mode (near-zero contrast). --color-heading
+     auto-flips and stays readable in both themes. Same pattern used by
+     .project-bottom-actions a:hover. */
   :global(.project-body a:hover) {
-    color: var(--color-navy);
+    color: var(--color-heading);
   }
 
   /* Blockquote — used for the pullquotes until Quote.astro is built in Phase 3 */
@@ -588,6 +640,43 @@ const { Content } = await render(project);
   }
   :global(.project-reflection-body a:hover) {
     color: #ffffff;
+  }
+
+
+  /* ── Full-bleed muted block ──────────────────────────────────────────── */
+  /* Wraps a group of related sub-sections in a subtle background that
+     extends past the 860px container to the viewport edges, visually
+     grouping the sub-sections as one section.
+
+     Light mode uses --color-muted (a soft gray). Dark mode switches to
+     Navy 800 from the brand ramp, which reads as a deeper, on-brand
+     surface tint and fits the dark canvas better than a neutral gray.
+
+     Inner content is constrained to 860px via `padding-inline: max(...)`
+     rather than a `> *` max-width rule. This way children (including
+     paragraphs containing images, which the :has(img) override frees
+     from the default 65ch cap) naturally fit the column without
+     overflowing to viewport edges. */
+  :global(.project-bleed-muted) {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-muted);
+    padding-block: var(--space-3xl);
+    padding-inline: max(var(--space-xl), calc((100vw - 860px) / 2));
+    margin-block: var(--space-3xl);
+  }
+  :global([data-theme="dark"] .project-bleed-muted) {
+    background: hsl(var(--background));
+  }
+
+  /* Inside the bleed section, tighten bullet indent so list items align
+     more closely with surrounding bold labels (Problem, Solution). The
+     default .project-body ul padding (--space-xl) creates a wide indent
+     that floats the bullets visually away from their adjacent labels. */
+  :global(.project-bleed-muted ul),
+  :global(.project-bleed-muted ol) {
+    padding-left: 1.25em;
   }
 
 

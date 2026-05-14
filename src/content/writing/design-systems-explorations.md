@@ -12,7 +12,8 @@ tools:
   - label: "shadcn/ui"
 artifact:
   image: "/images/field-notes/design-systems-explorations-artifact.png"
-  caption: "Playground page rendering the design system live"
+  caption: "Playground page rendering the design system experiments"
+  href: "/playground"
 ---
 
 A friend at a SaaS startup asked me to help make their design system work with AI tools. I said yes because I wanted to learn how. What I learned changed how I build my own website.

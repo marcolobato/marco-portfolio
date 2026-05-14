@@ -35,7 +35,10 @@ const toCardProps = (post: any) => ({
     image:   post.data.artifact?.image   ?? '',
     alt:     '', // decorative for now (PRD)
     caption: post.data.artifact?.caption ?? '',
-    href:    `/writing/${post.id}#artifact`,
+    // Default link points at the article's #artifact anchor. Articles can
+    // override this in frontmatter (artifact.href) to point elsewhere —
+    // e.g. design-systems-explorations sends readers to /playground.
+    href:    post.data.artifact?.href ?? `/writing/${post.id}#artifact`,
   },
 });
 

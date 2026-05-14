@@ -38,6 +38,7 @@ interface Props {
   title:        string;
   body:         string;     // long copy. Paragraphs separated by blank line (\n\n)
   tools:        Tool[];     // can be empty
+  toolsLabel?:  string;     // override the "Tools:" label (e.g. "Component libraries:")
   exploreHref?: string;     // omit → "Explore experiment" link is hidden (card 4)
   artifact:     Artifact;
 }
@@ -46,6 +47,7 @@ const {
   title,
   body,
   tools,
+  toolsLabel = 'Tools:',
   exploreHref,
   artifact,
 } = Astro.props;
@@ -76,7 +78,7 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
         the tool entry has an href; external links open in a new tab. */}
     {tools.length > 0 && (
       <div class="fnc-tools">
-        <span class="fnc-tools-label">Tools:</span>
+        <span class="fnc-tools-label">{toolsLabel}</span>
         <div class="fnc-tools-list">
           {tools.map(tool => tool.href
             ? (

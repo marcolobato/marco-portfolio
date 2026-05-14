@@ -73,10 +73,13 @@ const multimodalCards = [...collectionCards, briefcase];
 // explorations. Same FieldNoteCard component as Multimodal work above; order
 // is manual — rearrange the strings to reorder the cards.
 const designSystemsIds = ['design-systems-explorations'];
+// Design systems cards surface component libraries on the badge row instead
+// of tools, so we override the default "Tools:" label after building the
+// standard card props. Section-level override — applies to every card here.
 const designSystemsCards = designSystemsIds
   .map(id => allPosts.find(p => p.id === id))
   .filter(Boolean)
-  .map(toCardProps);
+  .map(post => ({ ...toCardProps(post), toolsLabel: 'Component libraries:' }));
 
 // ── Past entries ──────────────────────────────────────────────────────────
 // Earlier writing on AI, design, and physical spaces. These are Medium
@@ -202,6 +205,7 @@ const pastEntries = allPosts
             title={card.title}
             body={card.body}
             tools={card.tools}
+            toolsLabel={card.toolsLabel}
             exploreHref={card.exploreHref}
             artifact={card.artifact}
           />

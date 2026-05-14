@@ -1,0 +1,66 @@
+/* =============================================================================
+   Badge audit page — client design system tokens (anonymized POC).
+   Imported only by src/pages/badge-audit.astro and used only by
+   src/components/AuditBadge.astro.
+
+   These hex values come from the original audit and represent a third-party
+   design system being documented. They are intentionally NOT part of the
+   portfolio's brand token system in src/styles/globals.css.
+
+   Naming follows the original audit's pattern:
+     --audit-[scale]-[shade]   (e.g. --audit-primary-50, --audit-gray-700)
+   The 50 / 200 / 700 stops are the only ones the original system used:
+     /50  → background fill
+     /200 → 1px border
+     /300 → stronger border (Badge modern only)
+     /700 → text label
+   ============================================================================= */
+
+:root {
+  /* Primary (Blue) */
+  --audit-primary-50:  #EFF8FF;
+  --audit-primary-200: #B2DDFF;
+  --audit-primary-700: #175CD3;
+
+  /* Gray */
+  --audit-gray-50:  #F9FAFB;
+  --audit-gray-200: #EAECF0;
+  --audit-gray-300: #D0D5DD;
+  --audit-gray-700: #344054;
+
+  /* Error */
+  --audit-error-50:  #FEF3F2;
+  --audit-error-200: #FECDCA;
+  --audit-error-700: #B42318;
+
+  /* Warning / Orange — share identical token values (flagged in Open for review) */
+  --audit-warning-50:  #FFFAEB;
+  --audit-warning-200: #FEDF89;
+  --audit-warning-700: #B54708;
+
+  /* Success */
+  --audit-success-50:  #ECFDF3;
+  --audit-success-200: #ABEFC6;
+  --audit-success-700: #067647;
+
+  /* Indigo */
+  --audit-indigo-50:  #EEF4FF;
+  --audit-indigo-200: #C7D7FE;
+  --audit-indigo-700: #3538CD;
+
+  /* Purple */
+  --audit-purple-50:  #F4F3FF;
+  --audit-purple-200: #D9D6FE;
+  --audit-purple-700: #5925DC;
+
+  /* Pink */
+  --audit-pink-50:  #FDF2FA;
+  --audit-pink-200: #FCCEEE;
+  --audit-pink-700: #C11574;
+
+  /* Base */
+  --audit-base-white: #FFFFFF;
+
+  /* Shadow — used only by Badge modern */
+  --audit-shadow-xs: 0px 1px 2px 0px #1018280D;
+}

@@ -194,20 +194,25 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
   /* Inline links inside the card body — mirrors the article link styling
      in global.css (.prose-article a) so a card link looks the same as a
      link inside a blog post: underlined, navy, lightens on hover, dark-
-     mode-aware. Only applies if a card's cardSummary contains an <a>. */
-  .fnc-body a {
+     mode-aware. Only applies if a card's cardSummary contains an <a>.
+
+     The inner `a` selector is wrapped in :global() because the body links
+     are injected via set:html, which means the <a> elements don't carry
+     Astro's scope attribute. Without :global(), the scoped selector
+     wouldn't match and the link would render unstyled. */
+  .fnc-body :global(a) {
     color: hsl(var(--navy-700));
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 150ms ease;
   }
-  .fnc-body a:hover {
+  .fnc-body :global(a:hover) {
     color: hsl(var(--navy-500));
   }
-  :global([data-theme="dark"]) .fnc-body a {
+  :global([data-theme="dark"]) .fnc-body :global(a) {
     color: hsl(var(--navy-300));
   }
-  :global([data-theme="dark"]) .fnc-body a:hover {
+  :global([data-theme="dark"]) .fnc-body :global(a:hover) {
     color: hsl(var(--navy-100));
   }
 

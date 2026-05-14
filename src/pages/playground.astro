@@ -7,6 +7,7 @@ import '../styles/global.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import BackLink from '../components/BackLink.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
@@ -127,6 +128,48 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
 
 
       <main class="sg-main">
+
+      {/* Back link — referrer-aware. Hidden by default; the inline script
+          below unhides it only when the visitor arrived from another page
+          on this site. Uses history.back() (when there's history to go
+          back to) so scroll position on the previous page is preserved.
+          The extra `pg-back` class is just a hook for the script — visual
+          style comes from .back-link in global.css. */}
+      <BackLink href="#" hidden class="pg-back" />
+      <script is:inline>
+        (function () {
+          const link = document.querySelector('.pg-back');
+          if (!link) return;
+
+          const referrer = document.referrer;
+          if (!referrer) return; // no referrer (direct visit, search engine) → stay hidden
+
+          let referrerUrl;
+          try {
+            referrerUrl = new URL(referrer);
+          } catch (e) {
+            return; // malformed → stay hidden
+          }
+
+          // Same-origin check — only show "Back" for in-site navigation.
+          if (referrerUrl.origin !== window.location.origin) return;
+
+          // Set the href as a fallback (works even if the click handler
+          // doesn't fire, e.g. middle-click "Open in new tab").
+          link.href = referrerUrl.pathname + referrerUrl.search + referrerUrl.hash;
+          link.hidden = false;
+
+          // Prefer history.back() so scroll position on the previous page
+          // is preserved by the browser. Falls back to default link
+          // navigation when there's no history (e.g. opened in a new tab).
+          link.addEventListener('click', function (e) {
+            if (window.history.length > 1) {
+              e.preventDefault();
+              window.history.back();
+            }
+          });
+        })();
+      </script>
 
       <!-- ===================================================================
            PAGE HEADER

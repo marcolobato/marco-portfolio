@@ -8,6 +8,7 @@ import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
+import BackLink from '../../components/BackLink.astro';
 import BasisButton from '@/components/ui/forms/Button.astro';
 
 // getStaticPaths runs once at build time and returns one entry per post.
@@ -74,7 +75,7 @@ const { Content } = await render(post);
              "All field notes" (not just "Field Notes") matches the homepage
              "View all field notes" button and disambiguates from the homepage
              section's nav anchor (/#field-notes). -->
-        <a href="/field-notes" class="post-back">← All field notes</a>
+        <BackLink href="/field-notes" label="All field notes" />
 
         <!-- Post header -->
         <header class="post-header">
@@ -132,20 +133,8 @@ const { Content } = await render(post);
     padding-inline: var(--space-xl);
   }
 
-  .post-back {
-    display: inline-block;
-    font-size: var(--text-sm);
-    color: var(--color-royal-blue);
-    margin-bottom: var(--space-2xl);
-    transition: color 0.2s ease;
-  }
-  /* WCAG 1.4.1: underline is the non-color hover cue.
-     --color-heading flips automatically: navy in light, near-white in dark. */
-  .post-back:hover {
-    color: var(--color-heading);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
+  /* Back link styles now live on .back-link in src/styles/global.css —
+     this page uses the shared <BackLink> component (see import above). */
 
   .post-header {
     margin-bottom: var(--space-2xl);

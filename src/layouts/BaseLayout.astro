@@ -96,6 +96,34 @@ const ogImageURL   = new URL(ogImage, SITE_URL).href;
         document.documentElement.setAttribute('data-theme', saved || sys);
       })();
     </script>
+
+    <!-- Scroll-position save/restore. Native browser scroll restoration
+         restores too early — before lazy-loaded images and JS-rendered cards
+         settle — so the saved Y position lands on a different section once
+         the page reaches its full height. We disable the browser's
+         restoration and run our own:
+         - On `pagehide`, save the current scrollY to sessionStorage keyed by
+           the page's pathname.
+         - On `pageshow` AND `load`, restore from sessionStorage. Restoring
+           twice covers both bfcache restores (`pageshow` fires) and full
+           reloads where layout doesn't settle until images finish loading. -->
+    <script is:inline>
+      (function () {
+        if ('scrollRestoration' in history) {
+          history.scrollRestoration = 'manual';
+        }
+        window.addEventListener('pagehide', function () {
+          sessionStorage.setItem('scroll:' + location.pathname, String(window.scrollY));
+        });
+        function restore() {
+          var saved = sessionStorage.getItem('scroll:' + location.pathname);
+          if (saved === null) return;
+          window.scrollTo({ top: parseInt(saved, 10), behavior: 'instant' });
+        }
+        window.addEventListener('pageshow', restore);
+        window.addEventListener('load', restore);
+      })();
+    </script>
   </head>
 
   <body>

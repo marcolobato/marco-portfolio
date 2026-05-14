@@ -24,6 +24,7 @@ import '../styles/badge-audit-tokens.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import BackLink from '../components/BackLink.astro';
 import AuditBadge from '../components/AuditBadge.astro';
 
 // Each row in the Pill color table. variant must match a key in
@@ -101,6 +102,11 @@ const OPEN_FOR_REVIEW = [
          PAGE HEADER
          =================================================================== -->
     <header class="audit-header">
+      {/* Back link — always returns to the Design systems card on /field-notes.
+          Hardcoded destination (not history.back()) because this page should
+          land readers back at the audit's "home" regardless of entry point. */}
+      <BackLink href="/field-notes#design-systems" />
+
       <p class="audit-eyebrow">Client design system POC · Component documentation</p>
       <h1 class="audit-title">Badge</h1>
       <p class="audit-lede">Badges communicate status, category, or metadata at a glance.</p>
@@ -262,6 +268,21 @@ const OPEN_FOR_REVIEW = [
     color: var(--audit-gray-700);
   }
 
+  /* Lock the BackLink to light-mode navy on the locked-light audit surface.
+     Without this, in dark mode the global .back-link rule resolves to
+     --color-heading = light navy (#C0D4F4), which fails contrast on the
+     white audit background. The navy-700 / navy-900 ramp values don't
+     flip with theme, so they stay readable on white in either mode.
+     :global() is required because <BackLink> renders the element with
+     its own component scope; the bare .back-link selector inside Astro's
+     scoped CSS wouldn't otherwise reach across that scope boundary. */
+  .badge-audit :global(.back-link) {
+    color: hsl(var(--navy-700));
+  }
+  .badge-audit :global(.back-link:hover) {
+    color: hsl(var(--navy-900));
+  }
+
   /* Override global.css's heading font (Fraunces). The original POC used
      Inter; the closest match in this portfolio is Geist Variable, which is
      the body font and reads as a documentation-style sans rather than a
@@ -276,6 +297,9 @@ const OPEN_FOR_REVIEW = [
     border-bottom: 1px solid var(--audit-gray-200);
     padding: 3rem clamp(1.5rem, 5vw, 4rem);
   }
+
+  /* Back link styles now live on .back-link in src/styles/global.css —
+     this page uses the shared <BackLink> component (see import above). */
 
   .audit-eyebrow {
     font-size: 0.75rem;

@@ -11,6 +11,7 @@ import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
+import BackLink from '../../components/BackLink.astro';
 import ProjectAccordion from '../../components/project/ProjectAccordion.astro';
 import Button from '../../components/Button.astro';
 
@@ -42,8 +43,9 @@ const { Content } = await render(project);
 
       <!-- ── Back link ────────────────────────────────────────────────────── -->
       <!-- Links back to the #work section on the home page, the same way
-           writing posts link back to /#writing. -->
-      <a href="/#more-projects" class="project-back">← Work</a>
+           writing posts link back to /#writing. Uses the shared BackLink
+           component (see src/components/BackLink.astro). -->
+      <BackLink href="/#more-projects" label="Work" />
 
       <!-- ── Hero ─────────────────────────────────────────────────────────── -->
       <!-- Order: title → brand → app link → image.
@@ -242,22 +244,8 @@ const { Content } = await render(project);
   }
 
 
-  /* ── Back link ────────────────────────────────────────────────────────── */
-
-  .project-back {
-    display: inline-block;
-    font-size: var(--text-sm);
-    color: var(--color-royal-blue);
-    margin-bottom: var(--space-2xl);
-    transition: color 0.2s ease;
-  }
-  /* WCAG 1.4.1: underline is the non-color hover cue.
-     --color-heading flips automatically: navy in light, near-white in dark. */
-  .project-back:hover {
-    color: var(--color-heading);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
+  /* Back link styles now live on .back-link in src/styles/global.css —
+     this page uses the shared <BackLink> component (see import above). */
 
 
   /* ── Hero ─────────────────────────────────────────────────────────────── */

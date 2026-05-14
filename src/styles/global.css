@@ -1605,6 +1605,42 @@ code {
   display: none;
 }
 
+/* Back link — shared component used across the site via <BackLink>.
+   Replaces three older implementations (.post-back, .project-back, .audit-back,
+   .pg-back). One source of truth for visual style.
+
+   - SVG arrow (14×14) sized to match the text height
+   - line-height: 1 so the link's box hugs the content tightly
+   - Royal blue at rest, heading color on hover (auto-flipping tokens handle
+     dark mode for free — both --color-royal-blue and --color-heading invert)
+   - border-bottom (not text-decoration) for the underline because text-
+     decoration on inline-flex parents only draws under text, skipping SVGs.
+     A transparent 1px border on the base state reserves the space so the
+     layout doesn't shift when the underline appears on hover. */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  line-height: 1;
+  font-size: var(--text-sm);
+  color: var(--color-royal-blue);
+  text-decoration: none;
+  margin-bottom: var(--space-2xl);
+  /* padding-bottom: 0 → underline sits tight against the text bottom.
+     The 1px transparent border is still reserved on the base state so
+     the link doesn't shift 1px taller on hover. */
+  padding-bottom: 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+.back-link:hover {
+  color: var(--color-heading);
+  border-bottom-color: currentColor;
+}
+.back-link svg {
+  flex-shrink: 0;
+}
+
 /* Nav wrapper — used only on the playground page.
    On desktop: transparent in-flow wrapper (no layout effect).
    On mobile: single sticky element that holds both the site nav and the secondary bar.

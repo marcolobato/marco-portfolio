@@ -82,7 +82,11 @@ const designSystemsIds = ['design-systems-explorations'];
 const designSystemsCards = designSystemsIds
   .map(id => allPosts.find(p => p.id === id))
   .filter(Boolean)
-  .map(post => ({ ...toCardProps(post), toolsLabel: 'Component libraries:' }));
+  .map(post => ({
+    ...toCardProps(post),
+    toolsLabel: 'Component libraries:',
+    exploreLabel: 'Read more',
+  }));
 
 // ── Past entries ──────────────────────────────────────────────────────────
 // Earlier writing on AI, design, and physical spaces. These are Medium
@@ -210,6 +214,7 @@ const pastEntries = allPosts
             tools={card.tools}
             toolsLabel={card.toolsLabel}
             exploreHref={card.exploreHref}
+            exploreLabel={card.exploreLabel}
             artifact={card.artifact}
           />
         ))}

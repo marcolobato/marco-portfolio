@@ -37,10 +37,11 @@ interface Artifact {
 interface Props {
   title:        string;
   body:         string;     // long copy. Paragraphs separated by blank line (\n\n)
-  tools:        Tool[];     // can be empty
-  toolsLabel?:  string;     // override the "Tools:" label (e.g. "Component libraries:")
-  exploreHref?: string;     // omit → "Explore experiment" link is hidden (card 4)
-  artifact:     Artifact;
+  tools:         Tool[];    // can be empty
+  toolsLabel?:   string;    // override the "Tools:" label (e.g. "Component libraries:")
+  exploreHref?:  string;    // omit → link is hidden entirely (card 4)
+  exploreLabel?: string;    // override the "Explore experiment" label (e.g. "Read more")
+  artifact:      Artifact;
 }
 
 const {
@@ -49,6 +50,7 @@ const {
   tools,
   toolsLabel = 'Tools:',
   exploreHref,
+  exploreLabel = 'Explore experiment',
   artifact,
 } = Astro.props;
 
@@ -99,7 +101,7 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
 
     {/* Explore experiment link — hidden entirely when there's no article yet. */}
     {exploreHref && (
-      <a href={exploreHref} class="fnc-explore">Explore experiment</a>
+      <a href={exploreHref} class="fnc-explore">{exploreLabel}</a>
     )}
 
   </div>

@@ -1,0 +1,484 @@
+---
+// =============================================================================
+// /badge-audit — Anonymized port of the client design system POC originally
+// deployed at guidde-design-system.pages.dev/badge.
+//
+// Structure mirrors the original /badge documentation page:
+//   1. Page header     — eyebrow + title + lede
+//   2. What was built  — bullet list of audit deliverables
+//   3. Shared specs    — font, size, radius, padding (applies to all variants)
+//   4. Pill color      — 11 variants table with token annotations
+//   5. Badge modern    — the 12th variant (different structure)
+//   6. Token structure — 3-token pattern explainer
+//   7. Open for review — flagged questions, ambiguities, follow-up scope
+//
+// Color tokens live in ../styles/badge-audit-tokens.css and are scoped to
+// this page only — they don't pollute the rest of the portfolio's brand
+// token system.
+//
+// Linked from src/content/writing/design-systems-explorations.md.
+// =============================================================================
+
+import '../styles/global.css';
+import '../styles/badge-audit-tokens.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import AuditBadge from '../components/AuditBadge.astro';
+
+// Each row in the Pill color table. variant must match a key in
+// AuditBadge's badgeVariants. flag is shown only when present.
+// The explicit type annotation lets some entries omit `flag` while still
+// constraining `variant` to the literal names AuditBadge accepts.
+type PillVariantName =
+  | "gray" | "blue" | "indigo" | "purple" | "pink"
+  | "error" | "warning" | "orange" | "success"
+  | "gray-blue" | "blue-light";
+
+const PILL_VARIANTS: Array<{
+  label: string;
+  variant: PillVariantName;
+  bg: string;
+  border: string;
+  text: string;
+  flag?: string;
+}> = [
+  { label: "Gray",       variant: "gray",       bg: "Gray/50",    border: "Gray/200",    text: "Gray/700"    },
+  { label: "Blue",       variant: "blue",       bg: "Primary/50", border: "Primary/200", text: "Primary/700" },
+  { label: "Indigo",     variant: "indigo",     bg: "Indigo/50",  border: "Indigo/200",  text: "Indigo/700"  },
+  { label: "Purple",     variant: "purple",     bg: "Purple/50",  border: "Purple/200",  text: "Purple/700"  },
+  { label: "Pink",       variant: "pink",       bg: "Pink/50",    border: "Pink/200",    text: "Pink/700"    },
+  { label: "Error",      variant: "error",      bg: "Error/50",   border: "Error/200",   text: "Error/700"   },
+  { label: "Warning",    variant: "warning",    bg: "Warning/50", border: "Warning/200", text: "Warning/700" },
+  { label: "Orange",     variant: "orange",     bg: "Warning/50", border: "Warning/200", text: "Warning/700", flag: "Duplicate of Warning" },
+  { label: "Success",    variant: "success",    bg: "Success/50", border: "Success/200", text: "Success/700" },
+  { label: "Gray Blue",  variant: "gray-blue",  bg: "Base/White", border: "Gray/200",    text: "Indigo/700",  flag: "Mixed color scales" },
+  { label: "Blue light", variant: "blue-light", bg: "Primary/50", border: "Primary/200", text: "Primary/700", flag: "Duplicate of Blue" },
+];
+
+const SHARED_SPECS = [
+  { label: "Font",    value: "Inter 500" },
+  { label: "Size",    value: "14px / 20px" },
+  { label: "Radius",  value: "16px" },
+  { label: "Padding", value: "4px · 12px" },
+];
+
+const TOKEN_STRUCTURE = [
+  { role: "Background", scale: "/50",  desc: "Lightest tint, fills the badge" },
+  { role: "Border",     scale: "/200", desc: "Mid tone, 1px solid stroke" },
+  { role: "Text",       scale: "/700", desc: "Dark shade, high contrast label" },
+];
+
+const OPEN_FOR_REVIEW = [
+  {
+    label:  "Orange = Warning",
+    detail: "Both share identical token values. Is Orange intentional or should it be removed?",
+  },
+  {
+    label:  "Blue Light = Blue",
+    detail: "Both share identical token values. Same question, intentional naming or cleanup needed?",
+  },
+  {
+    label:  "Figma Styles to Variables",
+    detail: "The current file uses Figma Styles, not Variables. Migrating to Variables is recommended to complete the AI-ready handoff. This is a one-time migration worth scoping for the next phase.",
+  },
+  {
+    label:  "No dark mode tokens",
+    detail: "The current system has no dark mode. This is noted and out of scope for now, flagging in case it becomes a requirement.",
+  },
+];
+---
+
+<BaseLayout
+  title="Badge audit — Marco Lobato"
+  description="Component documentation from a SaaS startup design system audit. Anonymized port of the original POC, showing how a token-based architecture makes a design system AI-ready."
+>
+  <Nav />
+
+  <main class="badge-audit">
+
+    <!-- ===================================================================
+         PAGE HEADER
+         =================================================================== -->
+    <header class="audit-header">
+      <p class="audit-eyebrow">Client design system POC · Component documentation</p>
+      <h1 class="audit-title">Badge</h1>
+      <p class="audit-lede">Badges communicate status, category, or metadata at a glance.</p>
+      <p class="audit-lede">
+        This proof of concept introduces a shared token system. Color values are defined
+        once and referenced by name in both Figma Variables and CSS custom properties,
+        so Figma and code always describe colors the same way.
+      </p>
+    </header>
+
+    <div class="audit-content">
+
+      <!-- ===================================================================
+           SECTION: WHAT WAS BUILT
+           =================================================================== -->
+      <section class="audit-section">
+        <h2 class="audit-section-label">What was built</h2>
+        <ul class="audit-bullets">
+          <li>Audited all 12 Badge variants from the client's Figma file and extracted every token value manually (view access only, no Dev Mode)</li>
+          <li>Built a shared token system: 26 color variables defined once in CSS, referenced by both code and Figma Variables. Changing a value in one place updates everywhere</li>
+          <li>Implemented all 12 variants in code using shadcn/ui + Tailwind CSS, with a documented AI context file so Claude can generate consistent Badge output without guessing</li>
+          <li>shadcn ships 4 default variants (default, secondary, destructive, outline). These are now remapped to the client's tokens: default → Gray, secondary → Blue, destructive → Error, outline → Badge modern</li>
+        </ul>
+      </section>
+
+      <!-- ===================================================================
+           SECTION: SHARED SPECS
+           =================================================================== -->
+      <section class="audit-section">
+        <h2 class="audit-section-label">Shared across all variants</h2>
+        <div class="audit-specs">
+          {SHARED_SPECS.map(({ label, value }) => (
+            <div class="audit-spec-card">
+              <p class="audit-spec-label">{label}</p>
+              <p class="audit-spec-value">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION: PILL COLOR · 11 VARIANTS
+           Live AuditBadge components paired with their token annotations.
+           =================================================================== -->
+      <section class="audit-section">
+        <h2 class="audit-section-label">Pill color · 11 variants</h2>
+
+        <div class="audit-table-header">
+          <div></div>
+          <p>Variant</p>
+          <p>Background</p>
+          <p>Border</p>
+          <p>Text</p>
+        </div>
+
+        <div class="audit-table">
+          {PILL_VARIANTS.map(({ label, variant, bg, border, text, flag }) => (
+            <div class="audit-row">
+              <div><AuditBadge variant={variant}>{label}</AuditBadge></div>
+              <p class="audit-mono">{variant}</p>
+              <p class="audit-token">{bg}</p>
+              <p class="audit-token">{border}</p>
+              <div>
+                <p class="audit-token">{text}</p>
+                {flag && <p class="audit-flag">{flag}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION: BADGE MODERN · 1 VARIANT
+           =================================================================== -->
+      <section class="audit-section">
+        <h2 class="audit-section-label">Badge modern · 1 variant</h2>
+        <div class="audit-row audit-row-bordered">
+          <div><AuditBadge variant="badge-modern">Badge</AuditBadge></div>
+          <p class="audit-mono">badge-modern</p>
+          <p class="audit-token">Base/White</p>
+          <p class="audit-token">Gray/300</p>
+          <div>
+            <p class="audit-token">Gray/700</p>
+            <p class="audit-flag-muted">+ shadow-xs</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION: TOKEN STRUCTURE
+           =================================================================== -->
+      <section class="audit-section">
+        <h2 class="audit-section-label">Token structure</h2>
+        <p class="audit-paragraph">
+          Every Pill color variant follows the same 3-token pattern.
+          The scale numbers (50, 200, 700) come directly from the client's current Figma color styles.
+        </p>
+        <div class="audit-token-grid">
+          {TOKEN_STRUCTURE.map(({ role, scale, desc }) => (
+            <div class="audit-token-card">
+              <p class="audit-spec-label">{role}</p>
+              <p class="audit-token-name">Color{scale}</p>
+              <p class="audit-token-desc">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SECTION: OPEN FOR REVIEW
+           Ambiguities, duplicates, and follow-up scope flagged for client review.
+           =================================================================== -->
+      <section class="audit-section">
+        <h2 class="audit-section-label">Open for review</h2>
+        <div class="audit-review-list">
+          {OPEN_FOR_REVIEW.map(({ label, detail }) => (
+            <div class="audit-review-card">
+              <p class="audit-review-label">{label}</p>
+              <p class="audit-review-detail">{detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+
+<!-- =============================================================================
+     Scoped page styles. Astro auto-scopes <style> to this component, so these
+     selectors don't leak. Layout mirrors the original POC's documentation
+     page; colors come from --audit-* tokens (see badge-audit-tokens.css).
+     ============================================================================= -->
+<style>
+  /* The audit content area always renders on white with the audit gray text,
+     regardless of the portfolio's light/dark theme. The original system had
+     no dark mode (a finding flagged in "Open for review"), so locking this
+     page to light mode honors the audit's truth. */
+  .badge-audit {
+    background: var(--audit-base-white);
+    color: var(--audit-gray-700);
+    min-height: 100vh;
+  }
+
+  /* Override global.css's heading and paragraph colors inside this page.
+     global.css sets `h1...h6 { color: var(--color-heading) }` and
+     `p { color: var(--color-charcoal) }`, both of which flip in dark mode
+     (becoming near-white). Without these overrides, dark-mode visitors see
+     white text on the white audit surface. Element selectors beat
+     `.badge-audit { color: ... }` inheritance, so we must restate them. */
+  .badge-audit h1,
+  .badge-audit h2,
+  .badge-audit h3,
+  .badge-audit p,
+  .badge-audit li {
+    color: var(--audit-gray-700);
+  }
+
+  /* Override global.css's heading font (Fraunces). The original POC used
+     Inter; the closest match in this portfolio is Geist Variable, which is
+     the body font and reads as a documentation-style sans rather than a
+     display serif. */
+  .badge-audit h1,
+  .badge-audit h2,
+  .badge-audit h3 {
+    font-family: var(--font-body);
+  }
+
+  .audit-header {
+    border-bottom: 1px solid var(--audit-gray-200);
+    padding: 3rem clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .audit-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    /* 0.7 opacity on --audit-gray-700 keeps the label visually subdued
+       while passing WCAG AA contrast (~4.7:1) against white. */
+    opacity: 0.7;
+    margin: 0 0 0.75rem;
+  }
+
+  .audit-title {
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    color: var(--audit-gray-700);
+  }
+
+  .audit-lede {
+    font-size: 1rem;
+    line-height: 1.5;
+    opacity: 0.75;
+    max-width: 36rem;
+    margin: 0.5rem 0 0;
+  }
+
+  .audit-content {
+    padding: 3rem clamp(1.5rem, 5vw, 4rem);
+    max-width: 64rem;
+  }
+
+  .audit-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .audit-section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    /* Bumped from 0.4 → 0.7 for WCAG AA contrast on small uppercase text. */
+    opacity: 0.7;
+    margin: 0 0 1.25rem;
+    color: var(--audit-gray-700);
+  }
+
+  /* What-was-built bullets — disc markers, same color as the text.
+     global.css strips list-style from every <ul> site-wide, so we re-enable
+     it here (same pattern as .work-desc-list). Browsers inherit ::marker
+     color from the list item, so no separate marker color rule is needed. */
+  .audit-bullets {
+    list-style: disc;
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+  .audit-bullets li {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    margin-bottom: 0.5rem;
+  }
+
+  /* 4-up specs grid */
+  .audit-specs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  @media (max-width: 640px) {
+    .audit-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .audit-spec-card {
+    border: 1px solid var(--audit-gray-200);
+    border-radius: 0.75rem;
+    padding: 1rem;
+  }
+  .audit-spec-label {
+    font-size: 0.75rem;
+    opacity: 0.65;
+    margin: 0 0 0.25rem;
+  }
+  .audit-spec-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  /* Pill color variants table */
+  .audit-table-header,
+  .audit-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 0.25rem;
+  }
+  .audit-table-header {
+    margin-bottom: 0.75rem;
+  }
+  .audit-table-header p {
+    font-size: 0.75rem;
+    opacity: 0.65;
+    margin: 0;
+  }
+  .audit-table {
+    display: flex;
+    flex-direction: column;
+  }
+  .audit-row {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-top: 1px solid var(--audit-gray-200);
+  }
+  .audit-row:last-child {
+    border-bottom: 1px solid var(--audit-gray-200);
+  }
+  .audit-row-bordered {
+    border-top: 1px solid var(--audit-gray-200);
+    border-bottom: 1px solid var(--audit-gray-200);
+  }
+  .audit-mono {
+    font-size: 0.75rem;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    margin: 0;
+  }
+  .audit-token {
+    font-size: 0.75rem;
+    opacity: 0.75;
+    margin: 0;
+  }
+  .audit-flag {
+    font-size: 0.75rem;
+    color: var(--audit-warning-700);
+    margin: 0.125rem 0 0;
+  }
+  .audit-flag-muted {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin: 0.125rem 0 0;
+  }
+
+  /* On narrow screens, collapse the table to stacked cards */
+  @media (max-width: 720px) {
+    .audit-table-header { display: none; }
+    .audit-row, .audit-row-bordered {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+
+  /* Token structure 3-up grid */
+  .audit-paragraph {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    max-width: 32rem;
+    margin: 0 0 1rem;
+    line-height: 1.55;
+  }
+  .audit-token-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  @media (max-width: 640px) {
+    .audit-token-grid { grid-template-columns: 1fr; }
+  }
+  .audit-token-card {
+    border: 1px solid var(--audit-gray-200);
+    border-radius: 0.75rem;
+    padding: 1rem;
+  }
+  .audit-token-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+  .audit-token-desc {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  /* Open for review list */
+  .audit-review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .audit-review-card {
+    border: 1px solid var(--audit-gray-200);
+    border-radius: 0.75rem;
+    padding: 1rem;
+  }
+  .audit-review-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0 0 0.25rem;
+  }
+  .audit-review-detail {
+    font-size: 0.75rem;
+    opacity: 0.75;
+    line-height: 1.55;
+    margin: 0;
+  }
+</style>

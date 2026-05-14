@@ -37,16 +37,20 @@ interface Artifact {
 interface Props {
   title:        string;
   body:         string;     // long copy. Paragraphs separated by blank line (\n\n)
-  tools:        Tool[];     // can be empty
-  exploreHref?: string;     // omit → "Explore experiment" link is hidden (card 4)
-  artifact:     Artifact;
+  tools:         Tool[];    // can be empty
+  toolsLabel?:   string;    // override the "Tools:" label (e.g. "Component libraries:")
+  exploreHref?:  string;    // omit → link is hidden entirely (card 4)
+  exploreLabel?: string;    // override the "Explore experiment" label (e.g. "Read more")
+  artifact:      Artifact;
 }
 
 const {
   title,
   body,
   tools,
+  toolsLabel = 'Tools:',
   exploreHref,
+  exploreLabel = 'Explore experiment',
   artifact,
 } = Astro.props;
 
@@ -66,14 +70,17 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
   <div class="fnc-content">
 
     <div class="fnc-body">
-      {paragraphs.map(p => <p>{p}</p>)}
+      {/* set:html lets cardSummary include inline HTML (e.g. <a> links).
+          Plain-text paragraphs render identically; this just unlocks anchors
+          and inline emphasis when a card needs them. */}
+      {paragraphs.map(p => <p set:html={p} />)}
     </div>
 
     {/* Tools row: label + one or more outline badges. Badges become links when
         the tool entry has an href; external links open in a new tab. */}
     {tools.length > 0 && (
       <div class="fnc-tools">
-        <span class="fnc-tools-label">Tools:</span>
+        <span class="fnc-tools-label">{toolsLabel}</span>
         <div class="fnc-tools-list">
           {tools.map(tool => tool.href
             ? (
@@ -94,7 +101,7 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
 
     {/* Explore experiment link — hidden entirely when there's no article yet. */}
     {exploreHref && (
-      <a href={exploreHref} class="fnc-explore">Explore experiment</a>
+      <a href={exploreHref} class="fnc-explore">{exploreLabel}</a>
     )}
 
   </div>
@@ -186,6 +193,31 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
     line-height: var(--leading-relaxed);
     margin: 0;
     max-width: none;
+  }
+
+  /* Inline links inside the card body — mirrors the article link styling
+     in global.css (.prose-article a) so a card link looks the same as a
+     link inside a blog post: underlined, navy, lightens on hover, dark-
+     mode-aware. Only applies if a card's cardSummary contains an <a>.
+
+     The inner `a` selector is wrapped in :global() because the body links
+     are injected via set:html, which means the <a> elements don't carry
+     Astro's scope attribute. Without :global(), the scoped selector
+     wouldn't match and the link would render unstyled. */
+  .fnc-body :global(a) {
+    color: hsl(var(--navy-700));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+  .fnc-body :global(a:hover) {
+    color: hsl(var(--navy-500));
+  }
+  :global([data-theme="dark"]) .fnc-body :global(a) {
+    color: hsl(var(--navy-300));
+  }
+  :global([data-theme="dark"]) .fnc-body :global(a:hover) {
+    color: hsl(var(--navy-100));
   }
 
   /* "Tools:" row — small label + badges, wraps if there are many badges. */

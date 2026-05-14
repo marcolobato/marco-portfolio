@@ -35,7 +35,10 @@ const toCardProps = (post: any) => ({
     image:   post.data.artifact?.image   ?? '',
     alt:     '', // decorative for now (PRD)
     caption: post.data.artifact?.caption ?? '',
-    href:    `/writing/${post.id}#artifact`,
+    // Default link points at the article's #artifact anchor. Articles can
+    // override this in frontmatter (artifact.href) to point elsewhere —
+    // e.g. design-systems-explorations sends readers to /playground.
+    href:    post.data.artifact?.href ?? `/writing/${post.id}#artifact`,
   },
 });
 
@@ -67,6 +70,23 @@ const briefcase = {
 
 // Final list rendered in the section. Collection cards first, briefcase last.
 const multimodalCards = [...collectionCards, briefcase];
+
+// ── Design systems ────────────────────────────────────────────────────────
+// Field notes about design system audits, rebuilds, and token architecture
+// explorations. Same FieldNoteCard component as Multimodal work above; order
+// is manual — rearrange the strings to reorder the cards.
+const designSystemsIds = ['design-systems-explorations'];
+// Design systems cards surface component libraries on the badge row instead
+// of tools, so we override the default "Tools:" label after building the
+// standard card props. Section-level override — applies to every card here.
+const designSystemsCards = designSystemsIds
+  .map(id => allPosts.find(p => p.id === id))
+  .filter(Boolean)
+  .map(post => ({
+    ...toCardProps(post),
+    toolsLabel: 'Component libraries:',
+    exploreLabel: 'Read more',
+  }));
 
 // ── Past entries ──────────────────────────────────────────────────────────
 // Earlier writing on AI, design, and physical spaces. These are Medium
@@ -167,6 +187,37 @@ const pastEntries = allPosts
           <dt>Cooperative recording</dt>
           <dd>A mutual agreement to record and transcribe a dialogue so participants can capture complex spoken details, particularly during consultations with specialists like doctors or pharmacists.</dd>
         </dl>
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION: DESIGN SYSTEMS
+         Field notes about design system audits, rebuilds, and token
+         architecture explorations. Same FieldNoteCard component and
+         layout class (.multimodal-cards) as Multimodal work above.
+         =================================================================== -->
+    <section class="sg-section" id="design-systems">
+
+      <h2 style="margin-bottom: var(--space-md);">Design systems</h2>
+
+      <p class="sg-header-desc" style="max-width: 72ch; margin-bottom: var(--space-xl);">
+        I'm exploring how design systems can be documented to work as well for AI agents as they do for human designers.
+      </p>
+
+      <div class="multimodal-cards">
+        {designSystemsCards.map(card => (
+          <FieldNoteCard
+            title={card.title}
+            body={card.body}
+            tools={card.tools}
+            toolsLabel={card.toolsLabel}
+            exploreHref={card.exploreHref}
+            exploreLabel={card.exploreLabel}
+            artifact={card.artifact}
+          />
+        ))}
       </div>
 
     </section>

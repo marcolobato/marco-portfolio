@@ -30,6 +30,9 @@ const writing = defineCollection({
     artifact:    z.object({
                    image:   z.string(), // /images/field-notes/{slug}-artifact.png
                    caption: z.string(), // e.g. "Storyboard"
+                   href:    z.string().optional(), // override the default
+                                                   // /writing/{slug}#artifact link
+                                                   // (e.g. point at /playground)
                  }).optional(),
   }),
 });

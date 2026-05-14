@@ -66,7 +66,10 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
   <div class="fnc-content">
 
     <div class="fnc-body">
-      {paragraphs.map(p => <p>{p}</p>)}
+      {/* set:html lets cardSummary include inline HTML (e.g. <a> links).
+          Plain-text paragraphs render identically; this just unlocks anchors
+          and inline emphasis when a card needs them. */}
+      {paragraphs.map(p => <p set:html={p} />)}
     </div>
 
     {/* Tools row: label + one or more outline badges. Badges become links when
@@ -186,6 +189,26 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
     line-height: var(--leading-relaxed);
     margin: 0;
     max-width: none;
+  }
+
+  /* Inline links inside the card body — mirrors the article link styling
+     in global.css (.prose-article a) so a card link looks the same as a
+     link inside a blog post: underlined, navy, lightens on hover, dark-
+     mode-aware. Only applies if a card's cardSummary contains an <a>. */
+  .fnc-body a {
+    color: hsl(var(--navy-700));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 150ms ease;
+  }
+  .fnc-body a:hover {
+    color: hsl(var(--navy-500));
+  }
+  :global([data-theme="dark"]) .fnc-body a {
+    color: hsl(var(--navy-300));
+  }
+  :global([data-theme="dark"]) .fnc-body a:hover {
+    color: hsl(var(--navy-100));
   }
 
   /* "Tools:" row — small label + badges, wraps if there are many badges. */

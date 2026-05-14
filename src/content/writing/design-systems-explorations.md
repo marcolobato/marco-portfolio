@@ -4,9 +4,9 @@ date: 2026-03-28
 description: "How auditing a startup's component library led to rebuilding my portfolio from scratch with Basis UI, Astro, and Claude Code as the third collaborator."
 image: "/images/writing/design-systems-explorations/01-cover.png"
 cardSummary: |-
-  How auditing a SaaS startup's design system led me to rebuild my portfolio from scratch and write a design system brief that an AI collaborator can read and follow.
+  How auditing a startup's design system to make it AI-ready led me to rebuild my portfolio from scratch.
 
-  I rebuilt their badge component as three connected pieces: a Figma component with Variables instead of hardwired Styles, a coded version in shadcn/ui, and a live documentation site. The work taught me to see design systems as token architecture, and that lesson reshaped how I built my own site with Astro and Basis UI.
+  As proof of concept I rebuilt a badge component and documented the workflow: a Figma component with Variables instead of hardwired Styles, a shared token system in Figma and CSS, a coded version in shadcn/ui, and a <a href="/badge-audit">live documentation page</a> of the proposed changes. Shipping it taught me how design system components reach production, reshaping how I built my own site with Astro and Basis UI.
 tools:
   - label: "Basis UI"
   - label: "shadcn/ui"

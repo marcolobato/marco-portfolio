@@ -459,6 +459,16 @@ const { Content } = await render(project);
     line-height: var(--leading-relaxed);
   }
 
+  /* When a section heading immediately follows an image (or video) paragraph,
+     give it more breathing room than a heading that follows body text.
+     Without this, margin collapse caps the gap at the h2's 48px top margin —
+     not enough air after a captioned image. The :has() selector targets only
+     this transition, so paragraph-to-heading spacing stays unchanged. */
+  :global(.project-body p:has(> img) + h2),
+  :global(.project-body p:has(> video) + h2) {
+    margin-top: var(--space-3xl);
+  }
+
 
   /* ── Outcomes & Impact ───────────────────────────────────────────────── */
 

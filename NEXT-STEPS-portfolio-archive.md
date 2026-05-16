@@ -124,3 +124,12 @@ Once the live site has the archive working, you can stop paying for the Framer s
 - [ ] Export anything from Framer that did not make it into the ported articles (raw assets, unused images).
 - [ ] Cancel Framer subscription.
 - [ ] Update any external links pointing at `lobato.framer.website` to point at the new `/work/<slug>` URLs.
+
+---
+
+## 9. Polish pass
+
+Small things noticed while porting, deferred so they do not block the merge.
+
+- [ ] **Add poster images for the two videos in [digital-auto-services.mdx](src/content/projects/digital-auto-services.mdx).** Both `<video>` tags currently show a black frame until the user hits play. Export a still from each video at the same dimensions and add `poster="/projects/digital-auto-services/<filename>.png"` to the `<video>` tag.
+- [ ] **Fix the gallery top band in light mode** for the 3-slide `ProjectGallery` in the Design section of `digital-auto-services.mdx`. A thin white band shows above the image in light mode only. Dark mode renders cleanly. Already tried: matching `aspectRatio` on the `<img>` to the image (1080/705), then moving `aspect-ratio` to the `.carousel-slide` wrapper with the image filling via `object-fit` and `height: 100%`. Band still present in light mode after re-cropping the source PNGs. Likely a `--color-white` token mismatch or a stretching issue with `.carousel-viewport` vs `.carousel-slide` background. See [src/components/project/ProjectGallery.astro](src/components/project/ProjectGallery.astro) and `src/styles/global.css` section 16.

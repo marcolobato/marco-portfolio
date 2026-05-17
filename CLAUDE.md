@@ -156,6 +156,28 @@ Wait for confirmation before proceeding. Build the component in isolation first,
 - Stage specific files by name — never use `git add .`
 - Keep commit messages short and descriptive in plain English (e.g. "Add hero section styles").
 - Ask before pushing to any remote.
+- Before merging a feature branch, run `git status` and confirm the working tree is clean. No untracked files at the project root.
+
+## File organization
+
+The repo root should stay tidy. Only project-level config and a few well-known files belong there (`package.json`, `astro.config.mjs`, `tsconfig.json`, `README.md`, `CLAUDE.md`, `.gitignore`, `experiment-template.md`).
+
+When creating new files, put them in the right folder:
+
+| Type of file | Goes in | Notes |
+|---|---|---|
+| Planning docs, PRDs, handoffs, next-steps lists | `docs/plans/` | One file per initiative. Name in plain English, e.g. `PRD-portfolio-cms.md`. |
+| Migration playbooks, porting notes | `docs/migration/` | Long-running reference docs for moving content between systems. |
+| Drafts of writing articles | `src/content/writing/` | Markdown with frontmatter — these ship to the site. |
+| Components | `src/components/` (Astro) or `src/components/ui/` (Basis UI) | Never on root. |
+| Images, fonts, downloadable assets | `public/` | Anything here is served at the site root. |
+| Throwaway scratch notes | `scratch-*.md` at the root, OR inside `/scratch/` | These are `.gitignore`'d — they stay local. |
+| Exports from other tools (Figma, Claude design system, etc.) | NOT in the repo | Keep these on `~/Desktop/` or in a separate folder. |
+
+**Never land new files at the project root without checking in first.** If a task seems to require a new root-level file, stop and flag it:
+> 📁 New root file: I'm about to create `[filename]` at the project root. Should it go somewhere under `docs/` or `src/` instead?
+
+**Never commit:** ZIP archives, exported design tokens from external tools, `* 2.*` macOS Finder duplicates, anything matching `scratch-*` or `*.local.*`. These are already ignored in `.gitignore`.
 
 ## What NOT to do
 

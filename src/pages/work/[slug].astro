@@ -184,7 +184,7 @@ const { Content } = await render(project);
                 <span class="project-outcome-emoji" aria-hidden="true">{item.emoji}</span>
                 <span class="project-outcome-text">
                   <strong class="project-outcome-label">{item.label}</strong>
-                  {' — '}{item.description}
+                  {' — '}<Fragment set:html={item.description} />
                 </span>
               </li>
             ))}
@@ -369,6 +369,8 @@ const { Content } = await render(project);
      required — same reason writing posts use it. */
   :global(.project-body h2) { margin-top: var(--space-2xl); margin-bottom: var(--space-xl); }
   :global(.project-body h3) { margin-top: var(--space-xl);  margin-bottom: var(--space-lg); }
+  :global(.project-body h4) { margin-top: var(--space-xl);  margin-bottom: var(--space-md); }
+  :global(.project-body h5) { margin-top: var(--space-lg);  margin-bottom: var(--space-md); }
   :global(.project-body p)  { line-height: var(--leading-loose); margin-bottom: var(--space-md); }
 
   /* Bullet and numbered lists — restore the markers stripped by the
@@ -455,6 +457,16 @@ const { Content } = await render(project);
     margin-top: var(--space-xs);
     margin-bottom: var(--space-xl);
     line-height: var(--leading-relaxed);
+  }
+
+  /* When a section heading immediately follows an image (or video) paragraph,
+     give it more breathing room than a heading that follows body text.
+     Without this, margin collapse caps the gap at the h2's 48px top margin —
+     not enough air after a captioned image. The :has() selector targets only
+     this transition, so paragraph-to-heading spacing stays unchanged. */
+  :global(.project-body p:has(> img) + h2),
+  :global(.project-body p:has(> video) + h2) {
+    margin-top: var(--space-3xl);
   }
 
 

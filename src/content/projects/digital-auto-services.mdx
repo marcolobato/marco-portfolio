@@ -1,0 +1,145 @@
+---
+title: "Digital automotive services"
+client: "Volkswagen Group"
+brand: "Connecting customers with mobility products and services, tailoring the platform to the Volkswagen and Porsche brands"
+heroImage: "/projects/digital-auto-services/das-hero.png"
+year: 2016
+yearLabel: "2015 - 2016"
+locked: true
+
+overview:
+  what: "A single digital platform that unites customer touch-points across web, mobile, and the in-vehicle browser, with brand-tailored experiences for Volkswagen and Porsche."
+  objective: "Improve the mobility experience by uniting customer touch-points in one platform while differentiating the values of the different Volkswagen Group brands."
+  differentiator: "Covers the full ecosystem in one body of work: web portal, in-vehicle interface, vehicle features tied to user profiles, mobility services, store, and IoT integrations, designed twice over for two very different brand voices."
+
+contributions:
+  - label: "🎨 Interaction & visual design"
+    content: "Designed the cross-platform portal experience and tailored a distinct UI skin and brand voice for each brand: a warm 'people' tone for Volkswagen and a lifestyle, getaway tone for Porsche."
+  - label: "🧩 Design system"
+    content: "Built the design system that powered a fully functional portal prototype for managing family accounts, vehicles, and services."
+  - label: "🛠️ Prototyping"
+    content: "Produced functional prototypes and recorded video walk-throughs so stakeholders who could not attend in person could still experience the demo."
+  - label: "📱 Responsive design"
+    content: "Designed the experience to work across web, mobile, and the in-car browser, with layouts that adapt to each context."
+  - label: "🔗 IoT and service integration"
+    content: "Integrated third-party services and IoT products into the vehicle and web experiences, including a Garageio smart garage door opener surfaced through the reverse camera view."
+
+outcomes:
+  - emoji: "🏗️"
+    label: "Unified cross-brand platform"
+    description: "Delivered a coherent platform proposal that spans web, mobile, and in-vehicle, with one shared backbone serving multiple brands."
+  - emoji: "🎭"
+    label: "Brand-differentiated UIs"
+    description: "Two distinct interface treatments shipped from the same platform: Volkswagen's family-oriented '65 smiles per hour' tone and Porsche's 'Sphere, mobility orchestrated' lifestyle tone."
+  - emoji: "🧪"
+    label: "Functional family-account prototype"
+    description: "Stood up a working prototype for managing family accounts, vehicles, services, and mobility, used in live and recorded demos."
+  - emoji: "🔌"
+    label: "IoT integration demonstrated"
+    description: "Showed how a third-party smart-home device (Garageio) could surface inside the vehicle UI at the right moment, alongside the reverse camera."
+
+card:
+  category: "Connected Vehicle Platform & Brand Experiences"
+  thumbnail: "/projects/digital-auto-services/das-hero.png"
+  featured: false
+---
+
+{/* ─────────────────────────────────────────────────────────────────────────────
+    DIGITAL AUTOMOTIVE SERVICES — MDX body
+    Ported from the Framer source document. Image filenames listed in chat;
+    drop optimized 1080×608 PNGs into /public/projects/digital-auto-services/.
+    The source doc grouped content under Volkswagen and Porsche sub-projects;
+    kept that structure here.
+    ───────────────────────────────────────────────────────────────────────────── */}
+
+import TwoColumn from '../../components/project/TwoColumn.astro';
+import ProjectGallery from '../../components/project/ProjectGallery.astro';
+
+## Background
+
+The goal was to improve the mobility experience by creating a single platform that unites customer touch-points while differentiating the values of the different Volkswagen Group brands. The same platform, dressed for two very different audiences.
+
+## Volkswagen
+
+### Digital experience components
+
+![Volkswagen web portal welcome screen with "Hello Name, Welcome to Volkswagen" hero and a "My Widgets" dashboard below](/projects/digital-auto-services/das-vw-portal.png)
+*Web portal accessible from the web, mobile, and inside the vehicle.*
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Side mirror reflection of a young driver next to a photo of her adjusting the seat](/projects/digital-auto-services/das-vw-presets.png)
+  *Vehicle features like adjustments and memory presets linked to user profiles.*
+
+  </div>
+  <div slot="right">
+
+  ![Customer shaking hands with a service advisor in front of a Volkswagen at a dealership](/projects/digital-auto-services/das-vw-services.png)
+  *Vehicle and mobility services management.*
+
+  </div>
+</TwoColumn>
+
+![Volkswagen Store landing page with tiles for Models, Vehicle Features, Packages, Services, Accessories, Driver Gear, and Amazon Shop](/projects/digital-auto-services/das-vw-store.png)
+*A store for vehicles, packages, services, accessories, and gear.*
+
+### Prototyping and presentations
+
+#### Experience concept
+
+A "people" brand will help families make the most out of their vehicles at 65 smiles per hour. The concept was captured in a promotional video used to align stakeholders on the experience we were building toward.
+
+<video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; margin-top: var(--space-md); margin-bottom: var(--space-xs); display: block;">
+  <source src="/projects/digital-auto-services/das-experience-concept.mp4" type="video/mp4" />
+</video>
+*Promotional video for the "65 smiles per hour" experience concept.*
+
+#### Functional prototype
+
+A working prototype demo, with a video walk-through recorded for stakeholders who experienced it remotely.
+
+<video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; margin-top: var(--space-md); margin-bottom: var(--space-xs); display: block;">
+  <source src="/projects/digital-auto-services/das-functional-prototype.mp4" type="video/mp4" />
+</video>
+*Walk-through of the functional prototype.*
+
+#### Design
+
+A design system for a fully functional portal prototype to manage family accounts, and a responsive website that worked across web, mobile, and the in-car browser.
+
+<ProjectGallery
+  ariaLabel="Family account portal across web, in-car browser, and mobile"
+  caption="Responsive website for web, mobile, and in-car browser."
+  aspectRatio="1080 / 705"
+  slides={[
+    { image: "/projects/digital-auto-services/das-account-web.png", alt: "Family account portal on the web" },
+    { image: "/projects/digital-auto-services/das-account-car.png", alt: "Family account portal on the in-car browser" },
+    { image: "/projects/digital-auto-services/das-account-mobile.png", alt: "Family account portal on mobile" },
+  ]}
+/>
+
+## Porsche
+
+### Digital product concept
+
+The Porsche side of the platform leaned into a lifestyle, getaway experience: on-demand features, services, and vehicles, framed around moments rather than ownership.
+
+![Porsche homepage with a "Routine, left behind" hero image of a restaurant at dusk and a row of available vehicles below](/projects/digital-auto-services/das-porsche-home.png)
+*Home page for on-demand features, services, and vehicles.*
+
+### Porsche rebranding
+
+Examples of vehicle and website rebranding, plus brand-exclusive features and integrations.
+
+![In-vehicle portal user interface with "Sphere, mobility orchestrated" hero and left-side icon nav for Sphere, Account, Phone, Notifications, Nav, Vehicles, Drive, Mobility, Climate, Services, Apps](/projects/digital-auto-services/das-porsche-invehicle.png)
+*In-vehicle portal user interface.*
+
+![Porsche desktop portal showing "Sphere, mobility orchestrated" with a "My Vehicles" panel listing Alex's 718, Sarah's Cayenne, and Alex's Monster](/projects/digital-auto-services/das-porsche-portal.png)
+*Integration to the existing Porsche website, with vehicle access shared across the family and non-Porsche vehicles.*
+
+![Porsche portal with an Online Services panel open and a "Link 3rd Party Services" detail explaining how to connect social, IFTTT, and smart home accounts](/projects/digital-auto-services/das-porsche-3rdparty.png)
+*Linking third-party services and IoT products.*
+
+![Reverse camera view with a top-down overlay of a Porsche backing out of a driveway, with a red "GARAGEIO Garage Door closing. Please be aware of your surroundings." banner](/projects/digital-auto-services/das-porsche-garageio.png)
+*In-vehicle integration of a smart garage opener, surfaced through the reverse camera view at the moment it is relevant.*

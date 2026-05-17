@@ -1,0 +1,185 @@
+---
+title: "Volkswagen mobility agent"
+client: "Volkswagen Group"
+brand: "Research and development of products for the connected vehicle"
+heroImage: "/projects/mobility-agent/ma-hero.png"
+heroCaption: "Team goal and intent poster."
+year: 2017
+locked: true
+
+overview:
+  what: "A research and design effort exploring conversational mobility agents and connected vehicle services for Volkswagen. The work paired multi-channel conversation design across Google Home, Facebook Messenger, and the vehicle with a functional API.AI prototype, anchored around OTTO, the One Touch Trip Orchestrator."
+  objective: "Create tools that help people get around effortlessly so they can focus on doing the things they love."
+  differentiator: "Multi-channel conversational design across Google Home, Facebook Messenger, and the vehicle, paired with a functional API.AI prototype connected to a virtual vehicle."
+
+contributions:
+  - label: "🎨 Role"
+    content: "UX Design Lead across the team's service-agent and speech projects."
+  - label: "🤝 UX coordination"
+    content: "Coordinated UX work across multiple parallel service-agent projects, keeping a consistent voice and experience between products."
+  - label: "🗣️ Speech and conversation design"
+    content: "Led UX for the speech projects, designing voice flows, scripts, and the supporting in-car visuals."
+  - label: "🧭 Design strategy"
+    content: "Shaped the design strategy for Volkswagen's research on service agents, including the team principles and OTTO's multi-channel approach."
+
+outcomesQuote:
+  text: "Communicate with our customers through any device of their choosing to solve their mobility needs."
+  attribution: "OTTO product mantra"
+
+outcomes:
+  - emoji: "🤖"
+    label: "OTTO prototype delivered"
+    description: "Functional conversational mobility agent prototype using API.AI, coupled with a virtual vehicle to demonstrate multi-device handoff."
+  - emoji: "📱"
+    label: "Multi-channel architecture demonstrated"
+    description: "Showed that a single mobility agent can move with the user across Google Home, Facebook Messenger, and the vehicle without losing context."
+  - emoji: "🧭"
+    label: "Team design principles set"
+    description: "Created a shared set of user-centered design principles, captured as memorable stills from project videos to keep the team grounded as the work scaled."
+  - emoji: "🎬"
+    label: "Onboarding pattern designed"
+    description: "Designed an interactive on-boarding tutorial that teaches new users how to discover the agent and continue conversations from the website into the car."
+
+card:
+  category: "Conversational Mobility Agent"
+  thumbnail: "/projects/mobility-agent/ma-hero.png"
+  featured: false
+---
+
+{/* ─────────────────────────────────────────────────────────────────────────────
+    VOLKSWAGEN MOBILITY AGENT — MDX body
+    Ported from the Framer source document. Image filenames listed in chat;
+    drop optimized 1080×608 PNGs into /public/projects/mobility-agent/.
+    Three videos referenced (ma-otto-interface.mp4, ma-otto-prototype.mp4,
+    ma-otto-onboarding.mp4) — if originals are not available, swap each
+    <video> block for a still image.
+    The "Prototyping a conversation with Botframe" note from the source
+    PDF is folded into the paper-prototype caption since it has no
+    standalone artifact in the source.
+    ───────────────────────────────────────────────────────────────────────────── */}
+
+import TwoColumn from '../../components/project/TwoColumn.astro';
+
+## Background
+
+This is a snapshot of the research and product work that grew out of the team's goal at the top of this page: tools that get people around effortlessly so they can focus on the things they love. The centerpiece is OTTO, the One Touch Trip Orchestrator, a conversational mobility agent we prototyped for the connected vehicle.
+
+## Design principles
+
+To keep the team user-centered as the work scaled, I pulled memorable stills from the videos we filmed during the project and used them as visual reminders of our principles. Each still pairs a moment with the principle it stood for, grounding the team in the brand values and the audience we were designing for.
+
+![Young driver smiling behind the wheel, with the overlay "Create an emotional connection between people and our products."](/projects/mobility-agent/ma-principle-emotional.png)
+*Daughter's first drive. Using technology to connect parents with their children during their first years at the wheel.*
+
+![Two friends meeting by a car in a driveway, with the overlay "Delight and surprise by intelligently anticipating people's needs."](/projects/mobility-agent/ma-principle-delight.png)
+*Front seat is mine. Embracing playfulness, including playful rules like "shotgun".*
+
+## OTTO, One Touch Trip Orchestrator
+
+The conversational mobility agent for Volkswagen.
+
+![Volkswagen interior with the OTTO wordmark and "One Touch Trip Orchestrator" overlaid on the dashboard](/projects/mobility-agent/ma-otto-cover.png)
+
+### OTTO is car and trip smart
+
+Control your vehicle, plan your route, and coordinate the people on the trip with you.
+
+<video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; margin-top: var(--space-md); margin-bottom: var(--space-xs); display: block;">
+  <source src="/projects/mobility-agent/ma-otto-interface.mp4" type="video/mp4" />
+</video>
+
+### A conversational interface improves usability and discoverability
+
+Talking to the car surfaces features that would otherwise sit buried in menus, and gives drivers a faster way to reach them without taking their eyes off the road.
+
+<video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; margin-top: var(--space-md); margin-bottom: var(--space-xs); display: block;">
+  <source src="/projects/mobility-agent/ma-otto-prototype.mp4" type="video/mp4" />
+</video>
+*Functional prototype using API.AI to power the natural language understanding, coupled with a virtual vehicle to demonstrate a conversation that switches between Bluetooth devices paired to the vehicle.*
+
+### Multi-channel support for seamless communication
+
+The user talks to OTTO the same way they talk to a friend, picking up the conversation on whichever device is closest at hand.
+
+![Facebook Messenger conversation with the Volkswagen Group chatbot, showing a map of nearby ice-cream spots and follow-up messages about arrival time](/projects/mobility-agent/ma-otto-messenger.png)
+*Facebook Messenger chatbot. A point-of-interest search initiated on Google Home continues on Messenger, where cards make rich information easier to review without navigating by voice.*
+
+### On-boarding tutorial
+
+A tutorial that helps people get familiar with a conversational interface before they ever step into the car.
+
+<video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; margin-top: var(--space-md); margin-bottom: var(--space-xs); display: block;">
+  <source src="/projects/mobility-agent/ma-otto-onboarding.mp4" type="video/mp4" />
+</video>
+*Mock-up of the agent's discoverability on Volkswagen's website. An interactive script with multiple-choice questions teaches users how to find and use our Google Home action and how to continue the conversation in the car, by visualizing the dialogue in real time.*
+
+## Process
+
+A selection of favorite artifacts from the project, spanning research through in-car prototypes.
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Google Maps screenshot mapping a multi-stop trip across the Bay Area](/projects/mobility-agent/ma-process-trip-data.png)
+  *Mapping real data to understand trip behavior.*
+
+  </div>
+  <div slot="right">
+
+  ![Black foam board covered with color-coded sticky notes grouped under "Stages", "Problems", "Opportunities", and "Coordination"](/projects/mobility-agent/ma-process-problems.png)
+  *Mapping problems and opportunities.*
+
+  </div>
+</TwoColumn>
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Pencil sketchbook page with comic-style panels showing a user asking OTTO about parking and ice-cream stops](/projects/mobility-agent/ma-process-storyboard-friction.png)
+  *Storyboard visualizing customer friction points to solve in the experience.*
+
+  </div>
+  <div slot="right">
+
+  ![Watercolor storyboard of a parent dropping off a child near a park while OTTO finds parking on the way home](/projects/mobility-agent/ma-process-storyboard-solutions.png)
+  *Storyboard describing the approach and proposed solutions.*
+
+  </div>
+</TwoColumn>
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Paper puppet of a smiling character holding a "happy friday!" speech bubble, propped up in an office plant](/projects/mobility-agent/ma-process-puppets.png)
+  *Puppets designed for role-play, to help the team think like the user.*
+
+  </div>
+  <div slot="right">
+
+  ![Hand-drawn paper prototype of an in-car navigation screen with trip info and a route from start to a gas stop](/projects/mobility-agent/ma-process-paper-prototype.png)
+  *Paper prototype of the in-car navigation screen.*
+
+  </div>
+</TwoColumn>
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Voice user interface flow chart for "Park and ride (Train)" with branching prompts and responses between driver, OTTO, third-party services, and the GUI](/projects/mobility-agent/ma-process-vui-script.png)
+  *Script design and documentation for the voice user interface.*
+
+  </div>
+  <div slot="right">
+
+  ![In-car UI mockup with a map on the left, "Anne Thompson" profile, and "Parking at Whole foods is difficult" message offering reserve, street, or garage parking options](/projects/mobility-agent/ma-process-ui-design.png)
+  *User interface design supporting both conversation and touch.*
+
+  </div>
+</TwoColumn>
+
+<div style="max-width: 160px; margin: var(--space-lg) auto var(--space-xs);">
+  <video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; display: block;">
+    <source src="/projects/mobility-agent/ma-proto-chatwithotto.mp4" type="video/mp4" />
+  </video>
+</div>
+<p style="text-align: center; font-style: italic; color: var(--color-charcoal); font-size: var(--text-sm); margin-bottom: var(--space-xl);">Prototyping a conversation in Botframe: adding a stopover and updating people at home.</p>

@@ -1,0 +1,111 @@
+---
+title: "Design Systems Accessibility"
+client: "Google"
+brand: "Seeding accessibility knowledge in design systems across Google"
+appLink: "https://m3.material.io/components/date-pickers/overview"
+appLinkLabel: "View Material Design Date Picker"
+heroImage: "/projects/ds-a11y-program/dsa-hero.png"
+heroCaption: "Date pickers implementation can break or make the accessible experience of a site or app."
+year: 2020
+yearLabel: "2019 - 2020"
+locked: true
+
+overview:
+  what: "Showcase project within program. A date picker component designed to account for both enterprise and consumer applications across surfaces to support people with different disabilities."
+  objective: "Bring together representatives from Google's largest design system teams (consumer, enterprise, and ads) to strengthen accessibility and UX across the company, creating best practices, documentation, and processes that became the standard across design system frameworks."
+  differentiator: "My first project as lead centered on research and co-design with individuals using keyboard only or switch devices, addressing the needs of people with motor disabilities."
+
+contributions:
+  - label: "🤝 Role"
+    content: "Program Co-Lead and UX Design Individual Contributor."
+  - label: "🎓 Domain Knowledge"
+    content: "Consulted and trained teams on Accessible Design, Prototyping, and Assistive Technology."
+  - label: "📝 Documentation"
+    content: "Designed templates and authored specifications of components for challenging accessibility solutions for critical components and patterns."
+  - label: "🏟 Strategy"
+    content: "Strategized with design system owners approaches to tailor their frameworks to meet their client specific needs faster."
+  - label: "📖 Storytelling"
+    content: "Partnered with product manager, engineering leads, marketing and agencies to shape inclusive narratives for launch."
+  - label: "🧠 Research"
+    content: "Coordinated the expansion of research and study plans to be inclusive of people with motor disabilities and dexterity challenges."
+
+outcomesQuote:
+  text: "“Simpler is better...the more elements there are, the more confusing it becomes. This is much better than most of the html date pickers I've used.”"
+  attribution: "User study participant"
+
+outcomes:
+  - emoji: "✅"
+    label: "Tested across modes"
+    description: "Single date picker component tested as usable for assistive technology and non-AT users in light mode, dark mode, and high-contrast mode."
+  - emoji: "📐"
+    label: "Adopted by Material Design"
+    description: "Developed date picker specs and consistent accessibility guidance shared across design systems and adopted by Material Design."
+  - emoji: "🌎"
+    label: "Influencing thousands of apps"
+    description: "Date picker guidance influences major Google design systems, which in turn define the design of thousands of applications."
+  - emoji: "📈"
+    label: "34 of 73 pickers adopted it"
+    description: "From 73 different date pickers used in different products, 34 had adopted it, saving hours of design and development."
+
+reflection:
+  title: "Where this work continued"
+  body: "As next steps, I mentored designers responsible to develop the mobile date picker and partnered to incorporate accessibility guidance into other design systems."
+
+card:
+  category: "Accessibility Program for Design Systems"
+  thumbnail: "/projects/ds-a11y-program/dsa-hero.png"
+  featured: false
+---
+
+{/* ─────────────────────────────────────────────────────────────────────────────
+    DESIGN SYSTEMS ACCESSIBILITY — MDX body
+    Ported as-is from the Framer source document. Image filenames listed in
+    chat; drop optimized 16:9 PNGs into /public/projects/ds-a11y-program/.
+    ───────────────────────────────────────────────────────────────────────────── */}
+
+## Case study: Date picker
+
+Building an accessible date picker for both enterprise and consumer applications.
+
+## Problem
+
+Enterprise developers often customize their date picker components to suit their clients' specific needs, particularly for complex workflows that are better suited to desktop use with a mouse. However, these customized date picker components may not be usable for users with low vision or blindness who rely on assistive technology to interact with the system.
+
+## Why it matters
+
+The custom date pickers developed by enterprise developers were complex and challenging to navigate using the keyboard alone. This presented an accessibility issue for users who rely on Assistive Technologies such as screen readers. Screen readers allow visually impaired users to interact with the interface using only the keyboard and provide an auditory experience to convey information about the interface.
+
+For instance, imagine trying to pick a date for a doctor's appointment without knowing the day of the week or month you are currently on. This lack of context would be frustrating and could lead to errors. Similarly, users need to be able to navigate the interface efficiently using keyboard shortcuts. For example, when entering your birthday, you would want to skip years quickly and easily.
+
+![Calendar with auditory context label showing "Monday, August 17" on a focused date](/projects/ds-a11y-program/dsa-context-label.png)
+*When properly implemented, days in a calendar provide people with auditory context, such as the days of the week and months, when they are focused.*
+
+## Solution
+
+We invited teams to join our working group and design solutions with an accessibility-first approach. We understood their various use cases to reveal the accessibility of complex problems and solve them together. We developed multifunctional prototypes that addressed different user needs and incorporated switch device users in our studies for the first time.
+
+Switch devices commonly feature large buttons that can be mapped to navigate interfaces linearly. The use of large buttons allows people to use coarse movement like tilting the back of their head as an alternative to pressing the tab key on your keyboard and another large button mapped to activate it. This interaction method is also called tabular or linear navigation.
+
+![Gamer using two head switches to play video games cooperatively](/projects/ds-a11y-program/dsa-switch-gamer.png)
+*Gamer using 2 head switches to play video games cooperatively.*
+
+## Research
+
+- Started without a source of truth for accessibility guidance for date-pickers.
+- Navigated COVID-19 logistical challenges.
+- One of our hubs to meet with users, the California State University, Northridge (CSUN) Assistive Technology Conference study, was cancelled.
+- Developed remote study methods relatively new at the time.
+- Used expert interviews to learn about the common user setups for Switch users.
+
+## Design
+
+Key improvements based on research:
+
+- Accessible date states in light, dark, and high contrast mode.
+- A text field became the default to enter a date by typing, and a trailing icon became the entry point to open the calendar view.
+- Months and years use standard menus with list views to improve keyboard navigation support across browsers.
+- Pagination is accessible by keyboard, and their shortcuts discoverable through tooltips help power users navigate dates more efficiently.
+- Dedicated optional clear button for easier correction for errors in date ranges.
+
+![Diagram of proposed specification for single date picker for web frameworks](/projects/ds-a11y-program/dsa-spec-diagram.png)
+*Diagram of proposed specification for single date picker for web frameworks.*

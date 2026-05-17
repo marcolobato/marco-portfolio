@@ -22,6 +22,7 @@
 
 import '../../styles/global.css';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
@@ -81,7 +82,12 @@ const subtitle  = `Projects and selected works ${spanStart} - ${spanEnd}`;
                 <img src={data.archiveImage ?? data.heroImage} alt="" loading="lazy" />
               </div>
               <h2 class="archive-name">{data.title}</h2>
-              <p class="archive-year">{yearDisplay}</p>
+              <p class="archive-year">
+                {data.locked && (
+                  <Icon name="lucide:lock" class="archive-lock" aria-label="Password protected" />
+                )}
+                <span>{yearDisplay}</span>
+              </p>
             </a>
           </li>
         );
@@ -194,6 +200,17 @@ const subtitle  = `Projects and selected works ${spanStart} - ${spanEnd}`;
     color: var(--color-charcoal);
     font-size: var(--text-base);
     margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  /* Lock indicator on password-protected projects. Sits inline with the year
+     label at the same muted color so it reads as a hint rather than a warning. */
+  .archive-lock {
+    width: 0.9em;
+    height: 0.9em;
+    color: var(--color-charcoal);
   }
 
   /* Focus outline for keyboard users — uses the project's interactive

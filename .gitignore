@@ -19,6 +19,22 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+# macOS Finder duplicates (files like "foo 2.md", "foo 3.png")
+* 2.*
+* 3.*
+* copy.*
+* copy 2.*
 
 # jetbrains setting folder
 .idea/
+
+# archives — exports, design system bundles, etc. don't belong in the repo
+*.zip
+*.tar
+*.tar.gz
+
+# scratch / local-only working files
+# (anything matching scratch-*, *.local.*, or inside a /scratch/ folder is ignored)
+scratch-*
+*.local.*
+/scratch/

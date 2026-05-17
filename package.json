@@ -27,5 +27,8 @@
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "staticrypt": "^3.5.4"
   }
 }

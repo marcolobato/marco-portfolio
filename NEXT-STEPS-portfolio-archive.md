@@ -10,17 +10,22 @@ This file is the punch list for finishing the archive and merging to `main`. Wor
 
 ## 1. Where you left off
 
-**Articles already ported on this branch (3):**
+**Articles already ported on this branch (6 — all done):**
 - [src/content/projects/ds-a11y-program.mdx](src/content/projects/ds-a11y-program.mdx) → `/work/ds-a11y-program`
 - [src/content/projects/mobile-device-integration.mdx](src/content/projects/mobile-device-integration.mdx) → `/work/mobile-device-integration`
 - [src/content/projects/future-of-mobility.mdx](src/content/projects/future-of-mobility.mdx) → `/work/future-of-mobility`
+- [src/content/projects/digital-auto-services.mdx](src/content/projects/digital-auto-services.mdx) → `/work/digital-auto-services`
+- [src/content/projects/mobility-agent.mdx](src/content/projects/mobility-agent.mdx) → `/work/mobility-agent`
+- [src/content/projects/vw-meets-alexa.mdx](src/content/projects/vw-meets-alexa.mdx) → `/work/vw-meets-alexa`
 
-**New shared component built along the way:**
-- [src/components/project/ProjectGallery.astro](src/components/project/ProjectGallery.astro) — image carousel for project bodies (used in `mobile-device-integration`).
+**New shared components built along the way:**
+- [src/components/project/ProjectGallery.astro](src/components/project/ProjectGallery.astro) — image carousel for project bodies (used in `mobile-device-integration`, `digital-auto-services`).
+- [src/components/project/FeatureRow.astro](src/components/project/FeatureRow.astro) — 1/3 + 2/3 row layout for "feature spotlight" sections (used in `vw-meets-alexa`).
 
-**Project-page CSS tweaks made along the way (in [src/pages/work/[slug].astro](src/pages/work/[slug].astro)):**
+**Project-page CSS / template tweaks made along the way (in [src/pages/work/[slug].astro](src/pages/work/[slug].astro)):**
 - Added `h4` and `h5` margin rules so section subheadings have breathing room.
 - Added `:has()` rule that gives extra space when an `h2` follows a captioned image.
+- Outcome descriptions now render via `<Fragment set:html={item.description} />` so they can contain inline links and emphasis (used by the `vw-meets-alexa` press outcome).
 
 **Decisions locked in this session:**
 - Archive articles stay **off the home carousel**. The carousel slides are hardcoded in [src/components/Carousel.astro](src/components/Carousel.astro), so doing nothing keeps them off.
@@ -29,19 +34,13 @@ This file is the punch list for finishing the archive and merging to `main`. Wor
 
 ---
 
-## 2. Port the remaining 3 articles
+## 2. Port the remaining 3 articles ✅
 
-Same playbook as the three already done.
+All six archive articles are ported and pushed. Closing this section as done.
 
-- [ ] Article 4: ____________
-- [ ] Article 5: ____________
-- [ ] Article 6: ____________
-
-For each one, in a fresh chat:
-1. Drop the source PDF in chat, give the slug, year, and any image notes.
-2. Claude creates `src/content/projects/<slug>.mdx`, the `public/projects/<slug>/` folder, and lists image filenames at the spec (1080×608 PNG).
-3. You drop in optimized images, preview at `localhost:4321/work/<slug>`, iterate.
-4. Commit each article as its own commit on `portfolio-archive`. Push with `git push`.
+- [x] Article 4: Digital Automotive Services → [src/content/projects/digital-auto-services.mdx](src/content/projects/digital-auto-services.mdx)
+- [x] Article 5: Volkswagen Mobility Agent → [src/content/projects/mobility-agent.mdx](src/content/projects/mobility-agent.mdx)
+- [x] Article 6: Volkswagen meets Alexa → [src/content/projects/vw-meets-alexa.mdx](src/content/projects/vw-meets-alexa.mdx)
 
 ---
 
@@ -66,18 +65,71 @@ This is the gate that hides article content until a visitor enters the right pas
 
 ---
 
-## 4. Build the hidden archive index page
+## 4. Build the portfolio index page — PRD
 
-The archive needs **one** discoverable surface so you can share an index URL with anyone who needs it. It must not be linked from the nav, the home page, or the sitemap.
+### Purpose
 
-**Suggested URL:** `/work/archive` (lives next to the existing `/work/[slug]` route).
+A single shareable surface that lists the portfolio's projects in one place. Acts as a "table of contents" for anyone who needs to browse beyond what's featured on the home page. Lives at a hidden URL — never linked from nav, home, or footer — but discoverable to anyone you send the link to.
 
-**Files to touch:**
-- New: `src/pages/work/archive.astro` — lists every project in the `projects` collection, grouped or sorted however reads best (probably by year, descending). Each row links to `/work/<slug>`.
-- Optional but recommended: add `<meta name="robots" content="noindex,nofollow" />` to that page's head and to each locked project page to keep them out of search engines even if the URL leaks.
-- Optional: edit `astro.config.mjs` (or wherever the sitemap integration lives) to exclude `/work/archive` and the locked project URLs.
+### URL
 
-**Decision to make in that chat:** does the index page itself sit behind the password gate, or is it just an unlisted URL?
+`/work/archive` (sits next to the existing `/work/[slug]` route).
+
+### Scope: which projects show up?
+
+Decide in the chat that builds this:
+
+- **A) Archive only** — the six older projects ported on this branch, plus any future archive additions.
+- **B) Everything (archive + public)** — one comprehensive index of all nine project pages.
+- **C) Both, sectioned** — public projects in one section, archive in another, on the same page.
+
+**Default if undecided: A.** Keeps the home page's narrative intact and reserves the index as an archive-specific surface.
+
+### Page content
+
+For each project row:
+- **Title** — linked to `/work/<slug>`
+- **Year** — right-aligned, muted
+- **One-line description** — pulled from the `brand` field (already exists on every project)
+- **Lock indicator** — small icon next to locked projects so visitors know a password gate is coming
+
+### Layout & visual treatment
+
+- **Vertical stacked list**, not a card grid. The archive is a reference document, not a marketing surface. Lists read faster and align with the "broken-in denim" tone in [CLAUDE.md](CLAUDE.md).
+- **Grouped by year, descending** with a soft year heading per group. Years over categories — the `card.category` values are heterogeneous and would create odd singleton groups.
+- **Reuse existing tokens and type scale.** No new visual primitives. Page header uses the same heading treatment as other interior pages.
+
+### Sort & grouping
+
+- Primary: **year, descending** (newest first).
+- Within a year: **alphabetical by title.**
+
+### Visibility & SEO
+
+- Add `<meta name="robots" content="noindex,nofollow" />` to the index page's `<head>`.
+- Add the same meta to **each locked project page** so leaked URLs don't get indexed.
+- If a sitemap integration exists, exclude `/work/archive` and all locked project URLs.
+
+### Auth: gate the index too?
+
+- **A) Index unlisted but ungated** — anyone with the URL sees titles and clicks through; each locked project then prompts for its password.
+- **B) Index sits behind the same PasswordGate** — must unlock once to see the list at all.
+
+**Default if undecided: A.** Titles and one-line descriptions are low-sensitivity. Gating the index would add an extra step to the one surface you're most likely to share.
+
+### Files to touch
+
+- **New:** `src/pages/work/archive.astro` — reads the `projects` collection, groups by year, renders the list.
+- **Modify:** [src/pages/work/[slug].astro](src/pages/work/[slug].astro) — conditionally render `<meta name="robots" content="noindex,nofollow" />` when `data.locked === true`.
+- **Optional:** edit `astro.config.mjs` (or sitemap integration) to exclude `/work/archive` and locked project URLs from the sitemap.
+
+### Acceptance criteria
+
+- [ ] Visiting `/work/archive` shows all in-scope projects grouped by year.
+- [ ] Each title links to the correct project page.
+- [ ] Locked projects render with a visible lock indicator.
+- [ ] The page is not reachable from any other surface (nav, home, footer, sitemap).
+- [ ] View-source confirms `noindex,nofollow` on the index page and on all locked project pages.
 
 ---
 
@@ -88,9 +140,9 @@ Once the gate component works, flip the switch on each archive `.mdx`:
 - [ ] `ds-a11y-program.mdx` → `locked: true`
 - [ ] `mobile-device-integration.mdx` → `locked: true`
 - [ ] `future-of-mobility.mdx` → `locked: true`
-- [ ] Article 4 → `locked: true`
-- [ ] Article 5 → `locked: true`
-- [ ] Article 6 → `locked: true`
+- [ ] `digital-auto-services.mdx` → `locked: true`
+- [ ] `mobility-agent.mdx` → `locked: true`
+- [ ] `vw-meets-alexa.mdx` → `locked: true`
 
 Public projects (Voice Access, Lookout, Magnifier) keep `locked: false` (or omit the field).
 

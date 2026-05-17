@@ -39,8 +39,14 @@ for slug in "${LOCKED_SLUGS[@]}"; do
     -p "$STATICRYPT_PASSWORD" \
     --short \
     --remember 30 \
+    -t scripts/staticrypt-template.html \
+    --template-title "This page is private" \
+    --template-instructions "Enter the password to view this project." \
+    --template-placeholder "Password" \
+    --template-button "Unlock" \
+    --template-remember "Keep me unlocked for 30 days" \
+    --template-error "That's not it. Try again." \
     -d "dist/work/$slug"
-  node scripts/inject-noindex.mjs "dist/work/$slug/index.html"
 done
 
 echo "✅ All locked articles encrypted"

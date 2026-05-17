@@ -1,0 +1,189 @@
+---
+title: "Volkswagen meets Alexa"
+client: "Volkswagen Group"
+brand: "Volkswagen's CES 2017 Amazon Alexa partnership showcase"
+heroImage: "/projects/vw-meets-alexa/vma-hero.png"
+year: 2016
+locked: false
+
+overview:
+  what: "A CES 2017 showcase of the Volkswagen Car-Net Alexa skill, demonstrating how customers can talk to their connected vehicle from their living room via Amazon Echo, and continue the conversation inside the car through an in-vehicle Alexa integration."
+  objective: "Communicate Volkswagen's adoption of third-party digital ecosystems by presenting an end-to-end customer journey across home and vehicle, staged inside Volkswagen's booth at CES."
+  differentiator: "An end-to-end demo built across the living room, the booth, and the vehicle, designed and shipped to production in a six-week sprint."
+  duration: "Six weeks, ideation to delivery."
+
+contributions:
+  - label: "🎨 Role"
+    content: "UX and voice interface design for the CES 2017 Volkswagen meets Alexa showcase."
+  - label: "🗣️ Conversation design"
+    content: "Designed the Volkswagen Car-Net Alexa skill conversation, including the dialog tree, prompts, reprompts, and error handling for invalid intents."
+  - label: "✏️ Storyboarding"
+    content: "Hand-sketched storyboards to explore everyday use cases like errand planning and reminders that hand off between the living room and the vehicle."
+  - label: "🚗 In-vehicle interaction"
+    content: "Designed the in-vehicle Alexa visuals, including the microphone-to-Alexa logo transition and the waveform animation that signals which occupant is speaking."
+  - label: "🧪 Prototyping"
+    content: "Built a working conversation prototype in Sequel to iterate on flow quickly before testing inside the actual vehicle."
+
+outcomesQuote:
+  text: "A seamless experience to shop, access Amazon content from your vehicle, and an easy way to talk to your Volkswagen from your living room."
+  attribution: "Project mission"
+
+outcomes:
+  - emoji: "📰"
+    label: "Press carried the message"
+    description: "Coverage empathized with the everyday problems the skill aimed to solve. Read the launch story on <a href=\"https://www.engadget.com/2017-01-07-volkwagen-is-adding-amazon-alexa-to-its-cars.html\" target=\"_blank\" rel=\"noopener\">Engadget: Volkswagen is adding Amazon Alexa to its cars</a>."
+  - emoji: "🚀"
+    label: "Shipped to production"
+    description: "The Car-Net Alexa skill moved from CES showcase to production, released to customers in the North American and European markets."
+  - emoji: "⚡"
+    label: "Six weeks, ideation to delivery"
+    description: "The project went from first sketch to a fully working CES showcase in just six weeks, executed as envisioned."
+
+card:
+  category: "CES 2017 Showcase & Voice Integration"
+  thumbnail: "/projects/vw-meets-alexa/vma-hero.png"
+  featured: false
+---
+
+{/* ─────────────────────────────────────────────────────────────────────────────
+    VOLKSWAGEN MEETS ALEXA — MDX body
+    Ported from the Framer source document. Image filenames listed in chat;
+    drop optimized 1080×608 PNGs into /public/projects/vw-meets-alexa/.
+    Four feature videos referenced (vma-feature-*.mp4) — if originals are
+    not available, swap each <video> block for a still image.
+    Press-coverage outcome references the TechCrunch headline; URL to be
+    added separately by Marco (not guessed here).
+    ───────────────────────────────────────────────────────────────────────────── */}
+
+import TwoColumn from '../../components/project/TwoColumn.astro';
+import FeatureRow from '../../components/project/FeatureRow.astro';
+
+## Background
+
+For CES 2017, Volkswagen wanted to show that the brand was opening up to the digital ecosystems customers already lived inside. We built an end-to-end customer journey around the Volkswagen Car-Net Alexa skill, letting attendees move from a living-room scene with Amazon Echo into a Volkswagen with Alexa onboard, all inside Volkswagen's booth.
+
+## Components of the showcase
+
+### Alexa skill
+
+A Volkswagen Car-Net Alexa skill that lets customers interact with Volkswagen's connected services through an Amazon Echo. The skill is a conversation designed to help people plan their errands, surface helpful reminders along the way, and make sure their vehicle is ready to go.
+
+### Booth
+
+![Volkswagen booth at CES featuring an enclosed white living-room pod branded with Amazon Echo, with vehicle visualizations on screens in the background](/projects/vw-meets-alexa/vma-booth.png)
+*The booth consisted of an enclosed living room so attendees could experience the Volkswagen Car-Net Alexa skill in a quiet, familiar setup.*
+
+### Interactive screen
+
+![Flat illustration of a person seated at a desk facing a monitor, with an Amazon Echo on the desk and framed pictures on the wall](/projects/vw-meets-alexa/vma-interactive-screen.png)
+*An interactive screen played an overview of features and the vision for future services.*
+
+### In-vehicle Alexa skill
+
+![In-car infotainment screen with the Alexa wordmark, a map of Braunschweig, a "Your Latest Trick" media tile, and a phone panel](/projects/vw-meets-alexa/vma-in-vehicle.png)
+*When Alexa is invoked in the vehicle, the microphone logo switches to the Alexa logo while she's speaking, and the surrounding ring animates as a waveform that shows which occupant is speaking.*
+
+## Featured experiences and features
+
+<FeatureRow>
+  <div slot="text">
+
+  ### Pick up where you left off
+
+  Hand off a task from the living-room Echo to the vehicle, so the trip continues without restarting the conversation.
+
+  </div>
+  <div slot="media">
+
+  <video controls preload="metadata" playsinline poster="/projects/vw-meets-alexa/vma-feature-pickup_poster.png" style="width: 100%; border-radius: 8px; display: block;">
+    <source src="/projects/vw-meets-alexa/vma-feature-pickup.mp4" type="video/mp4" />
+  </video>
+
+  </div>
+</FeatureRow>
+
+<FeatureRow>
+  <div slot="text">
+
+  ### Get reminders when it matters
+
+  Alexa surfaces reminders at the moment they're actionable, like prompting to pick up flowers on the drive home from work.
+
+  </div>
+  <div slot="media">
+
+  <video controls preload="metadata" playsinline poster="/projects/vw-meets-alexa/vma-feature-reminders_poster.png" style="width: 100%; border-radius: 8px; display: block;">
+    <source src="/projects/vw-meets-alexa/vma-feature-reminders.mp4" type="video/mp4" />
+  </video>
+
+  </div>
+</FeatureRow>
+
+<FeatureRow>
+  <div slot="text">
+
+  ### Vehicle status and remote control
+
+  Check on the car and trigger remote functions from the living room before stepping outside.
+
+  </div>
+  <div slot="media">
+
+  <video controls preload="metadata" playsinline poster="/projects/vw-meets-alexa/vma-feature-vehicle-status_poster.png" style="width: 100%; border-radius: 8px; display: block;">
+    <source src="/projects/vw-meets-alexa/vma-feature-vehicle-status.mp4" type="video/mp4" />
+  </video>
+
+  </div>
+</FeatureRow>
+
+<FeatureRow>
+  <div slot="text">
+
+  ### Always order the right-size components for your vehicle
+
+  Voice-shop for accessories that match the specific vehicle, so there's no guessing at the right fit.
+
+  </div>
+  <div slot="media">
+
+  <video controls preload="metadata" playsinline poster="/projects/vw-meets-alexa/vma-feature-ordering_poster.png" style="width: 100%; border-radius: 8px; display: block;">
+    <source src="/projects/vw-meets-alexa/vma-feature-ordering.mp4" type="video/mp4" />
+  </video>
+
+  </div>
+</FeatureRow>
+
+## Process
+
+A few artifacts from the six-week sprint, from first sketch to in-car testing.
+
+<TwoColumn>
+  <div slot="left">
+
+  ![Hand-sketched storyboard of a car interior with a speech bubble reading "Hey Volkswagen, is there another Whole Foods in the area?" and notes about the response](/projects/vw-meets-alexa/vma-process-storyboard.png)
+  *Hand-sketched storyboards exploring everyday use cases.*
+
+  </div>
+  <div slot="right">
+
+  ![Voice user interface flow chart for the Volkswagen Alexa skill showing the welcome prompt, branching options, help paths, and invalid-intent recovery](/projects/vw-meets-alexa/vma-process-vui-flow.png)
+  *VUI wireframes mapping the Alexa skill's conversation tree, including help, repeat, and invalid-intent paths.*
+
+  </div>
+</TwoColumn>
+
+### Sequel prototype
+
+<div style="max-width: 320px; margin: var(--space-lg) auto var(--space-xs);">
+  <video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; display: block;">
+    <source src="/projects/vw-meets-alexa/vma-process-sequel.mp4" type="video/mp4" />
+  </video>
+</div>
+<p style="text-align: center; font-style: italic; color: var(--color-charcoal); font-size: var(--text-sm); margin-bottom: var(--space-xl);">The conversation prototyped in Sequel to iterate quickly on phrasing, branching, and error recovery, before moving it into a real vehicle for testing.</p>
+
+### Testing in the car
+
+<video controls preload="metadata" playsinline style="width: 100%; border-radius: 8px; margin-top: var(--space-md); margin-bottom: var(--space-xs); display: block;">
+  <source src="/projects/vw-meets-alexa/vma-process-in-car-testing.mp4" type="video/mp4" />
+</video>
+*Testing the in-vehicle skill on the show floor.*

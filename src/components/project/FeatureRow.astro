@@ -1,0 +1,89 @@
+---
+// FeatureRow.astro — One-third + two-thirds row layout primitive.
+//
+// Pairs a compact text block (heading + short description) with a wider
+// media block (video, image, or any embed). Designed for "feature
+// spotlight" sections where the writing introduces the media on the right.
+//
+// Behavior:
+//   Desktop (>= 768px): 1/3 text + 2/3 media side by side, top-aligned.
+//   Mobile (< 768px): stacks to single column. text first, media second,
+//     flush with no spacing between them.
+//
+// Usage in MDX:
+//
+//   import FeatureRow from '../../components/project/FeatureRow.astro';
+//
+//   <FeatureRow>
+//     <div slot="text">
+//
+//     ### Pick up where you left off
+//
+//     Hand off a task from the Echo to the vehicle, so the trip continues
+//     without restarting the conversation.
+//
+//     </div>
+//     <div slot="media">
+//
+//     <video controls poster="..." style="width: 100%; border-radius: 8px; display: block;">
+//       <source src="..." type="video/mp4" />
+//     </video>
+//
+//     </div>
+//   </FeatureRow>
+//
+// Notes:
+//   - Blank lines around markdown inside slotted divs are required so MDX
+//     processes the content as markdown (same rule as TwoColumn).
+//   - The video inline style should NOT include margin-top / margin-bottom
+//     when used here — the FeatureRow grid handles spacing. Keep width,
+//     border-radius, and display only.
+---
+
+<section class="fr">
+  <div class="fr-text">
+    <slot name="text" />
+  </div>
+  <div class="fr-media">
+    <slot name="media" />
+  </div>
+</section>
+
+<style>
+  .fr {
+    display: grid;
+    /* Mobile default: stacked, flush with no spacing between blocks. */
+    gap: 0;
+    margin-block: var(--space-2xl);
+    /* Top-align text against media on desktop. */
+    align-items: start;
+  }
+
+  /* Desktop: 1/3 text on the left, 2/3 media on the right. */
+  @media (min-width: 768px) {
+    .fr {
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-3xl);
+    }
+  }
+
+  /* Reset edge margins so columns sit flush with the grid edges.
+     :global() is required because slotted markdown renders outside this
+     component's scoped CSS. */
+  .fr-text :global(> :first-child),
+  .fr-media :global(> :first-child) {
+    margin-top: 0;
+  }
+  .fr-text :global(> :last-child),
+  .fr-media :global(> :last-child) {
+    margin-bottom: 0;
+  }
+
+  /* Match the quieter heading treatment used inside TwoColumn so feature
+     titles feel consistent across the page. */
+  .fr-text :global(h3) {
+    font-family: var(--font-body);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);
+  }
+</style>

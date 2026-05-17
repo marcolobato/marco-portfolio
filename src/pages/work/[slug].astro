@@ -184,7 +184,7 @@ const { Content } = await render(project);
                 <span class="project-outcome-emoji" aria-hidden="true">{item.emoji}</span>
                 <span class="project-outcome-text">
                   <strong class="project-outcome-label">{item.label}</strong>
-                  {' — '}{item.description}
+                  {' — '}<Fragment set:html={item.description} />
                 </span>
               </li>
             ))}

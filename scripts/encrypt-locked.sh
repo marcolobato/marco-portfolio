@@ -40,6 +40,7 @@ for slug in "${LOCKED_SLUGS[@]}"; do
     --short \
     --remember 30 \
     -d "dist/work/$slug"
+  node scripts/inject-noindex.mjs "dist/work/$slug/index.html"
 done
 
 echo "✅ All locked articles encrypted"

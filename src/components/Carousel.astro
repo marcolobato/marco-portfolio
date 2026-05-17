@@ -22,14 +22,25 @@
 //   subtitle — smaller text below the title
 //   href     — (optional) URL for clickable slides
 //   external — (optional) true for links that leave the site (opens in new tab)
-const slides = [
+//   cta      — (optional) text shown on the slide's CTA pill. Defaults to
+//              "View case study" when omitted.
+type Slide = {
+  image: string;
+  title: string;
+  subtitle: string;
+  href?: string;
+  external?: boolean;
+  cta?: string;
+};
+
+const slides: Slide[] = [
   { image: "/carousel/slide-1.png", title: "User-Centric 0 to 1 Product Design",  subtitle: "Google Pixel Magnifier",                                                        href: "/work/magnifier" },
   { image: "/carousel/slide-2.png", title: "Assistive Technology",                 subtitle: "Voice Access for Android",                                              href: "/work/voice-access" },
   { image: "/carousel/slide-3.png", title: "AI-Powered Products",                  subtitle: "Lookout - Assistive Technology App by Google",                          href: "/work/lookout" },
-  { image: "/carousel/slide-4.png", title: "UX and Product Design",                subtitle: "My Volkswagen - Web, Mobile, and In-Vehicle Portal" },
-  { image: "/carousel/slide-5.png", title: "UX Prototyping - Digital Services",    subtitle: "Porsche Connect Store - Concept and Prototyping of Third-Party Integrations" },
-  { image: "/carousel/slide-6.png", title: "Multi-Modal Interaction Design",       subtitle: "Sound Journey App - A Unique Interactive Soundtrack for Every Trip" },
-  { image: "/carousel/slide-7.png", title: "Research and Development",             subtitle: "Volkswagen Virtual Cockpit and Conversational Navigation Concepts" },
+  { image: "/carousel/slide-4.png", title: "UX and Product Design",                subtitle: "My Volkswagen - Web, Mobile, and In-Vehicle Portal",                            href: "/work/archive", cta: "View portfolio archive" },
+  { image: "/carousel/slide-5.png", title: "UX Prototyping - Digital Services",    subtitle: "Porsche Connect Store - Concept and Prototyping of Third-Party Integrations",   href: "/work/archive", cta: "View portfolio archive" },
+  { image: "/carousel/slide-6.png", title: "Multi-Modal Interaction Design",       subtitle: "Sound Journey App - A Unique Interactive Soundtrack for Every Trip",            href: "/work/archive", cta: "View portfolio archive" },
+  { image: "/carousel/slide-7.png", title: "Research and Development",             subtitle: "Volkswagen Virtual Cockpit and Conversational Navigation Concepts",             href: "/work/archive", cta: "View portfolio archive" },
 ];
 ---
 
@@ -70,8 +81,10 @@ const slides = [
                 <p class="carousel-slide-subtitle">{slide.subtitle}</p>
                 {/* Small text label that signals "this slide goes somewhere" —
                     only appears on linked slides, giving unlinked ones a natural
-                    distinction without any extra markup */}
-                <span class="carousel-slide-cta">View case study</span>
+                    distinction without any extra markup. The per-slide `cta`
+                    field overrides the default for cases like the portfolio
+                    archive button. */}
+                <span class="carousel-slide-cta">{slide.cta ?? 'View case study'}</span>
               </div>
             </a>
           ) : (

@@ -56,6 +56,9 @@ const projects = defineCollection({
     appLinkLabel: z.string().optional(), // label for the CTA button, e.g. "Download Magnifier"
     heroImage:   z.string().optional(),   // path to the hero image in /public
     heroCaption: z.string().optional(),   // optional italic line shown below the hero image
+    archiveImage: z.string().optional(),  // optional override for the thumbnail shown on /work/archive.
+                                          // Falls back to `heroImage` when omitted. Use when a project's
+                                          // hero is more impactful than what reads best at thumbnail size.
     year:        z.number(),              // e.g. 2023 — shown in the hero
     yearLabel:   z.string().optional(),   // optional display string for the archive index, e.g. "2020 - 2021"
                                           // when the work spans multiple years. Sort key is parsed from this

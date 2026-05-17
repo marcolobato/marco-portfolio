@@ -38,8 +38,10 @@ function parseSpan(project: CollectionEntry<'projects'>) {
   if (matches.length === 0) {
     return { start: project.data.year, end: project.data.year };
   }
-  const start = parseInt(matches[0], 10);
-  const end   = parseInt(matches[matches.length - 1], 10);
+  // The ?? '0' fallbacks satisfy TS's noUncheckedIndexedAccess — TS can't
+  // tell from the length check above that matches[0] is definitely a string.
+  const start = parseInt(matches[0] ?? '0', 10);
+  const end   = parseInt(matches[matches.length - 1] ?? '0', 10);
   return { start, end };
 }
 
@@ -76,7 +78,7 @@ const subtitle  = `Projects and selected works ${spanStart} - ${spanEnd}`;
           <li class="archive-item">
             <a href={href} class="archive-link">
               <div class="archive-thumb">
-                <img src={data.heroImage} alt="" loading="lazy" />
+                <img src={data.archiveImage ?? data.heroImage} alt="" loading="lazy" />
               </div>
               <h2 class="archive-name">{data.title}</h2>
               <p class="archive-year">{yearDisplay}</p>

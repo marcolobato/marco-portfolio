@@ -1,0 +1,204 @@
+---
+// archive.astro — Portfolio archive index.
+//
+// Single hidden surface listing every project in the `projects` collection
+// in reverse chronological order. Two-column grid on desktop, single column
+// on mobile. Each card is hero image + title + year label.
+//
+// URL: /work/archive
+// Visibility: not linked from nav, home, or footer. Marked noindex,nofollow
+// so search engines don't index it even if someone shares the URL.
+//
+// Sorting:
+//   - Primary: end year DESC (most recent first).
+//   - Tiebreak: start year DESC.
+//   - end / start are parsed from the optional `yearLabel` string when
+//     present (e.g. "2009 - 2014" → start 2009, end 2014). When absent,
+//     both default to the required `year` number.
+//
+// Adding a new project: nothing to do here. The page reads from the
+// projects collection at build time, so any new .mdx in
+// src/content/projects shows up automatically.
+
+import '../../styles/global.css';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const projects = await getCollection('projects');
+
+// Pull start/end years from yearLabel if it has them, otherwise fall back
+// to the single `year` field. The regex /\d{4}/g grabs every 4-digit run
+// in the label, so "2009 - 2014" yields ["2009", "2014"]; a single year
+// like "2018" yields ["2018"] which we mirror to start=end.
+function parseSpan(project: CollectionEntry<'projects'>) {
+  const label = project.data.yearLabel ?? String(project.data.year);
+  const matches = label.match(/\d{4}/g) ?? [];
+  if (matches.length === 0) {
+    return { start: project.data.year, end: project.data.year };
+  }
+  const start = parseInt(matches[0], 10);
+  const end   = parseInt(matches[matches.length - 1], 10);
+  return { start, end };
+}
+
+const sorted = projects
+  .map((p) => ({ project: p, ...parseSpan(p) }))
+  .sort((a, b) => (b.end - a.end) || (b.start - a.start));
+
+// Compute the page-level year range dynamically from the projects on file,
+// so the subtitle stays accurate as projects are added or removed.
+const spanStart = Math.min(...sorted.map((s) => s.start));
+const spanEnd   = Math.max(...sorted.map((s) => s.end));
+const subtitle  = `Projects and selected works ${spanStart} - ${spanEnd}`;
+---
+
+<BaseLayout
+  title="Portfolio archive — Marco Lobato"
+  description="An archival index of Marco Lobato's portfolio projects, 2009 onward."
+  noindex={true}
+>
+  <Nav />
+
+  <main class="archive">
+    <header class="archive-header">
+      <h1 class="archive-title">Portfolio archive</h1>
+      <p class="archive-subtitle">{subtitle}</p>
+    </header>
+
+    <ul class="archive-grid">
+      {sorted.map(({ project }) => {
+        const data         = project.data;
+        const yearDisplay  = data.yearLabel ?? String(data.year);
+        const href         = `/work/${project.id}`;
+        return (
+          <li class="archive-item">
+            <a href={href} class="archive-link">
+              <div class="archive-thumb">
+                <img src={data.heroImage} alt="" loading="lazy" />
+              </div>
+              <h2 class="archive-name">{data.title}</h2>
+              <p class="archive-year">{yearDisplay}</p>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Page container — mirrors the comfortable reading width used elsewhere
+     on the site. Side padding scales with viewport. */
+  .archive {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg) var(--space-4xl);
+  }
+
+  /* Header sits flush-left above the grid. Italic display title matches
+     the "Portfolio archive" treatment in the source PDF. */
+  .archive-header {
+    margin-bottom: var(--space-3xl);
+  }
+
+  /* Inherits font, weight, size, and color from the global h1 rule in
+     global.css. Only override the margins so the subtitle sits close. */
+  .archive-title {
+    margin: 0 0 var(--space-xs);
+  }
+
+  .archive-subtitle {
+    color: var(--color-charcoal);
+    font-size: var(--text-lg);
+    margin: 0;
+  }
+
+  /* Mobile-first: single column. Desktop kicks in at the same 768px
+     breakpoint used by TwoColumn and FeatureRow, for layout consistency
+     across the site. */
+  .archive-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  @media (min-width: 768px) {
+    .archive-grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-2xl);
+      row-gap: var(--space-3xl);
+    }
+  }
+
+  .archive-item {
+    margin: 0;
+  }
+
+  /* The whole card is the link. Strip default anchor styling and let the
+     image and text inherit their own colors. */
+  .archive-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Thumbnail container fixes a 16:9 box so every card lines up no matter
+     how each hero image was cropped. overflow:hidden clips images that
+     don't perfectly match the ratio. */
+  .archive-thumb {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .archive-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  /* Subtle hover lift — the image scales slightly while the rounded
+     container stays put, which reads as "this is interactive" without
+     resorting to underlines or bright outlines. */
+  .archive-link:hover .archive-thumb img,
+  .archive-link:focus-visible .archive-thumb img {
+    transform: scale(1.02);
+  }
+
+  /* Project title sits below the image. Display serif at a confident
+     size, but lighter weight than the page title so the hierarchy reads
+     correctly (page title > project titles). */
+  .archive-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-2xl);
+    color: var(--color-heading);
+    margin: var(--space-md) 0 var(--space-2xs);
+    line-height: 1.2;
+  }
+
+  .archive-year {
+    font-family: var(--font-body);
+    color: var(--color-charcoal);
+    font-size: var(--text-base);
+    margin: 0;
+  }
+
+  /* Focus outline for keyboard users — uses the project's interactive
+     blue. Rounded to match the thumbnail. */
+  .archive-link:focus-visible {
+    outline: 2px solid var(--color-royal-blue);
+    outline-offset: 4px;
+    border-radius: var(--radius-lg);
+  }
+</style>

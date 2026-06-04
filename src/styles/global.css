@@ -1070,6 +1070,7 @@ hr {
 
 /* The whole card is a link — no underline, inherits text color */
 .writing-card {
+  position: relative; /* anchor for the absolutely-positioned .writing-card-new badge */
   display: flex;
   flex-direction: column;
   background-color: var(--color-white);
@@ -1134,6 +1135,26 @@ hr {
   line-height: var(--leading-normal);
   margin-bottom: 0;
   max-width: none;
+}
+
+/* "New" badge — small lemon pill that overlays the top-right of a card.
+   Visual language matches .section-label so the page reads as one system.
+   Anchored by .writing-card's position: relative. z-index keeps it above
+   the card image (which has overflow: hidden on its own container). */
+.writing-card-new {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 1;
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  background-color: var(--color-lemon);
+  padding: var(--space-2xs) var(--space-sm);
+  border-radius: 2px;
 }
 
 /* --- 13. Page layout — Styleguide ------------------------------------------

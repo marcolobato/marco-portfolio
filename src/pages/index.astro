@@ -23,10 +23,22 @@ import AvatarScratcher from '../components/AvatarScratcher.astro';
 // To change which posts appear, edit this list of ids (an id is the filename
 // without the .md/.mdx extension). Cards still pull title, description, and
 // image straight from each post's frontmatter, so the post is the source of truth.
-const featuredIds = ['privacysim', 'digitizing-physical-spaces'];
+const featuredIds = ['privacysim', 'ai-broken-in-denim'];
+
+// Any featured post newer than this gets a "New" badge on its card.
+// Tune this number if "New" starts feeling stale or too quick to disappear.
+const NEW_THRESHOLD_DAYS = 90;
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+const now = Date.now();
+
 const fieldNotes = (await getCollection('writing'))
   .filter(post => featuredIds.includes(post.id))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  // Annotate each post with isNew so the template can decide whether to render the badge.
+  .map(post => ({
+    post,
+    isNew: (now - post.data.date.valueOf()) / MS_PER_DAY <= NEW_THRESHOLD_DAYS,
+  }));
 ---
 
 <BaseLayout
@@ -244,8 +256,12 @@ const fieldNotes = (await getCollection('writing'))
         </p>
 
         <div class="writing-cards">
-          {fieldNotes.map(post => (
+          {fieldNotes.map(({ post, isNew }) => (
             <a href={`/writing/${post.id}`} class="writing-card">
+              {/* "New" badge — appears only when the post is within NEW_THRESHOLD_DAYS.
+                  Positioned absolutely (see .writing-card-new in global.css) so it
+                  overlays the top-right of the card image without shifting layout. */}
+              {isNew && <span class="writing-card-new">New</span>}
               <div class="writing-card-image">
                 {post.data.image
                   ? <img src={post.data.image} alt={post.data.title} class="writing-card-img" />

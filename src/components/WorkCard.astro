@@ -272,8 +272,9 @@ const {
   .work-card__btn svg {
     width: 14px;
     height: 14px;
-    /* Always dark navy — readable against the white/frosted button in both modes */
-    color: #081F5D;
+    /* Always dark navy — readable against the white/frosted button in both modes.
+       --color-navy is locked to #081F5D and never flips in dark mode (see global.css). */
+    color: var(--color-navy);
   }
 
   .work-card__btn--expand {

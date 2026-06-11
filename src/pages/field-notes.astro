@@ -13,6 +13,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import FieldNoteCard from '../components/FieldNoteCard.astro';
+import WritingCard from '../components/WritingCard.astro';
 
 // All writing posts — fetched once, reused across both sections below.
 const allPosts = await getCollection('writing');
@@ -239,18 +240,13 @@ const pastEntries = allPosts
 
       <div class="writing-cards">
         {pastEntries.map(post => (
-          <a href={`/writing/${post.id}`} class="writing-card">
-            <div class="writing-card-image">
-              {post.data.image
-                ? <img src={post.data.image} alt={post.data.title} class="writing-card-img" />
-                : <span class="writing-card-image-label">[ image ]</span>
-              }
-            </div>
-            <div class="writing-card-body">
-              <h3 class="writing-card-title">{post.data.title}</h3>
-              <p class="writing-card-desc">{post.data.description}</p>
-            </div>
-          </a>
+          <WritingCard
+            href={`/writing/${post.id}`}
+            image={post.data.image}
+            alt={post.data.title}
+            title={post.data.title}
+            desc={post.data.description}
+          />
         ))}
       </div>
 

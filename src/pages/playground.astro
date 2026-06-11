@@ -10,6 +10,10 @@ import Footer from '../components/Footer.astro';
 import BackLink from '../components/BackLink.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import FieldNoteCard from '../components/FieldNoteCard.astro';
+import WritingCard from '../components/WritingCard.astro';
+import WorkCard from '../components/WorkCard.astro';
+import Carousel from '../components/Carousel.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
 import BasisButton from '@/components/ui/forms/Button.astro';
@@ -21,6 +25,7 @@ import CardFooter from '@/components/ui/display/card/CardFooter.astro';
 import Divider from '@/components/ui/layout/Divider.astro';
 import BasisText from '@/components/ui/display/Text.astro';
 import BasisNavbar from '@/components/ui/display/Navbar.astro';
+import ComponentDoc from '../components/docs/ComponentDoc.astro';
 ---
 
 <BaseLayout title="Playground — Marco Lobato" noindex={true}>
@@ -92,10 +97,35 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
         <nav class="pg-sidebar-nav" aria-label="Design system navigation">
 
           <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Design Tokens</p>
+            <p class="pg-sidebar-group-label">Foundations</p>
             <!-- Only close the drawer on mobile — on desktop the sidebar stays open -->
             <a href="#color-palette" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Color Palette</a>
             <a href="#typography" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Typography</a>
+            <a href="#spacing" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Spacing</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Primitives</p>
+            <a href="#primitives" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
+            <a href="#doc-section-label" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Section Label</a>
+            <a href="#doc-back-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Back Link</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Cards</p>
+            <a href="#cards" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-project-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Project Card</a>
+            <a href="#doc-field-note-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Field Note Card</a>
+            <a href="#doc-writing-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Writing Card</a>
+            <a href="#doc-work-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Work Card</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Other Components</p>
+            <a href="#other-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
+            <a href="#doc-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
           </div>
 
           <div class="pg-sidebar-group">
@@ -110,16 +140,10 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
           </div>
 
           <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Astro Components</p>
-            <a href="#astro-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
-            <a href="#astro-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
-            <a href="#astro-text-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text Link</a>
-            <a href="#astro-section-label" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Section Label</a>
-            <a href="#astro-navigation" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
-            <a href="#astro-project-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Project Card</a>
-            <a href="#astro-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
-            <a href="#astro-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
-            <a href="#astro-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
+            <p class="pg-sidebar-group-label">Site Patterns</p>
+            <a href="#site-patterns" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-nav" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
+            <a href="#doc-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
           </div>
 
         </nav><!-- /.pg-sidebar-nav -->
@@ -208,18 +232,12 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
       <section class="sg-section" id="color-palette">
         <h2 class="sg-section-title">Color Palette</h2>
         <p class="sg-section-desc">
-          The full palette — semantic tokens for UI, and the brand ramps they're built from.
-          All values are CSS custom properties in <code>global.css</code> using HSL.
+          The full color system. Semantic tokens for new components, brand ramps for visual identity, and <code>--color-*</code> aliases for the handbuilt components.
         </p>
 
 
         <!-- ── Theme colors ─────────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Theme colors</h3>
-        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
-          Each card shows a background color with its paired foreground color
-          as text — so you can immediately judge contrast. These are the tokens
-          Basis UI components read directly.
-        </p>
 
         <div class="sg-color-pairs">
 
@@ -325,8 +343,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
         <!-- ── UI colors ────────────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">UI colors</h3>
         <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
-          Single-use tokens for structural UI elements — not surfaces or text,
-          but borders, inputs, and focus rings.
+          Use for borders, inputs, and focus rings. Not for surfaces or text.
         </p>
 
         <div class="sg-swatches">
@@ -446,12 +463,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
         <!-- ── Component aliases ────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Component aliases</h3>
         <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
-          The <code>--color-*</code> tokens are backward-compatible aliases used
-          by the handbuilt components (Button, Nav, Footer, Carousel,
-          SectionLabel). They sit on top of the semantic tokens above.
-          <strong>Fixed</strong> aliases always resolve to the same value
-          regardless of theme. <strong>Theme-aware</strong> aliases flip
-          automatically — toggle dark mode above to see them change.
+          Use for the handbuilt Astro components. <strong>Fixed</strong> aliases stay the same in both themes. <strong>Theme-aware</strong> aliases flip with the theme. Toggle the theme to see the change.
         </p>
 
         <!-- Group 1: Fixed aliases -->
@@ -533,8 +545,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
         <!-- ── What this system intentionally excludes ───────────────────── -->
         <h3 class="sg-subsection-title">Intentionally excluded</h3>
         <p class="sg-section-desc">
-          Shadcn/ui defines additional token groups that this site does not use.
-          They are absent by design — not an oversight.
+          These token groups don't exist in this system. Omitted by choice, not oversight.
         </p>
         <div class="sg-swatches">
 
@@ -563,7 +574,7 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
       <section class="sg-section" id="typography">
         <h2 class="sg-section-title">Typography</h2>
         <p class="sg-section-desc">
-          The type scale used across the site. <strong>Fraunces</strong> for display headings, <strong>Geist</strong> for everything else. Sizes are defined as CSS variables in <code>global.css</code>.
+          <strong>Fraunces</strong> for display headings. <strong>Geist</strong> for everything else.
         </p>
 
         <!-- Type scale samples -->
@@ -615,6 +626,579 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
           </div>
 
         </div>
+
+        <!-- ── Text Link ────────────────────────────────────────────────
+             A CSS class (not a component) that styles inline links inside
+             prose. Documented here because it's a typographic treatment,
+             not a standalone UI element. -->
+        <h3 class="sg-subsection-title" id="text-link" style="margin-top: var(--space-3xl);">Text Link</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          Inline link style for body copy. Apply the <code>.text-link</code> class to any <code>&lt;a&gt;</code> tag.
+        </p>
+
+        <div class="sg-component-preview">
+          <p style="margin: 0;">
+            The thread across my work is <a href="#" class="text-link">keeping people in their flow</a>. The best interfaces never pull you out of what you're doing; they blend into <a href="#" class="text-link">the task itself</a>.
+          </p>
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================================
+           SECTION: SPACING
+           A 9-step scale from 4px to 96px. The visual bars in the table show
+           each step at actual size so the relative jumps are visible at a
+           glance. Tokens defined in src/styles/global.css.
+           =================================================================== -->
+      <section class="sg-section" id="spacing">
+        <h2 class="sg-section-title">Spacing</h2>
+        <p class="sg-section-desc">
+          Use for padding, margins, and gaps. A 9-step scale from 4px to 96px.
+        </p>
+
+        <!-- Spacing scale table. The .sg-spacing-bar div on each row has an
+             inline width matching that step's actual size — so a reader sees
+             real proportions without needing to compute them. -->
+        <div class="sg-spacing-scale">
+          <table class="sg-spacing-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>rem</th>
+                <th>px</th>
+                <th>Visual</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--space-2xs</code></td><td>0.25rem</td><td>4px</td>  <td><span class="sg-spacing-bar" style="width: 0.25rem;"></span></td></tr>
+              <tr><td><code>--space-xs</code></td> <td>0.5rem</td> <td>8px</td>  <td><span class="sg-spacing-bar" style="width: 0.5rem;"></span></td></tr>
+              <tr><td><code>--space-sm</code></td> <td>0.75rem</td><td>12px</td> <td><span class="sg-spacing-bar" style="width: 0.75rem;"></span></td></tr>
+              <tr><td><code>--space-md</code></td> <td>1rem</td>   <td>16px</td> <td><span class="sg-spacing-bar" style="width: 1rem;"></span></td></tr>
+              <tr><td><code>--space-lg</code></td> <td>1.5rem</td> <td>24px</td> <td><span class="sg-spacing-bar" style="width: 1.5rem;"></span></td></tr>
+              <tr><td><code>--space-xl</code></td> <td>2rem</td>   <td>32px</td> <td><span class="sg-spacing-bar" style="width: 2rem;"></span></td></tr>
+              <tr><td><code>--space-2xl</code></td><td>3rem</td>   <td>48px</td> <td><span class="sg-spacing-bar" style="width: 3rem;"></span></td></tr>
+              <tr><td><code>--space-3xl</code></td><td>4.5rem</td> <td>72px</td> <td><span class="sg-spacing-bar" style="width: 4.5rem;"></span></td></tr>
+              <tr><td><code>--space-4xl</code></td><td>6rem</td>   <td>96px</td> <td><span class="sg-spacing-bar" style="width: 6rem;"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <!-- ===================================================================
+           SECTION: PRIMITIVES
+           The smallest reusable building blocks. Button is documented in full
+           depth (anatomy, variants, states, properties, tokens, usage notes)
+           as the exemplar; SectionLabel and BackLink follow the same template
+           in shorter form because they have fewer variants/states to show.
+           =================================================================== -->
+      <section class="sg-section" id="primitives">
+        <h2 class="sg-section-title">Primitives</h2>
+        <p class="sg-section-desc">
+          The smallest reusable building blocks: standalone actions and inline labels.
+        </p>
+
+        <!-- ── Button ──────────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-button"
+          name="Button"
+          status="Stable"
+          purpose="Triggers an action or navigates to a destination."
+          tokens={["--color-navy", "--color-lemon", "--color-surface", "--color-charcoal"]}
+        >
+          <Fragment slot="anatomy">
+            <Button label="Label" href="#" />
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+              <Button label="Primary" href="#" variant="primary" />
+              <Button label="Secondary" href="#" variant="secondary" />
+              <Button
+                label="With icon"
+                variant="secondary"
+                icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="states">
+            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+              <Button label="Default" href="#" variant="primary" />
+              <Button label="Disabled" href="#" variant="primary" disabled />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>label</code></td><td><code>string</code></td><td>required</td><td>Visible button text.</td></tr>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>—</td><td>When set, renders as <code>&lt;a&gt;</code>; otherwise renders as <code>&lt;button&gt;</code>.</td></tr>
+                <tr><td><code>variant</code></td><td><code>"primary" | "secondary"</code></td><td><code>"primary"</code></td><td>Visual style.</td></tr>
+                <tr><td><code>disabled</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Greys out and prevents interaction.</td></tr>
+                <tr><td><code>icon</code></td><td><code>string</code></td><td>—</td><td>Raw SVG string rendered on the left; replaces the right arrow.</td></tr>
+                <tr><td><code>external</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Adds <code>target="_blank"</code> and safe rel attributes for off-site links.</td></tr>
+                <tr><td><code>download</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Triggers a file save instead of navigation.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use <strong>primary</strong> for the main action on a page. One per section.</li>
+              <li>Use <strong>secondary</strong> for supporting actions. Multiple per section is fine.</li>
+              <li>Pass <code>href</code> when the button navigates somewhere; omit it when the button triggers an action in place.</li>
+              <li>Pass <code>external</code> when the link leaves the site.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Button label="Primary" href="/work" />
+<Button label="Secondary" href="/about" variant="secondary" />
+<Button label="External" href="https://example.com" external />
+<Button label="Resume" href="/resume.pdf" download />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Section Label ───────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-section-label"
+          name="Section Label"
+          status="Stable"
+          purpose="Introduces a major section with a small lemon pill."
+          tokens={["--color-lemon", "--color-navy"]}
+        >
+          <Fragment slot="anatomy">
+            <SectionLabel label="Selected Work" />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>label</code></td><td><code>string</code></td><td>required</td><td>Pill text. Keep it short (1 to 3 words).</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use as the introduction to a major section, above the section heading.</li>
+              <li>Lemon is reserved for this purpose at full saturation. It feels like a signal because it appears nowhere else.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<SectionLabel label="Selected Work" />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Back Link ────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-back-link"
+          name="Back Link"
+          status="Stable"
+          purpose="Returns the visitor to the previous page."
+          tokens={["--color-royal-blue", "--color-heading"]}
+        >
+          <Fragment slot="anatomy">
+            <BackLink href="#" />
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: flex; gap: var(--space-xl); flex-wrap: wrap; align-items: center;">
+              <BackLink href="#" />
+              <BackLink href="#" label="Back to work" />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>required</td><td>Destination URL. Use <code>"#"</code> as a placeholder when JavaScript will set it at runtime.</td></tr>
+                <tr><td><code>label</code></td><td><code>string</code></td><td><code>"Back"</code></td><td>Text shown after the arrow.</td></tr>
+                <tr><td><code>hidden</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Renders with the HTML <code>hidden</code> attribute. Used for the referrer-aware variant on this page.</td></tr>
+                <tr><td><code>class</code></td><td><code>string</code></td><td>—</td><td>Extra class applied alongside <code>.back-link</code>. Useful as a JS hook.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Place at the top of a page that's reached from a parent page (a work case study, a writing article, the playground).</li>
+              <li>Use the default <code>"Back"</code> label most of the time. Override only when the parent context is ambiguous.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<BackLink href="/work" />
+<BackLink href="/work" label="Back to work" />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+      </section>
+
+
+      <!-- ===================================================================
+           SECTION: CARDS
+           Content-bearing surfaces. ProjectCard is the simplest (image plus
+           title); FieldNoteCard, WritingCard, and WorkCard add more structure
+           for richer use cases. Each card uses generic placeholder content so
+           the anatomy is readable independent of the real portfolio data.
+           =================================================================== -->
+      <section class="sg-section" id="cards">
+        <h2 class="sg-section-title">Cards</h2>
+        <p class="sg-section-desc">
+          Content-bearing surfaces. Use for grids of work, writing, or field notes.
+        </p>
+
+        <!-- ── Project Card ────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-project-card"
+          name="Project Card"
+          status="Stable"
+          purpose="Displays a project as an image with a title beneath."
+          tokens={["--color-surface", "--color-charcoal", "--color-heading"]}
+        >
+          <Fragment slot="anatomy">
+            <div style="max-width: 320px;">
+              <ProjectCard title="Project title" image="/images/playground-placeholder.svg" />
+            </div>
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); max-width: 640px;">
+              <ProjectCard title="With image" image="/images/playground-placeholder.svg" />
+              <ProjectCard title="No image (placeholder)" />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Card heading shown below the image.</td></tr>
+                <tr><td><code>image</code></td><td><code>string</code></td><td>—</td><td>Image src. When omitted, a placeholder appears.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use in a flex row to display multiple projects side by side.</li>
+              <li>Omit the image only during development or when the project doesn't have a cover yet.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<ProjectCard title="Project title" image="/images/work/project.png" />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Field Note Card ─────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-field-note-card"
+          name="Field Note Card"
+          status="Stable"
+          purpose="Two-column card showing a field note body alongside an artifact preview."
+          tokens={["--color-surface", "--color-charcoal", "--color-royal-blue"]}
+        >
+          <Fragment slot="anatomy">
+            <FieldNoteCard
+              title="Card title"
+              body={"First paragraph. Short description of the experiment or note.\n\nSecond paragraph. Optional follow-up detail."}
+              tools={[{ label: "Tool one" }, { label: "Tool two" }]}
+              exploreHref="#"
+              artifact={{
+                image: "/images/playground-placeholder.svg",
+                alt: "",
+                caption: "Artifact caption",
+                href: "#"
+              }}
+            />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Card heading.</td></tr>
+                <tr><td><code>body</code></td><td><code>string</code></td><td>required</td><td>Long copy. Paragraphs separated by blank lines.</td></tr>
+                <tr><td><code>tools</code></td><td><code>Tool[]</code></td><td>required</td><td>List of tool badges. Empty array hides the row.</td></tr>
+                <tr><td><code>toolsLabel</code></td><td><code>string</code></td><td><code>"Tools:"</code></td><td>Override the tools-row label.</td></tr>
+                <tr><td><code>exploreHref</code></td><td><code>string</code></td><td>—</td><td>When omitted, the explore link is hidden.</td></tr>
+                <tr><td><code>exploreLabel</code></td><td><code>string</code></td><td><code>"Explore experiment"</code></td><td>Override the explore link label.</td></tr>
+                <tr><td><code>artifact</code></td><td><code>Artifact</code></td><td>required</td><td>Right-column artifact preview.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use on the Field Notes archive page (<code>/field-notes</code>) for entries that have a paired experiment.</li>
+              <li>Stack vertically with a comfortable gap. Body reads left, artifact reads right on desktop; collapses to one column on mobile.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<FieldNoteCard
+  title="Card title"
+  body="Paragraph one.\\n\\nParagraph two."
+  tools={[{ label: "Figma" }]}
+  exploreHref="/writing/some-slug"
+  artifact={{ image: "/images/x.png", alt: "", caption: "Caption" }}
+/>`}</code></pre>
+          </Fragment>
+
+        </ComponentDoc>
+
+
+        <!-- ── Writing Card ────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-writing-card"
+          name="Writing Card"
+          status="Stable"
+          purpose="Link card to a writing entry, with an optional 'New' badge."
+          tokens={["--color-surface", "--color-charcoal", "--color-lemon", "--color-navy"]}
+        >
+          <Fragment slot="anatomy">
+            <div style="max-width: 320px;">
+              <WritingCard
+                href="#"
+                image="/images/playground-placeholder.svg"
+                alt=""
+                title="Card title"
+                desc="Short description of the writing entry."
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); max-width: 640px;">
+              <WritingCard
+                href="#"
+                image="/images/playground-placeholder.svg"
+                alt=""
+                title="Default"
+                desc="Standard writing card without a badge."
+              />
+              <WritingCard
+                href="#"
+                image="/images/playground-placeholder.svg"
+                alt=""
+                title="With New badge"
+                desc="Featured most recently. The lemon badge overlays the image."
+                isNew={true}
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>required</td><td>Destination URL.</td></tr>
+                <tr><td><code>image</code></td><td><code>string</code></td><td>—</td><td>Cover image src. When omitted, a placeholder appears.</td></tr>
+                <tr><td><code>alt</code></td><td><code>string</code></td><td>—</td><td>Alt text for the image.</td></tr>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Card heading.</td></tr>
+                <tr><td><code>desc</code></td><td><code>string</code></td><td>required</td><td>Short description shown under the title.</td></tr>
+                <tr><td><code>isNew</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Adds a lemon "New" badge in the top-right of the image.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use on the home page Field Notes section and the <code>/field-notes</code> archive.</li>
+              <li>Pass <code>isNew</code> for entries within the recency window so visitors can see what just shipped.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<WritingCard
+  href="/writing/some-slug"
+  image="/images/writing/cover.png"
+  alt="Cover"
+  title="Article title"
+  desc="One-line description."
+  isNew={true}
+/>`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Work Card ────────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-work-card"
+          name="Work Card"
+          status="Stable"
+          purpose="Flip card showing a project thumbnail on the front and case details on the back."
+          tokens={["--color-navy", "--color-surface", "--color-royal-blue", "--color-citrine"]}
+        >
+          <Fragment slot="anatomy">
+            <div style="max-width: 360px;">
+              <WorkCard
+                id="doc-demo"
+                pattern="Pattern label"
+                title="Card title"
+                backHeading="Back face heading"
+                backParagraphs={["First paragraph on the back face.", "Second paragraph."]}
+                stats={[{ value: "Stat", desc: "description" }]}
+                image="/images/playground-placeholder.svg"
+                imageAlt=""
+                channels={[{ type: "voice", label: "voice" }, { type: "screen", label: "screen" }]}
+                lightboxDesc="Lightbox description text."
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>id</code></td><td><code>string</code></td><td>required</td><td>Unique id used for the flip interaction and lightbox target.</td></tr>
+                <tr><td><code>pattern</code></td><td><code>string</code></td><td>required</td><td>Small label above the title (e.g. "Learnable Efficiency").</td></tr>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Project title shown on the front face.</td></tr>
+                <tr><td><code>backHeading</code></td><td><code>string</code></td><td>required</td><td>Heading shown on the back face after flipping.</td></tr>
+                <tr><td><code>backParagraphs</code></td><td><code>string[]</code></td><td>required</td><td>Body paragraphs on the back face.</td></tr>
+                <tr><td><code>stats</code></td><td><code>Stat[]</code></td><td>required</td><td>Highlight stats on the back face.</td></tr>
+                <tr><td><code>image</code></td><td><code>string</code></td><td>required</td><td>Front-face thumbnail.</td></tr>
+                <tr><td><code>imageAlt</code></td><td><code>string</code></td><td><code>""</code></td><td>Image alt text. Empty marks it decorative.</td></tr>
+                <tr><td><code>channels</code></td><td><code>Channel[]</code></td><td>required</td><td>Channel dots (voice, screen, camera, gesture, gaze).</td></tr>
+                <tr><td><code>lightboxDesc</code></td><td><code>string</code></td><td>required</td><td>Description shown when the lightbox opens.</td></tr>
+                <tr><td><code>eager</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Hints the image loader to fetch eagerly for above-the-fold cards.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use in the Selected Work section on the home page.</li>
+              <li>Click the card to flip; click the expand button to open the lightbox.</li>
+              <li>Set <code>eager</code> on the first one or two cards that appear above the fold to speed up first paint.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<WorkCard
+  id="some-id"
+  pattern="Pattern label"
+  title="Project title"
+  backHeading="Heading on the back"
+  backParagraphs={["First paragraph", "Second paragraph"]}
+  stats={[{ value: "First", desc: "of its kind" }]}
+  image="/images/work/thumb.png"
+  channels={[{ type: "voice", label: "voice" }]}
+  lightboxDesc="Description when expanded."
+/>`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+      </section>
+
+
+      <!-- ===================================================================
+           SECTION: OTHER COMPONENTS
+           A catch-all for components that don't fit the Primitives or Cards
+           groups. As the system grows, components can graduate from here into
+           more specific groups.
+           =================================================================== -->
+      <section class="sg-section" id="other-components">
+        <h2 class="sg-section-title">Other Components</h2>
+        <p class="sg-section-desc">
+          Components that don't fit the Primitives or Cards groups.
+        </p>
+
+        <!-- ── Carousel ────────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-carousel"
+          name="Carousel"
+          status="Stable"
+          purpose="Manually controlled image carousel with arrow buttons, pagination dots, and keyboard navigation."
+          tokens={["--color-surface", "--color-charcoal", "--color-heading", "--color-lemon"]}
+        >
+          <Fragment slot="anatomy">
+            <Carousel />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. Slide content is defined inside <code>Carousel.astro</code> as a <code>slides</code> array (image, title, subtitle, optional href, optional cta).</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use sparingly. A carousel hides content behind interaction, so reach for it only when a sequence of slides actually helps the reader.</li>
+              <li>Navigation: arrow buttons, pagination dots, or left/right arrow keys. No auto-scroll, so the visitor stays in control (WCAG 2.2.2).</li>
+              <li>To change the slides, edit the <code>slides</code> array at the top of <code>Carousel.astro</code>. If you need this carousel in more than one place with different content, refactor it to accept a <code>slides</code> prop first.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Carousel />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Theme Toggle ─────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-theme-toggle"
+          name="Theme Toggle"
+          status="Stable"
+          purpose="Sun/moon button that switches between light and dark mode."
+          tokens={["--color-charcoal", "--color-heading"]}
+        >
+          <Fragment slot="anatomy">
+            <ThemeToggle />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. The button reads <code>data-theme</code> on <code>&lt;html&gt;</code> and flips it on click.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Place inside the site nav. The button in this preview is visual only; the live one in the top nav is what actually changes the theme (only the first <code>.theme-toggle</code> on the page is wired by the inline script).</li>
+              <li>On first load, the site reads <code>prefers-color-scheme</code> as the default. The toggle lets the visitor override it; the choice is saved to <code>localStorage</code>.</li>
+              <li>If the visitor's chosen theme matches their OS preference, the override is cleared so future OS changes take effect naturally.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<ThemeToggle />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
       </section>
 
 
@@ -942,262 +1526,90 @@ outline      → bg-transparent   border-2 border-border</code></pre>
 
 
       <!-- ===================================================================
-           SECTION: COMPONENTS
-           Each component is shown as it actually appears on the site,
-           using the exact same HTML structure and class names.
+           SECTION: SITE PATTERNS
+           Recurring page-edge layouts that appear on every page. Not
+           reusable components in the standalone sense; they're singletons
+           that wrap every page. Documented for completeness so the design
+           system shows the full picture.
            =================================================================== -->
-      <section class="sg-section" id="astro-components">
-        <h2 class="sg-section-title">Astro Components</h2>
+      <section class="sg-section" id="site-patterns">
+        <h2 class="sg-section-title">Site Patterns</h2>
         <p class="sg-section-desc">
-          Hand-built components specific to this site. These predate the Basis UI migration and may be refactored over time. What you see here is the real component — no separate demo version.
+          Recurring layouts that appear on every page. Singletons, not reusable components.
         </p>
 
-
-        <!-- Component: Button -->
-        <div class="sg-component" id="astro-button">
-          <h3 class="sg-component-title">Button</h3>
-          <p class="sg-component-desc">
-            Two variants: <strong>primary</strong> (navy fill) and
-            <strong>secondary</strong> (surface + outline). Both use a pill
-            shape and share the same hover behavior — the background shifts
-            and the arrow icon rotates from ↗ (rest) to → (hover) over a
-            smooth 0.2s ease transition. When an <code>href</code> prop is
-            passed, the component renders as an <code>&lt;a&gt;</code> tag
-            (correct for navigation). Without <code>href</code>, it renders
-            as a <code>&lt;button&gt;</code> (correct for actions). The
-            <code>download</code> prop triggers a file save instead of
-            navigating. The optional <code>icon</code> prop accepts an SVG
-            string — when provided, the icon renders on the <strong>left</strong>
-            of the label and the right-side arrow is hidden.
-          </p>
-          <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
-            <!-- Primary — the default, strong call-to-action -->
-            <Button label="Primary" href="#" variant="primary" />
-            <!-- Secondary — a softer alternative action -->
-            <Button label="Secondary" href="#" variant="secondary" />
-            <!-- Disabled — shown at 40% opacity, no hover, no pointer -->
-            <Button label="Disabled" href="#" variant="primary" disabled={true} />
-            <!-- Icon left — pass any SVG string; arrow is replaced by the icon on the left -->
-            <Button
-              label="Reset"
-              variant="secondary"
-              icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
-            />
-          </div>
-          <pre class="sg-code"><code>import Button from '../components/Button.astro';
-
-&lt;!-- Primary (default) --&gt;
-&lt;Button label="LinkedIn" href="https://linkedin.com/in/..." variant="primary" /&gt;
-
-&lt;!-- Secondary --&gt;
-&lt;Button label="Download Resume" href="/resume.pdf" variant="secondary" download=&#123;true&#125; /&gt;
-
-&lt;!-- Disabled --&gt;
-&lt;Button label="Coming Soon" href="#" variant="primary" disabled=&#123;true&#125; /&gt;
-
-&lt;!-- Icon left (no href = renders as &lt;button&gt;, not &lt;a&gt;) --&gt;
-&lt;Button label="Reset" variant="secondary" icon='&lt;svg ...&gt;...&lt;/svg&gt;' /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Text Link -->
-        <div class="sg-component" id="astro-text-link">
-          <h3 class="sg-component-title">Text Link</h3>
-          <p class="sg-component-desc">
-            Inline hyperlinks for body copy and navigation lists. Royal blue
-            at rest — no underline, to keep prose clean. On hover: color shifts
-            to <code>--color-heading</code> (navy in light mode, near-white in
-            dark mode) and an underline appears as a clear interactive signal.
-            Apply using the <code>.text-link</code> class on any <code>&lt;a&gt;</code> tag.
-            Do not use for buttons or CTAs — use the <strong>Button</strong>
-            component for those instead.
-          </p>
-          <div class="sg-component-preview">
-            <p style="margin: 0;">
-              The thread across my work is <a href="#" class="text-link">keeping people in their flow</a>.
-              The best interfaces never pull you out of what you are doing —
-              they blend into <a href="#" class="text-link">the task itself</a>.
-            </p>
-          </div>
-          <pre class="sg-code"><code>&lt;!-- Apply .text-link to any &lt;a&gt; tag --&gt;
-&lt;a href="/some-page" class="text-link"&gt;Link label&lt;/a&gt;
-
-&lt;!-- In a navigation list --&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href="#color" class="text-link"&gt;Color&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#typography" class="text-link"&gt;Typography&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Section Label -->
-        <div class="sg-component" id="astro-section-label">
-          <h3 class="sg-component-title">Section Label</h3>
-          <p class="sg-component-desc">
-            A small lemon pill used to introduce each major section.
-            Built with <code>display: inline-block</code> and
-            <code>background-color: var(--color-lemon)</code>.
-            Lemon is used nowhere else on the page at full saturation —
-            this constraint keeps it feeling like a signal, not decoration.
-          </p>
-          <div class="sg-component-preview">
-            <SectionLabel label="Selected Work" />
-          </div>
-          <pre class="sg-code"><code>import SectionLabel from '../components/SectionLabel.astro';
-
-&lt;SectionLabel label="Selected Work" /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Nav -->
-        <div class="sg-component" id="astro-navigation">
-          <h3 class="sg-component-title">Navigation</h3>
-          <p class="sg-component-desc">
-            Top bar with name on the left and anchor links on the right.
-            On screens 768px and smaller, the links collapse into a hamburger
-            menu that toggles open and closed. Links use
-            <code>/#section</code> anchors so they work correctly from any page,
-            not just the homepage. <code>aria-current="page"</code> is applied
-            automatically to the active link.
-          </p>
-          <div class="sg-component-preview sg-component-preview--flush">
+        <!-- ── Navigation ──────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-nav"
+          name="Navigation"
+          status="Stable"
+          purpose="Top bar with the site name and anchor links to the home page sections."
+          tokens={["--color-navy", "--color-heading", "--color-surface"]}
+        >
+          <Fragment slot="anatomy">
             <Nav />
-          </div>
-          <pre class="sg-code"><code>import Nav from '../components/Nav.astro';
+          </Fragment>
 
-&lt;Nav /&gt;</code></pre>
-        </div>
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. The link list is hardcoded inside <code>Nav.astro</code>.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
 
+          <Fragment slot="usage">
+            <ul>
+              <li>Used on every page via <code>BaseLayout</code>.</li>
+              <li>Links use <code>/#section</code> anchors so they work from any page, not just the home page.</li>
+              <li>Below 768px the links collapse into a hamburger menu.</li>
+            </ul>
+          </Fragment>
 
-        <!-- Component: Project Card -->
-        <div class="sg-component" id="astro-project-card">
-          <h3 class="sg-component-title">Project Card</h3>
-          <p class="sg-component-desc">
-            Used in the Work section to display a project. Image placeholder
-            uses <code>aspect-ratio: 4 / 3</code> to stay proportional at
-            any width. Cards sit in a flex row with <code>flex: 1</code> so
-            they share space equally regardless of content length.
-          </p>
-          <div class="sg-component-preview">
-            <div class="sg-card-demo">
-              <ProjectCard title="Project title goes here" />
-            </div>
-          </div>
-          <pre class="sg-code"><code>import ProjectCard from '../components/ProjectCard.astro';
-
-&lt;ProjectCard title="Project title goes here" /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Theme Toggle -->
-        <div class="sg-component" id="astro-theme-toggle">
-          <h3 class="sg-component-title">Theme Toggle</h3>
-          <p class="sg-component-desc">
-            Sun/moon icon button that lives in the navigation. Clicking it
-            switches between light and dark mode and saves the choice to
-            <code>localStorage</code> so it persists on future visits.
-            On first load, the site reads the user's OS preference
-            (<code>prefers-color-scheme</code>) as the default — the toggle
-            lets them override it. The moon icon is shown in light mode
-            (click to go dark), the sun icon in dark mode (click to go light).
-          </p>
-          <div class="sg-component-preview">
-            <ThemeToggle />
-          </div>
-          <pre class="sg-code"><code>import ThemeToggle from '../components/ThemeToggle.astro';
-
-&lt;ThemeToggle /&gt;</code></pre>
-        </div>
+          <Fragment slot="code">
+            <pre><code>{`<Nav />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
 
 
-        <!-- Component: Carousel -->
-        <div class="sg-component" id="astro-carousel">
-          <h3 class="sg-component-title">Carousel</h3>
-          <p class="sg-component-desc">
-            A manually controlled image carousel. Navigate with the
-            <strong>arrow buttons</strong> or click any <strong>pagination dot</strong>
-            to jump directly to a slide. Keyboard users can also use the left/right
-            arrow keys. No auto-scroll — the user is always in control
-            (WCAG 2.2 guideline 2.2.2). Each slide shows an image with a title and
-            subtitle caption below it. To update content, edit the
-            <code>slides</code> array at the top of <code>Carousel.astro</code>.
-          </p>
-          <!-- Documentation demo — 3 generic placeholder slides, fully interactive -->
-          <div class="sg-component-preview">
-            <div class="carousel" aria-roledescription="carousel" aria-label="Carousel demo">
-              <div class="carousel-viewport">
-                <div class="carousel-track">
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-controls">
-                <div class="carousel-arrows">
-                  <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                  </button>
-                  <button class="carousel-btn carousel-btn--next" aria-label="Next slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </button>
-                </div>
-                <div class="carousel-dots" role="tablist" aria-label="Slide navigation">
-                  <button class="carousel-dot carousel-dot--active" role="tab" aria-selected="true" aria-label="Slide 1" data-index="0"></button>
-                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 2" data-index="1"></button>
-                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 3" data-index="2"></button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <pre class="sg-code"><code>import Carousel from '../components/Carousel.astro';
-
-&lt;Carousel /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Footer -->
-        <div class="sg-component" id="astro-footer">
-          <h3 class="sg-component-title">Footer</h3>
-          <p class="sg-component-desc">
-            Navy panel at the bottom of the page — the strongest use of the
-            brand color. Lemon is used as the name accent, creating a bookend
-            with the lemon section labels above. On mobile, name and links
-            stack vertically and center-align. The component itself has no
-            <code>margin-top</code> — spacing is set at the page level so it
-            can be dropped onto any page without side effects.
-          </p>
-          <div class="sg-component-preview sg-component-preview--flush">
+        <!-- ── Footer ──────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-footer"
+          name="Footer"
+          status="Stable"
+          purpose="Navy panel at the bottom of every page with the name accent and contact links."
+          tokens={["--color-navy", "--color-lemon", "--color-surface"]}
+        >
+          <Fragment slot="anatomy">
             <Footer />
-          </div>
-          <pre class="sg-code"><code>import Footer from '../components/Footer.astro';
+          </Fragment>
 
-&lt;Footer /&gt;</code></pre>
-        </div>
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. Content is hardcoded inside <code>Footer.astro</code>.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
 
+          <Fragment slot="usage">
+            <ul>
+              <li>Used on every page via <code>BaseLayout</code>.</li>
+              <li>The lemon name accent bookends the lemon section labels at the top of each page.</li>
+              <li>No <code>margin-top</code> on the component itself; spacing is set by the parent page.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Footer />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
       </section>
 
     </main>
@@ -1235,24 +1647,38 @@ outline      → bg-transparent   border-2 border-border</code></pre>
         // Order doesn't matter — IntersectionObserver fires for whichever
         // section enters the active zone first as the user scrolls.
         const sectionTitles: Record<string, string> = {
-          'color-palette':       'Color Palette',
-          'typography':          'Typography',
-          'basis-ui-components': 'Basis UI',
-          'basis-button':        'Button',
-          'basis-text':          'Text',
-          'basis-card':          'Card',
-          'basis-divider':       'Divider',
-          'basis-navbar':        'Navbar',
-          'basis-badge':         'Badge',
-          'astro-components':    'Astro Components',
-          'astro-button':        'Button',
-          'astro-text-link':     'Text Link',
-          'astro-section-label': 'Section Label',
-          'astro-navigation':    'Navigation',
-          'astro-project-card':  'Project Card',
-          'astro-theme-toggle':  'Theme Toggle',
-          'astro-carousel':      'Carousel',
-          'astro-footer':        'Footer',
+          // Foundations
+          'color-palette':         'Color Palette',
+          'typography':            'Typography',
+          'text-link':             'Text Link',
+          'spacing':               'Spacing',
+          // Primitives
+          'primitives':            'Primitives',
+          'doc-button':            'Button',
+          'doc-section-label':     'Section Label',
+          'doc-back-link':         'Back Link',
+          // Cards
+          'cards':                 'Cards',
+          'doc-project-card':      'Project Card',
+          'doc-field-note-card':   'Field Note Card',
+          'doc-writing-card':      'Writing Card',
+          'doc-work-card':         'Work Card',
+          // Other Components
+          'other-components':      'Other Components',
+          'doc-carousel':          'Carousel',
+          'doc-theme-toggle':      'Theme Toggle',
+          // Basis UI
+          'basis-ui-components':   'Basis UI',
+          'basis-button':          'Button',
+          'basis-text':            'Text',
+          'basis-card':            'Card',
+          'basis-divider':         'Divider',
+          'basis-navbar':          'Navbar',
+          'basis-badge':           'Badge',
+          // Site Patterns
+          'site-patterns':         'Site Patterns',
+          'doc-nav':               'Navigation',
+          'doc-footer':            'Footer',
         };
 
         // rootMargin '0px 0px -75% 0px' shrinks the observation window so only

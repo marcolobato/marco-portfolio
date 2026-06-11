@@ -1,0 +1,322 @@
+---
+// ComponentDoc.astro — reusable documentation template used by /playground.
+//
+// Wraps every component entry in a consistent layout (Storybook + Polaris
+// inspired): name + status + purpose, then named slots for anatomy, variants,
+// states, props, tokens, best practices, and a collapsed View Code section.
+//
+// USAGE
+//   <ComponentDoc
+//     name="Button"
+//     status="Stable"
+//     purpose="Triggers an action or navigates to a destination."
+//     tokens={["--color-navy", "--color-lemon", "Fraunces Bold"]}
+//   >
+//     <Fragment slot="anatomy">…</Fragment>
+//     <Fragment slot="variants">…</Fragment>
+//     <Fragment slot="states">…</Fragment>
+//     <Fragment slot="properties">…</Fragment>  <!-- a <table> -->
+//     <Fragment slot="usage">…</Fragment>    <!-- best practices / where used -->
+//     <Fragment slot="code">…</Fragment>     <!-- code snippet, collapsed -->
+//   </ComponentDoc>
+//
+// Any slot you don't pass is simply skipped. Only `name` and `purpose` are
+// required. Reuses .sg-component / .sg-component-title / .sg-component-desc
+// from global.css so the entry plugs into the existing styleguide layout.
+
+interface Props {
+  /** Component name shown as the section heading. */
+  name: string;
+  /** Optional status pill: "Stable", "New", "Beta", "Legacy". */
+  status?: 'Stable' | 'New' | 'Beta' | 'Legacy';
+  /** One-sentence purpose shown under the name. */
+  purpose: string;
+  /** Optional list of tokens the component uses (rendered as small chips). */
+  tokens?: string[];
+
+  // NOTE: the `properties` slot replaces the older `props` slot. Pass a <table>
+  //       via <Fragment slot="properties">…</Fragment>.
+  /** Optional anchor id; defaults to a kebab-case slug of `name`. */
+  id?: string;
+}
+
+const { name, status, purpose, tokens = [], id } = Astro.props;
+const sectionId = id ?? `doc-${name.toLowerCase().replace(/\s+/g, '-')}`;
+
+// Astro.slots.has(slotName) lets us conditionally render section labels only
+// when the caller actually passed content for that slot. Cleaner than wrapping
+// every section in a {if (Astro.slots.has(…))} block in the markup below.
+const has = {
+  anatomy: Astro.slots.has('anatomy'),
+  variants: Astro.slots.has('variants'),
+  states: Astro.slots.has('states'),
+  properties: Astro.slots.has('properties'),
+  usage: Astro.slots.has('usage'),
+  code: Astro.slots.has('code'),
+};
+---
+
+<section class="sg-component doc" id={sectionId}>
+
+  <!-- Header: name + status pill + one-line purpose -->
+  <div class="doc-header">
+    <h3 class="sg-component-title doc-name">
+      {name}
+      {status && <span class={`doc-status doc-status--${status.toLowerCase()}`}>{status}</span>}
+    </h3>
+  </div>
+  <p class="sg-component-desc doc-purpose">{purpose}</p>
+
+  {has.anatomy && (
+    <>
+      <p class="doc-label">Anatomy</p>
+      <div class="sg-component-preview doc-section">
+        <slot name="anatomy" />
+      </div>
+    </>
+  )}
+
+  {has.variants && (
+    <>
+      <p class="doc-label">Variants</p>
+      <div class="sg-component-preview doc-section">
+        <slot name="variants" />
+      </div>
+    </>
+  )}
+
+  {has.states && (
+    <>
+      <p class="doc-label">States</p>
+      <div class="sg-component-preview doc-section">
+        <slot name="states" />
+      </div>
+    </>
+  )}
+
+  {has.properties && (
+    <>
+      <p class="doc-label">Properties</p>
+      <div class="doc-section doc-properties-wrap">
+        <slot name="properties" />
+      </div>
+    </>
+  )}
+
+  {tokens.length > 0 && (
+    <>
+      <p class="doc-label">Tokens used</p>
+      <ul class="doc-tokens" aria-label="Design tokens used by this component">
+        {tokens.map(t => <li class="doc-token-chip"><code>{t}</code></li>)}
+      </ul>
+    </>
+  )}
+
+  {has.usage && (
+    <>
+      <p class="doc-label">Usage notes</p>
+      <div class="doc-usage">
+        <slot name="usage" />
+      </div>
+    </>
+  )}
+
+  {has.code && (
+    <details class="doc-code">
+      <summary class="doc-code-summary">View code</summary>
+      <div class="doc-code-body">
+        <slot name="code" />
+      </div>
+    </details>
+  )}
+
+</section>
+
+<style>
+  /* Scoped styles — only apply inside <ComponentDoc>. We reuse the existing
+     .sg-component / .sg-component-title / .sg-component-desc classes for the
+     shell (defined in global.css) and add only the NEW pieces here:
+     status pill, section labels, token chip list, props table wrapper, and
+     the View Code disclosure. */
+
+  .doc-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+  }
+
+  /* Component name keeps the styleguide's bold/large look from .sg-component-title;
+     we only adjust the inline alignment so the status pill sits beside it. */
+  .doc-name {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  /* Status pill — small chip beside the name. Uses the body/UI font (Geist,
+     not Fraunces) and matches the visual weight of the Basis UI Badge
+     component. Color/background varies by status so a reader can scan the
+     page and immediately see what's new vs. stable. */
+  .doc-status {
+    display: inline-block;
+    padding: 2px 10px;
+    font-family: var(--font-body);     /* Geist — explicit override so the pill doesn't inherit Fraunces from the <h3> */
+    font-size: var(--text-xs);
+    font-weight: 600;                  /* matches the Badge component's font-semibold */
+    letter-spacing: 0;                 /* no tracking; we're using sentence-case, not uppercase */
+    border-radius: 999px;
+    border: 1px solid transparent;
+    line-height: 1.4;
+  }
+  /* Filled-pill variants for high contrast in both light and dark mode.
+     Each uses a background + foreground pair drawn from project tokens so
+     the WCAG contrast holds when --color-charcoal / --color-heading flip
+     between themes. */
+  .doc-status--stable {
+    background: var(--color-surface);
+    color: var(--color-charcoal);
+  }
+  .doc-status--new {
+    background: var(--color-lemon);
+    color: var(--color-navy);
+  }
+  .doc-status--beta {
+    background: var(--color-surface);
+    color: var(--color-royal-blue);
+  }
+  .doc-status--legacy {
+    background: var(--color-surface);
+    color: var(--color-charcoal);
+    opacity: 0.7;
+  }
+
+  /* Section labels — small caps, generous space above to create clear visual
+     rhythm. Mirrors how Polaris and Material label sections like "Variants"
+     or "States".
+     Color uses --color-charcoal (not --color-slate) because --color-slate
+     stays at #808080 in both themes and is borderline for contrast in dark
+     mode; --color-charcoal flips #1A1A1A ↔ #F2F2F2 for high contrast in both. */
+  .doc-label {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-charcoal);
+  }
+
+  /* Generic section wrapper — most sections sit on the styleguide's existing
+     .sg-component-preview surface; this class is here in case a future section
+     needs different padding/background. */
+  .doc-section {
+    margin-bottom: var(--space-md);
+  }
+
+  /* Token chip list — small monospace pills showing which design tokens the
+     component depends on. Helps a reader see the link between a component and
+     the foundations section above. */
+  .doc-tokens {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+  .doc-token-chip {
+    padding: 2px 8px;
+    border: 1px solid var(--color-surface);
+    border-radius: 4px;
+    background: var(--color-surface);
+  }
+  .doc-token-chip code {
+    font-size: var(--text-xs);
+    color: var(--color-charcoal);
+    background: none;
+    padding: 0;
+  }
+
+  /* Properties table — caller passes a <table> via the slot. These rules
+     style whatever <table> lands inside .doc-properties-wrap so each
+     component entry doesn't have to repeat the same styling.
+     Body text uses --color-charcoal so it stays readable in dark mode
+     (--color-charcoal auto-flips; --color-slate does not). */
+  .doc-properties-wrap :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    color: var(--color-charcoal);
+  }
+  .doc-properties-wrap :global(th),
+  .doc-properties-wrap :global(td) {
+    text-align: left;
+    padding: var(--space-xs) var(--space-sm);
+    border-bottom: 1px solid var(--color-surface);
+    vertical-align: top;
+  }
+  .doc-properties-wrap :global(th) {
+    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    background: var(--color-surface);
+  }
+  .doc-properties-wrap :global(code) {
+    font-size: 0.95em;
+  }
+
+  /* Usage notes block — soft slate prose underneath the variants/states */
+  .doc-usage {
+    max-width: 65ch;
+    color: var(--color-charcoal);
+    margin-bottom: var(--space-md);
+  }
+  .doc-usage :global(ul) {
+    padding-left: var(--space-lg);
+  }
+
+  /* View Code disclosure — uses the native HTML <details> element so the
+     toggle is zero-JS, accessible by default, and works in every browser.
+     Default state is collapsed (no `open` attribute on the <details>). */
+  .doc-code {
+    margin-top: var(--space-lg);
+    border: 1px solid var(--color-surface);
+    border-radius: 6px;
+    background: var(--color-surface);
+  }
+  .doc-code-summary {
+    cursor: pointer;
+    padding: var(--space-xs) var(--space-md);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-charcoal); /* charcoal flips in dark mode; slate doesn't */
+    list-style: none; /* hide the default disclosure triangle in Safari */
+  }
+  /* Custom disclosure indicator — a right-pointing chevron that flips down
+     when <details> is open. Works in all modern browsers. */
+  .doc-code-summary::before {
+    content: '▸';
+    display: inline-block;
+    margin-right: var(--space-xs);
+    transition: transform 120ms ease;
+  }
+  .doc-code[open] .doc-code-summary::before {
+    transform: rotate(90deg);
+  }
+  .doc-code-body {
+    padding: 0 var(--space-md) var(--space-md);
+  }
+  /* Whatever <pre><code> the caller drops inside fits the panel width. */
+  .doc-code-body :global(pre) {
+    margin: 0;
+    background: var(--color-bg);
+    border: 1px solid var(--color-surface);
+    border-radius: 4px;
+    padding: var(--space-md);
+    overflow-x: auto;
+    font-size: var(--text-sm);
+  }
+</style>

@@ -98,10 +98,11 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
           <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Design Tokens</p>
+            <p class="pg-sidebar-group-label">Foundations</p>
             <!-- Only close the drawer on mobile — on desktop the sidebar stays open -->
             <a href="#color-palette" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Color Palette</a>
             <a href="#typography" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Typography</a>
+            <a href="#spacing" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Spacing</a>
           </div>
 
           <div class="pg-sidebar-group">
@@ -285,18 +286,12 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
       <section class="sg-section" id="color-palette">
         <h2 class="sg-section-title">Color Palette</h2>
         <p class="sg-section-desc">
-          The full palette — semantic tokens for UI, and the brand ramps they're built from.
-          All values are CSS custom properties in <code>global.css</code> using HSL.
+          The full color system. Semantic tokens for new components, brand ramps for visual identity, and <code>--color-*</code> aliases for the handbuilt components.
         </p>
 
 
         <!-- ── Theme colors ─────────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Theme colors</h3>
-        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
-          Each card shows a background color with its paired foreground color
-          as text — so you can immediately judge contrast. These are the tokens
-          Basis UI components read directly.
-        </p>
 
         <div class="sg-color-pairs">
 
@@ -402,8 +397,7 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
         <!-- ── UI colors ────────────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">UI colors</h3>
         <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
-          Single-use tokens for structural UI elements — not surfaces or text,
-          but borders, inputs, and focus rings.
+          Use for borders, inputs, and focus rings. Not for surfaces or text.
         </p>
 
         <div class="sg-swatches">
@@ -523,12 +517,7 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
         <!-- ── Component aliases ────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Component aliases</h3>
         <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
-          The <code>--color-*</code> tokens are backward-compatible aliases used
-          by the handbuilt components (Button, Nav, Footer, Carousel,
-          SectionLabel). They sit on top of the semantic tokens above.
-          <strong>Fixed</strong> aliases always resolve to the same value
-          regardless of theme. <strong>Theme-aware</strong> aliases flip
-          automatically — toggle dark mode above to see them change.
+          Use for the handbuilt Astro components. <strong>Fixed</strong> aliases stay the same in both themes. <strong>Theme-aware</strong> aliases flip with the theme. Toggle the theme to see the change.
         </p>
 
         <!-- Group 1: Fixed aliases -->
@@ -610,8 +599,7 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
         <!-- ── What this system intentionally excludes ───────────────────── -->
         <h3 class="sg-subsection-title">Intentionally excluded</h3>
         <p class="sg-section-desc">
-          Shadcn/ui defines additional token groups that this site does not use.
-          They are absent by design — not an oversight.
+          These token groups don't exist in this system. Omitted by choice, not oversight.
         </p>
         <div class="sg-swatches">
 
@@ -640,7 +628,7 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
       <section class="sg-section" id="typography">
         <h2 class="sg-section-title">Typography</h2>
         <p class="sg-section-desc">
-          The type scale used across the site. <strong>Fraunces</strong> for display headings, <strong>Geist</strong> for everything else. Sizes are defined as CSS variables in <code>global.css</code>.
+          <strong>Fraunces</strong> for display headings. <strong>Geist</strong> for everything else.
         </p>
 
         <!-- Type scale samples -->
@@ -691,6 +679,47 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
             <p class="section-label" style="margin: 0;">Section Label</p>
           </div>
 
+        </div>
+      </section>
+
+
+      <!-- ===================================================================
+           SECTION: SPACING
+           A 9-step scale from 4px to 96px. The visual bars in the table show
+           each step at actual size so the relative jumps are visible at a
+           glance. Tokens defined in src/styles/global.css.
+           =================================================================== -->
+      <section class="sg-section" id="spacing">
+        <h2 class="sg-section-title">Spacing</h2>
+        <p class="sg-section-desc">
+          Use for padding, margins, and gaps. A 9-step scale from 4px to 96px.
+        </p>
+
+        <!-- Spacing scale table. The .sg-spacing-bar div on each row has an
+             inline width matching that step's actual size — so a reader sees
+             real proportions without needing to compute them. -->
+        <div class="sg-spacing-scale">
+          <table class="sg-spacing-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>rem</th>
+                <th>px</th>
+                <th>Visual</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--space-2xs</code></td><td>0.25rem</td><td>4px</td>  <td><span class="sg-spacing-bar" style="width: 0.25rem;"></span></td></tr>
+              <tr><td><code>--space-xs</code></td> <td>0.5rem</td> <td>8px</td>  <td><span class="sg-spacing-bar" style="width: 0.5rem;"></span></td></tr>
+              <tr><td><code>--space-sm</code></td> <td>0.75rem</td><td>12px</td> <td><span class="sg-spacing-bar" style="width: 0.75rem;"></span></td></tr>
+              <tr><td><code>--space-md</code></td> <td>1rem</td>   <td>16px</td> <td><span class="sg-spacing-bar" style="width: 1rem;"></span></td></tr>
+              <tr><td><code>--space-lg</code></td> <td>1.5rem</td> <td>24px</td> <td><span class="sg-spacing-bar" style="width: 1.5rem;"></span></td></tr>
+              <tr><td><code>--space-xl</code></td> <td>2rem</td>   <td>32px</td> <td><span class="sg-spacing-bar" style="width: 2rem;"></span></td></tr>
+              <tr><td><code>--space-2xl</code></td><td>3rem</td>   <td>48px</td> <td><span class="sg-spacing-bar" style="width: 3rem;"></span></td></tr>
+              <tr><td><code>--space-3xl</code></td><td>4.5rem</td> <td>72px</td> <td><span class="sg-spacing-bar" style="width: 4.5rem;"></span></td></tr>
+              <tr><td><code>--space-4xl</code></td><td>6rem</td>   <td>96px</td> <td><span class="sg-spacing-bar" style="width: 6rem;"></span></td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
 

@@ -136,10 +136,9 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
           <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Basis UI <span class="pg-sidebar-group-tag">Legacy</span></p>
+            <p class="pg-sidebar-group-label">Basis UI</p>
             <a href="#basis-ui-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
             <a href="#basis-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
-            <a href="#basis-text" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text</a>
             <a href="#basis-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Card</a>
             <a href="#basis-divider" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Divider</a>
             <a href="#basis-navbar" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navbar</a>
@@ -219,8 +218,7 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
         <h1>Design System</h1>
         <div class="sg-header-sections">
           <div class="sg-header-section">
-            <p class="sg-header-section-title">Design System</p>
-            <p class="sg-header-desc">Everything I built to make this site. Colors, type, and components — shown as-is, no abstractions.</p>
+            <p class="sg-header-desc">The tokens, primitives, and components that make this site, plus the component library it draws from.</p>
           </div>
         </div>
       </header>
@@ -540,6 +538,26 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
         </div>
+
+
+        <!-- ── Token pipeline ───────────────────────────────────────────── -->
+        <h3 class="sg-subsection-title">The token pipeline</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          A color decision starts in Figma and reaches a live component through three layers. A brand change touches one value and cascades everywhere.
+        </p>
+        <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
+         color/navy = #081F5D
+
+Step 2 — Brand ramp in global.css
+         --navy-900: 223.8 84.2% 19.8%;   /* HSL, no hsl() wrapper */
+
+Step 3 — Semantic mapping in global.css (the bridge layer)
+         --primary:     223.8 84.2% 19.8%;          /* "primary" maps to Deep Navy */
+         --color-navy:  hsl(var(--navy-900));       /* legacy alias for handbuilt components */
+
+Step 4 — Component use
+         Custom Astro:   color: var(--color-navy);  /* Footer, WorkCard, Button */
+         Basis UI:       bg-primary                 /* Tailwind utility reading --primary */</code></pre>
 
 
         <!-- ── What this system intentionally excludes ───────────────────── -->
@@ -1294,34 +1312,10 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
            so CSS variable overrides cascade to every component inside it.
            =================================================================== -->
       <section class="sg-section" id="basis-ui-components">
-        <h2 class="sg-section-title">
-          Basis UI Components
-          <span class="sg-section-tag sg-section-tag--legacy">Legacy</span>
-        </h2>
+        <h2 class="sg-section-title">Basis UI Components</h2>
         <p class="sg-section-desc">
-          Astro components from the Basis UI library, customized to match this palette. Being phased out in favor of the native Astro components above.
+          Components from <a href="https://basis.zhengyishen.com/" class="text-link" target="_blank" rel="noopener noreferrer">Basis UI</a>. Status dots below show what's in use.
         </p>
-
-        <h3 class="sg-subsection-title">The token pipeline</h3>
-        <p class="sg-section-desc">
-          Every color decision starts in Figma as a variable and ends up in a
-          live component through a four-layer chain. A brand update touches one
-          value and cascades everywhere.
-        </p>
-        <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
-         color/navy = #081F5D
-
-Step 2 — Brand ramp token in global.css
-         --navy-900: 223.8 84.2% 19.8%;  /* stored as HSL, no hsl() wrapper */
-
-Step 3 — Semantic mapping in global.css (the bridge layer)
-         --primary: 223.8 84.2% 19.8%;   /* "primary" maps to Deep Navy */
-         --ring:    221.1 82.6% 36.1%;   /* focus rings use Navy 700 */
-
-Step 4 — Basis UI component in Button.astro
-         bg-primary   → resolves --primary → #081F5D in light / #C0D4F4 in dark
-         hover:bg-ring → shifts to Navy 700 on hover / focus</code></pre>
-
 
         <!-- ── Component gallery ─────────────────────────────────────────── -->
         <h3 class="sg-subsection-title">Component gallery</h3>
@@ -1372,6 +1366,7 @@ Step 4 — Basis UI component in Button.astro
             <!-- ── BUTTONS ──────────────────────────────────────────────── -->
             <div class="sg-gallery-block" id="basis-button">
               <p class="sg-gallery-block-title">Button — <code>src/components/ui/forms/Button.astro</code></p>
+              <p class="sg-gallery-block-status sg-gallery-block-status--used">Used in writing pages for the lightbox close button.</p>
 
               <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-2xs);">Variants</p>
               <div class="sg-gallery-row">
@@ -1406,66 +1401,10 @@ Step 4 — Basis UI component in Button.astro
             </div>
 
 
-            <!-- ── TEXT ────────────────────────────────────────────────── -->
-            <div class="sg-gallery-block" id="basis-text">
-              <p class="sg-gallery-block-title">Text — <code>src/components/ui/display/Text.astro</code></p>
-              <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
-                Variant picks the correct HTML element automatically (h1, h2, p, span, etc.)
-                and applies the matching token. All colors adapt to dark mode.
-              </p>
-
-              <div class="sg-gallery-text-scale">
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">hero-title → h1</span>
-                  <BasisText variant="hero-title">Hero Title</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">page-title → h1</span>
-                  <BasisText variant="page-title">Page Title</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">section-title → h2</span>
-                  <BasisText variant="section-title">Section Title</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">card-title → h2</span>
-                  <BasisText variant="card-title">Card Title</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">card-subtitle → h3</span>
-                  <BasisText variant="card-subtitle">Card Subtitle</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">body → p</span>
-                  <BasisText variant="body">The quick brown fox jumps over the lazy dog.</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">body-small → small</span>
-                  <BasisText variant="body-small">Smaller body — uses muted-foreground</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">muted → small</span>
-                  <BasisText variant="muted">Muted text — captions, helper text</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">caption → span</span>
-                  <BasisText variant="caption">Caption — uppercase, tracked</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">overline → span</span>
-                  <BasisText variant="overline">Overline label</BasisText>
-                </div>
-                <div class="sg-gallery-text-row">
-                  <span class="sg-gallery-text-label">link → span</span>
-                  <BasisText variant="link">Text link style</BasisText>
-                </div>
-              </div>
-            </div>
-
-
             <!-- ── CARD ────────────────────────────────────────────────── -->
             <div class="sg-gallery-block" id="basis-card">
               <p class="sg-gallery-block-title">Card — <code>src/components/ui/display/card/</code></p>
+              <p class="sg-gallery-block-status sg-gallery-block-status--unused">Available, not currently in use.</p>
               <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: flex-start;">
 
                 <!-- Default variant — uses --card (white / dark surface) -->
@@ -1518,6 +1457,7 @@ Step 4 — Basis UI component in Button.astro
             <!-- ── DIVIDER ──────────────────────────────────────────────── -->
             <div class="sg-gallery-block" id="basis-divider">
               <p class="sg-gallery-block-title">Divider — <code>src/components/ui/layout/Divider.astro</code></p>
+              <p class="sg-gallery-block-status sg-gallery-block-status--unused">Available, not currently in use.</p>
               <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
                 Always uses <code>--border</code> — flips automatically in dark mode.
                 No accent variant in the component; use a wrapper with a colored background for accent rules.
@@ -1548,6 +1488,7 @@ Step 4 — Basis UI component in Button.astro
             <!-- ── NAVBAR ───────────────────────────────────────────────── -->
             <div class="sg-gallery-block" id="basis-navbar">
               <p class="sg-gallery-block-title">Navbar — <code>src/components/ui/display/Navbar.astro</code></p>
+              <p class="sg-gallery-block-status sg-gallery-block-status--unused">Available, not currently in use (the site nav is a custom Astro component).</p>
               <p style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); margin: 0 0 var(--space-md);">
                 Uses <code>sticky={false}</code> here so it doesn't float over the page.
                 In production, the default <code>sticky={true}</code> pins it to the top with a blur backdrop.
@@ -1571,6 +1512,7 @@ Step 4 — Basis UI component in Button.astro
             <!-- ── BADGE ────────────────────────────────────────────────── -->
             <div class="sg-gallery-block" id="basis-badge">
               <p class="sg-gallery-block-title">Badge — <code>src/components/ui/feedback/Badge.astro</code></p>
+              <p class="sg-gallery-block-status sg-gallery-block-status--used">Used in Field Note cards for tool labels.</p>
               <div class="sg-gallery-row">
                 <!-- default: bg-primary (navy) -->
                 <Badge>Default</Badge>
@@ -1675,7 +1617,6 @@ outline      → bg-transparent   border-2 border-border</code></pre>
           // Basis UI (legacy)
           'basis-ui-components':   'Basis UI',
           'basis-button':          'Button',
-          'basis-text':            'Text',
           'basis-card':            'Card',
           'basis-divider':         'Divider',
           'basis-navbar':          'Navbar',

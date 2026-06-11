@@ -1475,6 +1475,38 @@ hr {
   border-bottom: 1px solid hsl(var(--border));
 }
 
+/* Per-component status note shown under the title. A small dot prefix
+   plus a one-line description tells the reader at a glance whether the
+   component is still used in the site or sitting unused as part of the
+   library. Charcoal stays high-contrast in both themes. */
+.sg-gallery-block-status {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-charcoal);
+  margin: var(--space-sm) 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.sg-gallery-block-status::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.sg-gallery-block-status--used::before {
+  background: var(--color-lemon);
+}
+.sg-gallery-block-status--unused {
+  opacity: 0.7;
+}
+.sg-gallery-block-status--unused::before {
+  background: var(--color-charcoal);
+  opacity: 0.4;
+}
+
 /* Horizontal row of items (buttons, badges) */
 .sg-gallery-row {
   display: flex;
@@ -1813,43 +1845,6 @@ code {
   color: hsl(var(--muted-foreground));
   padding: 0 var(--space-sm);
   margin-bottom: var(--space-xs);
-}
-
-/* Small "Legacy" tag shown next to a sidebar group label to signal that the
-   group is being phased out. Uses --color-charcoal for contrast in both
-   themes; the muted background distinguishes it from active group labels. */
-.pg-sidebar-group-tag {
-  display: inline-block;
-  margin-left: var(--space-2xs);
-  padding: 1px 6px;
-  font-family: var(--font-body);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--color-charcoal);
-  background: var(--color-surface);
-  border-radius: 999px;
-}
-
-/* Section-level tag — slightly larger version of the sidebar tag, shown
-   inline next to a section heading. Same Legacy variant for now; could
-   add other variants (New, Beta) later. */
-.sg-section-tag {
-  display: inline-block;
-  margin-left: var(--space-sm);
-  padding: 2px 10px;
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  vertical-align: middle;
-  border-radius: 999px;
-}
-.sg-section-tag--legacy {
-  color: var(--color-charcoal);
-  background: var(--color-surface);
 }
 
 /* Top-level nav item */

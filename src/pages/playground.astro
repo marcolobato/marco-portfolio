@@ -93,16 +93,19 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
         <nav class="pg-sidebar-nav" aria-label="Design system navigation">
 
           <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">New format preview</p>
-            <a href="#doc-template-preview" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Template demo</a>
-          </div>
-
-          <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Foundations</p>
             <!-- Only close the drawer on mobile — on desktop the sidebar stays open -->
             <a href="#color-palette" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Color Palette</a>
             <a href="#typography" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Typography</a>
             <a href="#spacing" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Spacing</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Primitives</p>
+            <a href="#primitives" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
+            <a href="#doc-section-label" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Section Label</a>
+            <a href="#doc-back-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Back Link</a>
           </div>
 
           <div class="pg-sidebar-group">
@@ -119,9 +122,7 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Astro Components</p>
             <a href="#astro-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
-            <a href="#astro-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
             <a href="#astro-text-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text Link</a>
-            <a href="#astro-section-label" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Section Label</a>
             <a href="#astro-navigation" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
             <a href="#astro-project-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Project Card</a>
             <a href="#astro-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
@@ -207,77 +208,6 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
         </div>
       </header>
-
-
-      <!-- ===================================================================
-           SECTION: NEW FORMAT PREVIEW (Phase 3)
-           Demonstrates the new ComponentDoc template. As later phases land,
-           each existing section below will be replaced with proper
-           ComponentDoc entries and this preview block will be removed.
-           =================================================================== -->
-      <section class="sg-section" id="doc-template-preview">
-        <h2 class="sg-section-title">New format preview</h2>
-        <p class="sg-section-desc">
-          A single example of the new component documentation template. The
-          rest of this page is being migrated to use this format, one section
-          at a time.
-        </p>
-
-        <ComponentDoc
-          name="Button"
-          status="Stable"
-          purpose="Triggers an action or navigates to a destination."
-          tokens={["--color-navy", "--color-lemon", "Fraunces Bold"]}
-        >
-          <Fragment slot="anatomy">
-            <Button label="Label" href="#" />
-          </Fragment>
-
-          <Fragment slot="variants">
-            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
-              <Button label="Primary" href="#" variant="primary" />
-              <Button label="Secondary" href="#" variant="secondary" />
-            </div>
-          </Fragment>
-
-          <Fragment slot="states">
-            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
-              <Button label="Default" href="#" variant="primary" />
-              <Button label="Disabled" href="#" variant="primary" disabled />
-            </div>
-          </Fragment>
-
-          <Fragment slot="properties">
-            <table>
-              <thead>
-                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
-              </thead>
-              <tbody>
-                <tr><td><code>label</code></td><td><code>string</code></td><td>—</td><td>Visible button text.</td></tr>
-                <tr><td><code>href</code></td><td><code>string</code></td><td>—</td><td>Optional. When set, renders as <code>&lt;a&gt;</code>; otherwise renders as <code>&lt;button&gt;</code>.</td></tr>
-                <tr><td><code>variant</code></td><td><code>"primary" | "secondary"</code></td><td><code>"primary"</code></td><td>Visual style.</td></tr>
-                <tr><td><code>disabled</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Greys out and prevents interaction.</td></tr>
-                <tr><td><code>icon</code></td><td><code>string</code></td><td>—</td><td>Optional raw SVG string rendered on the left; replaces the right arrow.</td></tr>
-                <tr><td><code>external</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Adds <code>target="_blank"</code> and safe rel attributes.</td></tr>
-              </tbody>
-            </table>
-          </Fragment>
-
-          <Fragment slot="usage">
-            <ul>
-              <li>Use <code>variant="primary"</code> for the main call to action on a page (one per section).</li>
-              <li>Use <code>variant="secondary"</code> for supporting actions. Multiple per section is fine.</li>
-              <li>Pass <code>external</code> when the link opens to a third-party site.</li>
-            </ul>
-          </Fragment>
-
-          <Fragment slot="code">
-            <pre><code>{`<Button label="Primary" href="/work" />
-<Button label="Secondary" href="/about" variant="secondary" />
-<Button label="External" href="https://example.com" external />`}</code></pre>
-          </Fragment>
-        </ComponentDoc>
-      </section>
 
 
       <!-- ===================================================================
@@ -725,6 +655,169 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
 
 
       <!-- ===================================================================
+           SECTION: PRIMITIVES
+           The smallest reusable building blocks. Button is documented in full
+           depth (anatomy, variants, states, properties, tokens, usage notes)
+           as the exemplar; SectionLabel and BackLink follow the same template
+           in shorter form because they have fewer variants/states to show.
+           =================================================================== -->
+      <section class="sg-section" id="primitives">
+        <h2 class="sg-section-title">Primitives</h2>
+        <p class="sg-section-desc">
+          The smallest reusable building blocks: standalone actions and inline labels.
+        </p>
+
+        <!-- ── Button ──────────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-button"
+          name="Button"
+          status="Stable"
+          purpose="Triggers an action or navigates to a destination."
+          tokens={["--color-navy", "--color-lemon", "--color-surface", "--color-charcoal"]}
+        >
+          <Fragment slot="anatomy">
+            <Button label="Label" href="#" />
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+              <Button label="Primary" href="#" variant="primary" />
+              <Button label="Secondary" href="#" variant="secondary" />
+              <Button
+                label="With icon"
+                variant="secondary"
+                icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="states">
+            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+              <Button label="Default" href="#" variant="primary" />
+              <Button label="Disabled" href="#" variant="primary" disabled />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>label</code></td><td><code>string</code></td><td>required</td><td>Visible button text.</td></tr>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>—</td><td>When set, renders as <code>&lt;a&gt;</code>; otherwise renders as <code>&lt;button&gt;</code>.</td></tr>
+                <tr><td><code>variant</code></td><td><code>"primary" | "secondary"</code></td><td><code>"primary"</code></td><td>Visual style.</td></tr>
+                <tr><td><code>disabled</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Greys out and prevents interaction.</td></tr>
+                <tr><td><code>icon</code></td><td><code>string</code></td><td>—</td><td>Raw SVG string rendered on the left; replaces the right arrow.</td></tr>
+                <tr><td><code>external</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Adds <code>target="_blank"</code> and safe rel attributes for off-site links.</td></tr>
+                <tr><td><code>download</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Triggers a file save instead of navigation.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use <strong>primary</strong> for the main action on a page. One per section.</li>
+              <li>Use <strong>secondary</strong> for supporting actions. Multiple per section is fine.</li>
+              <li>Pass <code>href</code> when the button navigates somewhere; omit it when the button triggers an action in place.</li>
+              <li>Pass <code>external</code> when the link leaves the site.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Button label="Primary" href="/work" />
+<Button label="Secondary" href="/about" variant="secondary" />
+<Button label="External" href="https://example.com" external />
+<Button label="Resume" href="/resume.pdf" download />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Section Label ───────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-section-label"
+          name="Section Label"
+          status="Stable"
+          purpose="Introduces a major section with a small lemon pill."
+          tokens={["--color-lemon", "--color-navy"]}
+        >
+          <Fragment slot="anatomy">
+            <SectionLabel label="Selected Work" />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>label</code></td><td><code>string</code></td><td>required</td><td>Pill text. Keep it short (1 to 3 words).</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use as the introduction to a major section, above the section heading.</li>
+              <li>Lemon is reserved for this purpose at full saturation. It feels like a signal because it appears nowhere else.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<SectionLabel label="Selected Work" />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Back Link ────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-back-link"
+          name="Back Link"
+          status="Stable"
+          purpose="Returns the visitor to the previous page."
+          tokens={["--color-royal-blue", "--color-heading"]}
+        >
+          <Fragment slot="anatomy">
+            <BackLink href="#" />
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: flex; gap: var(--space-xl); flex-wrap: wrap; align-items: center;">
+              <BackLink href="#" />
+              <BackLink href="#" label="Back to work" />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>required</td><td>Destination URL. Use <code>"#"</code> as a placeholder when JavaScript will set it at runtime.</td></tr>
+                <tr><td><code>label</code></td><td><code>string</code></td><td><code>"Back"</code></td><td>Text shown after the arrow.</td></tr>
+                <tr><td><code>hidden</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Renders with the HTML <code>hidden</code> attribute. Used for the referrer-aware variant on this page.</td></tr>
+                <tr><td><code>class</code></td><td><code>string</code></td><td>—</td><td>Extra class applied alongside <code>.back-link</code>. Useful as a JS hook.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Place at the top of a page that's reached from a parent page (a work case study, a writing article, the playground).</li>
+              <li>Use the default <code>"Back"</code> label most of the time. Override only when the parent context is ambiguous.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<BackLink href="/work" />
+<BackLink href="/work" label="Back to work" />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+      </section>
+
+
+      <!-- ===================================================================
            SECTION: BASIS UI COMPONENTS
            Live component gallery. Toggle dark/light mode inside the preview
            using the Alpine.js button — it sets data-theme on the canvas div,
@@ -1060,52 +1153,6 @@ outline      → bg-transparent   border-2 border-border</code></pre>
 
 
         <!-- Component: Button -->
-        <div class="sg-component" id="astro-button">
-          <h3 class="sg-component-title">Button</h3>
-          <p class="sg-component-desc">
-            Two variants: <strong>primary</strong> (navy fill) and
-            <strong>secondary</strong> (surface + outline). Both use a pill
-            shape and share the same hover behavior — the background shifts
-            and the arrow icon rotates from ↗ (rest) to → (hover) over a
-            smooth 0.2s ease transition. When an <code>href</code> prop is
-            passed, the component renders as an <code>&lt;a&gt;</code> tag
-            (correct for navigation). Without <code>href</code>, it renders
-            as a <code>&lt;button&gt;</code> (correct for actions). The
-            <code>download</code> prop triggers a file save instead of
-            navigating. The optional <code>icon</code> prop accepts an SVG
-            string — when provided, the icon renders on the <strong>left</strong>
-            of the label and the right-side arrow is hidden.
-          </p>
-          <div class="sg-component-preview" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
-            <!-- Primary — the default, strong call-to-action -->
-            <Button label="Primary" href="#" variant="primary" />
-            <!-- Secondary — a softer alternative action -->
-            <Button label="Secondary" href="#" variant="secondary" />
-            <!-- Disabled — shown at 40% opacity, no hover, no pointer -->
-            <Button label="Disabled" href="#" variant="primary" disabled={true} />
-            <!-- Icon left — pass any SVG string; arrow is replaced by the icon on the left -->
-            <Button
-              label="Reset"
-              variant="secondary"
-              icon='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>'
-            />
-          </div>
-          <pre class="sg-code"><code>import Button from '../components/Button.astro';
-
-&lt;!-- Primary (default) --&gt;
-&lt;Button label="LinkedIn" href="https://linkedin.com/in/..." variant="primary" /&gt;
-
-&lt;!-- Secondary --&gt;
-&lt;Button label="Download Resume" href="/resume.pdf" variant="secondary" download=&#123;true&#125; /&gt;
-
-&lt;!-- Disabled --&gt;
-&lt;Button label="Coming Soon" href="#" variant="primary" disabled=&#123;true&#125; /&gt;
-
-&lt;!-- Icon left (no href = renders as &lt;button&gt;, not &lt;a&gt;) --&gt;
-&lt;Button label="Reset" variant="secondary" icon='&lt;svg ...&gt;...&lt;/svg&gt;' /&gt;</code></pre>
-        </div>
-
-
         <!-- Component: Text Link -->
         <div class="sg-component" id="astro-text-link">
           <h3 class="sg-component-title">Text Link</h3>
@@ -1133,25 +1180,6 @@ outline      → bg-transparent   border-2 border-border</code></pre>
   &lt;li&gt;&lt;a href="#color" class="text-link"&gt;Color&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="#typography" class="text-link"&gt;Typography&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Section Label -->
-        <div class="sg-component" id="astro-section-label">
-          <h3 class="sg-component-title">Section Label</h3>
-          <p class="sg-component-desc">
-            A small lemon pill used to introduce each major section.
-            Built with <code>display: inline-block</code> and
-            <code>background-color: var(--color-lemon)</code>.
-            Lemon is used nowhere else on the page at full saturation —
-            this constraint keeps it feeling like a signal, not decoration.
-          </p>
-          <div class="sg-component-preview">
-            <SectionLabel label="Selected Work" />
-          </div>
-          <pre class="sg-code"><code>import SectionLabel from '../components/SectionLabel.astro';
-
-&lt;SectionLabel label="Selected Work" /&gt;</code></pre>
         </div>
 
 

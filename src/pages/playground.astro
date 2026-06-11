@@ -21,6 +21,7 @@ import CardFooter from '@/components/ui/display/card/CardFooter.astro';
 import Divider from '@/components/ui/layout/Divider.astro';
 import BasisText from '@/components/ui/display/Text.astro';
 import BasisNavbar from '@/components/ui/display/Navbar.astro';
+import ComponentDoc from '../components/docs/ComponentDoc.astro';
 ---
 
 <BaseLayout title="Playground — Marco Lobato" noindex={true}>
@@ -90,6 +91,11 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
 
         <!-- Nav links — hidden in rail mode, shown when fully open -->
         <nav class="pg-sidebar-nav" aria-label="Design system navigation">
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">New format preview</p>
+            <a href="#doc-template-preview" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Template demo</a>
+          </div>
 
           <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Design Tokens</p>
@@ -200,6 +206,77 @@ import BasisNavbar from '@/components/ui/display/Navbar.astro';
           </div>
         </div>
       </header>
+
+
+      <!-- ===================================================================
+           SECTION: NEW FORMAT PREVIEW (Phase 3)
+           Demonstrates the new ComponentDoc template. As later phases land,
+           each existing section below will be replaced with proper
+           ComponentDoc entries and this preview block will be removed.
+           =================================================================== -->
+      <section class="sg-section" id="doc-template-preview">
+        <h2 class="sg-section-title">New format preview</h2>
+        <p class="sg-section-desc">
+          A single example of the new component documentation template. The
+          rest of this page is being migrated to use this format, one section
+          at a time.
+        </p>
+
+        <ComponentDoc
+          name="Button"
+          status="Stable"
+          purpose="Triggers an action or navigates to a destination."
+          tokens={["--color-navy", "--color-lemon", "Fraunces Bold"]}
+        >
+          <Fragment slot="anatomy">
+            <Button label="Label" href="#" />
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+              <Button label="Primary" href="#" variant="primary" />
+              <Button label="Secondary" href="#" variant="secondary" />
+            </div>
+          </Fragment>
+
+          <Fragment slot="states">
+            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+              <Button label="Default" href="#" variant="primary" />
+              <Button label="Disabled" href="#" variant="primary" disabled />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>label</code></td><td><code>string</code></td><td>—</td><td>Visible button text.</td></tr>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>—</td><td>Optional. When set, renders as <code>&lt;a&gt;</code>; otherwise renders as <code>&lt;button&gt;</code>.</td></tr>
+                <tr><td><code>variant</code></td><td><code>"primary" | "secondary"</code></td><td><code>"primary"</code></td><td>Visual style.</td></tr>
+                <tr><td><code>disabled</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Greys out and prevents interaction.</td></tr>
+                <tr><td><code>icon</code></td><td><code>string</code></td><td>—</td><td>Optional raw SVG string rendered on the left; replaces the right arrow.</td></tr>
+                <tr><td><code>external</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Adds <code>target="_blank"</code> and safe rel attributes.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use <code>variant="primary"</code> for the main call to action on a page (one per section).</li>
+              <li>Use <code>variant="secondary"</code> for supporting actions. Multiple per section is fine.</li>
+              <li>Pass <code>external</code> when the link opens to a third-party site.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Button label="Primary" href="/work" />
+<Button label="Secondary" href="/about" variant="secondary" />
+<Button label="External" href="https://example.com" external />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+      </section>
 
 
       <!-- ===================================================================

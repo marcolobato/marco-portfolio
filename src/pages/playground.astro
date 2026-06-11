@@ -10,6 +10,9 @@ import Footer from '../components/Footer.astro';
 import BackLink from '../components/BackLink.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import FieldNoteCard from '../components/FieldNoteCard.astro';
+import WritingCard from '../components/WritingCard.astro';
+import WorkCard from '../components/WorkCard.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
 import BasisButton from '@/components/ui/forms/Button.astro';
@@ -109,6 +112,15 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
           <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Cards</p>
+            <a href="#cards" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-project-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Project Card</a>
+            <a href="#doc-field-note-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Field Note Card</a>
+            <a href="#doc-writing-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Writing Card</a>
+            <a href="#doc-work-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Work Card</a>
+          </div>
+
+          <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Basis UI</p>
             <a href="#basis-ui-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
             <a href="#basis-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
@@ -124,7 +136,6 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
             <a href="#astro-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
             <a href="#astro-text-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text Link</a>
             <a href="#astro-navigation" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
-            <a href="#astro-project-card" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Project Card</a>
             <a href="#astro-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
             <a href="#astro-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
             <a href="#astro-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
@@ -818,6 +829,272 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
 
 
       <!-- ===================================================================
+           SECTION: CARDS
+           Content-bearing surfaces. ProjectCard is the simplest (image plus
+           title); FieldNoteCard, WritingCard, and WorkCard add more structure
+           for richer use cases. Each card uses generic placeholder content so
+           the anatomy is readable independent of the real portfolio data.
+           =================================================================== -->
+      <section class="sg-section" id="cards">
+        <h2 class="sg-section-title">Cards</h2>
+        <p class="sg-section-desc">
+          Content-bearing surfaces. Use for grids of work, writing, or field notes.
+        </p>
+
+        <!-- ── Project Card ────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-project-card"
+          name="Project Card"
+          status="Stable"
+          purpose="Displays a project as an image with a title beneath."
+          tokens={["--color-surface", "--color-charcoal", "--color-heading"]}
+        >
+          <Fragment slot="anatomy">
+            <div style="max-width: 320px;">
+              <ProjectCard title="Project title" image="/images/playground-placeholder.svg" />
+            </div>
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); max-width: 640px;">
+              <ProjectCard title="With image" image="/images/playground-placeholder.svg" />
+              <ProjectCard title="No image (placeholder)" />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Card heading shown below the image.</td></tr>
+                <tr><td><code>image</code></td><td><code>string</code></td><td>—</td><td>Image src. When omitted, a placeholder appears.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use in a flex row to display multiple projects side by side.</li>
+              <li>Omit the image only during development or when the project doesn't have a cover yet.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<ProjectCard title="Project title" image="/images/work/project.png" />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Field Note Card ─────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-field-note-card"
+          name="Field Note Card"
+          status="Stable"
+          purpose="Two-column card showing a field note body alongside an artifact preview."
+          tokens={["--color-surface", "--color-charcoal", "--color-royal-blue"]}
+        >
+          <Fragment slot="anatomy">
+            <FieldNoteCard
+              title="Card title"
+              body={"First paragraph. Short description of the experiment or note.\n\nSecond paragraph. Optional follow-up detail."}
+              tools={[{ label: "Tool one" }, { label: "Tool two" }]}
+              exploreHref="#"
+              artifact={{
+                image: "/images/playground-placeholder.svg",
+                alt: "",
+                caption: "Artifact caption",
+                href: "#"
+              }}
+            />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Card heading.</td></tr>
+                <tr><td><code>body</code></td><td><code>string</code></td><td>required</td><td>Long copy. Paragraphs separated by blank lines.</td></tr>
+                <tr><td><code>tools</code></td><td><code>Tool[]</code></td><td>required</td><td>List of tool badges. Empty array hides the row.</td></tr>
+                <tr><td><code>toolsLabel</code></td><td><code>string</code></td><td><code>"Tools:"</code></td><td>Override the tools-row label.</td></tr>
+                <tr><td><code>exploreHref</code></td><td><code>string</code></td><td>—</td><td>When omitted, the explore link is hidden.</td></tr>
+                <tr><td><code>exploreLabel</code></td><td><code>string</code></td><td><code>"Explore experiment"</code></td><td>Override the explore link label.</td></tr>
+                <tr><td><code>artifact</code></td><td><code>Artifact</code></td><td>required</td><td>Right-column artifact preview.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use on the Field Notes archive page (<code>/field-notes</code>) for entries that have a paired experiment.</li>
+              <li>Stack vertically with a comfortable gap. Body reads left, artifact reads right on desktop; collapses to one column on mobile.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<FieldNoteCard
+  title="Card title"
+  body="Paragraph one.\\n\\nParagraph two."
+  tools={[{ label: "Figma" }]}
+  exploreHref="/writing/some-slug"
+  artifact={{ image: "/images/x.png", alt: "", caption: "Caption" }}
+/>`}</code></pre>
+          </Fragment>
+
+        </ComponentDoc>
+
+
+        <!-- ── Writing Card ────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-writing-card"
+          name="Writing Card"
+          status="Stable"
+          purpose="Link card to a writing entry, with an optional 'New' badge."
+          tokens={["--color-surface", "--color-charcoal", "--color-lemon", "--color-navy"]}
+        >
+          <Fragment slot="anatomy">
+            <div style="max-width: 320px;">
+              <WritingCard
+                href="#"
+                image="/images/playground-placeholder.svg"
+                alt=""
+                title="Card title"
+                desc="Short description of the writing entry."
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="variants">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); max-width: 640px;">
+              <WritingCard
+                href="#"
+                image="/images/playground-placeholder.svg"
+                alt=""
+                title="Default"
+                desc="Standard writing card without a badge."
+              />
+              <WritingCard
+                href="#"
+                image="/images/playground-placeholder.svg"
+                alt=""
+                title="With New badge"
+                desc="Featured most recently. The lemon badge overlays the image."
+                isNew={true}
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>required</td><td>Destination URL.</td></tr>
+                <tr><td><code>image</code></td><td><code>string</code></td><td>—</td><td>Cover image src. When omitted, a placeholder appears.</td></tr>
+                <tr><td><code>alt</code></td><td><code>string</code></td><td>—</td><td>Alt text for the image.</td></tr>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Card heading.</td></tr>
+                <tr><td><code>desc</code></td><td><code>string</code></td><td>required</td><td>Short description shown under the title.</td></tr>
+                <tr><td><code>isNew</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Adds a lemon "New" badge in the top-right of the image.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use on the home page Field Notes section and the <code>/field-notes</code> archive.</li>
+              <li>Pass <code>isNew</code> for entries within the recency window so visitors can see what just shipped.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<WritingCard
+  href="/writing/some-slug"
+  image="/images/writing/cover.png"
+  alt="Cover"
+  title="Article title"
+  desc="One-line description."
+  isNew={true}
+/>`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Work Card ────────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-work-card"
+          name="Work Card"
+          status="Stable"
+          purpose="Flip card showing a project thumbnail on the front and case details on the back."
+          tokens={["--color-navy", "--color-surface", "--color-royal-blue", "--color-citrine"]}
+        >
+          <Fragment slot="anatomy">
+            <div style="max-width: 360px;">
+              <WorkCard
+                id="doc-demo"
+                pattern="Pattern label"
+                title="Card title"
+                backHeading="Back face heading"
+                backParagraphs={["First paragraph on the back face.", "Second paragraph."]}
+                stats={[{ value: "Stat", desc: "description" }]}
+                image="/images/playground-placeholder.svg"
+                imageAlt=""
+                channels={[{ type: "voice", label: "voice" }, { type: "screen", label: "screen" }]}
+                lightboxDesc="Lightbox description text."
+              />
+            </div>
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>id</code></td><td><code>string</code></td><td>required</td><td>Unique id used for the flip interaction and lightbox target.</td></tr>
+                <tr><td><code>pattern</code></td><td><code>string</code></td><td>required</td><td>Small label above the title (e.g. "Learnable Efficiency").</td></tr>
+                <tr><td><code>title</code></td><td><code>string</code></td><td>required</td><td>Project title shown on the front face.</td></tr>
+                <tr><td><code>backHeading</code></td><td><code>string</code></td><td>required</td><td>Heading shown on the back face after flipping.</td></tr>
+                <tr><td><code>backParagraphs</code></td><td><code>string[]</code></td><td>required</td><td>Body paragraphs on the back face.</td></tr>
+                <tr><td><code>stats</code></td><td><code>Stat[]</code></td><td>required</td><td>Highlight stats on the back face.</td></tr>
+                <tr><td><code>image</code></td><td><code>string</code></td><td>required</td><td>Front-face thumbnail.</td></tr>
+                <tr><td><code>imageAlt</code></td><td><code>string</code></td><td><code>""</code></td><td>Image alt text. Empty marks it decorative.</td></tr>
+                <tr><td><code>channels</code></td><td><code>Channel[]</code></td><td>required</td><td>Channel dots (voice, screen, camera, gesture, gaze).</td></tr>
+                <tr><td><code>lightboxDesc</code></td><td><code>string</code></td><td>required</td><td>Description shown when the lightbox opens.</td></tr>
+                <tr><td><code>eager</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Hints the image loader to fetch eagerly for above-the-fold cards.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use in the Selected Work section on the home page.</li>
+              <li>Click the card to flip; click the expand button to open the lightbox.</li>
+              <li>Set <code>eager</code> on the first one or two cards that appear above the fold to speed up first paint.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<WorkCard
+  id="some-id"
+  pattern="Pattern label"
+  title="Project title"
+  backHeading="Heading on the back"
+  backParagraphs={["First paragraph", "Second paragraph"]}
+  stats={[{ value: "First", desc: "of its kind" }]}
+  image="/images/work/thumb.png"
+  channels={[{ type: "voice", label: "voice" }]}
+  lightboxDesc="Description when expanded."
+/>`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+      </section>
+
+
+      <!-- ===================================================================
            SECTION: BASIS UI COMPONENTS
            Live component gallery. Toggle dark/light mode inside the preview
            using the Alpine.js button — it sets data-theme on the canvas div,
@@ -1200,26 +1477,6 @@ outline      → bg-transparent   border-2 border-border</code></pre>
           <pre class="sg-code"><code>import Nav from '../components/Nav.astro';
 
 &lt;Nav /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Project Card -->
-        <div class="sg-component" id="astro-project-card">
-          <h3 class="sg-component-title">Project Card</h3>
-          <p class="sg-component-desc">
-            Used in the Work section to display a project. Image placeholder
-            uses <code>aspect-ratio: 4 / 3</code> to stay proportional at
-            any width. Cards sit in a flex row with <code>flex: 1</code> so
-            they share space equally regardless of content length.
-          </p>
-          <div class="sg-component-preview">
-            <div class="sg-card-demo">
-              <ProjectCard title="Project title goes here" />
-            </div>
-          </div>
-          <pre class="sg-code"><code>import ProjectCard from '../components/ProjectCard.astro';
-
-&lt;ProjectCard title="Project title goes here" /&gt;</code></pre>
         </div>
 
 

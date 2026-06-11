@@ -125,6 +125,7 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
             <p class="pg-sidebar-group-label">Other Components</p>
             <a href="#other-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
             <a href="#doc-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
+            <a href="#doc-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
           </div>
 
           <div class="pg-sidebar-group">
@@ -139,12 +140,10 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
           <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Astro Components</p>
-            <a href="#astro-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
-            <a href="#astro-text-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text Link</a>
-            <a href="#astro-navigation" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
-            <a href="#astro-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
-            <a href="#astro-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
+            <p class="pg-sidebar-group-label">Site Patterns</p>
+            <a href="#site-patterns" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-nav" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
+            <a href="#doc-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
           </div>
 
         </nav><!-- /.pg-sidebar-nav -->
@@ -627,6 +626,22 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
         </div>
+
+        <!-- ── Text Link ────────────────────────────────────────────────
+             A CSS class (not a component) that styles inline links inside
+             prose. Documented here because it's a typographic treatment,
+             not a standalone UI element. -->
+        <h3 class="sg-subsection-title" id="text-link" style="margin-top: var(--space-3xl);">Text Link</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          Inline link style for body copy. Apply the <code>.text-link</code> class to any <code>&lt;a&gt;</code> tag.
+        </p>
+
+        <div class="sg-component-preview">
+          <p style="margin: 0;">
+            The thread across my work is <a href="#" class="text-link">keeping people in their flow</a>. The best interfaces never pull you out of what you're doing; they blend into <a href="#" class="text-link">the task itself</a>.
+          </p>
+        </div>
+
       </section>
 
 
@@ -1147,6 +1162,43 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
             <pre><code>{`<Carousel />`}</code></pre>
           </Fragment>
         </ComponentDoc>
+
+
+        <!-- ── Theme Toggle ─────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-theme-toggle"
+          name="Theme Toggle"
+          status="Stable"
+          purpose="Sun/moon button that switches between light and dark mode."
+          tokens={["--color-charcoal", "--color-heading"]}
+        >
+          <Fragment slot="anatomy">
+            <ThemeToggle />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. The button reads <code>data-theme</code> on <code>&lt;html&gt;</code> and flips it on click.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Place inside the site nav. The button in this preview is visual only; the live one in the top nav is what actually changes the theme (only the first <code>.theme-toggle</code> on the page is wired by the inline script).</li>
+              <li>On first load, the site reads <code>prefers-color-scheme</code> as the default. The toggle lets the visitor override it; the choice is saved to <code>localStorage</code>.</li>
+              <li>If the visitor's chosen theme matches their OS preference, the override is cleared so future OS changes take effect naturally.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<ThemeToggle />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
       </section>
 
 
@@ -1474,108 +1526,90 @@ outline      → bg-transparent   border-2 border-border</code></pre>
 
 
       <!-- ===================================================================
-           SECTION: COMPONENTS
-           Each component is shown as it actually appears on the site,
-           using the exact same HTML structure and class names.
+           SECTION: SITE PATTERNS
+           Recurring page-edge layouts that appear on every page. Not
+           reusable components in the standalone sense; they're singletons
+           that wrap every page. Documented for completeness so the design
+           system shows the full picture.
            =================================================================== -->
-      <section class="sg-section" id="astro-components">
-        <h2 class="sg-section-title">Astro Components</h2>
+      <section class="sg-section" id="site-patterns">
+        <h2 class="sg-section-title">Site Patterns</h2>
         <p class="sg-section-desc">
-          Hand-built components specific to this site. These predate the Basis UI migration and may be refactored over time. What you see here is the real component — no separate demo version.
+          Recurring layouts that appear on every page. Singletons, not reusable components.
         </p>
 
-
-        <!-- Component: Button -->
-        <!-- Component: Text Link -->
-        <div class="sg-component" id="astro-text-link">
-          <h3 class="sg-component-title">Text Link</h3>
-          <p class="sg-component-desc">
-            Inline hyperlinks for body copy and navigation lists. Royal blue
-            at rest — no underline, to keep prose clean. On hover: color shifts
-            to <code>--color-heading</code> (navy in light mode, near-white in
-            dark mode) and an underline appears as a clear interactive signal.
-            Apply using the <code>.text-link</code> class on any <code>&lt;a&gt;</code> tag.
-            Do not use for buttons or CTAs — use the <strong>Button</strong>
-            component for those instead.
-          </p>
-          <div class="sg-component-preview">
-            <p style="margin: 0;">
-              The thread across my work is <a href="#" class="text-link">keeping people in their flow</a>.
-              The best interfaces never pull you out of what you are doing —
-              they blend into <a href="#" class="text-link">the task itself</a>.
-            </p>
-          </div>
-          <pre class="sg-code"><code>&lt;!-- Apply .text-link to any &lt;a&gt; tag --&gt;
-&lt;a href="/some-page" class="text-link"&gt;Link label&lt;/a&gt;
-
-&lt;!-- In a navigation list --&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href="#color" class="text-link"&gt;Color&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#typography" class="text-link"&gt;Typography&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Nav -->
-        <div class="sg-component" id="astro-navigation">
-          <h3 class="sg-component-title">Navigation</h3>
-          <p class="sg-component-desc">
-            Top bar with name on the left and anchor links on the right.
-            On screens 768px and smaller, the links collapse into a hamburger
-            menu that toggles open and closed. Links use
-            <code>/#section</code> anchors so they work correctly from any page,
-            not just the homepage. <code>aria-current="page"</code> is applied
-            automatically to the active link.
-          </p>
-          <div class="sg-component-preview sg-component-preview--flush">
+        <!-- ── Navigation ──────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-nav"
+          name="Navigation"
+          status="Stable"
+          purpose="Top bar with the site name and anchor links to the home page sections."
+          tokens={["--color-navy", "--color-heading", "--color-surface"]}
+        >
+          <Fragment slot="anatomy">
             <Nav />
-          </div>
-          <pre class="sg-code"><code>import Nav from '../components/Nav.astro';
+          </Fragment>
 
-&lt;Nav /&gt;</code></pre>
-        </div>
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. The link list is hardcoded inside <code>Nav.astro</code>.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Used on every page via <code>BaseLayout</code>.</li>
+              <li>Links use <code>/#section</code> anchors so they work from any page, not just the home page.</li>
+              <li>Below 768px the links collapse into a hamburger menu.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Nav />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
 
 
-        <!-- Component: Theme Toggle -->
-        <div class="sg-component" id="astro-theme-toggle">
-          <h3 class="sg-component-title">Theme Toggle</h3>
-          <p class="sg-component-desc">
-            Sun/moon icon button that lives in the navigation. Clicking it
-            switches between light and dark mode and saves the choice to
-            <code>localStorage</code> so it persists on future visits.
-            On first load, the site reads the user's OS preference
-            (<code>prefers-color-scheme</code>) as the default — the toggle
-            lets them override it. The moon icon is shown in light mode
-            (click to go dark), the sun icon in dark mode (click to go light).
-          </p>
-          <div class="sg-component-preview">
-            <ThemeToggle />
-          </div>
-          <pre class="sg-code"><code>import ThemeToggle from '../components/ThemeToggle.astro';
-
-&lt;ThemeToggle /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Footer -->
-        <div class="sg-component" id="astro-footer">
-          <h3 class="sg-component-title">Footer</h3>
-          <p class="sg-component-desc">
-            Navy panel at the bottom of the page — the strongest use of the
-            brand color. Lemon is used as the name accent, creating a bookend
-            with the lemon section labels above. On mobile, name and links
-            stack vertically and center-align. The component itself has no
-            <code>margin-top</code> — spacing is set at the page level so it
-            can be dropped onto any page without side effects.
-          </p>
-          <div class="sg-component-preview sg-component-preview--flush">
+        <!-- ── Footer ──────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-footer"
+          name="Footer"
+          status="Stable"
+          purpose="Navy panel at the bottom of every page with the name accent and contact links."
+          tokens={["--color-navy", "--color-lemon", "--color-surface"]}
+        >
+          <Fragment slot="anatomy">
             <Footer />
-          </div>
-          <pre class="sg-code"><code>import Footer from '../components/Footer.astro';
+          </Fragment>
 
-&lt;Footer /&gt;</code></pre>
-        </div>
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. Content is hardcoded inside <code>Footer.astro</code>.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
 
+          <Fragment slot="usage">
+            <ul>
+              <li>Used on every page via <code>BaseLayout</code>.</li>
+              <li>The lemon name accent bookends the lemon section labels at the top of each page.</li>
+              <li>No <code>margin-top</code> on the component itself; spacing is set by the parent page.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Footer />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
       </section>
 
     </main>
@@ -1613,24 +1647,38 @@ outline      → bg-transparent   border-2 border-border</code></pre>
         // Order doesn't matter — IntersectionObserver fires for whichever
         // section enters the active zone first as the user scrolls.
         const sectionTitles: Record<string, string> = {
-          'color-palette':       'Color Palette',
-          'typography':          'Typography',
-          'basis-ui-components': 'Basis UI',
-          'basis-button':        'Button',
-          'basis-text':          'Text',
-          'basis-card':          'Card',
-          'basis-divider':       'Divider',
-          'basis-navbar':        'Navbar',
-          'basis-badge':         'Badge',
-          'astro-components':    'Astro Components',
-          'astro-button':        'Button',
-          'astro-text-link':     'Text Link',
-          'astro-section-label': 'Section Label',
-          'astro-navigation':    'Navigation',
-          'astro-project-card':  'Project Card',
-          'astro-theme-toggle':  'Theme Toggle',
-          'astro-carousel':      'Carousel',
-          'astro-footer':        'Footer',
+          // Foundations
+          'color-palette':         'Color Palette',
+          'typography':            'Typography',
+          'text-link':             'Text Link',
+          'spacing':               'Spacing',
+          // Primitives
+          'primitives':            'Primitives',
+          'doc-button':            'Button',
+          'doc-section-label':     'Section Label',
+          'doc-back-link':         'Back Link',
+          // Cards
+          'cards':                 'Cards',
+          'doc-project-card':      'Project Card',
+          'doc-field-note-card':   'Field Note Card',
+          'doc-writing-card':      'Writing Card',
+          'doc-work-card':         'Work Card',
+          // Other Components
+          'other-components':      'Other Components',
+          'doc-carousel':          'Carousel',
+          'doc-theme-toggle':      'Theme Toggle',
+          // Basis UI
+          'basis-ui-components':   'Basis UI',
+          'basis-button':          'Button',
+          'basis-text':            'Text',
+          'basis-card':            'Card',
+          'basis-divider':         'Divider',
+          'basis-navbar':          'Navbar',
+          'basis-badge':           'Badge',
+          // Site Patterns
+          'site-patterns':         'Site Patterns',
+          'doc-nav':               'Navigation',
+          'doc-footer':            'Footer',
         };
 
         // rootMargin '0px 0px -75% 0px' shrinks the observation window so only

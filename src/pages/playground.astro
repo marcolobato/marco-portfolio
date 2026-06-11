@@ -13,6 +13,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import FieldNoteCard from '../components/FieldNoteCard.astro';
 import WritingCard from '../components/WritingCard.astro';
 import WorkCard from '../components/WorkCard.astro';
+import Carousel from '../components/Carousel.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import Button from '../components/Button.astro';
 import BasisButton from '@/components/ui/forms/Button.astro';
@@ -121,6 +122,12 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
           <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Other Components</p>
+            <a href="#other-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
+          </div>
+
+          <div class="pg-sidebar-group">
             <p class="pg-sidebar-group-label">Basis UI</p>
             <a href="#basis-ui-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
             <a href="#basis-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
@@ -137,7 +144,6 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
             <a href="#astro-text-link" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text Link</a>
             <a href="#astro-navigation" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
             <a href="#astro-theme-toggle" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Theme Toggle</a>
-            <a href="#astro-carousel" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Carousel</a>
             <a href="#astro-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
           </div>
 
@@ -1095,6 +1101,56 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
 
 
       <!-- ===================================================================
+           SECTION: OTHER COMPONENTS
+           A catch-all for components that don't fit the Primitives or Cards
+           groups. As the system grows, components can graduate from here into
+           more specific groups.
+           =================================================================== -->
+      <section class="sg-section" id="other-components">
+        <h2 class="sg-section-title">Other Components</h2>
+        <p class="sg-section-desc">
+          Components that don't fit the Primitives or Cards groups.
+        </p>
+
+        <!-- ── Carousel ────────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-carousel"
+          name="Carousel"
+          status="Stable"
+          purpose="Manually controlled image carousel with arrow buttons, pagination dots, and keyboard navigation."
+          tokens={["--color-surface", "--color-charcoal", "--color-heading", "--color-lemon"]}
+        >
+          <Fragment slot="anatomy">
+            <Carousel />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. Slide content is defined inside <code>Carousel.astro</code> as a <code>slides</code> array (image, title, subtitle, optional href, optional cta).</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Use sparingly. A carousel hides content behind interaction, so reach for it only when a sequence of slides actually helps the reader.</li>
+              <li>Navigation: arrow buttons, pagination dots, or left/right arrow keys. No auto-scroll, so the visitor stays in control (WCAG 2.2.2).</li>
+              <li>To change the slides, edit the <code>slides</code> array at the top of <code>Carousel.astro</code>. If you need this carousel in more than one place with different content, refactor it to accept a <code>slides</code> prop first.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Carousel />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+      </section>
+
+
+      <!-- ===================================================================
            SECTION: BASIS UI COMPONENTS
            Live component gallery. Toggle dark/light mode inside the preview
            using the Alpine.js button — it sets data-theme on the canvas div,
@@ -1498,75 +1554,6 @@ outline      → bg-transparent   border-2 border-border</code></pre>
           <pre class="sg-code"><code>import ThemeToggle from '../components/ThemeToggle.astro';
 
 &lt;ThemeToggle /&gt;</code></pre>
-        </div>
-
-
-        <!-- Component: Carousel -->
-        <div class="sg-component" id="astro-carousel">
-          <h3 class="sg-component-title">Carousel</h3>
-          <p class="sg-component-desc">
-            A manually controlled image carousel. Navigate with the
-            <strong>arrow buttons</strong> or click any <strong>pagination dot</strong>
-            to jump directly to a slide. Keyboard users can also use the left/right
-            arrow keys. No auto-scroll — the user is always in control
-            (WCAG 2.2 guideline 2.2.2). Each slide shows an image with a title and
-            subtitle caption below it. To update content, edit the
-            <code>slides</code> array at the top of <code>Carousel.astro</code>.
-          </p>
-          <!-- Documentation demo — 3 generic placeholder slides, fully interactive -->
-          <div class="sg-component-preview">
-            <div class="carousel" aria-roledescription="carousel" aria-label="Carousel demo">
-              <div class="carousel-viewport">
-                <div class="carousel-track">
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                  <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
-                    <div class="carousel-slide-image" style="aspect-ratio: 3/2; background-color: var(--color-surface); border: 2px dashed var(--color-slate); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-size: var(--text-xs); color: var(--color-slate); letter-spacing: 0.08em;">[ image ]</span>
-                    </div>
-                    <div class="carousel-slide-caption">
-                      <h3 class="carousel-slide-title">Slide Title</h3>
-                      <p class="carousel-slide-subtitle">Project or context subtitle</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-controls">
-                <div class="carousel-arrows">
-                  <button class="carousel-btn carousel-btn--prev" aria-label="Previous slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                  </button>
-                  <button class="carousel-btn carousel-btn--next" aria-label="Next slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </button>
-                </div>
-                <div class="carousel-dots" role="tablist" aria-label="Slide navigation">
-                  <button class="carousel-dot carousel-dot--active" role="tab" aria-selected="true" aria-label="Slide 1" data-index="0"></button>
-                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 2" data-index="1"></button>
-                  <button class="carousel-dot" role="tab" aria-selected="false" aria-label="Slide 3" data-index="2"></button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <pre class="sg-code"><code>import Carousel from '../components/Carousel.astro';
-
-&lt;Carousel /&gt;</code></pre>
         </div>
 
 

@@ -17,6 +17,7 @@ import WorkLightbox from '../components/WorkLightbox.astro';
 import Button from '../components/Button.astro';
 import Carousel from '../components/Carousel.astro';
 import AvatarScratcher from '../components/AvatarScratcher.astro';
+import WritingCard from '../components/WritingCard.astro';
 
 // Featured Field Notes — two specific posts shown on the homepage as a tease.
 // The full archive at /field-notes shows more, so the homepage stays curated.
@@ -257,22 +258,14 @@ const fieldNotes = (await getCollection('writing'))
 
         <div class="writing-cards">
           {fieldNotes.map(({ post, isNew }) => (
-            <a href={`/writing/${post.id}`} class="writing-card">
-              {/* "New" badge — appears only when the post is within NEW_THRESHOLD_DAYS.
-                  Positioned absolutely (see .writing-card-new in global.css) so it
-                  overlays the top-right of the card image without shifting layout. */}
-              {isNew && <span class="writing-card-new">New</span>}
-              <div class="writing-card-image">
-                {post.data.image
-                  ? <img src={post.data.image} alt={post.data.title} class="writing-card-img" />
-                  : <span class="writing-card-image-label">[ image ]</span>
-                }
-              </div>
-              <div class="writing-card-body">
-                <h3 class="writing-card-title">{post.data.title}</h3>
-                <p class="writing-card-desc">{post.data.description}</p>
-              </div>
-            </a>
+            <WritingCard
+              href={`/writing/${post.id}`}
+              image={post.data.image}
+              alt={post.data.title}
+              title={post.data.title}
+              desc={post.data.description}
+              isNew={isNew}
+            />
           ))}
         </div>
 

@@ -1,0 +1,35 @@
+---
+// WritingCard.astro — link card for Field Notes / writing entries.
+// Used on the home page (with the "New" badge) and on the field-notes archive
+// (without the badge). The markup mirrors the .writing-card classes already
+// styled in global.css, so no new styles are introduced here.
+//
+// Props:
+//   href   — destination URL (typically /writing/<slug>)
+//   image  — optional cover image src; when missing, an "[ image ]" placeholder shows
+//   alt    — alt text for the cover image (also used as the title fallback)
+//   title  — article title shown in the card body
+//   desc   — short description shown under the title
+//   isNew  — when true, overlays a small "New" badge in the top-right of the image
+
+const { href, image, alt, title, desc, isNew = false } = Astro.props;
+---
+
+<a href={href} class="writing-card">
+  {/* "New" badge — appears only when isNew is true. Positioned absolutely by
+      the .writing-card-new rule in global.css, so it floats over the image
+      without affecting layout. */}
+  {isNew && <span class="writing-card-new">New</span>}
+
+  <div class="writing-card-image">
+    {image
+      ? <img src={image} alt={alt} class="writing-card-img" />
+      : <span class="writing-card-image-label">[ image ]</span>
+    }
+  </div>
+
+  <div class="writing-card-body">
+    <h3 class="writing-card-title">{title}</h3>
+    <p class="writing-card-desc">{desc}</p>
+  </div>
+</a>

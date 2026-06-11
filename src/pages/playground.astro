@@ -129,7 +129,14 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           </div>
 
           <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Basis UI</p>
+            <p class="pg-sidebar-group-label">Site Patterns</p>
+            <a href="#site-patterns" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
+            <a href="#doc-nav" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
+            <a href="#doc-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
+          </div>
+
+          <div class="pg-sidebar-group">
+            <p class="pg-sidebar-group-label">Basis UI <span class="pg-sidebar-group-tag">Legacy</span></p>
             <a href="#basis-ui-components" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
             <a href="#basis-button" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Button</a>
             <a href="#basis-text" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Text</a>
@@ -137,13 +144,6 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
             <a href="#basis-divider" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Divider</a>
             <a href="#basis-navbar" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navbar</a>
             <a href="#basis-badge" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Badge</a>
-          </div>
-
-          <div class="pg-sidebar-group">
-            <p class="pg-sidebar-group-label">Site Patterns</p>
-            <a href="#site-patterns" class="pg-sidebar-link" @click="if (window.innerWidth < 769) open = false">Overview</a>
-            <a href="#doc-nav" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Navigation</a>
-            <a href="#doc-footer" class="pg-sidebar-sublink" @click="if (window.innerWidth < 769) open = false">Footer</a>
           </div>
 
         </nav><!-- /.pg-sidebar-nav -->
@@ -1123,9 +1123,6 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
            =================================================================== -->
       <section class="sg-section" id="other-components">
         <h2 class="sg-section-title">Other Components</h2>
-        <p class="sg-section-desc">
-          Components that don't fit the Primitives or Cards groups.
-        </p>
 
         <!-- ── Carousel ────────────────────────────────────────────────── -->
         <ComponentDoc
@@ -1203,15 +1200,106 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
 
 
       <!-- ===================================================================
+           SECTION: SITE PATTERNS
+           Recurring page-edge layouts that appear on every page. Not
+           reusable components in the standalone sense; they're singletons
+           that wrap every page. Documented for completeness so the design
+           system shows the full picture.
+           =================================================================== -->
+      <section class="sg-section" id="site-patterns">
+        <h2 class="sg-section-title">Site Patterns</h2>
+        <p class="sg-section-desc">
+          Recurring layouts that appear on every page.
+        </p>
+
+        <!-- ── Navigation ──────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-nav"
+          name="Navigation"
+          status="Stable"
+          purpose="Top bar with the site name and anchor links to the home page sections."
+          tokens={["--color-navy", "--color-heading", "--color-surface"]}
+        >
+          <Fragment slot="anatomy">
+            <Nav />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. The link list is hardcoded inside <code>Nav.astro</code>.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Used on every page via <code>BaseLayout</code>.</li>
+              <li>Links use <code>/#section</code> anchors so they work from any page, not just the home page.</li>
+              <li>Below 768px the links collapse into a hamburger menu.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Nav />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+
+
+        <!-- ── Footer ──────────────────────────────────────────────── -->
+        <ComponentDoc
+          id="doc-footer"
+          name="Footer"
+          status="Stable"
+          purpose="Navy panel at the bottom of every page with the name accent and contact links."
+          tokens={["--color-navy", "--color-lemon", "--color-surface"]}
+        >
+          <Fragment slot="anatomy">
+            <Footer />
+          </Fragment>
+
+          <Fragment slot="properties">
+            <table>
+              <thead>
+                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4">No props. Content is hardcoded inside <code>Footer.astro</code>.</td></tr>
+              </tbody>
+            </table>
+          </Fragment>
+
+          <Fragment slot="usage">
+            <ul>
+              <li>Used on every page via <code>BaseLayout</code>.</li>
+              <li>The lemon name accent bookends the lemon section labels at the top of each page.</li>
+              <li>No <code>margin-top</code> on the component itself; spacing is set by the parent page.</li>
+            </ul>
+          </Fragment>
+
+          <Fragment slot="code">
+            <pre><code>{`<Footer />`}</code></pre>
+          </Fragment>
+        </ComponentDoc>
+      </section>
+
+
+      <!-- ===================================================================
            SECTION: BASIS UI COMPONENTS
            Live component gallery. Toggle dark/light mode inside the preview
            using the Alpine.js button — it sets data-theme on the canvas div,
            so CSS variable overrides cascade to every component inside it.
            =================================================================== -->
       <section class="sg-section" id="basis-ui-components">
-        <h2 class="sg-section-title">Basis UI Components</h2>
+        <h2 class="sg-section-title">
+          Basis UI Components
+          <span class="sg-section-tag sg-section-tag--legacy">Legacy</span>
+        </h2>
         <p class="sg-section-desc">
-          Astro components from Basis UI, customized to match this palette. Each one is a copy-paste component — source lives in <code>src/components/ui/</code>. Toggle the preview to see dark mode.
+          Astro components from the Basis UI library, customized to match this palette. Being phased out in favor of the native Astro components above.
         </p>
 
         <h3 class="sg-subsection-title">The token pipeline</h3>
@@ -1525,93 +1613,6 @@ outline      → bg-transparent   border-2 border-border</code></pre>
       </section>
 
 
-      <!-- ===================================================================
-           SECTION: SITE PATTERNS
-           Recurring page-edge layouts that appear on every page. Not
-           reusable components in the standalone sense; they're singletons
-           that wrap every page. Documented for completeness so the design
-           system shows the full picture.
-           =================================================================== -->
-      <section class="sg-section" id="site-patterns">
-        <h2 class="sg-section-title">Site Patterns</h2>
-        <p class="sg-section-desc">
-          Recurring layouts that appear on every page. Singletons, not reusable components.
-        </p>
-
-        <!-- ── Navigation ──────────────────────────────────────────── -->
-        <ComponentDoc
-          id="doc-nav"
-          name="Navigation"
-          status="Stable"
-          purpose="Top bar with the site name and anchor links to the home page sections."
-          tokens={["--color-navy", "--color-heading", "--color-surface"]}
-        >
-          <Fragment slot="anatomy">
-            <Nav />
-          </Fragment>
-
-          <Fragment slot="properties">
-            <table>
-              <thead>
-                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
-              </thead>
-              <tbody>
-                <tr><td colspan="4">No props. The link list is hardcoded inside <code>Nav.astro</code>.</td></tr>
-              </tbody>
-            </table>
-          </Fragment>
-
-          <Fragment slot="usage">
-            <ul>
-              <li>Used on every page via <code>BaseLayout</code>.</li>
-              <li>Links use <code>/#section</code> anchors so they work from any page, not just the home page.</li>
-              <li>Below 768px the links collapse into a hamburger menu.</li>
-            </ul>
-          </Fragment>
-
-          <Fragment slot="code">
-            <pre><code>{`<Nav />`}</code></pre>
-          </Fragment>
-        </ComponentDoc>
-
-
-        <!-- ── Footer ──────────────────────────────────────────────── -->
-        <ComponentDoc
-          id="doc-footer"
-          name="Footer"
-          status="Stable"
-          purpose="Navy panel at the bottom of every page with the name accent and contact links."
-          tokens={["--color-navy", "--color-lemon", "--color-surface"]}
-        >
-          <Fragment slot="anatomy">
-            <Footer />
-          </Fragment>
-
-          <Fragment slot="properties">
-            <table>
-              <thead>
-                <tr><th>Name</th><th>Type</th><th>Default</th><th>Notes</th></tr>
-              </thead>
-              <tbody>
-                <tr><td colspan="4">No props. Content is hardcoded inside <code>Footer.astro</code>.</td></tr>
-              </tbody>
-            </table>
-          </Fragment>
-
-          <Fragment slot="usage">
-            <ul>
-              <li>Used on every page via <code>BaseLayout</code>.</li>
-              <li>The lemon name accent bookends the lemon section labels at the top of each page.</li>
-              <li>No <code>margin-top</code> on the component itself; spacing is set by the parent page.</li>
-            </ul>
-          </Fragment>
-
-          <Fragment slot="code">
-            <pre><code>{`<Footer />`}</code></pre>
-          </Fragment>
-        </ComponentDoc>
-      </section>
-
     </main>
     </div><!-- end .pg-layout -->
 
@@ -1667,7 +1668,11 @@ outline      → bg-transparent   border-2 border-border</code></pre>
           'other-components':      'Other Components',
           'doc-carousel':          'Carousel',
           'doc-theme-toggle':      'Theme Toggle',
-          // Basis UI
+          // Site Patterns
+          'site-patterns':         'Site Patterns',
+          'doc-nav':               'Navigation',
+          'doc-footer':            'Footer',
+          // Basis UI (legacy)
           'basis-ui-components':   'Basis UI',
           'basis-button':          'Button',
           'basis-text':            'Text',
@@ -1675,10 +1680,6 @@ outline      → bg-transparent   border-2 border-border</code></pre>
           'basis-divider':         'Divider',
           'basis-navbar':          'Navbar',
           'basis-badge':           'Badge',
-          // Site Patterns
-          'site-patterns':         'Site Patterns',
-          'doc-nav':               'Navigation',
-          'doc-footer':            'Footer',
         };
 
         // rootMargin '0px 0px -75% 0px' shrinks the observation window so only

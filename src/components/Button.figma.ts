@@ -1,3 +1,4 @@
+// @ts-nocheck  (documentation artifact: @figma/code-connect is not installed; see header)
 /**
  * Code Connect mapping: Figma "Button" -> src/components/Button.astro
  *

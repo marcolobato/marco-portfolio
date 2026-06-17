@@ -546,7 +546,8 @@ import ComponentDoc from '../components/docs/ComponentDoc.astro';
           A color decision starts in Figma and reaches a live component through three layers. A brand change touches one value and cascades everywhere.
         </p>
         <pre class="sg-code"><code>Step 1 — Figma variable (designer's source of truth)
-         color/navy = #081F5D
+         Primitives:  navy/900 = #081F5D
+         Tokens:      primary → navy/900   (code syntax: var(--primary))
 
 Step 2 — Brand ramp in global.css
          --navy-900: 223.8 84.2% 19.8%;   /* HSL, no hsl() wrapper */
@@ -595,54 +596,59 @@ Step 4 — Component use
           <strong>Fraunces</strong> for display headings. <strong>Geist</strong> for everything else.
         </p>
 
-        <!-- Type scale samples -->
+        <!-- Type scale, mirrors the 15 named styles in the Figma library:
+             Display x3, Headings x4, Body x3 here; Labels x3 + Mono x2 below. -->
+
+        <h3 class="sg-subsection-title" id="type-display">Display · Fraunces Bold</h3>
         <div class="sg-type-scale">
-
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-6xl · 80px · Bold</span>
-            <p class="sg-type-sample" style="font-size: var(--text-6xl); font-weight: var(--weight-bold); line-height: var(--leading-tight);">Display</p>
+            <span class="sg-type-meta">Display/Large · --text-6xl · 80px</span>
+            <p style="font-family: var(--font-display); font-size: var(--text-6xl); font-weight: var(--weight-bold); line-height: var(--leading-tight); color: var(--color-heading); margin: 0;">Display Large</p>
           </div>
-
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-5xl · 56px · Bold · h1</span>
-            <h1 class="sg-type-sample-heading">Page Title</h1>
+            <span class="sg-type-meta">Display/Medium · --text-5xl · 56px</span>
+            <p style="font-family: var(--font-display); font-size: var(--text-5xl); font-weight: var(--weight-bold); line-height: var(--leading-tight); color: var(--color-heading); margin: 0;">Display Medium</p>
           </div>
-
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-4xl · 40px · Bold · h2</span>
-            <h2 class="sg-type-sample-heading">Section Heading</h2>
+            <span class="sg-type-meta">Display/Small · --text-4xl · 40px</span>
+            <p style="font-family: var(--font-display); font-size: var(--text-4xl); font-weight: var(--weight-bold); line-height: var(--leading-tight); color: var(--color-heading); margin: 0;">Display Small</p>
           </div>
+        </div>
 
+        <h3 class="sg-subsection-title" id="type-headings" style="margin-top: var(--space-2xl);">Headings · Fraunces</h3>
+        <div class="sg-type-scale">
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-3xl · 32px · Bold · h3</span>
-            <h3 class="sg-type-sample-heading">Subsection</h3>
+            <span class="sg-type-meta">Heading/H1 · Bold · --text-3xl · 32px</span>
+            <p style="font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-bold); line-height: var(--leading-tight); color: var(--color-heading); margin: 0;">Heading H1</p>
           </div>
-
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-2xl · 24px · Medium</span>
-            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--color-heading); margin: 0;">Hero title / Now statement</p>
+            <span class="sg-type-meta">Heading/H2 · Bold · --text-2xl · 24px</span>
+            <p style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-bold); line-height: var(--leading-tight); color: var(--color-heading); margin: 0;">Heading H2</p>
           </div>
-
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-lg · 18px · Regular · Body lead</span>
-            <p style="font-size: var(--text-lg); margin: 0;">I'm a product designer who works at the intersection of emerging technology and human experience.</p>
+            <span class="sg-type-meta">Heading/H3 · SemiBold · --text-xl · 20px</span>
+            <p style="font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; color: var(--color-heading); margin: 0;">Heading H3</p>
           </div>
-
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-base · 16px · Regular · Body</span>
-            <p style="margin: 0;">Default body text. Comfortable for long-form reading. Max-width is capped at 65ch to maintain an ideal line length.</p>
+            <span class="sg-type-meta">Heading/H4 · SemiBold · --text-lg · 18px</span>
+            <p style="font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; color: var(--color-heading); margin: 0;">Heading H4</p>
           </div>
+        </div>
 
+        <h3 class="sg-subsection-title" id="type-body" style="margin-top: var(--space-2xl);">Body · Geist Regular</h3>
+        <div class="sg-type-scale">
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-sm · 14px · Regular · UI text</span>
-            <p style="font-size: var(--text-sm); margin: 0;">Navigation links, footer links, secondary labels.</p>
+            <span class="sg-type-meta">Body/Large · --text-lg · 18px</span>
+            <p style="font-size: var(--text-lg); margin: 0;">Body Large, for lead paragraphs and intros.</p>
           </div>
-
           <div class="sg-type-row">
-            <span class="sg-type-meta">--text-xs · 12px · Bold · Label</span>
-            <p class="section-label" style="margin: 0;">Section Label</p>
+            <span class="sg-type-meta">Body/Base · --text-base · 16px</span>
+            <p style="margin: 0;">Body Base, the default reading text. Measure stays near 65ch for comfortable line length.</p>
           </div>
-
+          <div class="sg-type-row">
+            <span class="sg-type-meta">Body/Small · --text-sm · 14px</span>
+            <p style="font-size: var(--text-sm); margin: 0;">Body Small, for secondary and supporting copy.</p>
+          </div>
         </div>
 
         <!-- ── Labels & mono ───────────────────────────────────────────

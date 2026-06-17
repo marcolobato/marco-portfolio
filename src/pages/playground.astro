@@ -645,6 +645,41 @@ Step 4 — Component use
 
         </div>
 
+        <!-- ── Labels & mono ───────────────────────────────────────────
+             The label and monospace styles, kept in parity with the Figma
+             library (Label/Large–Small, Mono/Label, Mono/Code). -->
+        <h3 class="sg-subsection-title" id="labels-mono" style="margin-top: var(--space-3xl);">Labels &amp; mono</h3>
+        <p class="sg-section-desc" style="margin-bottom: var(--space-lg);">
+          UI label sizes and monospace styles, matching the Figma library.
+        </p>
+
+        <div class="sg-type-scale">
+          <div class="sg-type-row">
+            <span class="sg-type-meta">--text-base · 16px · Medium · Label/Large</span>
+            <p style="font-size: var(--text-base); font-weight: var(--weight-medium); margin: 0;">Form labels, prominent UI</p>
+          </div>
+
+          <div class="sg-type-row">
+            <span class="sg-type-meta">--text-sm · 14px · Medium · Label/Medium</span>
+            <p style="font-size: var(--text-sm); font-weight: var(--weight-medium); margin: 0;">Buttons, inputs, nav</p>
+          </div>
+
+          <div class="sg-type-row">
+            <span class="sg-type-meta">--text-xs · 12px · Medium · Label/Small</span>
+            <p style="font-size: var(--text-xs); font-weight: var(--weight-medium); letter-spacing: 0.03em; margin: 0;">Captions, meta, tags</p>
+          </div>
+
+          <div class="sg-type-row">
+            <span class="sg-type-meta">Geist Mono · 13px · Mono/Label</span>
+            <p style="font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; margin: 0;">Eyebrow / tag</p>
+          </div>
+
+          <div class="sg-type-row">
+            <span class="sg-type-meta">Geist Mono · 14px · Mono/Code</span>
+            <p style="font-family: var(--font-mono); font-size: var(--text-sm); margin: 0;">const token = "var(--primary)";</p>
+          </div>
+        </div>
+
         <!-- ── Text Link ────────────────────────────────────────────────
              A CSS class (not a component) that styles inline links inside
              prose. Documented here because it's a typographic treatment,

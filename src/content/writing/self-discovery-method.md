@@ -122,6 +122,16 @@ these pairs, each captioned with the one word that traveled.
 
 [IMAGE NEEDED: screenshot of a gallery pair in the corridor, ideally the Hiroshige and Van Gogh page with "flatness"]
 
+## Make your own tools
+
+Here is the part that still delights me: the same AI that kept
+pulling me toward its house styles helped me build the speedbump
+that slows it down. This prototype was made in conversation with an
+AI pair, from the 3D paper room built out of the 2004 scans to the
+research citations behind the method. We can now make our own tools
+for creativity, fitted to our own stuck moments. Mine is this one;
+I am sharing it as inspiration for yours.
+
 ## Try it
 
 The prototype walks all four moves in a small 3D paper space built
@@ -129,6 +139,11 @@ from the real 2004 scans: [LINK NEEDED: deployed URL once intro-hall
 merges to main].
 
 Or skip the software. One artifact, a few quiet minutes, one word,
-one small new thing.
+one small new thing. A little speedbump in the middle of your
+workday, and back to work you go.
+
+When you finish, put the new thing next to the original and post the
+pair with **#SpeedBumps**. The tag is how the next stuck person finds
+their way here, and how I get to see what your first work knew.
 
 What did your first work care about?

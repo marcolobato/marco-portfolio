@@ -57,8 +57,8 @@ the same kind of trade, old material answered with new tools:
 ![2000 logo made with Photoshop's plastic filter](/images/writing/self-discovery-method/02-logo-2000.png)
 *The 2000 logo: Photoshop's plastic filter, cut paper, the hand that shows.*
 
-![The 2026 cover render](/images/writing/self-discovery-method/03-cover-2026.png)
-*The 2026 cover: Midjourney, steered by what the original cared about.*
+![The 2026 Midjourney reinterpretation](/images/writing/self-discovery-method/03-silhouette-2026.png)
+*The 2026 reinterpretation: Midjourney, steered by what the original cared about.*
 
 [IMAGE NEEDED: 2–3 of the rejected Midjourney iterations that "looked like everyone else's," for the before-the-before]
 

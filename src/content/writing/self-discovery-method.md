@@ -1,5 +1,5 @@
 ---
-title: "What Your First Work Already Knows: Turning My 2004 Flash Site Into a Self-Discovery Exercise"
+title: "What Your First Work Already Knows: Turning My 2000 Flash Site Into a Self-Discovery Exercise"
 date: 2026-07-14
 description: "Rebuilding my first website taught me a four-move exercise for the moment AI pulls your work away from you. The research says it works."
 image: "/images/writing/self-discovery-method/01-cover.png"
@@ -16,7 +16,7 @@ I noticed the method while rebuilding my first Flash website, the
 research explains why it works, and by the end you can run it
 yourself in an afternoon.
 
-![IMAGE NEEDED: cover — the prototype's corridor or a collage of the 2004 site and the 2026 rebuild](/images/writing/self-discovery-method/01-cover.png)
+![IMAGE NEEDED: cover — the prototype's corridor or a collage of the 2000 site and the 2026 rebuild](/images/writing/self-discovery-method/01-cover.png)
 
 ## The moment this is for
 
@@ -33,10 +33,10 @@ reflect, then continue.
 
 ## Where it came from
 
-My first Flash homepage went up in 2004, built with whatever was at
-my disposal: the logo I had made in 2000 with Photoshop's new
-plastic filter, newspaper cutouts for the collage, animation learned
-one frame at a time.
+My first Flash homepage went up in 2000, built with whatever was at
+my disposal: a logo shaped by Photoshop's new plastic filter, sharpie
+markers and newspaper cutouts for the collage, animation learned one
+frame at a time.
 
 Twenty-two years later I dug it up and rebuilt it with the
 technology I have today. Working through the rebuild, I kept making
@@ -48,14 +48,14 @@ the same kind of trade, old material answered with new tools:
   render with that essence gave me an image that finally felt like
   mine.
 - **The look and feel.** The old site's paper texture, scanned from
-  the real 2004 assets, recreated as a live 3D material instead of a
+  the real 2000 assets, recreated as a live 3D material instead of a
   Flash bitmap.
 - **The concept.** The original site existed to get people inspired
   into their own work. That intention carried forward whole; only
   the medium changed.
 
 ![2000 logo made with Photoshop's plastic filter](/images/writing/self-discovery-method/02-logo-2000.png)
-*The 2000 logo: Photoshop's plastic filter, cut paper, the hand that shows.*
+*The 2000 logo: Photoshop's plastic filter, sharpie markers, cut paper, the hand that shows.*
 
 ![The 2026 Midjourney reinterpretation](/images/writing/self-discovery-method/03-silhouette-2026.png)
 *The 2026 reinterpretation: Midjourney, steered by what the original cared about.*
@@ -127,7 +127,7 @@ these pairs, each captioned with the one word that traveled.
 Here is the part that still delights me: the same AI that kept
 pulling me toward its house styles helped me build the speedbump
 that slows it down. This prototype was made in conversation with an
-AI pair, from the 3D paper room built out of the 2004 scans to the
+AI pair, from the 3D paper room built out of the 2000 scans to the
 research citations behind the method. We can now make our own tools
 for creativity, fitted to our own stuck moments. Mine is this one;
 I am sharing it as inspiration for yours.
@@ -135,7 +135,7 @@ I am sharing it as inspiration for yours.
 ## Try it
 
 The prototype walks all four moves in a small 3D paper space built
-from the real 2004 scans: [LINK NEEDED: deployed URL once intro-hall
+from the real 2000 scans: [LINK NEEDED: deployed URL once intro-hall
 merges to main].
 
 Or skip the software. One artifact, a few quiet minutes, one word,

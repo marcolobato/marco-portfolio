@@ -55,7 +55,7 @@ the same kind of trade, old material answered with new tools:
   the medium changed.
 
 ![2000 logo made with Photoshop's plastic filter](/images/writing/self-discovery-method/02-logo-2000.png)
-*The 2000 logo: Photoshop's plastic filter, sharpie markers, cut paper, the hand that shows.*
+*The 2000 logo. Analog collage and digital manipulation: newspaper cutouts, markers, and Photoshop plastic filter.*
 
 ![The 2026 Midjourney reinterpretation](/images/writing/self-discovery-method/03-silhouette-2026.png)
 *The 2026 reinterpretation: Midjourney, steered by what the original cared about.*

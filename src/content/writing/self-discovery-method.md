@@ -33,17 +33,17 @@ reflect, then continue.
 
 ## Where it came from
 
-In 2004 I built my first Flash homepage with whatever was at my
-disposal: Photoshop and its brand-new filters (the plastic filter
-shaped the logo), newspaper cutouts for the collage, animation
-learned one frame at a time.
+My first Flash homepage went up in 2004, built with whatever was at
+my disposal: the logo I had made in 2000 with Photoshop's new
+plastic filter, newspaper cutouts for the collage, animation learned
+one frame at a time.
 
 Twenty-two years later I dug it up and rebuilt it with the
 technology I have today. Working through the rebuild, I kept making
 the same kind of trade, old material answered with new tools:
 
 - **The cover.** Instead of accepting Midjourney's house styles, I
-  went back to the 2004 logo and asked what it cared about. The
+  went back to the 2000 logo and asked what it cared about. The
   plastic shine, the cut paper, the hand that shows. Steering the
   render with that essence gave me an image that finally felt like
   mine.
@@ -54,8 +54,8 @@ the same kind of trade, old material answered with new tools:
   into their own work. That intention carried forward whole; only
   the medium changed.
 
-![2004 logo made with Photoshop's plastic filter](/images/writing/self-discovery-method/02-logo-2004.png)
-*The 2004 logo: Photoshop's plastic filter, cut paper, the hand that shows.*
+![2000 logo made with Photoshop's plastic filter](/images/writing/self-discovery-method/02-logo-2000.png)
+*The 2000 logo: Photoshop's plastic filter, cut paper, the hand that shows.*
 
 ![The 2026 cover render](/images/writing/self-discovery-method/03-cover-2026.png)
 *The 2026 cover: Midjourney, steered by what the original cared about.*

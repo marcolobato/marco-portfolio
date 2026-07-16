@@ -135,8 +135,8 @@ I am sharing it as inspiration for yours.
 ## Try it
 
 The prototype walks all four moves in a small 3D paper space built
-from the real 2000 scans: [LINK NEEDED: deployed URL once intro-hall
-merges to main].
+from the real 2000 scans:
+[ai-speedbumps.pages.dev](https://ai-speedbumps.pages.dev).
 
 Or skip the software. One artifact, a few quiet minutes, one word,
 one small new thing. A little speedbump in the middle of your

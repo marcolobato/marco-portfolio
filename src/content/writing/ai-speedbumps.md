@@ -73,12 +73,12 @@ Two favorites. Nothing in the hallway moves 1:1 with your hand: every input sets
 
 That is the whole story: one exercise, prototyped by myself in two modalities in a day, a static page and a spatial one, by using the exercise on my own archive. And I stopped there on purpose. New sound effects in ElevenLabs, alternate spatial arrangements, refining the cards with the component variants I built in Figma, and a workflow that generates fresh gallery examples as you walk: all of it goes on the next list, because a prototype's first job is to validate the idea, not to grow.
 
-The question I want to test first: does taking the break in an immersive space leave you more creative than reading the same four steps on a static page? My hypothesis is that a tangible space nudges you back from the screen, toward the real artifacts within reach of your desk. It already worked on me once. Running the exercise at my own desk, the embossed logos on my mouse and desk mat caught my eye, and I ended up making embossed explorations of the AI Speedbumps mark.
+The question I want to test first: does taking the break in an immersive space leave you more creative than reading the same four steps on a static page? My hypothesis is that a tangible space nudges you back from the screen, toward the real artifacts within reach of your desk. It already worked on me once. Running the exercise at my own desk, the embossed texture on my mouse and desk mat caught my eye, and the word followed me into the rest of my visual design work: I kept playing with embossing wherever it fit.
 
-![The AI Speedbumps pinwheel mark embossed into black textured paper, lit at a raking angle](/images/writing/ai-speedbumps/04-embossed-logo.png)
-*Embossed exploration of the mark, made right after running the exercise at my own desk. The break produced new work, which is the whole point.*
+![An embossed mark pressed into black textured paper, lit at a raking angle](/images/writing/ai-speedbumps/04-embossed-logo.png)
+*Embossed exploration, made right after running the exercise at my desk. One word, still traveling.*
 
-So the ask is not to try my prototype. It is to take the break. Find something you made, and let one word travel.
+Find something you made. Play with the word it gives you.
 
 The 2000 site ended its welcome text with an ask that never got an answer: *I'll try! What about u?*
 

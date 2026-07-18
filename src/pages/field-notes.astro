@@ -5,9 +5,11 @@
 //
 // Sections, top to bottom:
 //   1. Header (page title + description)
-//   2. Multimodal work — featured experiments shown with FieldNoteCard
-//   3. Past entries — older Medium articles
-//   4. Design concept glossary — terms + one-line definitions
+//   2. Design systems — audits, rebuilds, token architecture
+//   3. Prototyping — interactive prototypes built to learn a new medium
+//   4. Multimodal work — featured experiments shown with FieldNoteCard
+//      (includes the Design concept glossary as a sub-section)
+//   5. Past entries — older Medium articles
 import '../styles/global.css';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -89,6 +91,16 @@ const designSystemsCards = designSystemsIds
     exploreLabel: 'Read more',
   }));
 
+// ── Prototyping ───────────────────────────────────────────────────────────
+// Interactive prototypes built to learn a new medium — 3D spaces, shaders,
+// spatial audio. Same FieldNoteCard component and manual ordering as the
+// sections above.
+const prototypingIds = ['ai-speedbumps'];
+const prototypingCards = prototypingIds
+  .map(id => allPosts.find(p => p.id === id))
+  .filter(Boolean)
+  .map(toCardProps);
+
 // ── Past entries ──────────────────────────────────────────────────────────
 // Earlier writing on AI, design, and physical spaces. These are Medium
 // articles ported into the writing collection; they live in Past entries
@@ -151,6 +163,36 @@ const pastEntries = allPosts
             toolsLabel={card.toolsLabel}
             exploreHref={card.exploreHref}
             exploreLabel={card.exploreLabel}
+            artifact={card.artifact}
+          />
+        ))}
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================================
+         SECTION: PROTOTYPING
+         Interactive prototypes built to learn a new medium. Same
+         FieldNoteCard component and .multimodal-cards stack as the
+         sections around it. Sits after Design systems by design — the
+         page opens with the systems work, then the prototypes.
+         =================================================================== -->
+    <section class="sg-section" id="prototyping">
+
+      <h2 style="margin-bottom: var(--space-md);">Prototyping</h2>
+
+      <p class="sg-header-desc" style="max-width: 72ch; margin-bottom: var(--space-xl);">
+        Working prototypes I build with AI to learn each new medium as if it were a material: walkable 3D spaces, spatial audio, shaders, hardware interfaces. Every entry ships as something you can open and try.
+      </p>
+
+      <div class="multimodal-cards">
+        {prototypingCards.map(card => (
+          <FieldNoteCard
+            title={card.title}
+            body={card.body}
+            tools={card.tools}
+            exploreHref={card.exploreHref}
             artifact={card.artifact}
           />
         ))}

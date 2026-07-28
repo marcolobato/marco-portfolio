@@ -126,15 +126,17 @@ Caught by simulating a UTC clock before deploying rather than after. If you're b
 
 ## Still open
 
-**Delivery to the device isn't confirmed.** The plugin renders correctly in the platform's own preview, but no screen has reached a display yet. The log shows check-ins with nothing sent. I rate-limited myself by testing too eagerly, so I'm waiting it out before debugging further. Not blocking anything.
+**Delivery to a physical screen isn't confirmed yet.** The plugin renders correctly in the platform's own preview, but nothing has reached a display. The log shows check-ins with nothing sent, and I rate-limited myself by testing too eagerly, so I'm waiting it out before debugging further. The order came with a virtual device, so I can keep building while the hardware ships.
 
-**Hardware. This is where I'd like a second opinion.** My old Kindle is too old to qualify. Options:
+**Hardware: decided. I ordered a TRMNL OG.**
 
-- **Used Kobo** ($20 to $90): no jailbreak, just a file copy. Aura ONE at 7.8" is closest to what I designed against
-- **Android e-ink** ($150 to $400): official app, least fiddly, most expensive
-- **An iPad I already own:** free, works today, but LCD rather than e-ink
+I looked at three other routes first. A used Kobo ($20 to $90) needs no jailbreak, just a file copy, and the Aura ONE at 7.8" is closest to the canvas I designed against. An Android e-ink tablet ($150 to $400) runs the official app with the least fiddling and the most cost. An old iPad I already own is free and works today, but it's LCD rather than e-ink, which defeats the point of a thing that should look like paper on a wall.
 
-Leaning Kobo Aura ONE. The grey-level difference matters more than resolution for photographs of paintings, which is the one thing I know now that I didn't this morning.
+I went with the OG knowing it's the constrained option. The X has sixteen native grey levels and would handle dark oils better. Two things changed my mind: TRMNL's own dithering turned out to be far better than my local previewer suggested, and the OG supports a 2-bit mode I hadn't switched on, which gives four levels instead of two. Between them, most of the mud I was seeing is recoverable.
+
+What's left is a curation question rather than a hardware one. If dark Baroque oils never render well, I can change what the plugin asks for. That's a design decision I'd rather own than buy my way out of.
+
+Everything up to the order cost nothing. The four layouts, the type scale, the truncation rules and the failure states were all designed and tested before any hardware existed.
 
 ## One for the group chat
 
@@ -146,11 +148,3 @@ I generated the marketplace preview image today, ready for when the plugin is pu
 It pulls a random object, and The Met's collection is furniture and armour and pottery as well as paintings. But it's a useful accident: it shows that *"random public-domain artwork"* is a much wider net than *"painting,"* and my search query is doing more work than I'd given it credit for.
 
 Genuine open question rather than a joke: do I narrow the query to paintings and prints, or is a chair on a Tuesday part of the charm? I lean toward keeping it. A frame that occasionally shows you a beautifully dithered eighteenth-century chair is more interesting than one that never surprises you.
-
-## Next
-
-1. Confirm delivery once the rate limit clears
-2. Decide hardware
-3. Phase 2: painting on one half, a runner's quote on the other
-
-Total spend so far: nothing. Everything above, the four layouts, the type scale, the truncation rules, the failure states, was designed and tested before owning any hardware.

@@ -95,11 +95,48 @@ const designSystemsCards = designSystemsIds
 // Interactive prototypes built to learn a new medium — 3D spaces, shaders,
 // spatial audio. Same FieldNoteCard component and manual ordering as the
 // sections above.
-const prototypingIds = ['trmnl-art-plugin', 'ai-speedbumps'];
-const prototypingCards = prototypingIds
+const prototypingIds = ['ai-speedbumps'];
+const collectionPrototypingCards = prototypingIds
   .map(id => allPosts.find(p => p.id === id))
   .filter(Boolean)
   .map(toCardProps);
+
+// TRMNL art plugin — card only, no long-form article. Same arrangement as
+// Marco's Briefcase above: the data lives here inline because there's no
+// post in the writing collection to pull it from. The draft is parked at
+// src/content/drafts/trmnl-art-plugin.md (outside the glob, so no page is
+// generated). To publish it later, move that file back into
+// src/content/writing, add 'trmnl-art-plugin' to prototypingIds above, and
+// delete this object.
+//
+// exploreHref is undefined on purpose, which hides the "Explore experiment"
+// link — the artifact caption is the only destination on this card.
+const trmnlPlugin = {
+  title: 'Art from The Met: My first plugin for the TRMNL E Ink device',
+  body: [
+    'A non-distracting wall display that shows the date with a different public-domain painting from The Met each day.',
+    'I decided to finally get to prototyping and build some E Ink plugins for myself, and have control over the experience of my home displays.',
+    'The <a href="https://trmnl.com/" target="_blank" rel="noopener">TRMNL OG</a> has a 1-bit e-ink screen: no colour, no animation, and it redraws every 15 minutes at most. What started as a prototype to learn more about their UI Framework ended as a functional plugin.',
+  ].join('\n\n'),
+  tools: [
+    { label: 'Claude Code in VS' },
+    { label: 'TRMNL' },
+    { label: 'Cloudflare Workers' },
+    { label: 'Met Collection API' },
+  ],
+  exploreHref: undefined,
+  artifact: {
+    image:   '/images/field-notes/trmnl-art-plugin-artifact.png',
+    alt:     '',
+    // Placeholder link: points at the TRMNL store index until the plugin is
+    // published. Swap for its own recipe URL once the licence arrives.
+    caption: 'A painting a day on your own device. Get my TRMNL plugin.',
+    href:    'https://trmnl.com/integrations',
+  },
+};
+
+// Newest first, so the TRMNL card sits above AI Speedbumps.
+const prototypingCards = [trmnlPlugin, ...collectionPrototypingCards];
 
 // ── Past entries ──────────────────────────────────────────────────────────
 // Earlier writing on AI, design, and physical spaces. These are Medium

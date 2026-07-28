@@ -1,12 +1,14 @@
 ---
-title: "Art from The Met: designing a plugin for an e-ink device"
+title: "Art from The Met: My first plugin for the TRMNL E Ink device"
 date: 2026-07-27
-description: "A day spent learning to design for a 1-bit screen, ending with a working plugin deployed to real hardware."
+description: "A non-distracting wall display that shows the date with a different public-domain painting from The Met each day."
 image: "/images/writing/trmnl-art-plugin/01-cover.png"
 cardSummary: |-
-  A wall display that shows a different public-domain painting from The Met each day, with the date in the corner so it earns its place. Built, deployed and running in a day.
+  A non-distracting wall display that shows the date with a different public-domain painting from The Met each day.
 
-  I wanted to design for a physical object rather than another browser window. A 1-bit e-ink screen has no colour, no animation, no hover state, and redraws every 15 minutes, so every habit from web design either transfers or gets in the way. I designed four layouts with a rule for what gets cut as space shrinks, then found the real bugs by rendering it and looking: a painting squeezed to zero width, dark oils turning to mud, type that vanished on the larger device. It started as a prototype and ended as a functional plugin.
+  I decided to finally get to prototyping and build some E Ink plugins for myself, and have control over the experience of my home displays.
+
+  The <a href="https://trmnl.com/" target="_blank" rel="noopener">TRMNL OG</a> has a 1-bit e-ink screen: no colour, no animation, and it redraws every 15 minutes at most. What started as a prototype to learn more about their UI Framework ended as a functional plugin.
 tools:
   - label: "Claude Code in VS"
   - label: "TRMNL"

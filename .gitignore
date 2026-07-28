@@ -38,3 +38,8 @@ pnpm-debug.log*
 scratch-*
 *.local.*
 /scratch/
+
+# Claude Code's local config. Both files hardcode absolute paths to this
+# machine (and to other projects on it), so they are meaningless elsewhere
+# and would publish your folder structure. Ignore the whole folder.
+.claude/

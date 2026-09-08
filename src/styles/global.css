@@ -957,7 +957,7 @@ hr {
 
 .work-desc {
   /* Consistent max-width with expertise paragraph */
-  max-width: 72ch;
+  max-width: 65ch;
   margin-bottom: var(--space-2xl);
   line-height: var(--leading-relaxed);
 }
@@ -968,7 +968,7 @@ hr {
 .work-desc-list {
   list-style: disc;
   padding-left: var(--space-xl);
-  max-width: 72ch;
+  max-width: 65ch;
   line-height: var(--leading-relaxed);
   margin-bottom: var(--space-2xl);
 }
@@ -1023,7 +1023,7 @@ hr {
 
 .now-text {
   color: var(--color-charcoal);
-  max-width: 72ch;
+  max-width: 65ch;
   line-height: var(--leading-relaxed);
   margin-bottom: var(--space-xl);
 }
@@ -2246,7 +2246,7 @@ code {
 }
 
 .expertise-desc {
-  max-width: 72ch;
+  max-width: 65ch;
   margin-bottom: var(--space-2xl);
 }
 

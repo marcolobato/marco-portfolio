@@ -183,3 +183,9 @@ bridge paragraph and the More Projects intro below it. Halved the four bullets, 
 the four card pattern labels in prose. Section went from 287 words to 204. Still open for a design
 pass: .work-desc is 72ch while the rest of the site is 65ch, bolding the bullet ledes, and making
 the card flip affordance clearer than 12px "Tap for details".
+
+2026-09-08 | measure-65ch | Narrowed the homepage prose measure from 72ch to 65ch. NOTE: 72ch was
+the homepage convention across four rules (.work-desc, .work-desc-list, .expertise-desc, .now-text),
+not a Selected Work anomaly, so all four changed together. Changing one alone would have made that
+section wrap differently from its neighbours. Selected Work now matches the 65ch used for article
+prose site-wide.

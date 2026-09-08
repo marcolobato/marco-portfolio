@@ -1102,7 +1102,7 @@ Step 4 — Component use
           id="doc-work-card"
           name="Work Card"
           status="Stable"
-          purpose="Flip card showing a project thumbnail on the front and case details on the back."
+          purpose="Flip card showing a project thumbnail on the front and case details on the back. Two controls sit together in the top-right: a magnifier that opens the lightbox and a rotate glyph that flips the card. Can optionally link out to a full case study."
           tokens={["--color-navy", "--color-surface", "--color-royal-blue", "--color-citrine"]}
         >
           <Fragment slot="anatomy">
@@ -1122,6 +1122,33 @@ Step 4 — Component use
             </div>
           </Fragment>
 
+          <Fragment slot="variants">
+            <p>
+              With <code>href</code> set and assistive-input channels. Flip it to see the
+              case-study link below the Outcome block. Note the back face has no magnifier:
+              the lightbox shows less than the back already does.
+            </p>
+            <div style="max-width: 360px;">
+              <WorkCard
+                id="doc-demo-systems"
+                pattern="Pattern label"
+                title="Card with a case-study link"
+                backHeading="Back face heading"
+                backParagraphs={["The link only appears when href is passed."]}
+                stats={[{ value: "Stat value", desc: "and its description, one size" }]}
+                image="/images/playground-placeholder.svg"
+                imageAlt=""
+                channels={[
+                  { type: "keyboard", label: "keyboard" },
+                  { type: "screenreader", label: "screen reader" },
+                  { type: "switch", label: "switch" }
+                ]}
+                lightboxDesc="Lightbox description text."
+                href="/playground"
+              />
+            </div>
+          </Fragment>
+
           <Fragment slot="properties">
             <table>
               <thead>
@@ -1136,9 +1163,10 @@ Step 4 — Component use
                 <tr><td><code>stats</code></td><td><code>Stat[]</code></td><td>required</td><td>Highlight stats on the back face.</td></tr>
                 <tr><td><code>image</code></td><td><code>string</code></td><td>required</td><td>Front-face thumbnail.</td></tr>
                 <tr><td><code>imageAlt</code></td><td><code>string</code></td><td><code>""</code></td><td>Image alt text. Empty marks it decorative.</td></tr>
-                <tr><td><code>channels</code></td><td><code>Channel[]</code></td><td>required</td><td>Channel dots (voice, screen, camera, gesture, gaze).</td></tr>
+                <tr><td><code>channels</code></td><td><code>Channel[]</code></td><td>required</td><td>Channel dots. Interaction types: voice, screen, camera, gesture, gaze. Assistive input types: keyboard, screenreader, switch. The three assistive types deliberately share one colour because they are one category, and eight distinct dot colours is more than a 5px circle can carry.</td></tr>
                 <tr><td><code>lightboxDesc</code></td><td><code>string</code></td><td>required</td><td>Description shown when the lightbox opens.</td></tr>
                 <tr><td><code>eager</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Hints the image loader to fetch eagerly for above-the-fold cards.</td></tr>
+                <tr><td><code>href</code></td><td><code>string</code></td><td>optional</td><td>When set, the back face shows a "Read the full case study" link below the Outcome block. Cards without it stay self-contained.</td></tr>
               </tbody>
             </table>
           </Fragment>
@@ -1146,8 +1174,11 @@ Step 4 — Component use
           <Fragment slot="usage">
             <ul>
               <li>Use in the Selected Work section on the home page.</li>
-              <li>Click the card to flip; click the expand button to open the lightbox.</li>
-              <li>Set <code>eager</code> on the first one or two cards that appear above the fold to speed up first paint.</li>
+              <li>Two controls sit together in the top-right. The magnifier opens the lightbox, the rotate glyph flips the card. Flip is rightmost so it stays in the same place when the card turns and the magnifier disappears.</li>
+              <li>The whole card surface also flips. The rotate button exists to signal that at rest, which matters on touch where there is no hover, and to make the card keyboard-operable. It has no click handler of its own; the click bubbles to the card.</li>
+              <li>The back face has no magnifier. The lightbox only renders the thumbnail and a one-line caption, which is less information than the back already shows, so "expand" there returned less than it promised.</li>
+              <li>Whichever face is turned away is marked <code>inert</code>, so keyboard users never tab into controls they cannot see.</li>
+              <li>Set <code>eager</code> on the first one or two cards above the fold to speed up first paint.</li>
             </ul>
           </Fragment>
 
@@ -1162,6 +1193,7 @@ Step 4 — Component use
   image="/images/work/thumb.png"
   channels={[{ type: "voice", label: "voice" }]}
   lightboxDesc="Description when expanded."
+  href="/work/some-case-study"
 />`}</code></pre>
           </Fragment>
         </ComponentDoc>

@@ -87,16 +87,41 @@ const {
     {/* ── FRONT ── */}
     <div class="work-card__front">
       <div class="work-card__image-area">
-        {/* Expand button — opens lightbox via parent JS */}
-        <button
-          class="work-card__btn work-card__btn--expand"
-          data-action="expand"
-          aria-label={`Expand ${title}`}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-          </svg>
-        </button>
+        {/* Both controls sit in one group. Splitting them across opposite
+            corners implied they belonged to different things. Flip is rightmost
+            so it stays in exactly the same place when the card turns over and
+            the expand button disappears. */}
+        <div class="work-card__actions">
+          <button
+            class="work-card__btn work-card__btn--expand"
+            data-action="expand"
+            aria-label={`Enlarge the image for ${title}`}
+            title="Enlarge image"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="m20 20-3.5-3.5"/>
+              <path d="M11 8v6"/>
+              <path d="M8 11h6"/>
+            </svg>
+          </button>
+
+          {/* Flip has no click handler of its own: the click bubbles up to the
+              card, which already toggles .flipped. Being a real <button> makes
+              the card keyboard-operable for the first time. */}
+          <button
+            class="work-card__btn work-card__btn--flip"
+            aria-label={`Show case detail for ${title}`}
+            title="Flip for details"
+          >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+              <path d="M21 21v-5h-5"/>
+            </svg>
+          </button>
+        </div>
 
         {/* Static thumbnail */}
         <img
@@ -121,26 +146,30 @@ const {
       <div class="work-card__footer">
         <div class="work-card__pattern">{pattern}</div>
         <div class="work-card__title">{title}</div>
-        <div class="work-card__hint">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-          Flip for details
-        </div>
       </div>
     </div>
 
     {/* ── BACK ── */}
     <div class="work-card__back">
-      <button
-        class="work-card__btn work-card__btn--expand work-card__btn--back"
-        data-action="expand"
-        aria-label={`Expand ${title}`}
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-        </svg>
-      </button>
+      {/* No expand button here. The lightbox only ever showed the thumbnail and
+          a one-line caption, which is LESS than the case detail already on this
+          face, so "expand" was returning less information than it promised.
+          Same .work-card__actions wrapper as the front, so the flip button lands
+          in the identical position when the card turns. */}
+      <div class="work-card__actions">
+        <button
+          class="work-card__btn work-card__btn--flip"
+          aria-label={`Return to ${title}`}
+          title="Flip back"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+            <path d="M21 21v-5h-5"/>
+          </svg>
+        </button>
+      </div>
       <div class="work-card__back-label">Case Detail</div>
       <h3 class="work-card__back-heading">{backHeading}</h3>
       <div class="work-card__back-body">
@@ -165,7 +194,6 @@ const {
           </svg>
         </a>
       )}
-      <div class="work-card__back-hint">Flip back</div>
     </div>
 
   </div>
@@ -259,8 +287,19 @@ const {
   }
 
   /* ── Buttons ── */
-  .work-card__btn {
+  /* One action row, top-right, on both faces. On the back the inner + back
+     rotations combine to 360deg, so right: 10px still lands on the visual
+     right. */
+  .work-card__actions {
     position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+    z-index: 20;
+  }
+
+  .work-card__btn {
     width: 28px;
     height: 28px;
     border-radius: 7px;
@@ -271,7 +310,6 @@ const {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 20;
     transition: background 0.2s, transform 0.2s;
     box-shadow: 0 1px 4px hsl(var(--deep-navy-hsl, 224 83% 20%) / 0.08);
   }
@@ -281,25 +319,26 @@ const {
     transform: scale(1.08);
   }
 
+  /* The card was a <div> with a click handler, so it could not be operated by
+     keyboard at all. These are real buttons now, so they need a visible focus
+     ring.
+
+     box-shadow, NOT outline. These buttons sit inside a preserve-3d /
+     backface-visibility context, where each card face is composited as its own
+     layer and outlines frequently fail to paint. box-shadow renders reliably.
+     The dark-mode equivalent lives in global.css because the dark override for
+     .work-card__btn sets box-shadow at a specificity this scoped rule cannot
+     beat. */
+  .work-card__btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-royal-blue);
+  }
+
   .work-card__btn svg {
     width: 14px;
     height: 14px;
     /* Always dark navy — readable against the white/frosted button in both modes.
        --color-navy is locked to #081F5D and never flips in dark mode (see global.css). */
     color: var(--color-navy);
-  }
-
-  .work-card__btn--expand {
-    top: 10px;
-    right: 10px;
-  }
-
-  /* Back face expand button — inner+back combined = 360deg = normal orientation.
-     right: 10px here correctly lands on the visual right side when flipped. */
-  .work-card__btn--back {
-    position: absolute;
-    top: 10px;
-    right: 10px;
   }
 
   /* ── Channel Strip ── */
@@ -392,20 +431,6 @@ const {
     line-height: var(--leading-normal);
   }
 
-  .work-card__hint {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-regular);
-    color: var(--color-charcoal);
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .work-card__hint svg {
-    width: 12px;
-    height: 12px;
-  }
-
   /* ── Back ── */
   .work-card__back {
     background: hsl(var(--card));
@@ -433,7 +458,8 @@ const {
   }
 
   .work-card__back-heading {
-    font-size: 1.05rem;
+    /* was a raw 1.05rem, which existed nowhere else in the type scale */
+    font-size: var(--text-base);
     font-weight: 500;
     color: hsl(var(--foreground));
     margin-bottom: 0.85rem;
@@ -470,22 +496,38 @@ const {
     margin-bottom: 0.4rem;
   }
 
+  /* Stacked, not side by side. These read as sentences, not metrics, and a row
+     of columns crushed the longer ones. */
   .work-card__result-stats {
     display: flex;
-    gap: 1.25rem;
+    flex-direction: column;
+    gap: 0.35rem;
+    line-height: var(--leading-normal);
   }
 
+  /* Value and description are one size. The old pair jumped from 18.4px to 12px
+     inside a single sentence. Weight and colour carry the distinction instead,
+     and both are inline so each stat reads as one line of prose. */
   .work-card__stat-value {
-    font-size: 1.15rem;
-    font-weight: 500;
+    display: inline;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
     color: hsl(var(--foreground));
-    line-height: 1;
   }
 
+  /* Non-breaking space, so "First OS" and "with voice setup" do not butt
+     together once both parts are inline. */
+  .work-card__stat-value::after {
+    content: '\00a0';
+  }
+
+  /* Same colour as the value, not muted. Full foreground gives the strongest
+     contrast in both themes: near-black on light, near-white on dark. Weight
+     alone carries the distinction between the two halves of the sentence. */
   .work-card__stat-desc {
-    font-size: var(--text-xs);
-    color: var(--color-slate);
-    margin-top: 0.2rem;
+    display: inline;
+    font-size: var(--text-sm);
+    color: hsl(var(--foreground));
   }
 
   .work-card__back-link {
@@ -504,14 +546,6 @@ const {
 
   .work-card__back-link svg { width: 13px; height: 13px; }
 
-  .work-card__back-hint {
-    text-align: center;
-    font-size: var(--text-sm);
-    font-weight: var(--weight-regular);
-    color: var(--color-charcoal);
-    margin-top: 0.8rem;
-  }
-
   /* ── Responsive ── */
   @media (max-width: 640px) {
     .work-card {
@@ -527,6 +561,20 @@ const {
 <script>
   // Flip on click (but not when expand button is clicked)
   document.querySelectorAll('.work-card').forEach(card => {
+    // backface-visibility hides a face visually but leaves it in the tab order.
+    // Now that both faces carry real buttons, a keyboard user would otherwise
+    // tab into controls they cannot see. `inert` removes the hidden face from
+    // both the tab order and the accessibility tree.
+    const front = card.querySelector('.work-card__front') as HTMLElement;
+    const back  = card.querySelector('.work-card__back') as HTMLElement;
+
+    function syncInert() {
+      const flipped = card.classList.contains('flipped');
+      if (front) front.inert = flipped;
+      if (back)  back.inert  = !flipped;
+    }
+    syncInert();
+
     card.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       // Expand button and the case-study link both handle their own click.
@@ -534,6 +582,7 @@ const {
       if (target.closest('[data-action="expand"]')) return;
       if (target.closest('[data-action="link"]')) return;
       card.classList.toggle('flipped');
+      syncInert();
     });
   });
 

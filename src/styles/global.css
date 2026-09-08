@@ -2317,6 +2317,13 @@ code {
 [data-theme="dark"] .work-card .work-card__inner .work-card__btn:hover {
   background: hsl(0 0% 100% / 0.22);
 }
+
+/* Focus ring in dark mode. Needs the same (0,4,x) chain as the rule above,
+   otherwise the base dark box-shadow overwrites it and the ring never appears.
+   navy-300 is the lighter blue used elsewhere for visibility on dark. */
+[data-theme="dark"] .work-card .work-card__inner .work-card__btn:focus-visible {
+  box-shadow: 0 0 0 3px hsl(var(--navy-300));
+}
 [data-theme="dark"] .work-card .work-card__inner .work-card__btn svg {
   color: hsl(var(--navy-300)); /* #6090E0 — lighter blue, clearly visible on dark */
 }

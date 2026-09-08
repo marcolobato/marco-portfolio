@@ -207,3 +207,32 @@ STYLE NOTE for future copy: Marco's preferred voice is plain declarative sentenc
 subject. "People trust automation they can watch", not "Automation you can watch, so people can trust
 it." Complete clauses, one idea per breath, verbs carrying the meaning. Do not convert his sentences
 into bolded noun-phrase labels. A reverted attempt is in git history at fb2ed5a.
+
+2026-09-08 | card-flip-affordance | Reworked the WorkCard interaction model after a /design-critique.
+Both controls now sit together top-right, magnifier then rotate glyph, with flip rightmost so it
+stays put when the card turns and the magnifier disappears. Removed the back face's expand button:
+the lightbox only renders the thumbnail plus a one-line caption, which is LESS than the case detail
+already on that face, so "expand" returned less than it promised. Replaced the navigation chevron
+with a rotate glyph and the fullscreen glyph with a magnifier-and-plus, since the thumbnail is
+object-fit: contain and the old icon had no clear referent. Deleted the "Flip for details" and "Flip
+back" hint text: an interaction that needs a sentence to explain it is under-designed, and the glyph
+is visible at rest so it works on touch. Tooltips and aria-labels cover the gap.
+
+A11y fixes in the same pass: the card was a <div> with a click handler and could not be operated by
+keyboard AT ALL. Real <button>s now, with a focus ring. The ring uses box-shadow, NOT outline,
+because these buttons sit inside a preserve-3d context where each face composites as its own layer
+and outlines fail to paint. The dark-mode ring lives in global.css at (0,4,x) specificity because the
+dark override for .work-card__btn sets box-shadow and a scoped rule cannot beat it. Whichever face is
+turned away is now marked inert so nobody tabs into invisible controls.
+
+Back-face typography: was four sizes including two raw values (1.05rem, 1.15rem) that existed nowhere
+in the type scale. Now three sizes, all tokens. The Outcome block was styled as a metric display but
+the content is sentences, so the 18.4px-to-12px jump landed mid-sentence. Value and description are
+now one size, stacked one per line, distinguished by weight only, both at full foreground contrast
+per Marco's call.
+
+/playground updated in the same branch as the brief requires: href row, new channel types, a variants
+demo using assistive channels and href, corrected usage notes, and href in the code sample.
+
+STILL OPEN: the lightbox has no focus trap. Opening it leaves focus on the card behind, so a keyboard
+user cannot reach the close button and is stranded. Next branch.

@@ -584,7 +584,10 @@ const {
       const card = (e.target as HTMLElement).closest('.work-card');
       const id = card?.getAttribute('data-card-id');
       if (id) {
-        window.dispatchEvent(new CustomEvent('work-card:expand', { detail: { id } }));
+        // Pass the button itself, so the lightbox can hand focus back to the
+        // exact control the user pressed rather than dumping them at the top
+        // of the document.
+        window.dispatchEvent(new CustomEvent('work-card:expand', { detail: { id, trigger: btn } }));
       }
     });
   });

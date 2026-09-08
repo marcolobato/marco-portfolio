@@ -15,7 +15,7 @@
 ---
 
 <!-- The overlay covers the whole viewport and starts hidden (opacity: 0, pointer-events: none) -->
-<div class="wlb-overlay" id="work-lightbox" role="dialog" aria-modal="true" aria-label="Project detail">
+<div class="wlb-overlay" id="work-lightbox" role="dialog" aria-modal="true" aria-labelledby="wlb-title">
 
   <!-- The panel is the white card in the center -->
   <div class="wlb-panel" id="wlb-panel">
@@ -59,15 +59,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Hidden by default — JS adds .active to show it */
+    /* Hidden by default — JS adds .active to show it.
+
+       visibility, not opacity alone. An element at opacity 0 is still focusable
+       and still in the accessibility tree, so the close button was reachable by
+       Tab while the lightbox was shut, and aria-modal="true" sat on the page
+       permanently. visibility: hidden removes it from both.
+
+       The 0s delay on visibility lets the opacity fade finish before the element
+       disappears; on the way in it flips immediately so focus can move. */
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.35s ease;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0s linear 0.35s;
   }
 
   .wlb-overlay.active {
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
+    transition: opacity 0.35s ease, visibility 0s;
   }
 
   /* ── Panel (the white card) ── */
@@ -131,6 +142,20 @@
     z-index: 10;
     transition: background 0.2s, transform 0.2s;
     box-shadow: 0 2px 8px hsl(var(--navy-900) / 0.1);
+  }
+
+  /* Focus ring. Without this the button could hold focus with nothing visible,
+     which is exactly what made the focus move look like it was not happening.
+
+     :focus-visible, so it appears for keyboard users and not on a mouse click.
+     That means opening the lightbox by clicking shows NO ring, correctly: reach
+     the magnifier with Tab and press Enter to see it.
+
+     This can live in the component's scoped styles, unlike the equivalent on
+     WorkCard: the dark override here is [data-theme="dark"] .wlb-close-btn at
+     (0,2,0), which a scoped (0,3,0) rule beats in both themes. */
+  .wlb-close-btn:focus-visible {
+    box-shadow: 0 0 0 3px var(--color-royal-blue);
   }
 
   .wlb-close-btn:hover {
@@ -244,9 +269,43 @@
   const channelsEl = document.getElementById('wlb-channels') as HTMLElement;
   const closeBtn = document.getElementById('wlb-close')    as HTMLButtonElement;
 
+  // ── Focus management ──────────────────────────────────────────────────
+  // A dialog you cannot leave by keyboard is worse than no dialog. Before this,
+  // opening the lightbox left focus on the card behind the overlay: Tab walked
+  // through content the user could not see and never reached the close button,
+  // so the only way out was guessing at Escape.
+  //
+  // Three parts: remember what opened it, move focus in, keep Tab inside.
+
+  let lastTrigger: HTMLElement | null = null;
+
+  const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+  function trapTab(e: KeyboardEvent) {
+    if (e.key !== 'Tab') return;
+    const items = Array.from(overlay.querySelectorAll<HTMLElement>(FOCUSABLE))
+      .filter((el) => !el.hasAttribute('disabled'));
+    if (items.length === 0) return;
+
+    const first = items[0];
+    const last = items[items.length - 1];
+
+    // This dialog currently holds exactly one focusable element, the close
+    // button, so first and last are the same node and both branches simply hold
+    // focus where it is. That is the correct behaviour, and the loop still works
+    // unchanged if the panel ever gains a second control.
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
   // Listen for the custom event WorkCard fires when the expand button is clicked
   window.addEventListener('work-card:expand', (e: Event) => {
-    const { id } = (e as CustomEvent<{ id: string }>).detail;
+    const { id, trigger } = (e as CustomEvent<{ id: string; trigger?: HTMLElement }>).detail;
 
     // Find the card in the DOM and read its data attributes
     const card = document.querySelector(`.work-card[data-card-id="${id}"]`) as HTMLElement;
@@ -279,13 +338,33 @@
       `).join('');
 
     // Show the lightbox
+    lastTrigger = trigger ?? (document.activeElement as HTMLElement | null);
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden'; // prevent page scroll behind overlay
+    document.addEventListener('keydown', trapTab);
+
+    // Force a style flush before focusing. Until .active applies, the overlay is
+    // visibility: hidden, and a visibility: hidden element cannot receive focus.
+    // Adding a class does not necessarily recalculate style before the next line
+    // runs, so reading a layout property makes the browser apply it now.
+    void overlay.offsetHeight;
+
+    // Move focus in, so the first thing a keyboard user reaches is the way out.
+    closeBtn.focus();
   });
 
   function closeLightbox() {
+    // Guard: the Escape listener is always attached, so without this a stray
+    // Escape press would run the focus restore while nothing was open.
+    if (!overlay.classList.contains('active')) return;
+
     overlay.classList.remove('active');
     document.body.style.overflow = '';
+    document.removeEventListener('keydown', trapTab);
+
+    // Put the user back on the button they pressed, not at the top of the page.
+    lastTrigger?.focus();
+    lastTrigger = null;
   }
 
   // Three ways to close: button, backdrop click, Escape key

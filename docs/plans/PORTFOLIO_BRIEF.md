@@ -294,3 +294,29 @@ stronger opener) and widened the product list to "a phone or another consumer de
 car, or a service". Removed "an assistive tool" from that list because the same sentence already says
 "people with any set of abilities can depend on it", and the brief says accessibility is the evidence
 rather than the claim.
+
+2026-09-08 | lightbox-focus-trap | Fixed the lightbox for keyboard users. It had TWO bugs, and the
+unreported one was arguably worse.
+
+REPORTED: opening the lightbox left focus on the card behind the overlay. Tab walked through content
+the user could not see and never reached the close button, so the only way out was guessing Escape.
+Now: WorkCard passes the triggering button in the event detail, focus moves to the close X on open,
+Tab is trapped inside the dialog, and focus returns to the exact magnifier pressed on close. The
+close guard matters: the Escape listener is always attached, so without it a stray Escape would run
+the focus restore while nothing was open.
+
+UNREPORTED: the overlay hid with opacity: 0 and pointer-events: none only. An element at opacity 0 is
+still focusable and still in the accessibility tree, so the close button was reachable by Tab while
+the lightbox was SHUT, and aria-modal="true" sat on the page permanently. Now visibility: hidden,
+with a 0.35s delay so the fade still finishes.
+
+Two things made the fix look like it was not working: the close button had NO focus style at all, so
+focus landed with nothing to see; and :focus-visible correctly shows nothing when a dialog is opened
+by mouse, so it must be tested with Tab then Enter. Also added a forced style flush before .focus(),
+because a visibility: hidden element cannot take focus and a class change is not guaranteed to be
+applied before the next line runs.
+
+Unlike WorkCard, the focus ring could live in the component's scoped styles: the dark override here
+is [data-theme="dark"] .wlb-close-btn at (0,2,0), which a scoped (0,3,0) rule beats.
+
+Also: aria-label="Project detail" became aria-labelledby="wlb-title", so it announces the project.

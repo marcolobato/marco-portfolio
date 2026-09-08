@@ -161,3 +161,9 @@ in the literature is autoregulated off performance. Say "progress when the signa
 
 Append one line per merged item. Date, branch, what changed.
 
+
+2026-09-08 | reframe-selected-work-intro | Item 1 done. Promoted the adoption claim to the Selected
+Work headline, reframed the three bullets from design properties to how adoption happens, added a
+sentence naming new technology as the channel rather than the claim, and changed the prescriptive
+"Adoption comes down to three things" to the experiential "Three things I have seen make that
+happen". Added text-wrap: balance to .area-heading so long headlines break evenly.

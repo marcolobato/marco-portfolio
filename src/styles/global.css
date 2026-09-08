@@ -945,8 +945,14 @@ hr {
 }
 
 .area-heading {
-  /* h2 size/color from global.css — we control bottom spacing only */
+  /* h2 size/color from global.css — we control bottom spacing and line breaks */
   margin-bottom: var(--space-md);
+
+  /* Let the browser even out the lines instead of filling the first one to the
+     edge and stranding whatever is left over. Headings are short enough that
+     the browser can afford to try several break points and pick the most even
+     result. Browsers that don't support it just ignore this line. */
+  text-wrap: balance;
 }
 
 .work-desc {

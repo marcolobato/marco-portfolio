@@ -244,3 +244,21 @@ does the hierarchy work. Also fixed a real bug Marco spotted: a ::after non-brea
 stacking on top of the template's own inter-element whitespace, rendering a visible DOUBLE space.
 Removed the ::after, since the newline between the two divs already collapses to one space when they
 are inline and it survives the production build (verified in dist). Three CSS rules collapsed to one.
+
+2026-09-08 | clarify-selected-work-copy | Rewrote the Selected Work opening for accuracy. Two things
+were wrong. "I design interfaces people need to use hands-free" made one case sound like the whole
+claim; hands-free is now one item in a list of ways someone might interact. And "The channel is
+usually new technology" was simply false: voice, camera, gesture and gaze are the ways people
+interact with a device, not new technology, so the bridge now states what people need instead. The
+paragraph also names the discipline (interaction design), explains what system-level work actually
+means rather than assuming the reader knows, and credits the pattern work as serving developers'
+apps, not only Google's. Closing line now says reliability is what frees the work up to be a
+delightful product experience, Marco's framing, which ties to "delightfully ordinary".
+
+WORD COUNT: section went 174 -> 257 before the first card, +83, which is roughly what the earlier
+skimmability pass had cut. Marco approved the trade knowingly: a wrong short paragraph is worse than
+a right longer one. If it needs trimming later, the line to cut is "That is how millions of people
+came to use their phone through voice, camera, and physical controls", at the cost of "millions".
+
+NOT INCLUDED: Marco mentioned the pattern work reaching apps "including iOS". Left out pending an
+exact, defensible phrasing. Do not add it from memory.

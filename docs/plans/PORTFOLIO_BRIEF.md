@@ -196,3 +196,14 @@ would have emphasised "People", which started three of four. Also reworded "the 
 the Camera Switch card: intent model is a term of art in NLU and read as an AI model on this page.
 Grepped the rest of the site for the same trap. "Mental model" reads fine because "mental"
 disambiguates, and every other hit means a device, business, or 3D model.
+
+2026-09-08 | flip-affordance-copy | Card hints now read "Flip for details" and "Flip back", replacing
+"Tap for details" and "Tap to return". "Tap" is wrong on desktop, where portfolios actually get
+reviewed, and "details" implied navigation when the card rotates in place. "Flip" is device-neutral
+and names the real mechanic. NOTE: this is the copy half only. The card still does not LOOK turnable
+before you read 12px of text. A visual cue is still open.
+
+STYLE NOTE for future copy: Marco's preferred voice is plain declarative sentences with a human
+subject. "People trust automation they can watch", not "Automation you can watch, so people can trust
+it." Complete clauses, one idea per breath, verbs carrying the meaning. Do not convert his sentences
+into bolded noun-phrase labels. A reverted attempt is in git history at fb2ed5a.

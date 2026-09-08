@@ -12,6 +12,13 @@ The site tone is: thoughtful, warm, technically fluent, never flashy. Think Don 
 2. `src/styles/global.css` — existing styles and component rules. Do not add styles that already exist here.
 3. `src/styles/tokens.css` — legacy color tokens (old system, still imported). Do not add new tokens here.
 
+**Portfolio direction and backlog, read before proposing any copy or content work:**
+
+1. `docs/plans/PORTFOLIO_BRIEF.md`: positioning, copy guardrails, the session loop, the
+   prioritized backlog, and the change log. Append one line to the change log per merged item.
+2. `docs/plans/FIELD_NOTES_DRAFTS.md`: unpublished Field Note drafts. Bracketed spots are
+   facts Marco has not verified yet. Never fill one in from memory, ask him.
+
 **Build commands:**
 - `npm run dev` — start local dev server
 - `npm run build` — build for production

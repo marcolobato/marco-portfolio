@@ -272,3 +272,25 @@ deliberate. .statement is Fraunces italic at --text-xl on a 48ch measure. Serif 
 is a categorical difference, not a difference of degree, so it cannot be misread as an accidental
 size bump the way 18px-against-16px was. Fraunces italic is already loaded via BaseLayout's Google
 Fonts request. Both classes now carry spacing only; change .statement and both move together.
+
+2026-09-08 | homepage-polish | Three changes after a /design canvas comparing two-column arrangements
+(Minimal split, Sidebar, Spread): https://claude.ai/code/artifact/39f1a517-360b-4bed-9fdb-e7d4e1233d5a
+
+1. Bullets pair into two columns above 700px. column-count, NOT grid: grid items can lose their list
+   markers. break-inside: avoid stops one splitting across the gutter. Mobile stays single column.
+2. One scroll reveal, on the .statement line only. Reuses the pattern from Quote.astro, where a
+   statement is likewise marked as a moment. Deliberately the ONLY animated element on the homepage:
+   revealing body copy gates reading behind scrolling, which is the opposite of what a skimming
+   hiring manager needs. IMPROVEMENT on Quote.astro worth porting back: the hidden state is wrapped
+   in @media (scripting: enabled), so with JS off the text simply shows instead of sitting at
+   opacity 0 forever, which is what Quote.astro does today.
+3. Cut "Click any project below to see the full case study" from the More Projects paragraph. It was
+   redundant, since Carousel.astro already renders a CTA pill on every slide, AND inaccurate: four of
+   seven slides link to /work/archive, not a case study, and their own CTAs correctly say "View
+   portfolio archive".
+
+ALSO in this session: dropped "I am an interaction designer" from the opening (the next sentence is a
+stronger opener) and widened the product list to "a phone or another consumer device, the system in a
+car, or a service". Removed "an assistive tool" from that list because the same sentence already says
+"people with any set of abilities can depend on it", and the brief says accessibility is the evidence
+rather than the claim.

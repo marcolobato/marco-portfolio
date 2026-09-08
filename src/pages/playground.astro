@@ -1178,7 +1178,7 @@ Step 4 — Component use
               <li>The whole card surface also flips. The rotate button exists to signal that at rest, which matters on touch where there is no hover, and to make the card keyboard-operable. It has no click handler of its own; the click bubbles to the card.</li>
               <li>The back face has no magnifier. The lightbox only renders the thumbnail and a one-line caption, which is less information than the back already shows, so "expand" there returned less than it promised.</li>
               <li>Whichever face is turned away is marked <code>inert</code>, so keyboard users never tab into controls they cannot see.</li>
-              <li>The magnifier dispatches <code>work-card:expand</code> carrying <code>{ id, trigger }</code>. <code>trigger</code> is the button element itself, so <code>WorkLightbox</code> can return focus to it on close. Any other component listening for that event should keep passing it.</li>
+              <li>The magnifier dispatches <code>work-card:expand</code> carrying <code>{'{ id, trigger }'}</code>. <code>trigger</code> is the button element itself, so <code>WorkLightbox</code> can return focus to it on close. Any other component listening for that event should keep passing it.</li>
               <li>Set <code>eager</code> on the first one or two cards above the fold to speed up first paint.</li>
             </ul>
           </Fragment>

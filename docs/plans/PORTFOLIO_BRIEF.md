@@ -176,3 +176,10 @@ Selected Work section for four projects: added the systems layer to the intro, a
 shared patterns, and updated every "three projects" count. NOTE: the brief's "73 variants down to 1"
 is not what the case study says. The sourced figure is 34 of 73 pickers adopted it, and it is
 deliberately NOT published on the card.
+
+2026-09-08 | tighten-selected-work | Skimmability pass. Deleted the closing paragraph after the
+cards (47 words): it stacked three transitions, made an unsourced LLM claim, and duplicated both the
+bridge paragraph and the More Projects intro below it. Halved the four bullets, which were restating
+the four card pattern labels in prose. Section went from 287 words to 204. Still open for a design
+pass: .work-desc is 72ch while the rest of the site is 65ch, bolding the bullet ledes, and making
+the card flip affordance clearer than 12px "Tap for details".

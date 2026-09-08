@@ -962,6 +962,32 @@ hr {
   line-height: var(--leading-relaxed);
 }
 
+/* Statement type. ONE treatment, used in two places: the sign-off in About and
+   the thesis line in Selected Work. Keep them identical.
+
+   Serif italic against the sans body is a CATEGORICAL difference, not a
+   difference of degree. 18px-against-16px read as an accidental size bump;
+   Fraunces italic cannot. It also stays inside the system, since --font-display
+   already carries every heading, and the Google Fonts request in BaseLayout
+   loads the italic axis.
+
+   Deliberately not a blockquote: nothing here is a quotation, and the existing
+   .prose-article blockquote uses muted-foreground, which fails contrast in dark
+   mode. */
+.statement {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--text-xl);
+  line-height: var(--leading-relaxed);
+  max-width: 48ch;
+  color: var(--color-charcoal);
+}
+
+/* Spacing only. Type comes from .statement. */
+.work-statement {
+  margin-bottom: var(--space-2xl);
+}
+
 /* Bulleted list inside the Work section. The global reset on line 95 strips
    list-style from every <ul>, so this class re-enables disc bullets and gives
    them the same width/leading as .work-desc paragraphs. */
@@ -2498,10 +2524,9 @@ code {
   line-height: var(--leading-relaxed);
 }
 
+/* Spacing only. Type comes from .statement, shared with Selected Work so both
+   sign-off lines on this page read as the same deliberate device. */
 .about-closer {
-  /* Italic sign-off — inherits body text color to maintain contrast.
-     Italic alone is enough to visually separate it from the paragraph above. */
-  font-style: italic;
   margin-top: var(--space-md);
   margin-bottom: 0;
 }

@@ -262,3 +262,13 @@ came to use their phone through voice, camera, and physical controls", at the co
 
 NOT INCLUDED: Marco mentioned the pattern work reaching apps "including iOS". Left out pending an
 exact, defensible phrasing. Do not add it from memory.
+
+2026-09-08 | selected-work-density | Reduced perceived density without cutting words. Split the
+opening paragraph in two at "the system in a car", which is also the logical break between identity
+and evidence. Introduced a shared .statement type treatment and applied it to BOTH the About sign-off
+(.about-closer) and the Selected Work thesis line (.work-statement), which previously had two
+different half-measures: one italic-without-size, one size-without-italic. Neither read as
+deliberate. .statement is Fraunces italic at --text-xl on a 48ch measure. Serif against the sans body
+is a categorical difference, not a difference of degree, so it cannot be misread as an accidental
+size bump the way 18px-against-16px was. Fraunces italic is already loaded via BaseLayout's Google
+Fonts request. Both classes now carry spacing only; change .statement and both move together.

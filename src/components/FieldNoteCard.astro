@@ -108,7 +108,10 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
 
   {/* Right column, row 2 — artifact image + caption. Caption is a link when
       href is provided, plain text otherwise (card 4 case). */}
-  <div class="fnc-artifact">
+  {/* A caption that is a link behaves like a second action, so it sits at the
+     bottom of the column to line up with the Explore link on the left. A plain
+     caption belongs with its picture, so it tucks straight under the image. */}
+  <div class:list={["fnc-artifact", !artifact.href && "fnc-artifact--plain-caption"]}>
     <div class="fnc-artifact-image">
       <img src={artifact.image} alt={artifact.alt} />
     </div>
@@ -302,6 +305,12 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
     margin-top: auto;
     font-size: var(--text-base);
     color: var(--color-charcoal);
+  }
+
+  /* Plain-text caption: sit against the image instead of sinking to the
+     bottom of the column and leaving a band of surface colour between them. */
+  .fnc-artifact--plain-caption .fnc-artifact-caption {
+    margin-top: 0;
   }
 
   .fnc-artifact-caption--link {

@@ -1005,6 +1005,57 @@ hr {
   margin-bottom: 0;
 }
 
+/* Two columns on wide screens only. These four bullets are short enough that
+   each uses well under half a 65ch line, so pairing them halves the block's
+   height without shortening a single line of reading.
+
+   column-count rather than grid: grid items can lose their list markers, and
+   multi-column keeps the discs. break-inside stops one bullet splitting across
+   the gutter. Mobile stays a single column. */
+@media (min-width: 700px) {
+  .work-desc-list {
+    column-count: 2;
+    column-gap: var(--space-2xl);
+    max-width: 100%;
+  }
+
+  .work-desc-list li {
+    break-inside: avoid;
+  }
+}
+
+/* Scroll reveal for the statement line, mirroring the pattern in Quote.astro
+   where a statement is likewise marked as a moment. This is deliberately the
+   ONLY animated element on the homepage: animating body copy delays reading for
+   someone skimming, which is the opposite of what this page is for.
+
+   Wrapped in `scripting: enabled` so the hidden state only exists where the
+   observer can actually run. Without it, a browser with JS off would leave the
+   statement at opacity 0 forever. Browsers that do not understand the query
+   ignore the whole block and simply show the text, which is the safe failure. */
+@media (scripting: enabled) {
+  [data-reveal="statement"] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  [data-reveal="statement"].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Reduced motion: fade only, no movement. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal="statement"] {
+      transform: none;
+      transition: opacity 0.4s ease;
+    }
+  }
+}
+
 /* Spacing above "More Projects" label — only when it follows the cards grid */
 .cards + .about-role {
   margin-top: var(--space-3xl);

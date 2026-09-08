@@ -148,7 +148,7 @@ const fieldNotes = (await getCollection('writing'))
           At Google I worked at the system level of Android, where a capability reaches every app on the platform rather than one product at a time. That is how millions of people came to use their phone through voice, camera, and physical controls. I also work the layer underneath, on the components and patterns that decide whether all of it behaves the same way from one product to the next, in the apps developers build as much as in Google's own.
         </p>
 
-        <p class="work-statement statement">
+        <p class="work-statement statement" data-reveal="statement">
           The technology keeps changing. What people need from it does not. They should not have to think about the interface, and they should be able to trust it works the same way every time.
         </p>
 
@@ -260,7 +260,7 @@ const fieldNotes = (await getCollection('writing'))
         <!-- More projects — carousel shows broader range -->
         <p id="more-projects" class="about-role">More Projects</p>
         <p class="work-desc">
-          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored. Click any project below to see the full case study.
+          I have consistently worked at the edge of new technology, where the biggest design decisions are still unexplored.
         </p>
         <Carousel />
 
@@ -327,6 +327,31 @@ const fieldNotes = (await getCollection('writing'))
       const video = document.querySelector('.about-video') as HTMLVideoElement;
       if (video && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         video.pause();
+      }
+
+      // Scroll reveal for the statement line. Same approach as Quote.astro on
+      // project pages: an IntersectionObserver adds the class once the element
+      // is genuinely on screen, then stops watching it so it plays exactly once
+      // rather than every time it scrolls past.
+      //
+      // threshold 0.2 means a fifth of it has to be visible first, so the reader
+      // has arrived at it before anything moves. Reduced motion is handled in
+      // CSS, which fades without moving rather than skipping the reveal, so the
+      // element still becomes visible either way.
+      const statements = document.querySelectorAll('[data-reveal="statement"]');
+      if (statements.length > 0) {
+        const revealer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                revealer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.2 }
+        );
+        statements.forEach((el) => revealer.observe(el));
       }
     </script>
 

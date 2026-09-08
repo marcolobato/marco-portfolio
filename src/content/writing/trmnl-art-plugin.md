@@ -6,7 +6,7 @@ image: "/images/writing/trmnl-art-plugin/08-flatirons-device.jpg"
 cardSummary: |-
   A reminder on my desk to get outside, on a screen that does not distract me.
 
-  I wanted to design for hardware. The first plugin was a hello world: get a picture on the screen, a different public-domain painting from <a href="https://www.metmuseum.org/">The Met</a> each day. The second one is mine, Get Outside, Flatirons Edition. My own photograph, changing with the light and the weather.
+  I wanted to design for hardware. The first plugin was a hello world: get a picture on the screen, a different public-domain painting from The Met each day. <a href="https://trmnl.com/recipes/363349?ref=search">One already existed</a>. I built mine to learn how their API works. The second one is my own, Get Outside, Flatirons Edition, with my photograph changing through the light and the weather.
 
   The <a href="https://trmnl.com/">TRMNL OG</a> has no colour, no animation, and redraws every 15 minutes at most. I learned how to make a real photograph look good in eight greys.
 tools:
@@ -35,6 +35,8 @@ Working with Claude Code I designed, built, deployed and tested both on real har
 ## The hello world: a painting a day from The Met
 
 A frame that shows a different public-domain painting each day, with the date in the corner so it earns its place.
+
+One of these [already existed](https://trmnl.com/recipes/363349?ref=search) in TRMNL's recipe list when I started. I built mine anyway. The point was learning how their API and framework fit together, and you do not learn that by installing someone else's plugin.
 
 ![An 1840 engraving of Sintra rendered in halftone dots, with its museum label and the date along the bottom](/images/writing/trmnl-art-plugin/01-cover.png)
 *Running through the real pipeline. The date never gets cut, in any layout. A frame that cannot tell you the day has failed at its second job.*

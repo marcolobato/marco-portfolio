@@ -167,3 +167,12 @@ Work headline, reframed the three bullets from design properties to how adoption
 sentence naming new technology as the channel rather than the claim, and changed the prescriptive
 "Adoption comes down to three things" to the experiential "Three things I have seen make that
 happen". Added text-wrap: balance to .area-heading so long headlines break evenly.
+
+2026-09-08 | design-systems-card | Item 4 done. Added a fourth WorkCard, Accessible Date Picker,
+Material Design, linking to the locked ds-a11y-program case study. Added an optional href prop to
+WorkCard so the back of a card can link out, plus keyboard/screen reader/switch channel types sharing
+one token colour. Fixed the channel strip clipping long labels (now wraps). Unified the whole
+Selected Work section for four projects: added the systems layer to the intro, a fourth bullet about
+shared patterns, and updated every "three projects" count. NOTE: the brief's "73 variants down to 1"
+is not what the case study says. The sourced figure is 34 of 73 pickers adopted it, and it is
+deliberately NOT published on the card.

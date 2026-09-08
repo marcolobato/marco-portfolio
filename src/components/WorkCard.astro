@@ -53,6 +53,9 @@ interface Props {
   channels: Channel[];
   lightboxDesc: string;
   eager?: boolean;
+  /* Optional. When set, the back of the card shows a link to the full case
+     study. Cards without it stay self-contained, exactly as before. */
+  href?: string;
 }
 
 const {
@@ -67,6 +70,7 @@ const {
   channels,
   lightboxDesc,
   eager = false,
+  href,
 } = Astro.props;
 ---
 
@@ -153,6 +157,14 @@ const {
           ))}
         </div>
       </div>
+      {href && (
+        <a class="work-card__back-link" href={href} data-action="link">
+          Read the full case study
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+      )}
       <div class="work-card__back-hint">Tap to return</div>
     </div>
 
@@ -296,11 +308,16 @@ const {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 26px;
+    /* min-height, not height: a long label like "screen reader" pushed the strip
+       past 26px and got clipped. Wrapping to a second line is better than cutting
+       a word in half. */
+    min-height: 26px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.5rem;
+    padding: 4px 8px;
     background: hsl(0 0% 100% / 0.7);
     backdrop-filter: blur(6px);
     border-top: 1px solid var(--color-surface);
@@ -328,6 +345,14 @@ const {
   .work-card__channel-dot--camera { background: #8b5cf6; }
   .work-card__channel-dot--gesture { background: var(--color-dark-charcoal, #3C2F39); }
   .work-card__channel-dot--gaze   { background: #e07b3a; }
+
+  /* Assistive input methods share one color on purpose. Keyboard, screen reader
+     and switch are one category, not three unrelated channels, and eight distinct
+     dot colors is more than a 5px circle can carry. Uses a real token so it flips
+     correctly in dark mode (#1040A8 light, #6090E0 dark). */
+  .work-card__channel-dot--keyboard,
+  .work-card__channel-dot--screenreader,
+  .work-card__channel-dot--switch { background: var(--color-royal-blue); }
 
   .work-card__channel-label {
     color: var(--color-slate);
@@ -463,6 +488,22 @@ const {
     margin-top: 0.2rem;
   }
 
+  .work-card__back-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    margin-top: 0.8rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-royal-blue);
+    text-decoration: none;
+  }
+
+  .work-card__back-link:hover { text-decoration: underline; }
+
+  .work-card__back-link svg { width: 13px; height: 13px; }
+
   .work-card__back-hint {
     text-align: center;
     font-size: var(--text-sm);
@@ -488,7 +529,10 @@ const {
   document.querySelectorAll('.work-card').forEach(card => {
     card.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
+      // Expand button and the case-study link both handle their own click.
+      // Without this the card would flip instead of navigating.
       if (target.closest('[data-action="expand"]')) return;
+      if (target.closest('[data-action="link"]')) return;
       card.classList.toggle('flipped');
     });
   });

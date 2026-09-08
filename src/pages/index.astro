@@ -141,22 +141,23 @@ const fieldNotes = (await getCollection('writing'))
         <h2 class="area-heading">Helping people adopt new technology, especially where reliability is non-negotiable</h2>
 
         <p class="work-desc">
-          I design interfaces people need to use hands-free, across automotive, assistive technology, and consumer electronics. At Google, I worked on Android accessibility at the system level, shaping how millions of people use their phone to interact with the world around them through voice, camera, and physical controls.
+          I design interfaces people need to use hands-free, across automotive, assistive technology, and consumer electronics. At Google, I worked on Android accessibility at the system level, shaping how millions of people use their phone to interact with the world around them through voice, camera, and physical controls. I also work the layer underneath, on the components and patterns that decide whether all of that behaves the same way from one product to the next.
         </p>
 
         <p class="work-desc">
           The channel is usually new technology. The problem underneath is always the same: someone has to decide a new way is worth their time, then trust it enough to keep going.
         </p>
 
-        <p class="work-desc">Three things I have seen make that happen:</p>
+        <p class="work-desc">Four things I have seen make that happen:</p>
 
         <ul class="work-desc-list">
           <li>People are taught a faster path at the moment it helps, not in onboarding they will forget.</li>
           <li>People come to trust a system acting for them, because they can see what it is doing.</li>
           <li>New capability lands inside a mental model people already have, instead of asking for a new one.</li>
+          <li>People move between products without relearning, because the teams behind them agreed on the same pattern.</li>
         </ul>
 
-        <p class="work-desc">The result is that people stay in the flow of what they are doing. These three projects show how.</p>
+        <p class="work-desc">The result is that people stay in the flow of what they are doing. These four projects show how.</p>
 
         <!-- Featured flip cards — each card shows a thumbnail on front, case detail on back -->
         <div class="work-cards-grid">
@@ -226,10 +227,34 @@ const fieldNotes = (await getCollection('writing'))
             ]}
             lightboxDesc="The supervision circle shows where Voice Access is acting. Gaze detection filters out background noise so only intentional commands go through."
           />
+
+          <WorkCard
+            id="datepicker"
+            pattern="Adoption Across Products"
+            title="Accessible Date Picker, Material Design"
+            backHeading="One pattern teams could agree on"
+            backParagraphs={[
+              'Google had dozens of date pickers. They were spread across consumer, enterprise, ads, and internal tools, built on different design systems, in different script frameworks, on different platforms. Each one had solved accessibility its own way, or not at all. Someone using a keyboard, a screen reader, or a switch device met a different component, and a different set of problems, in every product.',
+              'I facilitated the work that got teams to one pattern: running the specs, building prototypes, and testing with people who navigate by keyboard or switch. The facilitation was the part I liked most. Designing a component is finite. Getting teams with different stacks to agree on one is not. That pattern carried into Material Design, and through the design systems built on it, into thousands of apps.'
+            ]}
+            stats={[
+              { value: 'Material Design', desc: 'adopted the guidance' },
+              { value: 'One pattern', desc: 'across consumer, enterprise, ads, and internal tools' }
+            ]}
+            image="/images/work/date-picker-thumb.png"
+            imageAlt="Diagram of the proposed specification for a single accessible date picker across web frameworks"
+            channels={[
+              { type: 'keyboard', label: 'keyboard' },
+              { type: 'screenreader', label: 'screen reader' },
+              { type: 'switch', label: 'switch' }
+            ]}
+            lightboxDesc="One accessible date picker, designed with keyboard and switch users, documented so other teams could adopt it instead of rebuilding it."
+            href="/work/ds-a11y-program"
+          />
         </div>
 
         <p class="work-desc">
-          Just as AI, computer vision, and better speech technology made voice interaction smarter, large language models continue making every product better. These three projects are a sample. Here is more of what I have worked on.
+          Just as AI, computer vision, and better speech technology made voice interaction smarter, large language models continue making every product better. The capability changes fast. The patterns that make it usable change slowly. These four projects are a sample. Here is more of what I have worked on.
         </p>
 
         <!-- More projects — carousel shows broader range -->

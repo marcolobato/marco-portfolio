@@ -979,6 +979,13 @@ hr {
   margin-bottom: 0;
 }
 
+/* The bolded lede on each bullet. Front-loading the distinctive phrase gives a
+   skimmer four anchors instead of four sentences. Weight only, no colour change,
+   so the list still reads as prose rather than as a set of labels. */
+.work-desc-list li strong {
+  font-weight: var(--weight-bold);
+}
+
 /* Spacing above "More Projects" label — only when it follows the cards grid */
 .cards + .about-role {
   margin-top: var(--space-3xl);

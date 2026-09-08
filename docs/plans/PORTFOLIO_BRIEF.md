@@ -189,3 +189,10 @@ the homepage convention across four rules (.work-desc, .work-desc-list, .experti
 not a Selected Work anomaly, so all four changed together. Changing one alone would have made that
 section wrap differently from its neighbours. Selected Work now matches the 65ch used for article
 prose site-wide.
+
+2026-09-08 | bold-bullet-ledes | Restructured the four bullets to front-load the distinctive phrase
+and bolded it, giving a skimmer four anchors instead of four sentences. Bolding the original openings
+would have emphasised "People", which started three of four. Also reworded "the same intent model" on
+the Camera Switch card: intent model is a term of art in NLU and read as an AI model on this page.
+Grepped the rest of the site for the same trap. "Mental model" reads fine because "mental"
+disambiguates, and every other hit means a device, business, or 3D model.

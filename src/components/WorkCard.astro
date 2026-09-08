@@ -505,25 +505,16 @@ const {
     line-height: var(--leading-normal);
   }
 
-  /* Value and description are one size. The old pair jumped from 18.4px to 12px
-     inside a single sentence. Weight and colour carry the distinction instead,
-     and both are inline so each stat reads as one line of prose. */
-  .work-card__stat-value {
-    display: inline;
-    font-size: var(--text-sm);
-    font-weight: var(--weight-medium);
-    color: hsl(var(--foreground));
-  }
+  /* Value and description render as one plain sentence: same size, same weight,
+     same colour. The split exists in the props so stats stay structured to
+     author, not so they look different. Full foreground gives the strongest
+     contrast in both themes, near-black on light and near-white on dark.
 
-  /* Non-breaking space, so "First OS" and "with voice setup" do not butt
-     together once both parts are inline. */
-  .work-card__stat-value::after {
-    content: '\00a0';
-  }
-
-  /* Same colour as the value, not muted. Full foreground gives the strongest
-     contrast in both themes: near-black on light, near-white on dark. Weight
-     alone carries the distinction between the two halves of the sentence. */
+     No ::after space here. The newline between the two divs in the template
+     already renders as a single space once they are inline, and it survives the
+     production build. Adding a non-breaking space on top of it produced a
+     visible double space. */
+  .work-card__stat-value,
   .work-card__stat-desc {
     display: inline;
     font-size: var(--text-sm);

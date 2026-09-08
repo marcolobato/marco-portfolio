@@ -236,3 +236,11 @@ demo using assistive channels and href, corrected usage notes, and href in the c
 
 STILL OPEN: the lightbox has no focus trap. Opening it leaves focus on the card behind, so a keyboard
 user cannot reach the close button and is stranded. Next branch.
+
+2026-09-08 | uniform-stat-type | Outcome stats now render as one plain sentence: same size, same
+weight, same colour. Dropped the medium-weight lede. The content is sentences, not metrics, so
+emphasising half of each one was styling the content never asked for, and the "Outcome" label already
+does the hierarchy work. Also fixed a real bug Marco spotted: a ::after non-breaking space was
+stacking on top of the template's own inter-element whitespace, rendering a visible DOUBLE space.
+Removed the ::after, since the newline between the two divs already collapses to one space when they
+are inline and it survives the production build (verified in dist). Three CSS rules collapsed to one.

@@ -6,9 +6,7 @@ image: "/images/writing/trmnl-art-plugin/08-flatirons-device.jpg"
 cardSummary: |-
   A reminder on my desk to get outside, on a screen that does not distract me.
 
-  I wanted to design for hardware. The first plugin was a hello world: get a picture on the screen, a different public-domain painting from The Met each day. <a href="https://trmnl.com/recipes/363349?ref=search">One already existed</a>. I built mine to learn how their API works. The second one is my own, Get Outside, Flatirons Edition, with my photograph changing through the light and the weather.
-
-  The <a href="https://trmnl.com/">TRMNL OG</a> has no colour, no animation, and redraws every 15 minutes at most. I learned how to make a real photograph look good in eight greys.
+  I decided to finally get to prototyping and build some e-ink plugins for myself, and have more control over what I bring into my home. The first was a hello world: a painting a day from The Met, which <a href="https://trmnl.com/recipes/363349?ref=search">already existed</a>, so I built mine to learn their API. The second is my own, Get Outside, Flatirons Edition, with my photograph changing through the light and the weather. I learned how to make a real photograph look good in eight greys.
 tools:
   - label: "Claude Code in VS"
   - label: "TRMNL"
@@ -108,7 +106,7 @@ The approach is a mask: split the photograph into zones and treat each one separ
 ![The photograph split into three flat zones, sky in red, mountain in green, meadow in blue](/images/writing/trmnl-art-plugin/11-zone-mask.png)
 *The mask. Three flat values: sky, mountain, meadow.*
 
-![The mask laid over the photograph, sky tinted teal and meadow tinted blue, the mountain left untinted](/images/writing/trmnl-art-plugin/14-zone-mask-overlay.png)
+![The mask laid over the photograph, sky tinted teal and meadow tinted blue, the mountain left untinted](/images/writing/trmnl-art-plugin/14-zone-mask-overlay.jpg)
 *The same mask over the picture, so you can see where the zones land.*
 
 The edges are softened by different amounts on purpose. Rock against sky is a hard edge. Forest against meadow is not.

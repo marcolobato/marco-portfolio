@@ -74,7 +74,7 @@ I chose Astro. Static-first, fast, and built around the idea that most pages don
 
 I found Basis UI instead. It's the same idea as shadcn, copy-paste components built on CSS variables, but for Astro and Alpine.js. Same token conventions. Same `--primary`, `--secondary`, `--accent` naming. Different runtime: Alpine.js is 15KB, declarative, no build step. The components are Astro files I can read, understand, and modify without a framework getting in the way.
 
-![VS Code showing a Basis UI Astro component file side by side with the rendered site.](/images/writing/design-systems-explorations/vs-code-astro.png)
+![VS Code showing a Basis UI Astro component file side by side with the rendered site.](/images/writing/design-systems-explorations/vs-code-astro.jpg)
 
 The pivot felt right immediately. I wasn't building a web application. I was building a portfolio that reads like a magazine and grows as I add experiments. Astro's file-based routing means adding a page is creating a file. Alpine.js means interactivity is an HTML attribute, not a component tree. Basis UI means the design tokens are CSS variables that I define once and everything inherits.
 

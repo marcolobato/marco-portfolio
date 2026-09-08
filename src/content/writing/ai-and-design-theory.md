@@ -2,7 +2,7 @@
 title: "Can AI Teach Design Theory? Designing Strain and Recovery Icons for my Fitness Wearable"
 date: 2025-05-20
 description: "How I used AI-powered tools to reconnect design theory and practice in a one-day UX experiment."
-image: "/images/writing/ai-and-design-theory/01-cover.png"
+image: "/images/writing/ai-and-design-theory/01-cover.jpg"
 ---
 
 ## Introduction: From Curiosity to Concept
@@ -15,7 +15,7 @@ So I turned this into a quick, fun design exercise: could I create a set of symb
 
 In this experiment, I explored how to use ChatGPT as a collaborator to apply semiotics theory and design a family of icons for WHOOP's strain levels — restorative, optimal, and overreaching — that could be interpreted differently depending on context. I'll walk through my process: how I brainstormed icon ideas using ChatGPT, tested metaphors at different levels of fidelity, and landed on a set of simple, shape-driven icons designed to fit cleanly on my home screen widget, ready for feedback.
 
-![WHOOP widget on iPhone home screen](/images/writing/ai-and-design-theory/02-whoop-widget.png)
+![WHOOP widget on iPhone home screen](/images/writing/ai-and-design-theory/02-whoop-widget.jpg)
 *Current WHOOP widget on my iPhone home screen displaying strain and recovery values without icons.*
 
 ## The Context: Why This, Why Now
@@ -40,13 +40,13 @@ I began with a simple prompt: understanding semiotics using strain and recovery 
 ![Semiotic table for strain and recovery](/images/writing/ai-and-design-theory/04-semiotic-table.png)
 *Semiotic table showing how strain and recovery can be interpreted visually and conceptually through symbols, themes, and contextual meaning.*
 
-![Hand sketches for strain and recovery icons](/images/writing/ai-and-design-theory/05-hand-sketches.png)
+![Hand sketches for strain and recovery icons](/images/writing/ai-and-design-theory/05-hand-sketches.jpg)
 *My initial hand sketches for Strain and Recovery.*
 
 ![ChatGPT semiotic exploration of strain zones](/images/writing/ai-and-design-theory/06-strain-zones-graph.png)
 *A visual and motion-based semiotic breakdown of WHOOP strain zones, exploring metaphors and interpretations for different states of physical exertion.*
 
-![Refined semiotic analysis table](/images/writing/ai-and-design-theory/07-semiotics-table-2.png)
+![Refined semiotic analysis table](/images/writing/ai-and-design-theory/07-semiotics-table-2.jpg)
 *Brainstorming by hand helped me connect the semes: Here I found the "Balance" theme across my icons and found out I wanted to discover further the "Growth" theme.*
 
 ### 2. Providing ChatGPT with the Necessary Context
@@ -65,7 +65,7 @@ With ChatGPT, I designed the first set of metaphoric icons — like a feather, a
 ![First metaphor-based icon set](/images/writing/ai-and-design-theory/09-first-icon-set.png)
 *First metaphor-based icon set exploring restorative, optimal, and overreaching using universal fitness symbols: a feather in a circle, a target in a hexagon, and a flexed bicep in a triangle.*
 
-![High fidelity icon mocks in WHOOP widget context](/images/writing/ai-and-design-theory/10-hifi-icon-set.png)
+![High fidelity icon mocks in WHOOP widget context](/images/writing/ai-and-design-theory/10-hifi-icon-set.jpg)
 *High Fidelity Mocks for Testing: A triangle + bicep symbol rendered in monochrome and placed inside the strain and recovery rings, shown in both the WHOOP app interface and iOS widget for quick context testing. Left: Overreaching icon + text label. Right: Overreaching icon in isolation without text labels.*
 
 ### 4. Diverging into Thematic Exploration
@@ -79,7 +79,7 @@ I then explored alternative metaphor families. One direction I could quickly exp
 
 At this point I was excited to start creating icons in Midjourney, but I quickly felt I'd gotten ahead of myself and continued to work with hand sketches and wireframes, stepping back from high fidelity to clarify meaning. These low-fi explorations were easier to share, test, and evolve. The outline style also fit better given the size and limited real estate of a widget.
 
-![Midjourney icon vs hand sketches side by side](/images/writing/ai-and-design-theory/12-sketch-vs-hifi.png)
+![Midjourney icon vs hand sketches side by side](/images/writing/ai-and-design-theory/12-sketch-vs-hifi.jpg)
 *Side-by-side comparison of a high-fidelity Midjourney icon and my hand-drawn sketches exploring the restorative icon. Sketches are still a faster way to play with shapes and a cohesive family of icons.*
 
 ### 6. Utilizing the Semiotic Table and Midjourney for Refinement

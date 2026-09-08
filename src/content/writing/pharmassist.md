@@ -2,7 +2,7 @@
 title: "PharmAssist: Default privacy patterns"
 date: 2026-03-25
 description: "Designing privacy for the pharmacy counter. Learning Voiceflow along the way."
-image: "/images/writing/pharm-assist-storyboard.png"
+image: "/images/writing/pharm-assist-storyboard.jpg"
 cardSummary: |-
   Designing privacy for a pharmacy counter kiosk. Learning Voiceflow along the way.
 
@@ -91,7 +91,7 @@ This was my first time using Voiceflow. I built alongside Gemini, which could se
 
 <div id="artifact"></div>
 
-![Full Voiceflow canvas zoomed out showing the complete flow with the test chat panel open](/images/writing/pharmassist/05-voiceflow-canvas-full.png)
+![Full Voiceflow canvas zoomed out showing the complete flow with the test chat panel open](/images/writing/pharmassist/05-voiceflow-canvas-full.jpg)
 *The complete PharmAssist flow in Voiceflow, with the test chat running alongside.*
 
 ### Workflows, not Playbooks

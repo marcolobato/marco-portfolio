@@ -111,7 +111,7 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
   {/* A caption that is a link behaves like a second action, so it sits at the
      bottom of the column to line up with the Explore link on the left. A plain
      caption belongs with its picture, so it tucks straight under the image. */}
-  <div class:list={["fnc-artifact", !artifact.href && "fnc-artifact--plain-caption"]}>
+  <div class="fnc-artifact">
     <div class="fnc-artifact-image">
       <img src={artifact.image} alt={artifact.alt} />
     </div>
@@ -302,18 +302,15 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
      making it sit on the same horizontal line as the Explore link in the
      left column (the column heights match because grid stretches the row). */
   .fnc-artifact-caption {
-    margin-top: auto;
     font-size: var(--text-base);
     color: var(--color-charcoal);
   }
 
-  /* Plain-text caption: sit against the image instead of sinking to the
-     bottom of the column and leaving a band of surface colour between them. */
-  .fnc-artifact--plain-caption .fnc-artifact-caption {
-    margin-top: 0;
-  }
-
+  /* Only a caption that is a link behaves like a second action, so only that
+     one gets pushed to the bottom of the column to line up with the Explore
+     link on the left. A plain caption stays with its picture. */
   .fnc-artifact-caption--link {
+    margin-top: auto;
     font-weight: var(--weight-regular);
     color: var(--color-royal-blue);
     text-decoration: underline;
@@ -347,7 +344,7 @@ const paragraphs = body.split(/\n\n+/).filter(Boolean);
     /* On mobile the cards stack vertically, so there's no left-column to
        align the caption with. Undo margin-top: auto so the caption sits
        directly under the image. */
-    .fnc-artifact-caption {
+    .fnc-artifact-caption--link {
       margin-top: 0;
     }
   }

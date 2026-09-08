@@ -25,7 +25,7 @@ AI Speedbumps is a creative break in four moves, for anyone whose work is starti
 
 I shipped it two ways, on purpose. A single page that teaches the exercise in a paragraph, for people with five minutes. And a walkable 3D hallway that stages each step spatially, with examples hung along the walls and a deck of creative prompts at the deep end, for people who want to take the break for real. One idea, two fidelities.
 
-![The AI Speedbumps landing page: the four-step exercise on the left, a chrome foil poster study on the right](/images/writing/ai-speedbumps/02-landing-page.png)
+![The AI Speedbumps landing page: the four-step exercise on the left, a chrome foil poster study on the right](/images/writing/ai-speedbumps/02-landing-page.jpg)
 *The one-page version. Read the four steps here, or press Enter and walk them.*
 
 ---
@@ -50,10 +50,10 @@ The recontextualize step became this prototype's art direction. I had gone looki
 
 So I rebuilt the material instead of reusing it. I steered Midjourney and Recraft with the original artwork until the cardboard read as cardboard again, then used Figma's AI agent to produce the card textures at the right resolution, in light and dark mode. The chrome ink on the logo came from the same place: a metallic poster I remembered from my bedroom wall in 2000. Stepping outside my default design system to chase matte cardboard and crumpled foil was the most fun I have had in Figma in a long time, and every texture in the hallway, the cards, and the poster below came out of that loop.
 
-![The card components: the prompt card in dark and light mode above two gallery pair cards, each pairing an early artwork with a later one over a keyword](/images/writing/ai-speedbumps/03-card-components.png)
+![The card components: the prompt card in dark and light mode above two gallery pair cards, each pairing an early artwork with a later one over a keyword](/images/writing/ai-speedbumps/03-card-components.jpg)
 *The card components, designed in Figma. The prompt card in dark and light mode, and the gallery pair card that hangs each example in the hallway: first work, current work, and the one word that traveled.*
 
-![AI Speedbumps poster study: a crumpled chrome foil sticker of a speedbump road sign on dark cardboard](/images/writing/ai-speedbumps/poster-texture-study.png)
+![AI Speedbumps poster study: a crumpled chrome foil sticker of a speedbump road sign on dark cardboard](/images/writing/ai-speedbumps/poster-texture-study.jpg)
 *Poster study. Extracted principle: texture. The foil is the poster I remembered; the cardboard is the site I scanned.*
 
 ---
@@ -64,7 +64,7 @@ I am a designer, and a year ago a walkable 3D space meant a complex OpenGL proje
 
 Two favorites. Nothing in the hallway moves 1:1 with your hand: every input sets a target and the camera eases toward it a little each frame, a technique called damping, and that easing is the entire difference between a 3D demo and a space with weight. And the sound: browsers refuse to autoplay audio until you interact with a page, so instead of fighting the rule, the design absorbs it. The landing page is silent. Pressing Enter wakes the original site's rough old sounds, and the ambient hum lives at the deep end of the corridor as spatial audio, so walking forward fades the volume up from nothing. The constraint became the audio experience.
 
-![Inside the hallway: torn-paper pages on the walls pairing early works with later ones, beside the observe step card](/images/writing/ai-speedbumps/hallway-gallery.png)
+![Inside the hallway: torn-paper pages on the walls pairing early works with later ones, beside the observe step card](/images/writing/ai-speedbumps/hallway-gallery.jpg)
 *Inside the hallway. Each page pairs an early work with a later one and the one word that traveled: texture, flatness, gaze.*
 
 ---

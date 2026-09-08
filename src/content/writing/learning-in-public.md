@@ -2,7 +2,7 @@
 title: "Learning in Public: Why I'm Sharing a Week of Tiny Experiments"
 date: 2025-05-14
 description: "On why showing unfinished work is more useful than waiting for the perfect case study."
-image: "/images/writing/turnform-1.png"
+image: "/images/writing/turnform-1.jpg"
 ---
 
 After reading the book [*Tiny Experiments* by Anne-Laure Le Cunff](https://nesslabs.com/book), I started noticing patterns in my design interests — skills I wanted to sharpen and questions that kept resurfacing. I've always believed in learning by doing. So with my growing interest in how AI can support design, I framed this hypothesis:

@@ -2,7 +2,7 @@
 title: "My First Tiny Experiment: Digitizing Physical Spaces"
 date: 2025-05-19
 description: "What happens when you try to map a physical room into a digital interface in one week."
-image: "/images/writing/digitizing-physical-spaces/01-cover.png"
+image: "/images/writing/digitizing-physical-spaces/01-cover.jpg"
 ---
 
 ## Introduction
@@ -39,7 +39,7 @@ To accelerate user onboarding, I redesigned the Matterport Mobile home screen to
 ![Diagram showing the redesigned Matterport home screen layout and interaction patterns](/images/writing/digitizing-physical-spaces/03-redesign-diagram.png)
 *Final redesigned home screen in light mode — updated illustration guides users to begin scanning immediately, with updated text, layout, and interaction patterns.*
 
-![Matterport's marketing site showing white backgrounds, bold black text, and red call-to-action buttons](/images/writing/digitizing-physical-spaces/04-marketing-site.png)
+![Matterport's marketing site showing white backgrounds, bold black text, and red call-to-action buttons](/images/writing/digitizing-physical-spaces/04-marketing-site.jpg)
 *Matterport’s marketing site uses a bright, minimal visual style, white backgrounds, bold black text, and red CTAs. This light theme informed my UI direction for the redesigned app, aligning it more closely with the brand’s tone appealing to the real estate industry.*
 
 **Key improvements:**
@@ -91,7 +91,7 @@ I designed one layout using iOS-native navigation buttons, a title, and a progre
 
 The initial capture flow was weighed down by an easily missed checklist that relied on strikethrough text to show task completion. It wasn't interactive, and it required users to shift focus mid-scan to interpret progress. From a design standpoint, it broke with principles of progressive disclosure and accessibility. I removed it in favor of surfacing guidance contextually — delivering the right prompt at the right moment, without adding cognitive overhead.
 
-![Matterport checklist showing tasks to complete for capturing your first space, with completed items struck through](/images/writing/digitizing-physical-spaces/08-expanded-tasks.png)
+![Matterport checklist showing tasks to complete for capturing your first space, with completed items struck through](/images/writing/digitizing-physical-spaces/08-expanded-tasks.jpg)
 *The original capture checklist — tasks like capturing your first space were marked complete with strikethrough text, an easy-to-miss pattern that required users to shift focus mid-scan to track their progress.*
 
 ### Interactive Walkthrough

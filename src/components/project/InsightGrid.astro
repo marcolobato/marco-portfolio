@@ -56,13 +56,15 @@ const { insights } = Astro.props;
 
 <style>
   /* ── Grid ───────────────────────────────────────────────────────────────── */
-  /* 2 equal columns on desktop. auto-fit with minmax means the grid
-     collapses to 1 column automatically once each card would be narrower
-     than 260px — no media query needed for the basic responsive behaviour. */
+  /* auto-fit with minmax means the grid packs as many 240px-minimum columns
+     as fit, then collapses toward 1 column on narrow screens — no media query
+     needed. 240px (not 260px) matters: the project container's content width
+     is 796px, and three 260px cards plus two 16px gaps need 812px, which
+     forced a 2 + 1 layout with an orphan card. Three 240px cards need 752px. */
 
   .ig-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: var(--space-md);
     margin: var(--space-2xl) 0;
   }

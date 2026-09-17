@@ -188,6 +188,10 @@ const {
        shared 72px margin keeps the display text breathing without the void. */
     padding-inline: 0;
     padding-block: var(--space-2xl);
+    /* Shared .pq-quote margin is 72px, which with the 48px padding left ~150px
+       between a section heading and the eyebrow below it. 48px margin keeps
+       heading -> statement -> next block at a steady 96px. */
+    margin-block: var(--space-2xl);
   }
 
   /* Dark mode: step up to a lighter ramp stop so the text reads on dark canvas */

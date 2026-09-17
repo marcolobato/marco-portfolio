@@ -207,7 +207,10 @@ const { emoji, title, problem, question, solution, outcome, image, imageCaption 
   .sb-caption {
     margin-top: var(--space-sm);
     font-size: var(--text-xs);
-    color: var(--color-slate);
+    /* --color-charcoal, not --color-slate: slate (#808080) on white is 3.95:1,
+       under the 4.5:1 WCAG AA needs for 12px text. Charcoal passes in both
+       themes and matches the markdown image captions in work/[slug].astro. */
+    color: var(--color-charcoal);
     letter-spacing: 0.06em;
     line-height: var(--leading-relaxed);
   }

@@ -521,7 +521,7 @@ const { Content } = await render(project);
   /* Small muted attribution line below the quote */
   .project-outcomes-quote-attr {
     font-size: var(--text-sm);
-    color: var(--color-slate);
+    color: var(--color-charcoal); /* slate fails AA at 14px on white (3.95:1) */
     line-height: var(--leading-relaxed);
   }
 

@@ -162,7 +162,7 @@ const { intent, needs } = Astro.props;
   }
 
   .di-need-number {
-    color: var(--color-slate);
+    color: var(--color-charcoal); /* slate fails AA at 14px on white (3.95:1) */
     font-variant-numeric: tabular-nums;
   }
 
@@ -206,7 +206,7 @@ const { intent, needs } = Astro.props;
     margin-top: var(--space-2xl);
     text-align: center;
     font-size: var(--text-sm);
-    color: var(--color-slate);
+    color: var(--color-charcoal); /* slate fails AA at 14px on white (3.95:1) */
     font-style: italic;
   }
 

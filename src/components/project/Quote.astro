@@ -171,8 +171,8 @@ const {
 
 
   /* ── Statement variant ─────────────────────────────────────────────────── */
-  /* No background. Same large display text and section height as dark/light,
-     so the page keeps a consistent reading rhythm even without a color band.
+  /* No background. Same large display text as dark/light, but no reserved
+     section height (see note inside the block).
      Stays inside the content column (no full-bleed margin tricks).
      Gets the same scroll-reveal animation as dark/light. */
 
@@ -180,16 +180,14 @@ const {
     --pq-text-color:  var(--color-royal-blue); /* Royal blue — matches Framer reference */
     --pq-text-size:   var(--text-4xl);         /* Same as dark/light — full display weight */
 
-    /* Same section presence as dark/light so the rhythm holds */
-    min-height: clamp(400px, 50vh, 600px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    /* No horizontal padding override — inherits the shared .pq-quote padding.
-       Vertical: same generous block spacing as dark/light variants. */
+    /* No min-height here, unlike the dark/light bands. Those have a background
+       to fill, so reserving section height reads as presence. A statement has
+       no background, so reserved height just reads as a gap. Four of them in a
+       row on the Magnifier page added ~1,600px of empty scroll between the
+       insights and the design intent. 48px of block padding on top of the
+       shared 72px margin keeps the display text breathing without the void. */
     padding-inline: 0;
-    padding-block: var(--space-4xl);
+    padding-block: var(--space-2xl);
   }
 
   /* Dark mode: step up to a lighter ramp stop so the text reads on dark canvas */

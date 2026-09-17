@@ -164,6 +164,16 @@ const { contributions } = Astro.props;
     cursor: default;
   }
 
+  /* Keyboard focus ring. global.css resets outline: none on every <button>,
+     so without this a keyboard user tabbing through the six rows sees nothing.
+     Same ring as the carousel buttons (.pc-btn:focus-visible). Negative offset
+     keeps the ring inside the rounded card instead of clipping at its edge. */
+  .pa-trigger:focus-visible {
+    outline: 2px solid var(--color-royal-blue);
+    outline-offset: -2px;
+    border-radius: 8px;
+  }
+
   .pa-trigger:not(.pa-trigger--static):hover .pa-label {
     color: var(--color-royal-blue);
   }

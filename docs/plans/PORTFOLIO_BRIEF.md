@@ -320,3 +320,5 @@ Unlike WorkCard, the focus ring could live in the component's scoped styles: the
 is [data-theme="dark"] .wlb-close-btn at (0,2,0), which a scoped (0,3,0) rule beats.
 
 Also: aria-label="Project detail" became aria-labelledby="wlb-title", so it announces the project.
+
+2026-09-17 | magnifier-polish | Pixel Magnifier case study polish. Filled the six Contributions rows, cut the Stigma insight and the Future Vision reflection so the page ends on Outcomes, and removed every em dash from the body copy. Statement quotes no longer reserve 400 to 600px of empty height (Quote.astro), three insight cards fit in one row (InsightGrid.astro), two artifacts were cropped to content, and five light-mode AA contrast failures were fixed by moving small slate text to charcoal in SolutionBlock, DesignIntent, the outcomes attribution, and the dark band attribution. Added the missing keyboard focus ring to the contributions accordion. Page height dropped from 16,600px to 14,843px on desktop. NOTE: the 45% battery figure stays by Marco's decision; the 10 MB of PNG on the page and the baked-in frame on solution-distant-signs.png are still open.
